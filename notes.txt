@@ -1,0 +1,9 @@
+Random Notes
+
+- Voat has limited upvotes depending on your account life
+- May want to contact server on startup to see if a message should be displayed
+- Think about monetization...
+
+
+Features List
+
