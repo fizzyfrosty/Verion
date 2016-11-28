@@ -5,5 +5,65 @@ Random Notes
 - Think about monetization...
 
 
+Design.io
+https://designcode.io/swiftapp
+
+Content Generator for Sketch
+https://github.com/timuric/Content-generator-sketch-plugin
+
+Animation library
+https://github.com/MengTo/Spring
+
+
+
+Problem: How to display comments from markdown source?
+Convert markdown to NSAttributedString: https://github.com/laptobbe/TSMarkdownParser
+
+
+
+
+
 Features List
+
+Not Logged In
+
+- Get main Submissions
+	- show rating
+	- upvote, downvote
+	- 
+- Sort by
+- Show page dividers
+- Find subverses
+
+- Retrieve and show single threads
+	- Comments
+	- Videos
+	- Images
+- Show Comments
+	- staggered
+	- OP vs users
+
+- Collapse comments
+- Uncollapse comments
+
+
+User Accounts
+
+- Login
+- Logout
+
+- Upvote/downvote main submissions
+
+- Upvote/downvote comments	
+- Make a post
+- Comment on posts
+
+- Read Messages
+- Respond to Messages
+
+
+
+
+
+
 
