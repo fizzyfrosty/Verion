@@ -29,6 +29,10 @@ Problem: How to minimize/maximize comments?
 - Construct tree to match comment data structures
 
 
+Making Status Bar white:
+- set the Status Bar Style: Light in the main settings
+- in Info.plist, set View controller-based status bar appearance: No
+
 
 Features List
 

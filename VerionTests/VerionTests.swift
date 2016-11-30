@@ -14,6 +14,17 @@ class VerionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        
+    }
+    
+    func testSubverseStoryboardLoaded() {
+        
+        let subVcSb = UIStoryboard(name: "Subverse", bundle: nil)
+        if let subVc: SubverseViewController = subVcSb.instantiateViewController(withIdentifier: "SubverseViewController") as? SubverseViewController{
+            
+            XCTAssert(subVc.SUBMISSION_CELL_REUSE_ID == "SubmissionCell")
+        }
     }
     
     override func tearDown() {

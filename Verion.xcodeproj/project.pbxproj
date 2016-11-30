@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		432564391DECAE8F001B943A /* Subverse.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564381DECAE8F001B943A /* Subverse.storyboard */; };
 		432564AA1DEE5FB8001B943A /* SubverseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432564A91DEE5FB8001B943A /* SubverseViewController.swift */; };
+		432564AD1DEEABD9001B943A /* SFXManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432564AC1DEEABD9001B943A /* SFXManagerType.swift */; };
+		432564AF1DEEACB7001B943A /* SFXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432564AE1DEEACB7001B943A /* SFXManager.swift */; };
+		432564B11DEEACC4001B943A /* SFXManagerDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432564B01DEEACC4001B943A /* SFXManagerDummy.swift */; };
+		432564B41DEEB11A001B943A /* SubmissionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432564B31DEEB11A001B943A /* SubmissionCell.swift */; };
+		432564B61DEEB798001B943A /* TabController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564B51DEEB798001B943A /* TabController.storyboard */; };
+		432564B81DEEB8B5001B943A /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432564B71DEEB8B5001B943A /* TabBarController.swift */; };
+		432564BA1DEED077001B943A /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
+		432564BB1DEED077001B943A /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */; };
 		43F9A02D1DEA3AE0001EB1FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F9A02C1DEA3AE0001EB1FC /* AppDelegate.swift */; };
 		43F9A0341DEA3AE0001EB1FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43F9A0331DEA3AE0001EB1FC /* Assets.xcassets */; };
 		43F9A0371DEA3AE0001EB1FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43F9A0351DEA3AE0001EB1FC /* LaunchScreen.storyboard */; };
@@ -32,6 +40,12 @@
 /* Begin PBXFileReference section */
 		432564381DECAE8F001B943A /* Subverse.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Subverse.storyboard; sourceTree = "<group>"; };
 		432564A91DEE5FB8001B943A /* SubverseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseViewController.swift; sourceTree = "<group>"; };
+		432564AC1DEEABD9001B943A /* SFXManagerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFXManagerType.swift; sourceTree = "<group>"; };
+		432564AE1DEEACB7001B943A /* SFXManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFXManager.swift; sourceTree = "<group>"; };
+		432564B01DEEACC4001B943A /* SFXManagerDummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFXManagerDummy.swift; sourceTree = "<group>"; };
+		432564B31DEEB11A001B943A /* SubmissionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCell.swift; sourceTree = "<group>"; };
+		432564B51DEEB798001B943A /* TabController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabController.storyboard; sourceTree = "<group>"; };
+		432564B71DEEB8B5001B943A /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		43F9A0291DEA3AE0001EB1FC /* Verion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Verion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F9A02C1DEA3AE0001EB1FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43F9A0331DEA3AE0001EB1FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -60,12 +74,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				432564BA1DEED077001B943A /* Swinject.framework in Frameworks */,
+				432564BB1DEED077001B943A /* SwinjectStoryboard.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		432564AB1DEEAB57001B943A /* SFX */ = {
+			isa = PBXGroup;
+			children = (
+				432564AC1DEEABD9001B943A /* SFXManagerType.swift */,
+				432564AE1DEEACB7001B943A /* SFXManager.swift */,
+				432564B01DEEACC4001B943A /* SFXManagerDummy.swift */,
+			);
+			path = SFX;
+			sourceTree = "<group>";
+		};
+		432564B21DEEB0E6001B943A /* TableCells */ = {
+			isa = PBXGroup;
+			children = (
+				432564B31DEEB11A001B943A /* SubmissionCell.swift */,
+			);
+			path = TableCells;
+			sourceTree = "<group>";
+		};
 		43F9A0201DEA3ADF001EB1FC = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +155,7 @@
 			children = (
 				43F9A0B41DEA947B001EB1FC /* Main.storyboard */,
 				432564381DECAE8F001B943A /* Subverse.storyboard */,
+				432564B51DEEB798001B943A /* TabController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -128,7 +163,9 @@
 		43F9A05E1DEA67E9001EB1FC /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				432564AB1DEEAB57001B943A /* SFX */,
 				43F9A05F1DEA67E9001EB1FC /* Networking */,
+				432564B21DEEB0E6001B943A /* TableCells */,
 				43F9A0631DEA67E9001EB1FC /* ViewControllers */,
 			);
 			path = Source;
@@ -146,6 +183,7 @@
 			children = (
 				43F9A0B61DEA94B6001EB1FC /* ViewController.swift */,
 				432564A91DEE5FB8001B943A /* SubverseViewController.swift */,
+				432564B71DEEB8B5001B943A /* TabBarController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -237,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43F9A0371DEA3AE0001EB1FC /* LaunchScreen.storyboard in Resources */,
+				432564B61DEEB798001B943A /* TabController.storyboard in Resources */,
 				432564391DECAE8F001B943A /* Subverse.storyboard in Resources */,
 				43F9A0341DEA3AE0001EB1FC /* Assets.xcassets in Resources */,
 				43F9A0B51DEA947B001EB1FC /* Main.storyboard in Resources */,
@@ -276,8 +315,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				432564AA1DEE5FB8001B943A /* SubverseViewController.swift in Sources */,
+				432564B81DEEB8B5001B943A /* TabBarController.swift in Sources */,
+				432564AD1DEEABD9001B943A /* SFXManagerType.swift in Sources */,
+				432564B11DEEACC4001B943A /* SFXManagerDummy.swift in Sources */,
 				43F9A0B71DEA94B6001EB1FC /* ViewController.swift in Sources */,
 				43F9A02D1DEA3AE0001EB1FC /* AppDelegate.swift in Sources */,
+				432564B41DEEB11A001B943A /* SubmissionCell.swift in Sources */,
+				432564AF1DEEACB7001B943A /* SFXManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +458,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Verion/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.Verion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -432,6 +477,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Verion/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.Verion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -446,6 +492,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = EZ3EL33ZBM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = VerionTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.VerionTests;
@@ -461,6 +511,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = EZ3EL33ZBM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = VerionTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.VerionTests;

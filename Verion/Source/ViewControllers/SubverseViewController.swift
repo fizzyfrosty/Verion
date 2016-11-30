@@ -11,10 +11,23 @@ import UIKit
 class SubverseViewController: UITableViewController {
     
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
+    let CELL_SPACING: CGFloat = 10.0
+    
+    let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
+    
+    var sfxManager: SFXManagerType?
 
+    @IBOutlet var navigationBarLabel: UILabel!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.tableView.backgroundColor = self.BGCOLOR
+        self.navigationController?.navigationBar.barTintColor = self.BGCOLOR
+        self.navigationBarLabel.text = "/v/whatever"
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -31,7 +44,7 @@ class SubverseViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 8
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,11 +56,27 @@ class SubverseViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_CELL_REUSE_ID, for: indexPath)
 
-        // Configure the cell...
+        self.sfxManager?.applyShadow(view: cell)
 
         return cell
     }
     
+    // Spacing between cells
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // No header for first cell
+        if section == 0 {
+            return 0
+        }
+        
+        return self.CELL_SPACING
+    }
+    
+    // Background
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view: UIView = UIView()
+        view.backgroundColor = UIColor.clear
+        return view
+    }
 
     /*
     // Override to support conditional editing of the table view.
@@ -94,4 +123,20 @@ class SubverseViewController: UITableViewController {
     }
     */
 
+}
+
+import SwinjectStoryboard
+
+extension SwinjectStoryboard {
+    class func setup() {
+        let defaultContainer = SwinjectStoryboard.defaultContainer
+        
+        defaultContainer.register(SFXManagerType.self, factory: { _ in
+            SFXManager()
+        })
+        
+        defaultContainer.registerForStoryboard(SubverseViewController.self, initCompleted: { (ResolverType, C) in
+            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+        })
+    }
 }
