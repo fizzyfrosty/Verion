@@ -21,6 +21,13 @@ Convert markdown to NSAttributedString: https://github.com/laptobbe/TSMarkdownPa
 
 
 
+Problem: How to minimize/maximize comments?
+* minimize all root comments
+	* minimize first child comment
+	- minimize second child comments
+	- minimize all comments
+- Construct tree to match comment data structures
+
 
 
 Features List
