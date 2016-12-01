@@ -1,5 +1,41 @@
 Random Notes
 
+
+
+
+
+Eureka! An MVVM - model, view, view-model. 
+- A view-model is the data layer right under the view!
+- It can hold persistent data for the view, as well as owning the model
+	- The view-model is updated by the model, or by a data-supply layer inbetween
+	- The Controller then updates the view according to the view-model
+
+
+My app's architecture:
+---------------------
+Accepting Data and populating UI
+- ViewController talks to a DataSupplier, and is given a view-model
+	- the view-model determines what views to create (kinds of cells)
+	- Once created, the view accepts the view-model as input and binds to it
+- Even on load, ViewController creates view-model
+	- i.e. refresh control view-model
+	- then feeds view-model to the view (the actual refresh control)
+	- it is responsible for activating view through interfacing with the view-model
+
+User Input, communicating with the DataSupplier
+- Touching the view triggers UI and view-model changes
+- Do view-model changes automatically trigger data supplier?
+	- So on creation, DataSupplier binds view-model to model?
+	- When view-model changes, activates 
+		- 1) local data model, or
+		- 2) DataSupplier data request
+	- Does this happen automatically? Yes, it should.
+
+DataSupplier triggering UI
+- When the DataSupplier retrieves data, it sets view-model properties
+	- On set, can use bindings to trigger properties to show UI changes
+
+
 - Voat has limited upvotes depending on your account life
 - May want to contact server on startup to see if a message should be displayed
 - Think about monetization...
