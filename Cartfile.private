@@ -2,3 +2,5 @@ github "Swinject/Swinject" "2.0.0-beta.2"
 
 # Uncomment if you use SwinjectStoryboard
 github "Swinject/SwinjectStoryboard" "1.0.0-beta.2"
+
+github "ReactiveKit/Bond" ~> 5.1

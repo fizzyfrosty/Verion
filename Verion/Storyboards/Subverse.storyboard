@@ -62,8 +62,8 @@
                                             <color key="textColor" red="0.40248313395789787" green="0.40646811548223349" blue="0.40646811548223349" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vestibulum rutrum quam vitae fringilla tincidunt. Suspendisse nec tortor urna. And then he said, let there be cake!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lys-ee-fMK">
-                                            <rect key="frame" x="108" y="11" width="293" height="88.333333333333329"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Vestibulum rutrum quam vitae fringilla tincidunt. Suspendisse nec tortor urna. And then he said, let there be cake!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lys-ee-fMK">
+                                            <rect key="frame" x="108" y="9.9999999999998863" width="293" height="88.333333333333329"/>
                                             <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="18"/>
                                             <color key="textColor" red="0.44037729701652234" green="0.44473746827411165" blue="0.44473746827411165" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -90,7 +90,6 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="6dj-Ms-2wz" firstAttribute="leading" secondItem="cUZ-HS-qTi" secondAttribute="trailing" constant="5" id="H6O-CG-oY5"/>
                                                 <constraint firstItem="6dj-Ms-2wz" firstAttribute="bottom" secondItem="cUZ-HS-qTi" secondAttribute="bottom" id="pJm-5A-xLD"/>
                                             </constraints>
                                         </stackView>
@@ -263,6 +262,18 @@
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="commentLabel" destination="6dj-Ms-2wz" id="LaF-ku-T2A"/>
+                                    <outlet property="downvoteButton" destination="Aix-uF-6Wg" id="Gxb-us-d4n"/>
+                                    <outlet property="submittedByUserLabel" destination="jvb-iR-HUY" id="2r0-G8-SRN"/>
+                                    <outlet property="submittedToSubverseLabel" destination="CPa-1S-dXB" id="8wc-nJ-T0y"/>
+                                    <outlet property="thumbnailImageView" destination="DCG-A5-oBB" id="c5w-n1-Lpb"/>
+                                    <outlet property="thumbnailLabel" destination="uKj-ML-4YP" id="aYm-ev-0Cz"/>
+                                    <outlet property="titleLabel" destination="lys-ee-fMK" id="mFc-g0-eVS"/>
+                                    <outlet property="upvoteButton" destination="pYi-Ci-SdD" id="RgV-pu-pEZ"/>
+                                    <outlet property="voteCountLabel" destination="dOY-UI-5m0" id="cnn-8P-BAm"/>
+                                    <outlet property="voteSeparatedCountLabel" destination="Ven-pj-A0k" id="xFB-ab-yeL"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

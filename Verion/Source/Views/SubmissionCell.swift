@@ -7,9 +7,27 @@
 //
 
 import UIKit
+import Bond
 
 class SubmissionCell: UITableViewCell {
+    
+    
+    @IBOutlet var thumbnailImageView: UIImageView!
+    @IBOutlet var thumbnailLabel: UILabel!
+    @IBOutlet var titleLabel: UILabel!
+    
+    @IBOutlet var voteCountLabel: UILabel!
+    @IBOutlet var voteSeparatedCountLabel: UILabel!
+    
+    @IBOutlet var upvoteButton: UIButton!
+    @IBOutlet var downvoteButton: UIButton!
 
+    @IBOutlet var commentLabel: UILabel!
+    @IBOutlet var submittedByUserLabel: UILabel!
+    @IBOutlet var submittedToSubverseLabel: UILabel!
+    
+    
+    
     let BORDER_WIDTH: CGFloat = 1
     let BORDER_COLOR: CGColor = UIColor(colorLiteralRed: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).cgColor
     
@@ -25,6 +43,10 @@ class SubmissionCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func bind(toViewModel viewModel: SubmissionCellViewModel) {
+        
     }
 
 }

@@ -33,7 +33,7 @@ User Input, communicating with the DataSupplier
 
 DataSupplier triggering UI
 - When the DataSupplier retrieves data, it sets view-model properties
-	- On set, can use bindings to trigger properties to show UI changes
+	- On set, can use bindings to trigger properties to show UI changes	
 
 
 - Voat has limited upvotes depending on your account life
