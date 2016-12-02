@@ -46,7 +46,34 @@ class SubmissionCell: UITableViewCell {
     }
     
     func bind(toViewModel viewModel: SubmissionCellViewModel) {
+        // Bind to UI elements
+        // Title
+        self.titleLabel.text = viewModel.titleString
         
+        // Thumbnail Image
+        
+        // Thumbnail Label
+        self.thumbnailLabel.text = viewModel.thumbnailString
+        
+        // Vote Count Label
+        self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
+        _ = viewModel.voteCountTotal.observeNext() { count in
+            self.voteCountLabel.text = String(count)
+        }
+        
+        // Separated Vote Count Label
+        self.voteSeparatedCountLabel.text = viewModel.voteSeparatedCountString.value
+        _ = viewModel.voteSeparatedCountString.observeNext() { separatedCountString in
+            self.voteSeparatedCountLabel.text = separatedCountString
+        }
+        
+        // Comments Label
+        self.commentLabel.text = String(viewModel.commentCount)
+        
+        
+        // Bind to events
     }
+    
+    
 
 }

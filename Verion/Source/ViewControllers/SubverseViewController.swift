@@ -53,10 +53,21 @@ class SubverseViewController: UITableViewController {
     }
 
     
+    // Create the Submission Cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_CELL_REUSE_ID, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_CELL_REUSE_ID, for: indexPath) as! SubmissionCell
 
+        // TODO: replace with dataProvider
+        var viewModelInitData = SubmissionCellViewModelInitData()
+        viewModelInitData.voteCountTotal = 3923
+        viewModelInitData.upvoteCount = 2343
+        viewModelInitData.downvoteCount = 1
+        viewModelInitData.commentCount = 2342
+        let viewModel = SubmissionCellViewModel(subCellVmInitData: viewModelInitData)
+        cell.bind(toViewModel: viewModel)
+        
         self.sfxManager?.applyShadow(view: cell)
+        
 
         return cell
     }
