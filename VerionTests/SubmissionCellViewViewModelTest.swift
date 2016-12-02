@@ -63,7 +63,12 @@ class SubmissionCellViewViewModelTest: QuickSpec {
             }
             
             // TODO: tests for the other UI elements...
+            
         }
+        
+        // TODO: Test that a submission cell is resized properly for long titles
+        
+        
         
         // TODO:
         // Test event bindings for upvote and downvote

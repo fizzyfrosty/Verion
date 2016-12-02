@@ -1,6 +1,26 @@
 Random Notes
 
 
+DataProvider implementation and usage
+
+
+- When controller is initializing the cells, the dataprovider provides the viewModels in order
+	- Controller supplies the viewModel instance
+	- dataProvider binds viewModel to dataModel
+	- Then the cell gets initialized and binds to the viewModel
+
+
+- Controller is initialized with a dataProvider via injection
+- When does dataModel make its request?
+	- on Controller loading
+- Controller loads with loading message cell
+	- dataProvider makes request
+	- returns array of dataModels, or error
+	- Controller supplies viewModels, dataProvider binds to dataModels
+	- Reloads table data
+
+- Table reload
+	- Gets viewModels
 
 
 
@@ -41,6 +61,9 @@ DataSupplier triggering UI
 - Think about monetization...
 
 
+
+
+
 Design.io
 https://designcode.io/swiftapp
 
@@ -68,6 +91,16 @@ Problem: How to minimize/maximize comments?
 Making Status Bar white:
 - set the Status Bar Style: Light in the main settings
 - in Info.plist, set View controller-based status bar appearance: No
+
+
+
+
+List of things to complete for Subverse View Controller
+
+- navigation bar label
+
+
+
 
 
 Features List

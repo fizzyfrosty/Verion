@@ -16,7 +16,8 @@ class SubverseViewController: UITableViewController {
     let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
     
     var sfxManager: SFXManagerType?
-
+    var dataProvider: DataProviderType!
+    
     @IBOutlet var navigationBarLabel: UILabel!
     
     
@@ -27,6 +28,10 @@ class SubverseViewController: UITableViewController {
         self.tableView.backgroundColor = self.BGCOLOR
         self.navigationController?.navigationBar.barTintColor = self.BGCOLOR
         self.navigationBarLabel.text = "/v/whatever"
+        
+        
+        
+        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
