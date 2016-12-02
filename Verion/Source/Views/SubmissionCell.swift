@@ -26,7 +26,7 @@ class SubmissionCell: UITableViewCell {
     @IBOutlet var submittedByUserLabel: UILabel!
     @IBOutlet var submittedToSubverseLabel: UILabel!
     
-    
+    var viewModel: SubmissionCellViewModel?
     
     let BORDER_WIDTH: CGFloat = 1
     let BORDER_COLOR: CGColor = UIColor(colorLiteralRed: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).cgColor
@@ -45,7 +45,11 @@ class SubmissionCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    // TODO: Unfinished binding
     func bind(toViewModel viewModel: SubmissionCellViewModel) {
+        self.viewModel = viewModel
+        
+        
         // Bind to UI elements
         // Title
         self.titleLabel.text = viewModel.titleString

@@ -23,8 +23,8 @@ struct SubmissionCellViewModelInitData {
 class SubmissionCellViewModel{
     
     // Variables for binding to UI
-    let thumbnailString: String?
-    let titleString: String?
+    var thumbnailString: String = ""
+    var titleString: String = ""
 
     var voteCountTotal = Observable<Int>(0)
     var voteSeparatedCountString = Observable<String>("")
@@ -34,18 +34,30 @@ class SubmissionCellViewModel{
     
     var commentCount = 0
     
-    var submittedByString: String?
-    var submittedToSubverseString: String?
+    var submittedByString: String = ""
+    var submittedToSubverseString: String = ""
     
     // Variables - additional
     var upvoteCount = 0
     var downvoteCount = 0
-    let username: String?
-    let subverseName: String?
+    var username: String = ""
+    var subverseName: String = ""
     //let date: NSDate?
     
     
+    // Lazy initialization
+    init() {
+        let subCellVmInitData = SubmissionCellViewModelInitData()
+        self.loadInitData(subCellVmInitData: subCellVmInitData)
+    }
+    
+    // Custom initialization
     init(subCellVmInitData: SubmissionCellViewModelInitData) {
+        self.loadInitData(subCellVmInitData: subCellVmInitData)
+    }
+    
+    
+    private func loadInitData(subCellVmInitData: SubmissionCellViewModelInitData) {
         self.titleString = subCellVmInitData.titleString
         self.thumbnailString = subCellVmInitData.thumnailString
         self.commentCount = subCellVmInitData.commentCount

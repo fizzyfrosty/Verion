@@ -60,8 +60,8 @@ class SubverseViewController: UITableViewController {
         // TODO: replace with dataProvider
         var viewModelInitData = SubmissionCellViewModelInitData()
         viewModelInitData.voteCountTotal = 3923
-        viewModelInitData.upvoteCount = 2343
-        viewModelInitData.downvoteCount = 1
+        viewModelInitData.upvoteCount = 1343
+        viewModelInitData.downvoteCount = 1000
         viewModelInitData.commentCount = 2342
         let viewModel = SubmissionCellViewModel(subCellVmInitData: viewModelInitData)
         cell.bind(toViewModel: viewModel)
