@@ -10,7 +10,7 @@ import UIKit
 
 class OfflineDataProvider: DataProviderType {
     
-    let NUM_OF_TEST_DATA_CELLS = 3
+    let NUM_OF_TEST_DATA_CELLS = 6
     
     func requestSubverseSubmissions(completion: @escaping ([SubmissionDataModelType], Error?)->Void) -> Void {
         
@@ -31,11 +31,11 @@ class OfflineDataProvider: DataProviderType {
         // Initialize the viewModel here for now
         // TODO: Replace and Bind viewModel to data model, and to self
         var subCellVmInitData = SubmissionCellViewModelInitData()
-        subCellVmInitData.voteCountTotal = 3923
+        subCellVmInitData.voteCountTotal = 1293
         subCellVmInitData.upvoteCount = 1343
-        subCellVmInitData.downvoteCount = 1000
+        subCellVmInitData.downvoteCount = 50
         subCellVmInitData.commentCount = 2342
-        subCellVmInitData.titleString = "This is a really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really, really long Title."
+        subCellVmInitData.titleString = "A post! Some random website or Title here!"
         
         subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
     }

@@ -12,6 +12,7 @@ class SubverseViewController: UITableViewController {
     
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
     let CELL_SPACING: CGFloat = 10.0
+    let MINIMUM_CELL_HEIGHT: CGFloat = 140.0
     
     let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
     
@@ -34,9 +35,6 @@ class SubverseViewController: UITableViewController {
         
         
         self.loadInitialTableCells(dataProvider: self.dataProvider)
-        
-        //self.tableView.estimatedRowHeight = 140.0;
-        //self.tableView.rowHeight = UITableViewAutomaticDimension
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -80,7 +78,6 @@ class SubverseViewController: UITableViewController {
         return 1
     }
 
-    
     // Create the Submission Cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -111,28 +108,62 @@ class SubverseViewController: UITableViewController {
         return view
     }
 
+
     
-    /*
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        var height: CGFloat = 0
+        var cellHeight: CGFloat = 0
         
-        // Get the corresponding cell
         if self.subCellViewModels.count > 0 {
-            if let cell = tableView.cellForRow(at: indexPath) as! SubmissionCell? {
-                // Height = titleLabel.topMargin + titleLabel + titleLabel.bottomMargin + submittedby.y
-                let titleLabel = cell.titleLabel!
-                let titleSize = titleLabel.frame.size
-                let titleTopMargin: CGFloat = 5
-                let titleBottomMargin: CGFloat = titleTopMargin
-                
-                height = titleSize.height + titleTopMargin + titleBottomMargin
-            }
+            // Get corresponding viewModel
+            let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
+            // Get sample cell
+            //let cell = tableView.dequeueReusableCell(withIdentifier: SUBMISSION_CELL_REUSE_ID) as! SubmissionCell
+            
+            // Width of label is screensize.width minus the imageSize and its margins
+            let imageViewHorizontalMargins: CGFloat = 25
+            let imageViewWidth: CGFloat = 75
+            let titleWidth = UIScreen.main.bounds.size.width - imageViewWidth - imageViewHorizontalMargins
+            let titleSize = self.sizeForText(text: viewModel.titleString, font: UIFont.init(name: "AmericanTypewriter-Bold", size: 18)!, maxSize: CGSize(width: titleWidth, height: 999))
+            
+            let titleHeight = titleSize.height
+            let titleTopMargin: CGFloat = 10
+            let titleBottomMargin: CGFloat = 10
+            let submittedByTextHeight: CGFloat = 50
+            
+            cellHeight = titleHeight + titleTopMargin + titleBottomMargin + submittedByTextHeight
+            
+            cellHeight = max(cellHeight, self.MINIMUM_CELL_HEIGHT)
+            
         }
         
-        
-        return height
+        return cellHeight
     }
- */
+ 
+    // For detecting rotations beginning and finishing.
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        coordinator.animate(alongsideTransition: nil, completion: { _ in
+        })
+        
+    }
+ 
+    
+    
+    func sizeForText(text: String, font: UIFont, maxSize: CGSize) -> CGSize {
+        let attrString = NSAttributedString.init(string: text, attributes: [NSFontAttributeName:font])
+        let rect = attrString.boundingRect(with: maxSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
+        let size = CGSize(width: rect.width, height: rect.height)
+        
+        return size
+    }
+        
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        // Forces redraw of shadows right before transition
+        self.tableView.reloadData()
+    }
     
     /*
     // Override to support conditional editing of the table view.
