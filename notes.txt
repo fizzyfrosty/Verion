@@ -1,27 +1,36 @@
 Random Notes
 
 
+
+Correctly Resizing the Subverse's Submission Cell
+- The height of the cell should be 
+
+
+
+
+
 DataProvider implementation and usage
 
 
-- When controller is initializing the cells, the dataprovider provides the viewModels in order
-	- Controller supplies the viewModel instance
-	- dataProvider binds viewModel to dataModel
-	- Then the cell gets initialized and binds to the viewModel
+* When controller is initializing the cells, the dataprovider provides the viewModels in order
+	* Controller supplies the viewModel instance
+	* dataProvider binds viewModel to dataModel
+	* Then the cell gets initialized and binds to the viewModel
 
 
-- Controller is initialized with a dataProvider via injection
-- When does dataModel make its request?
-	- on Controller loading
-- Controller loads with loading message cell
-	- dataProvider makes request
-	- returns array of dataModels, or error
-	- Controller supplies viewModels, dataProvider binds to dataModels
-	- Reloads table data
+* Controller is initialized with a dataProvider via injection
+* When does dataModel make its request?
+	* on Controller loading
+* Controller loads with loading message cell
+	* dataProvider makes request
+	* returns array of dataModels, or error
+	* Controller supplies viewModels, dataProvider binds to dataModels
+	* Reloads table data
 
-- Table reload
-	- Gets viewModels
-
+* Table reload
+	* Gets viewModels
+	* creates cells
+	* etc.
 
 
 Eureka! An MVVM - model, view, view-model. 

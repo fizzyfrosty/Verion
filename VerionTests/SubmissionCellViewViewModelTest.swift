@@ -49,8 +49,9 @@ class SubmissionCellViewViewModelTest: QuickSpec {
                 expect(submissionCell.voteCountLabel.text).to(equal(String(viewModel.voteCountTotal.value)))
             }
             
-            it("has the separated-vote count loaded") {
+            it("has the separated-vote count, and the string is not empty") {
                 expect(submissionCell.voteSeparatedCountLabel.text).to(equal(viewModel.voteSeparatedCountString.value))
+                expect(viewModel.voteSeparatedCountString.value).toNot(equal(""))
             }
             
             it("has the comment count loaded") {
@@ -92,8 +93,13 @@ extension SwinjectStoryboard {
             SFXManager()
         })
         
+        defaultContainer.register(DataProviderType.self){ _ in
+            OfflineDataProvider()
+        }
+        
         defaultContainer.registerForStoryboard(SubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
         })
     }
 }

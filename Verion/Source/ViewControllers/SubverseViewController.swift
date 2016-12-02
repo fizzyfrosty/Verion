@@ -18,6 +18,9 @@ class SubverseViewController: UITableViewController {
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
     
+    var subCellViewModels: [SubmissionCellViewModel] = []
+    
+    
     @IBOutlet var navigationBarLabel: UILabel!
     
     
@@ -30,14 +33,34 @@ class SubverseViewController: UITableViewController {
         self.navigationBarLabel.text = "/v/whatever"
         
         
+        self.loadInitialTableCells(dataProvider: self.dataProvider)
         
-        
+        //self.tableView.estimatedRowHeight = 140.0;
+        //self.tableView.rowHeight = UITableViewAutomaticDimension
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func loadInitialTableCells(dataProvider: DataProviderType) {
+        
+        // Make initial request with DataProvider
+        dataProvider.requestSubverseSubmissions() { submissionDataModels, error in
+            // For each data model, initialize a subCell viewModel
+            for i in 0..<submissionDataModels.count {
+                let subCellViewModel = SubmissionCellViewModel()
+                self.subCellViewModels.append(subCellViewModel)
+                
+                // Bind dataModel-viewModel-dataProvider
+                self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: submissionDataModels[i])
+            }
+            
+            // Reload table
+            self.tableView.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,7 +72,7 @@ class SubverseViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 8
+        return self.subCellViewModels.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -60,20 +83,14 @@ class SubverseViewController: UITableViewController {
     
     // Create the Submission Cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_CELL_REUSE_ID, for: indexPath) as! SubmissionCell
-
-        // TODO: replace with dataProvider
-        var viewModelInitData = SubmissionCellViewModelInitData()
-        viewModelInitData.voteCountTotal = 3923
-        viewModelInitData.upvoteCount = 1343
-        viewModelInitData.downvoteCount = 1000
-        viewModelInitData.commentCount = 2342
-        let viewModel = SubmissionCellViewModel(subCellVmInitData: viewModelInitData)
-        cell.bind(toViewModel: viewModel)
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_CELL_REUSE_ID, for: indexPath) as! SubmissionCell
+        
+        // Create cell if viewModel exists
+        let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
+        cell.bind(toViewModel: viewModel)
         self.sfxManager?.applyShadow(view: cell)
         
-
         return cell
     }
     
@@ -94,6 +111,29 @@ class SubverseViewController: UITableViewController {
         return view
     }
 
+    
+    /*
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        var height: CGFloat = 0
+        
+        // Get the corresponding cell
+        if self.subCellViewModels.count > 0 {
+            if let cell = tableView.cellForRow(at: indexPath) as! SubmissionCell? {
+                // Height = titleLabel.topMargin + titleLabel + titleLabel.bottomMargin + submittedby.y
+                let titleLabel = cell.titleLabel!
+                let titleSize = titleLabel.frame.size
+                let titleTopMargin: CGFloat = 5
+                let titleBottomMargin: CGFloat = titleTopMargin
+                
+                height = titleSize.height + titleTopMargin + titleBottomMargin
+            }
+        }
+        
+        
+        return height
+    }
+ */
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -122,14 +162,6 @@ class SubverseViewController: UITableViewController {
     */
 
     /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -141,6 +173,9 @@ class SubverseViewController: UITableViewController {
 
 }
 
+
+
+// Mark: - Swinject
 import SwinjectStoryboard
 
 extension SwinjectStoryboard {
@@ -151,8 +186,13 @@ extension SwinjectStoryboard {
             SFXManager()
         })
         
+        defaultContainer.register(DataProviderType.self){ _ in
+            OfflineDataProvider()
+        }
+        
         defaultContainer.registerForStoryboard(SubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
         })
     }
 }

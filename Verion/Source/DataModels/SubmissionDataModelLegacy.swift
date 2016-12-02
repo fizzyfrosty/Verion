@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SubmissionDataModelLegacy: NSDictionary {
+class SubmissionDataModelLegacy: SubmissionDataModelType {
     
     var commentCount = 0
     var dateString = ""
@@ -30,4 +30,5 @@ class SubmissionDataModelLegacy: NSDictionary {
     
     var title = ""
 
+    
 }
