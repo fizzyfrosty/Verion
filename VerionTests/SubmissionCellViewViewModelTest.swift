@@ -94,7 +94,7 @@ extension SwinjectStoryboard {
         })
         
         defaultContainer.register(DataProviderType.self){ _ in
-            OfflineDataProvider()
+            OfflineDataProvider(apiVersion: APIVersion.v1)
         }
         
         defaultContainer.registerForStoryboard(SubverseViewController.self, initCompleted: { (ResolverType, C) in

@@ -11,19 +11,18 @@ import UIKit
 class SubverseViewController: UITableViewController {
     
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
-    let CELL_SPACING: CGFloat = 10.0
-    let MINIMUM_CELL_HEIGHT: CGFloat = 140.0
+    private let CELL_SPACING: CGFloat = 10.0
+    private let MINIMUM_CELL_HEIGHT: CGFloat = 140.0
     
-    let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
-    
+    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
+    @IBOutlet var navigationBarLabel: UILabel!
+
+    // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
     
-    var subCellViewModels: [SubmissionCellViewModel] = []
-    
-    
-    @IBOutlet var navigationBarLabel: UILabel!
-    
+    private var subCellViewModels: [SubmissionCellViewModel] = []
+    private var submissionDataModels: [SubmissionDataModelProtocol] = []
     
     
     override func viewDidLoad() {
@@ -116,8 +115,6 @@ class SubverseViewController: UITableViewController {
         if self.subCellViewModels.count > 0 {
             // Get corresponding viewModel
             let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
-            // Get sample cell
-            //let cell = tableView.dequeueReusableCell(withIdentifier: SUBMISSION_CELL_REUSE_ID) as! SubmissionCell
             
             // Width of label is screensize.width minus the imageSize and its margins
             let imageViewHorizontalMargins: CGFloat = 25
@@ -142,7 +139,17 @@ class SubverseViewController: UITableViewController {
     // For detecting rotations beginning and finishing.
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
+            
+        } else {
+            print("Portrait")
+            
+        }
+        
         coordinator.animate(alongsideTransition: nil, completion: { _ in
+            
+            
         })
         
     }
@@ -218,7 +225,7 @@ extension SwinjectStoryboard {
         })
         
         defaultContainer.register(DataProviderType.self){ _ in
-            OfflineDataProvider()
+            OfflineDataProvider(apiVersion: .legacy)
         }
         
         defaultContainer.registerForStoryboard(SubverseViewController.self, initCompleted: { (ResolverType, C) in

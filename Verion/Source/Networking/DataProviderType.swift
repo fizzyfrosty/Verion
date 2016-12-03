@@ -20,7 +20,6 @@
 import UIKit
 
 protocol DataProviderType {
-    
-    func requestSubverseSubmissions(completion: @escaping ([SubmissionDataModelType], Error?)->Void) -> Void
-    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelType) -> Void
+    func requestSubverseSubmissions(completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void
+    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void
 }

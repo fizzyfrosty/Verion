@@ -22,17 +22,26 @@ class SubCellViewModelDataModelTest: QuickSpec {
         
         
         describe("an OfflineDataProvider") {
-            let offlineDataProvider = OfflineDataProvider()
+            let offlineDataProvider = OfflineDataProvider(apiVersion: APIVersion.legacy)
             
-            context("given a SubmissionCellViewModel and a SubmissionDataModel-Legacy") {
+            context("binding a SubmissionCellViewModel and a SubmissionDataModel-Legacy") {
                 let viewModel = SubmissionCellViewModel()
                 let dataModel = SubmissionDataModelLegacy()
                 
-                xit("correctly binds all the properties") {
+                beforeEach {
                     offlineDataProvider.bind(subCellViewModel: viewModel, dataModel: dataModel)
-                    
+                }
+                
+                xit("correctly binds the upvote") {
                     expect(viewModel.upvoteCount.value).to(equal(dataModel.upvoteCount))
+                }
+                
+                xit("correctly binds the downvote") {
                     expect(viewModel.downvoteCount.value).to(equal(dataModel.downvoteCount))
+                }
+                
+                xit("correctly binds the total vote") {
+                    expect(viewModel.voteCountTotal.value).to(equal(dataModel.voteCount))
                 }
             }
         }

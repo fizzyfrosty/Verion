@@ -10,10 +10,10 @@ import UIKit
 
 class SFXManager: SFXManagerType {
     
-    let SHADOW_OFFSET_X = -1
-    let SHADOW_OFFSET_Y = 2
-    let SHADOW_OPACITY: Float = 0.5
-    let SHADOW_RADIUS: CGFloat = 1.5
+    private let SHADOW_OFFSET_X = -1
+    private let SHADOW_OFFSET_Y = 2
+    private let SHADOW_OPACITY: Float = 0.5
+    private let SHADOW_RADIUS: CGFloat = 1.5
     
     func applyShadow(view: UIView) {
         // Drop shadow

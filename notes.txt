@@ -1,13 +1,14 @@
 Random Notes
 
 
+Load dataModel with sample JSON data
 
-Correctly Resizing the Subverse's Submission Cell
-- The height of the cell should be 
-
-
+- Need to create a 
 
 
+
+
+* Correctly Resizing the Subverse's Submission Cell
 
 DataProvider implementation and usage
 

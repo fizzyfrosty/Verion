@@ -1,5 +1,5 @@
 //
-//  SubmissionDataModelType.swift
+//  SubmissionDataModelProtocol.swift
 //  Verion
 //
 //  Created by Simon Chen on 12/2/16.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-class SubmissionDataModelType {
-    
+protocol SubmissionDataModelProtocol {
+    var apiVersion: APIVersion {get}
 }

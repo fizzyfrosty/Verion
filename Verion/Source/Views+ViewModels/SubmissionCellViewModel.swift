@@ -11,7 +11,8 @@ import Bond
 
 struct SubmissionCellViewModelInitData {
     var titleString: String = "This is a Sample Title for a Submission"
-    var thumnailString: String = "(sample.com)"
+    var thumbnailString: String = "(sample.com)"
+    var thumbnailLink: String = "(http://www.sample.com/abc.jpg)"
     var commentCount: Int = 0
     var voteCountTotal: Int = 0
     var upvoteCount: Int = 0
@@ -23,25 +24,26 @@ struct SubmissionCellViewModelInitData {
 class SubmissionCellViewModel{
     
     // Variables for binding to UI
-    var thumbnailString: String = ""
-    var titleString: String = ""
+    private(set) var thumbnailString: String = ""
+    var thumbnailLink = Observable<String>("")
+    private(set) var titleString: String = ""
 
     var voteCountTotal = Observable<Int>(0)
-    var voteSeparatedCountString = Observable<String>("")
+    private(set) var voteSeparatedCountString = Observable<String>("")
     
-    var didUpvote = Observable<Bool>(false)
-    var didDownvote = Observable<Bool>(false)
+    private(set) var didUpvote = Observable<Bool>(false)
+    private(set) var didDownvote = Observable<Bool>(false)
     
     var commentCount = 0
     
-    var submittedByString: String = ""
-    var submittedToSubverseString: String = ""
+    private(set) var submittedByString: String = ""
+    private(set) var submittedToSubverseString: String = ""
     
     // Variables - additional
     var upvoteCount = Observable<Int>(0)
     var downvoteCount = Observable<Int>(0)
-    var username: String = ""
-    var subverseName: String = ""
+    private(set) var username: String = ""
+    private(set) var subverseName: String = ""
     //let date: NSDate?
     
     
@@ -60,7 +62,8 @@ class SubmissionCellViewModel{
     
     func loadInitData(subCellVmInitData: SubmissionCellViewModelInitData) {
         self.titleString = subCellVmInitData.titleString
-        self.thumbnailString = subCellVmInitData.thumnailString
+        self.thumbnailString = subCellVmInitData.thumbnailString
+        self.thumbnailLink.value = subCellVmInitData.thumbnailLink
         self.commentCount = subCellVmInitData.commentCount
         self.voteCountTotal.value = subCellVmInitData.voteCountTotal
         self.upvoteCount.value = subCellVmInitData.upvoteCount

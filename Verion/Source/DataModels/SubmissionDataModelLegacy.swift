@@ -8,7 +8,9 @@
 
 import UIKit
 
-class SubmissionDataModelLegacy: SubmissionDataModelType {
+class SubmissionDataModelLegacy: SubmissionDataModelProtocol {
+    
+    var apiVersion: APIVersion = APIVersion.legacy
     
     var commentCount = 0
     var dateString = ""
@@ -29,6 +31,6 @@ class SubmissionDataModelLegacy: SubmissionDataModelType {
     var thumbnailLink = ""
     
     var title = ""
-
+    var type = 0
     
 }
