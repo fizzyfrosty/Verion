@@ -13,8 +13,8 @@
 		432564B61DEEB798001B943A /* TabController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564B51DEEB798001B943A /* TabController.storyboard */; };
 		432564BA1DEED077001B943A /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
 		432564BB1DEED077001B943A /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */; };
-		4375BFBB1DF2FEBD00576CC6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375BFBA1DF2FEBD00576CC6 /* SwiftyJSON.framework */; };
 		4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */; };
+		4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -56,8 +56,8 @@
 		4300A0C01DF0EF0A00497FE4 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/iOS/ReactiveKit.framework; sourceTree = "<group>"; };
 		432564381DECAE8F001B943A /* Subverse.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Subverse.storyboard; sourceTree = "<group>"; };
 		432564B51DEEB798001B943A /* TabController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabController.storyboard; sourceTree = "<group>"; };
-		4375BFBA1DF2FEBD00576CC6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
+		4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4375BFBB1DF2FEBD00576CC6 /* SwiftyJSON.framework in Frameworks */,
+				4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */,
 				43F9A04F1DEA3C26001EB1FC /* Swinject.framework in Frameworks */,
 				43F9A0501DEA3C26001EB1FC /* SwinjectStoryboard.framework in Frameworks */,
 				4300A0C11DF0EF0A00497FE4 /* Bond.framework in Frameworks */,
@@ -230,7 +230,7 @@
 		43F9A04C1DEA3C26001EB1FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4375BFBA1DF2FEBD00576CC6 /* SwiftyJSON.framework */,
+				4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */,
 				43F674241DF114CD001F83BE /* Nimble.framework */,
 				43F674251DF114CD001F83BE /* Quick.framework */,
 				4300A0BF1DF0EF0A00497FE4 /* Bond.framework */,
