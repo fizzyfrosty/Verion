@@ -74,11 +74,11 @@ class SubmissionCellViewViewModelBindingsTest: QuickSpec {
             }
             
             it("has the submitted-by-user label loaded") {
-                expect(submissionCell.submittedByUserLabel.text).to(equal(viewModel.submittedByString))
+                expect(submissionCell.submittedByUserLabel.attributedText).to(equal(viewModel.submittedByString))
             }
             
             it("has the submitted-to-subverse label loaded") {
-                expect(submissionCell.submittedToSubverseLabel.text).to(equal(viewModel.submittedToSubverseString))
+                expect(submissionCell.submittedToSubverseLabel.attributedText).to(equal(viewModel.submittedToSubverseString))
             }
             
             // ------------- Testing Bindings ---------------

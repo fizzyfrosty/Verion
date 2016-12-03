@@ -12,7 +12,7 @@ class SubverseViewController: UITableViewController {
     
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
     private let CELL_SPACING: CGFloat = 10.0
-    private let MINIMUM_CELL_HEIGHT: CGFloat = 140.0
+    private let MINIMUM_CELL_HEIGHT: CGFloat = 130.0
     
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
     @IBOutlet var navigationBarLabel: UILabel!

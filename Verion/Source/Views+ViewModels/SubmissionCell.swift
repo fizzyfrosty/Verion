@@ -75,10 +75,10 @@ class SubmissionCell: UITableViewCell {
         self.commentLabel.text = String(viewModel.commentCount)
         
         // Submitted by User label
-        self.submittedByUserLabel.text = viewModel.submittedByString
+        self.submittedByUserLabel.attributedText = viewModel.submittedByString
         
         // Submitted to Subverse string
-        self.submittedToSubverseLabel.text = viewModel.submittedToSubverseString
+        self.submittedToSubverseLabel.attributedText = viewModel.submittedToSubverseString
         
         // Bind to User-input events
         // Upvote

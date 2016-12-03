@@ -23,6 +23,9 @@ struct SubmissionCellViewModelInitData {
 
 class SubmissionCellViewModel{
     
+    private let USERNAME_LABEL_FONT_SIZE: CGFloat = 12
+    
+    
     // Variables for binding to UI
     private(set) var thumbnailString: String = ""
     var thumbnailLink = Observable<String>("")
@@ -36,8 +39,8 @@ class SubmissionCellViewModel{
     
     var commentCount = 0
     
-    private(set) var submittedByString: String = ""
-    private(set) var submittedToSubverseString: String = ""
+    private(set) var submittedByString = NSMutableAttributedString()
+    private(set) var submittedToSubverseString = NSMutableAttributedString()
     
     // Variables - additional
     var upvoteCount = Observable<Int>(0)
@@ -93,14 +96,18 @@ class SubmissionCellViewModel{
         }
     }
     
-    // Submitted by username string
-    private func createSubmittedByUsernameString(username: String) -> String {
-        return "by \(username)"
+    // "by username" string
+    private func createSubmittedByUsernameString(username: String) -> NSMutableAttributedString {
+        let attrString = NSMutableAttributedString()
+        _ = attrString.normal(text: "by ").bold(text: username, fontSize: self.USERNAME_LABEL_FONT_SIZE)
+        return attrString
     }
     
-    // Submitted to subverse string
-    private func createSubmittedToSubverseString(subverseName: String) -> String {
-        return "to /v/\(subverseName)"
+    // "to subverse" string
+    private func createSubmittedToSubverseString(subverseName: String) -> NSMutableAttributedString {
+        let attrString = NSMutableAttributedString()
+        _ = attrString.normal(text: "to /v/\(subverseName)")
+        return attrString
     }
     
     // Vote Count Separated String
