@@ -16,7 +16,7 @@ class SubverseViewController: UITableViewController {
     
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
     @IBOutlet var navigationBarLabel: UILabel!
-
+    
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!

@@ -51,7 +51,6 @@ class OfflineDataProvider: DataProviderType {
         // Bind upvote event to request
         // Bind downvote event to request
         
-        
         // Initialize the view model's values with data models
         let subCellVmInitData = self.getSubCellVmInitData(fromDataModel: dataModel)
         subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
@@ -119,7 +118,21 @@ class OfflineDataProvider: DataProviderType {
         subCellVmInitData.titleString = dataModel.title
         
         // TODO: Thumbnail string takes more work
-        subCellVmInitData.thumbnailString = "(coming.soon)"
+        switch dataModel.type {
+        case SubmissionType.link.rawValue:
+            // get linkShortString "(abc.com)"
+            subCellVmInitData.linkShortString = self.getLinkShortString(fromLink: dataModel.messageContent)
+            
+        case SubmissionType.text.rawValue:
+            // get subverse "(/v/subverse)"
+            subCellVmInitData.linkShortString = self.getSubverseShortString(subverse: dataModel.subverseName)
+            
+        default:
+            // If no shortstring provided, leave blank
+            subCellVmInitData.linkShortString = ""
+        }
+        
+        
         
         subCellVmInitData.thumbnailLink = dataModel.thumbnailLink
         subCellVmInitData.username = dataModel.username
@@ -127,4 +140,32 @@ class OfflineDataProvider: DataProviderType {
         
         return subCellVmInitData
     }
+    
+    private func getLinkShortString(fromLink httpString: String) -> String {
+        var filteredString = ""
+        
+        let http = "http:"
+        let https = "https:"
+        let slashslash = "//"
+        let www = "www."
+        
+        filteredString = httpString.replacingOccurrences(of: http, with: "")
+        filteredString = filteredString.replacingOccurrences(of: https, with: "")
+        filteredString = filteredString.replacingOccurrences(of: slashslash, with: "")
+        filteredString = filteredString.replacingOccurrences(of: www, with: "")
+        
+        let separatedStrings = filteredString.components(separatedBy: "/")
+        
+        var linkShortString = separatedStrings[0]
+        linkShortString = "(\(linkShortString))"
+        
+        return linkShortString
+    }
+    
+    private func getSubverseShortString(subverse: String) -> String {
+        let subverseString = "/v/\(subverse)"
+        
+        return subverseString
+    }
+    
 }

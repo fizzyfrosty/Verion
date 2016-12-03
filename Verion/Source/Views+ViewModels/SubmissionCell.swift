@@ -57,7 +57,7 @@ class SubmissionCell: UITableViewCell {
         // Thumbnail Image
         
         // Thumbnail Label
-        self.thumbnailLabel.text = viewModel.thumbnailString
+        self.thumbnailLabel.text = viewModel.linkShortString
         
         // Vote Count Label
         self.voteCountLabel.text = String(viewModel.voteCountTotal.value)

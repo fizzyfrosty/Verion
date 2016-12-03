@@ -11,7 +11,7 @@ import Bond
 
 struct SubmissionCellViewModelInitData {
     var titleString: String = "This is a Sample Title for a Submission"
-    var thumbnailString: String = "(sample.com)"
+    var linkShortString: String = "(sample.com)"
     var thumbnailLink: String = "(http://www.sample.com/abc.jpg)"
     var commentCount: Int = 123
     var voteCountTotal: Int = 4331
@@ -27,7 +27,7 @@ class SubmissionCellViewModel{
     
     
     // Variables for binding to UI
-    private(set) var thumbnailString: String = ""
+    private(set) var linkShortString: String = ""
     var thumbnailLink = Observable<String>("")
     private(set) var titleString: String = ""
 
@@ -65,7 +65,7 @@ class SubmissionCellViewModel{
     
     func loadInitData(subCellVmInitData: SubmissionCellViewModelInitData) {
         self.titleString = subCellVmInitData.titleString
-        self.thumbnailString = subCellVmInitData.thumbnailString
+        self.linkShortString = subCellVmInitData.linkShortString
         self.thumbnailLink.value = subCellVmInitData.thumbnailLink
         self.commentCount = subCellVmInitData.commentCount
         self.voteCountTotal.value = subCellVmInitData.voteCountTotal

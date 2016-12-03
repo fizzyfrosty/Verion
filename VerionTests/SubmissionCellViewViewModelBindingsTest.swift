@@ -52,7 +52,7 @@ class SubmissionCellViewViewModelBindingsTest: QuickSpec {
             }
             
             it("has the thumbnail string loaded") {
-                expect(submissionCell.thumbnailLabel.text).to(equal(viewModel.thumbnailString))
+                expect(submissionCell.thumbnailLabel.text).to(equal(viewModel.linkShortString))
             }
             
             it("has the vote count loaded") {
