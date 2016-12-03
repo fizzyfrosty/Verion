@@ -15,7 +15,7 @@
 		432564BB1DEED077001B943A /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */; };
 		4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */; };
 		4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */; };
-		43F674231DF11217001F83BE /* SubmissionCellViewViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelTest.swift */; };
+		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
 		43F674D91DF16A7C001F83BE /* SampleJsonSubmissions_legacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F674D81DF16A7C001F83BE /* SampleJsonSubmissions_legacy.txt */; };
@@ -58,7 +58,7 @@
 		432564B51DEEB798001B943A /* TabController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabController.storyboard; sourceTree = "<group>"; };
 		4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
 		4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
-		43F674221DF11217001F83BE /* SubmissionCellViewViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelTest.swift; sourceTree = "<group>"; };
+		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		43F674D81DF16A7C001F83BE /* SampleJsonSubmissions_legacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleJsonSubmissions_legacy.txt; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				43F9A0411DEA3AE0001EB1FC /* VerionTests.swift */,
-				43F674221DF11217001F83BE /* SubmissionCellViewViewModelTest.swift */,
+				43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */,
 				43F6752F1DF2050B001F83BE /* SubCellViewModelDataModelTest.swift */,
 				43F9A0431DEA3AE0001EB1FC /* Info.plist */,
 			);
@@ -419,7 +419,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43F9A0421DEA3AE0001EB1FC /* VerionTests.swift in Sources */,
-				43F674231DF11217001F83BE /* SubmissionCellViewViewModelTest.swift in Sources */,
+				43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */,
 				43F675301DF2050B001F83BE /* SubCellViewModelDataModelTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

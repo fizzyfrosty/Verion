@@ -13,12 +13,12 @@ struct SubmissionCellViewModelInitData {
     var titleString: String = "This is a Sample Title for a Submission"
     var thumbnailString: String = "(sample.com)"
     var thumbnailLink: String = "(http://www.sample.com/abc.jpg)"
-    var commentCount: Int = 0
-    var voteCountTotal: Int = 0
-    var upvoteCount: Int = 0
-    var downvoteCount: Int = 0
+    var commentCount: Int = 123
+    var voteCountTotal: Int = 4331
+    var upvoteCount: Int = 211
+    var downvoteCount: Int = 154
     var username: String = "SampleUsername"
-    var subverseName: String = "/v/SampleSubverse"
+    var subverseName: String = "SampleSubverse"
 }
 
 class SubmissionCellViewModel{
@@ -49,13 +49,13 @@ class SubmissionCellViewModel{
     
     // Lazy initialization
     init() {
-        self.initializeBindings()
+        self.setupInternalBindings()
         self.loadInitData(subCellVmInitData: SubmissionCellViewModelInitData())
     }
     
     // Custom initialization
     init(subCellVmInitData: SubmissionCellViewModelInitData) {
-        self.initializeBindings()
+        self.setupInternalBindings()
         self.loadInitData(subCellVmInitData: subCellVmInitData)
     }
     
@@ -78,25 +78,29 @@ class SubmissionCellViewModel{
         self.submittedToSubverseString = self.createSubmittedToSubverseString(subverseName: self.subverseName)
     }
     
-    private func initializeBindings() {
-        // Bindings for upvotes and downvotes to update votecount separated string
+    private func setupInternalBindings() {
+        // Bindings for upvotes and downvotes to update votecount separated string and total vote count
         _ = self.upvoteCount.observeNext { _ in
+            self.voteCountTotal.value = self.upvoteCount.value - self.downvoteCount.value
+            
             self.voteSeparatedCountString.value = self.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
         }
         
         _ = self.downvoteCount.observeNext { _ in
+            self.voteCountTotal.value = self.upvoteCount.value - self.downvoteCount.value
+            
             self.voteSeparatedCountString.value = self.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
         }
     }
     
     // Submitted by username string
-    private func createSubmittedByUsernameString(username: String?) -> String {
-        return "submitted by \(username)"
+    private func createSubmittedByUsernameString(username: String) -> String {
+        return "by \(username)"
     }
     
     // Submitted to subverse string
-    private func createSubmittedToSubverseString(subverseName: String?) -> String {
-        return "to \(subverseName)"
+    private func createSubmittedToSubverseString(subverseName: String) -> String {
+        return "to /v/\(subverseName)"
     }
     
     // Vote Count Separated String

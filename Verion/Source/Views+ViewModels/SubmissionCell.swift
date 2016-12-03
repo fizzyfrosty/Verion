@@ -74,8 +74,22 @@ class SubmissionCell: UITableViewCell {
         // Comments Label
         self.commentLabel.text = String(viewModel.commentCount)
         
+        // Submitted by User label
+        self.submittedByUserLabel.text = viewModel.submittedByString
         
-        // Bind to events
+        // Submitted to Subverse string
+        self.submittedToSubverseLabel.text = viewModel.submittedToSubverseString
+        
+        // Bind to User-input events
+        // Upvote
+        _ = self.upvoteButton.bnd_tap.observeNext {
+            viewModel.didUpvote.value = true
+        }
+        
+        // Downvote
+        _ = self.downvoteButton.bnd_tap.observeNext {
+            viewModel.didDownvote.value = true
+        }
     }
     
     

@@ -123,7 +123,7 @@ class OfflineDataProvider: DataProviderType {
         
         subCellVmInitData.thumbnailLink = dataModel.thumbnailLink
         subCellVmInitData.username = dataModel.username
-        subCellVmInitData.username = dataModel.subverseName
+        subCellVmInitData.subverseName = dataModel.subverseName
         
         return subCellVmInitData
     }

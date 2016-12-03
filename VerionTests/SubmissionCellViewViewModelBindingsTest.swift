@@ -1,5 +1,5 @@
 //
-//  SubmissionCellViewViewModelTest.swift
+//  SubmissionCellViewViewModelBindingsTest.swift
 //  Verion
 //
 //  Created by Simon Chen on 12/1/16.
@@ -13,7 +13,7 @@ import SwinjectStoryboard
 
 @testable import Verion
 
-class SubmissionCellViewViewModelTest: QuickSpec {
+class SubmissionCellViewViewModelBindingsTest: QuickSpec {
     
     override func spec() {
         let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
@@ -32,39 +32,75 @@ class SubmissionCellViewViewModelTest: QuickSpec {
     */
         
         
-        // Test that a cell's UI is loaded properly from the view model
-        describe("a submission cell") {
+        describe("a submission cell when bounded to the ViewModel") {
             
             let submissionCell = subverseController.tableView.dequeueReusableCell(withIdentifier: SUBMISSION_CELL_REUSE_ID) as! SubmissionCell
 
             let viewModel = SubmissionCellViewModel()
-            submissionCell.bind(toViewModel: viewModel)
+            beforeEach {
+                submissionCell.bind(toViewModel: viewModel)
+            }
             
-            
+            // -----------Testing UI Display----------------
             it("has the title loaded") {
                 expect(submissionCell.titleLabel.text).to(equal(viewModel.titleString))
+            }
+            
+            // TODO: Thumbnail
+            xit("has the thumbnail loaded") {
+                
+            }
+            
+            it("has the thumbnail string loaded") {
+                expect(submissionCell.thumbnailLabel.text).to(equal(viewModel.thumbnailString))
             }
             
             it("has the vote count loaded") {
                 expect(submissionCell.voteCountLabel.text).to(equal(String(viewModel.voteCountTotal.value)))
             }
             
-            it("has the separated-vote count, and the string is not empty") {
+            it("has the separated-vote count") {
                 expect(submissionCell.voteSeparatedCountLabel.text).to(equal(viewModel.voteSeparatedCountString.value))
-                expect(viewModel.voteSeparatedCountString.value).toNot(equal(""))
+            }
+            
+            it("has total vote count equal to sum of separated vote counts") {
+                let totalVoteCount = viewModel.upvoteCount.value - viewModel.downvoteCount.value
+                let labelVoteCount = Int(submissionCell.voteCountLabel.text!)
+                expect(totalVoteCount).to(equal(labelVoteCount))
             }
             
             it("has the comment count loaded") {
                 expect(submissionCell.commentLabel.text).to(equal(String(viewModel.commentCount)))
             }
             
-            // TODO: thumbnail support
-            xit("has the thumbnail loaded") {
-                
+            it("has the submitted-by-user label loaded") {
+                expect(submissionCell.submittedByUserLabel.text).to(equal(viewModel.submittedByString))
             }
             
-            // TODO: tests for the other UI elements...
+            it("has the submitted-to-subverse label loaded") {
+                expect(submissionCell.submittedToSubverseLabel.text).to(equal(viewModel.submittedToSubverseString))
+            }
             
+            // ------------- Testing Bindings ---------------
+            context("When the upvote button is pressed") {
+                beforeEach {
+                    submissionCell.upvoteButton.sendActions(for: .touchUpInside)
+                }
+                
+                it("is registered in the ViewModel") {
+                    expect(viewModel.didUpvote.value).to(beTrue())
+                }
+            }
+            
+            context("When the downvote button is pressed") {
+                beforeEach {
+                    submissionCell.downvoteButton.sendActions(for: .touchUpInside)
+                }
+                
+                it("is registered in the ViewModel") {
+                    expect(viewModel.didDownvote.value).to(beTrue())
+                }
+            }
         }
         
         // TODO: Test that a submission cell is resized properly for long titles
