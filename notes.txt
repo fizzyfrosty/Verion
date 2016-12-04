@@ -1,11 +1,19 @@
 Random Notes
 
 
-- Correctly store time
-	- Convert string to NSDate
-	- 
+- When thumbnail doesn't exist, self post
 
 
+
+* Populate UIImage with thumbnail
+	* Populate the thumbnail link when binding model->viewModel
+	* viewModel needs a UIImage, create when initializing
+	* When loading cell, set the image
+	* Handle when thumbnail link is shorthand for residing on Voat severs
+	* Load cells/images in background thread
+
+* Correctly store time
+	* Convert string to NSDate
 
 * Load dataModel with sample JSON data
 

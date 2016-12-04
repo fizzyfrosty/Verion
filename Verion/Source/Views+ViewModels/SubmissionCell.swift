@@ -49,12 +49,13 @@ class SubmissionCell: UITableViewCell {
     func bind(toViewModel viewModel: SubmissionCellViewModel) {
         self.viewModel = viewModel
         
-        
         // Bind to UI elements
         // Title
         self.titleLabel.text = viewModel.titleString
         
         // Thumbnail Image
+        self.thumbnailImageView.image = viewModel.thumbnailImage
+        self.thumbnailImageView.contentMode = .scaleAspectFit
         
         // Thumbnail Label
         self.thumbnailLabel.text = viewModel.linkShortString

@@ -18,12 +18,18 @@ class SubverseViewController: UITableViewController {
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
     @IBOutlet var navigationBarLabel: UILabel!
     
+    private var subCellViewModels: [SubmissionCellViewModel] = []
+    private var submissionDataModels: [SubmissionDataModelProtocol] = []
+    var isTableLoading = false // prevents table from rendering before cells completely bounded
+    
+    // For autosizing of cell
+    let CELL_TITLE_FONT_NAME = "AmericanTypewriter-Bold"
+    let CELL_TITLE_FONT_SIZE: CGFloat = 18
+    let MAX_CELL_HEIGHT: CGFloat = 999
+    
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
-    
-    private var subCellViewModels: [SubmissionCellViewModel] = []
-    private var submissionDataModels: [SubmissionDataModelProtocol] = []
     
     
     override func viewDidLoad() {
@@ -44,25 +50,40 @@ class SubverseViewController: UITableViewController {
     
     func loadInitialTableCells(dataProvider: DataProviderType) {
         
+        self.isTableLoading = true
+        
         // Make initial request with DataProvider
         dataProvider.requestSubverseSubmissions(subverse: self.subverse) { submissionDataModels, error in
-            // For each data model, initialize a subCell viewModel
-            for i in 0..<submissionDataModels.count {
-                let subCellViewModel = SubmissionCellViewModel()
-                self.subCellViewModels.append(subCellViewModel)
+            
+            // Perform Data-binding in background thread
+            // (Includes Initialization of ImageViews in viewModels)
+            DispatchQueue.global(qos: .background).async {
+                // For each data model, initialize a subCell viewModel
+                for i in 0..<submissionDataModels.count {
+                    let subCellViewModel = SubmissionCellViewModel()
+                    self.subCellViewModels.append(subCellViewModel)
+                    
+                    // Bind dataModel-viewModel-dataProvider
+                    self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: submissionDataModels[i])
+                    
+                    #if DEBUG
+                        print("Binding cell to viewModel \(i)...")
+                    #endif
+                }
                 
-                // Bind dataModel-viewModel-dataProvider
-                self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: submissionDataModels[i])
+                // Reload table, animated, back on main thread
+                DispatchQueue.main.async {
+                    self.isTableLoading = false
+                    
+                    self.reloadTableAnimated(forTableView: self.tableView,
+                                             numberOfCells: self.subCellViewModels.count,
+                                             animation: UITableViewRowAnimation.bottom)
+                    
+                    // Set Navigation title after finished loading table
+                    self.navigationBarLabel.text = self.getNavigationLabelString(subverse: self.subverse)
+                }
             }
             
-            // Reload table, animated
-            self.tableView.reloadData()
-            let range = Range.init(uncheckedBounds: (lower: 0, upper: self.subCellViewModels.count))
-            let indexSet = IndexSet.init(integersIn: range)
-            self.tableView.reloadSections(indexSet, with: UITableViewRowAnimation.bottom)
-            
-            // Set Navigation title after finished loading table
-            self.navigationBarLabel.text = self.getNavigationLabelString(subverse: self.subverse)
         }
     }
 
@@ -85,6 +106,13 @@ class SubverseViewController: UITableViewController {
 
     // Create the Submission Cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        // Table can be partially loaded with viewModels while still binding to cells
+        guard self.isTableLoading == false else {
+            let transparentCell = tableView.dequeueReusableCell(withIdentifier: "TransparentCell")!
+            // Return an invisible cell
+            return transparentCell
+        }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_CELL_REUSE_ID, for: indexPath) as! SubmissionCell
         
@@ -112,8 +140,6 @@ class SubverseViewController: UITableViewController {
         view.backgroundColor = UIColor.clear
         return view
     }
-
-
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var cellHeight: CGFloat = 0
@@ -126,7 +152,7 @@ class SubverseViewController: UITableViewController {
             let imageViewHorizontalMargins: CGFloat = 25
             let imageViewWidth: CGFloat = 75
             let titleWidth = UIScreen.main.bounds.size.width - imageViewWidth - imageViewHorizontalMargins
-            let titleSize = self.sizeForText(text: viewModel.titleString, font: UIFont.init(name: "AmericanTypewriter-Bold", size: 18)!, maxSize: CGSize(width: titleWidth, height: 999))
+            let titleSize = self.sizeForText(text: viewModel.titleString, font: UIFont.init(name: self.CELL_TITLE_FONT_NAME, size: self.CELL_TITLE_FONT_SIZE)!, maxSize: CGSize(width: titleWidth, height: self.MAX_CELL_HEIGHT))
             
             let titleHeight = titleSize.height
             let titleTopMargin: CGFloat = 10
@@ -136,7 +162,6 @@ class SubverseViewController: UITableViewController {
             cellHeight = titleHeight + titleTopMargin + titleBottomMargin + submittedByTextHeight
             
             cellHeight = max(cellHeight, self.MINIMUM_CELL_HEIGHT)
-            
         }
         
         return cellHeight
@@ -146,11 +171,14 @@ class SubverseViewController: UITableViewController {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         
         if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
+            #if DEBUG
+                print("Landscape")
+            #endif
             
         } else {
-            print("Portrait")
-            
+            #if DEBUG
+                print("Portrait")
+            #endif
         }
     
         coordinator.animate(alongsideTransition: nil, completion: { _ in
@@ -158,6 +186,12 @@ class SubverseViewController: UITableViewController {
         })
     }
  
+    func reloadTableAnimated(forTableView tableView: UITableView, numberOfCells: Int, animation: UITableViewRowAnimation) {
+        tableView.reloadData()
+        let range = Range.init(uncheckedBounds: (lower: 0, upper: numberOfCells))
+        let indexSet = IndexSet.init(integersIn: range)
+        tableView.reloadSections(indexSet, with: animation)
+    }
     
     func getNavigationLabelString(subverse: String) -> String{
         let subverseTitle: String
@@ -170,7 +204,6 @@ class SubverseViewController: UITableViewController {
         
         return subverseTitle
     }
-    
     
     func sizeForText(text: String, font: UIFont, maxSize: CGSize) -> CGSize {
         let attrString = NSAttributedString.init(string: text, attributes: [NSFontAttributeName:font])

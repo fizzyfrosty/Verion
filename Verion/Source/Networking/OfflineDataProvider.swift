@@ -15,6 +15,8 @@ class OfflineDataProvider: DataProviderType {
     private let NUM_OF_TEST_DATA_CELLS = 6
     private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY = "SampleJsonSubmissions_legacy"
     private let SAMPLE_FILES_EXTENSION = "txt"
+    private let VOAT_THUMBNAIL_URL = "https://cdn.voat.co/thumbs/"
+    private let DELAY_TIME_SECONDS = 2
     
     init(apiVersion: APIVersion) {
         self.apiVersion = apiVersion
@@ -24,10 +26,7 @@ class OfflineDataProvider: DataProviderType {
     func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void {
         
         // HeeHeeHee let's delay execution to simulate "lag"
-        let DELAY_TIME_SECONDS = 3
-        
-        
-        Delayer.delay(seconds: DELAY_TIME_SECONDS) {
+        Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
             var submissionDataModels = [SubmissionDataModelProtocol]()
             
             // Load sample json data
@@ -124,7 +123,7 @@ class OfflineDataProvider: DataProviderType {
         subCellVmInitData.commentCount = dataModel.commentCount
         subCellVmInitData.titleString = dataModel.title
         
-        // TODO: Thumbnail string takes more work
+        // Get link short string description, based on Text/Link submission type
         switch dataModel.type {
         case SubmissionType.link.rawValue:
             // get linkShortString "(abc.com)"
@@ -142,11 +141,21 @@ class OfflineDataProvider: DataProviderType {
         // Get the date, expecting (eg): "2016-12-02T06:34:50.3834343" - note the T
         subCellVmInitData.date = self.getDateFromString(gmtString: dataModel.dateString)
         
-        subCellVmInitData.thumbnailLink = dataModel.thumbnailLink
+        
+        subCellVmInitData.thumbnailLink = self.getThumbnailLink(voatURL: self.VOAT_THUMBNAIL_URL, voatEndpoint: dataModel.thumbnailLink)
         subCellVmInitData.username = dataModel.username
         subCellVmInitData.subverseName = dataModel.subverseName
         
         return subCellVmInitData
+    }
+    
+    private func getThumbnailLink(voatURL: String, voatEndpoint: String?) -> String {
+        guard voatEndpoint != nil && voatEndpoint != "" else {
+            return ""
+        }
+        
+        let thumbnailLink = voatURL + voatEndpoint!
+        return thumbnailLink
     }
     
     private func getLinkShortString(fromLink httpString: String) -> String {

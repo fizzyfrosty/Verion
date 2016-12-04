@@ -12,7 +12,7 @@ import Bond
 struct SubmissionCellViewModelInitData {
     var titleString: String = "This is a Sample Title for a Submission"
     var linkShortString: String = "(sample.com)"
-    var thumbnailLink: String = "(http://www.sample.com/abc.jpg)"
+    var thumbnailLink: String = "" // No thumbnail string, because can be self-post
     var commentCount: Int = 123
     var voteCountTotal: Int = 4331
     var upvoteCount: Int = 211
@@ -42,6 +42,8 @@ class SubmissionCellViewModel{
     
     private(set) var submittedByString = NSMutableAttributedString()
     private(set) var submittedToSubverseString = NSMutableAttributedString()
+    
+    private(set) var thumbnailImage: UIImage?
     
     // Variables - additional
     var upvoteCount = Observable<Int>(0)
@@ -77,8 +79,8 @@ class SubmissionCellViewModel{
         self.subverseName = subCellVmInitData.subverseName
         self.date = subCellVmInitData.date
         self.dateSubmittedString = self.createDateSubmittedString(gmtDate: subCellVmInitData.date)
-        
-        self.submittedByString = self.createSubmittedByUsernameString(username: self.username)
+        self.submittedByString = self.createSubmittedByUsernameString(username: subCellVmInitData.username)
+        self.thumbnailImage = self.createThumbnailImage(urlString: subCellVmInitData.thumbnailLink)
         
         // TODO: Add date to format
         self.submittedToSubverseString = self.createSubmittedToSubverseString(dateSubmittedString: self.dateSubmittedString, subverseName: self.subverseName)
@@ -97,6 +99,28 @@ class SubmissionCellViewModel{
             
             self.voteSeparatedCountString.value = self.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
         }
+    }
+    
+    // Thumbnail Image
+    private func createThumbnailImage(urlString: String) -> UIImage? {
+        
+        guard let url = URL.init(string: urlString) else {
+            // Empty or nil string returns nothing
+            return nil
+        }
+        
+        var image: UIImage?
+        
+        do {
+            let imageData = try Data.init(contentsOf: url)
+            image = UIImage.init(data: imageData)!;
+        } catch {
+            #if DEBUG
+            print("No Image found for thumbnail url: \(urlString)")
+            #endif
+        }
+        
+        return image
     }
     
     // "by username" string
