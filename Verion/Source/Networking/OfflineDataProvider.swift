@@ -73,6 +73,7 @@ class OfflineDataProvider: DataProviderType {
         submissionDataModel.thumbnailLink = json["Thumbnail"].stringValue
         submissionDataModel.title = json["Title"].stringValue
         submissionDataModel.type = json["Type"].intValue
+        submissionDataModel.dateString = json["Date"].stringValue
         
         return submissionDataModel
     }
@@ -132,7 +133,8 @@ class OfflineDataProvider: DataProviderType {
             subCellVmInitData.linkShortString = ""
         }
         
-        
+        // Get the date, expecting (eg): "2016-12-02T06:34:50.3834343" - note the T
+        subCellVmInitData.date = self.getDateFromString(gmtString: dataModel.dateString)
         
         subCellVmInitData.thumbnailLink = dataModel.thumbnailLink
         subCellVmInitData.username = dataModel.username
@@ -166,6 +168,25 @@ class OfflineDataProvider: DataProviderType {
         let subverseString = "/v/\(subverse)"
         
         return subverseString
+    }
+    
+    // Param expecting (eg): "2016-12-02T06:34:50.3834343" - note the T
+    private func getDateFromString(gmtString: String) -> Date {
+        
+        let prunedGMTDateString = gmtString.replacingOccurrences(of: "T", with: " ")
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SS"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        if let gmtDate = dateFormatter.date(from: prunedGMTDateString) {
+            return gmtDate
+        } else {
+            #if DEBUG
+                print("Warning: Date conversion FAILED.")
+            #endif
+            return Date()
+        }
     }
     
 }

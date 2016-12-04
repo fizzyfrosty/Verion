@@ -1,12 +1,13 @@
 Random Notes
 
 
-Load dataModel with sample JSON data
+- Correctly store time
+	- Convert string to NSDate
+	- 
 
-- Need to create a 
 
 
-
+* Load dataModel with sample JSON data
 
 * Correctly Resizing the Subverse's Submission Cell
 

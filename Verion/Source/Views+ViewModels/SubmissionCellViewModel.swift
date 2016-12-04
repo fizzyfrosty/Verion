@@ -19,6 +19,7 @@ struct SubmissionCellViewModelInitData {
     var downvoteCount: Int = 154
     var username: String = "SampleUsername"
     var subverseName: String = "SampleSubverse"
+    var date: Date = Date()
 }
 
 class SubmissionCellViewModel{
@@ -47,8 +48,9 @@ class SubmissionCellViewModel{
     var downvoteCount = Observable<Int>(0)
     private(set) var username: String = ""
     private(set) var subverseName: String = ""
-    //let date: NSDate?
     
+    private(set) var date: Date?
+    private(set) var dateSubmittedString = ""
     
     // Lazy initialization
     init() {
@@ -73,12 +75,13 @@ class SubmissionCellViewModel{
         self.downvoteCount.value = subCellVmInitData.downvoteCount
         self.username = subCellVmInitData.username
         self.subverseName = subCellVmInitData.subverseName
-        
+        self.date = subCellVmInitData.date
+        self.dateSubmittedString = self.createDateSubmittedString(gmtDate: subCellVmInitData.date)
         
         self.submittedByString = self.createSubmittedByUsernameString(username: self.username)
         
         // TODO: Add date to format
-        self.submittedToSubverseString = self.createSubmittedToSubverseString(subverseName: self.subverseName)
+        self.submittedToSubverseString = self.createSubmittedToSubverseString(dateSubmittedString: self.dateSubmittedString, subverseName: self.subverseName)
     }
     
     private func setupInternalBindings() {
@@ -104,10 +107,70 @@ class SubmissionCellViewModel{
     }
     
     // "to subverse" string
-    private func createSubmittedToSubverseString(subverseName: String) -> NSMutableAttributedString {
+    private func createSubmittedToSubverseString(dateSubmittedString: String, subverseName: String) -> NSMutableAttributedString {
         let attrString = NSMutableAttributedString()
-        _ = attrString.normal(text: "to /v/\(subverseName)")
+        
+        // eg: 9 hours ago to /v/whatever
+        _ = attrString.normal(text: "\(dateSubmittedString) ago to /v/\(subverseName)")
         return attrString
+    }
+    
+    private func createDateSubmittedString(gmtDate: Date) -> String {
+        let currentDate = Date()
+        let dateComponents: Set<Calendar.Component> = [Calendar.Component.year, .month, .day, .hour, .minute, .second]
+        let differenceComponents = Calendar.current.dateComponents(dateComponents, from: gmtDate, to: currentDate)
+        
+        let dateSubmittedString: String
+        let dateUnitString: String
+        if differenceComponents.year != 0 {
+            if differenceComponents.year! > 1 {
+                dateUnitString = "years"
+            } else {
+                dateUnitString = "year"
+            }
+            // eg: 1 yr or 2 years
+            dateSubmittedString = "\(differenceComponents.year!) \(dateUnitString)"
+            
+        } else if differenceComponents.month != 0{
+            if differenceComponents.month! > 1 {
+                dateUnitString = "months"
+            } else {
+                dateUnitString = "month"
+            }
+            // eg: 1 month, 2 months
+            dateSubmittedString = "\(differenceComponents.month!) \(dateUnitString)"
+            
+        } else if differenceComponents.day != 0 {
+            if differenceComponents.day! > 1 {
+                dateUnitString = "days"
+            } else {
+                dateUnitString = "day"
+            }
+            // eg: 1 day, 2 days
+            dateSubmittedString = "\(differenceComponents.day!) \(dateUnitString)"
+            
+        } else if differenceComponents.hour != 0 {
+            if differenceComponents.hour! > 1 {
+                dateUnitString = "hours"
+            } else {
+                dateUnitString = "hour"
+            }
+            // eg: 1 hour, 2 hours
+            dateSubmittedString = "\(differenceComponents.hour!) \(dateUnitString)"
+            
+        } else if differenceComponents.minute != 0 {
+            dateUnitString = "min"
+            
+            // eg: 1 min, 2 min
+            dateSubmittedString = "\(differenceComponents.minute!) \(dateUnitString)"
+        } else {
+            dateUnitString = "sec"
+            
+            // eg: 1 sec, 34 sec
+            dateSubmittedString = "\(differenceComponents.second!) \(dateUnitString)"
+        }
+        
+        return dateSubmittedString
     }
     
     // Vote Count Separated String
