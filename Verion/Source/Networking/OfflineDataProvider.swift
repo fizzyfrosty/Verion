@@ -21,27 +21,33 @@ class OfflineDataProvider: DataProviderType {
     }
     
     
-    func requestSubverseSubmissions(completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void {
+    func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void {
         
-        var submissionDataModels = [SubmissionDataModelProtocol]()
+        // HeeHeeHee let's delay execution to simulate "lag"
+        let DELAY_TIME_SECONDS = 3
         
-        // Load sample json data
-        let sampleJson = self.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY,
-                                            withExtension: self.SAMPLE_FILES_EXTENSION)
         
-        // For each submission, create a datamodel
-        for i in 0..<sampleJson.count {
-            // Get data model from sample JSON
-            let submissionJson = sampleJson[i]
-            let submissionDataModel = self.getSubmissionDataModel(fromJson: submissionJson)
-            submissionDataModels.append(submissionDataModel)
+        Delayer.delay(seconds: DELAY_TIME_SECONDS) {
+            var submissionDataModels = [SubmissionDataModelProtocol]()
+            
+            // Load sample json data
+            let sampleJson = self.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY,
+                                                withExtension: self.SAMPLE_FILES_EXTENSION)
+            
+            // For each submission, create a datamodel
+            for i in 0..<sampleJson.count {
+                // Get data model from sample JSON
+                let submissionJson = sampleJson[i]
+                let submissionDataModel = self.getSubmissionDataModel(fromJson: submissionJson)
+                submissionDataModels.append(submissionDataModel)
+            }
+            
+            
+            // TODO: Implement error return in a mock object?
+            
+            // Return the data models
+            completion(submissionDataModels, nil)
         }
-        
-        
-        // TODO: Implement error return in a mock object?
-        
-        // Return the data models
-        completion(submissionDataModels, nil)
     }
     
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {

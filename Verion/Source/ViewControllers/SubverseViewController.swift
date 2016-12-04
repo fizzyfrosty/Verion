@@ -13,6 +13,7 @@ class SubverseViewController: UITableViewController {
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
     private let CELL_SPACING: CGFloat = 10.0
     private let MINIMUM_CELL_HEIGHT: CGFloat = 130.0
+    var subverse = "frontpage"
     
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
     @IBOutlet var navigationBarLabel: UILabel!
@@ -30,8 +31,7 @@ class SubverseViewController: UITableViewController {
         
         self.tableView.backgroundColor = self.BGCOLOR
         self.navigationController?.navigationBar.barTintColor = self.BGCOLOR
-        self.navigationBarLabel.text = "/v/whatever"
-        
+        self.navigationBarLabel.text = "Loading..."
         
         self.loadInitialTableCells(dataProvider: self.dataProvider)
         
@@ -45,7 +45,7 @@ class SubverseViewController: UITableViewController {
     func loadInitialTableCells(dataProvider: DataProviderType) {
         
         // Make initial request with DataProvider
-        dataProvider.requestSubverseSubmissions() { submissionDataModels, error in
+        dataProvider.requestSubverseSubmissions(subverse: self.subverse) { submissionDataModels, error in
             // For each data model, initialize a subCell viewModel
             for i in 0..<submissionDataModels.count {
                 let subCellViewModel = SubmissionCellViewModel()
@@ -55,8 +55,14 @@ class SubverseViewController: UITableViewController {
                 self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: submissionDataModels[i])
             }
             
-            // Reload table
+            // Reload table, animated
             self.tableView.reloadData()
+            let range = Range.init(uncheckedBounds: (lower: 0, upper: self.subCellViewModels.count))
+            let indexSet = IndexSet.init(integersIn: range)
+            self.tableView.reloadSections(indexSet, with: UITableViewRowAnimation.bottom)
+            
+            // Set Navigation title after finished loading table
+            self.navigationBarLabel.text = self.getNavigationLabelString(subverse: self.subverse)
         }
     }
 
@@ -146,14 +152,24 @@ class SubverseViewController: UITableViewController {
             print("Portrait")
             
         }
-        
+    
         coordinator.animate(alongsideTransition: nil, completion: { _ in
             
-            
         })
-        
     }
  
+    
+    func getNavigationLabelString(subverse: String) -> String{
+        let subverseTitle: String
+        
+        if subverse == "frontpage" {
+            subverseTitle = subverse
+        } else {
+            subverseTitle = "/v/" + subverse
+        }
+        
+        return subverseTitle
+    }
     
     
     func sizeForText(text: String, font: UIFont, maxSize: CGSize) -> CGSize {
