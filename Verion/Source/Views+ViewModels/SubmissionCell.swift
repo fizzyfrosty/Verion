@@ -46,23 +46,25 @@ class SubmissionCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func bindThumbnailImage() {
+        // Thumbnail Image
+        if viewModel?.thumbnailImage == nil {
+            self.thumbnailWidthConstraint.constant = 0
+        } else {
+            self.thumbnailWidthConstraint.constant = 75
+            self.thumbnailImageView.image = viewModel?.thumbnailImage
+            self.thumbnailImageView.contentMode = .scaleAspectFit
+            self.thumbnailImageView.layer.borderWidth = 1.0
+            self.thumbnailImageView.layer.borderColor = UIColor.black.cgColor
+        }
+    }
+    
     func bind(toViewModel viewModel: SubmissionCellViewModel) {
         self.viewModel = viewModel
         
         // Bind to UI elements
         // Title
         self.titleLabel.text = viewModel.titleString
-        
-        // Thumbnail Image
-        if viewModel.thumbnailImage == nil {
-            self.thumbnailWidthConstraint.constant = 0
-        } else {
-            self.thumbnailWidthConstraint.constant = 75
-            self.thumbnailImageView.image = viewModel.thumbnailImage
-            self.thumbnailImageView.contentMode = .scaleAspectFit
-            self.thumbnailImageView.layer.borderWidth = 1.0
-            self.thumbnailImageView.layer.borderColor = UIColor.black.cgColor
-        }
         
         // Thumbnail Label
         self.thumbnailLabel.text = viewModel.linkShortString

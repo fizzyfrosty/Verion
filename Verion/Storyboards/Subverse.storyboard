@@ -291,6 +291,27 @@
                                     <color key="backgroundColor" red="1" green="0.028078071964938167" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadMoreCell" rowHeight="50" id="Mtk-nN-ygu" customClass="SubmissionCell" customModule="Verion" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="329" width="414" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mtk-nN-ygu" id="TJc-3F-PF7">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Load More Submissions" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KTQ-fG-U4L">
+                                            <rect key="frame" x="106.66666666666669" y="14.666666666666664" width="200.66666666666663" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
+                                            <color key="textColor" red="1" green="0.57706925133248244" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.99369948992546409" green="1" blue="0.99263938356952208" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="KTQ-fG-U4L" firstAttribute="centerY" secondItem="TJc-3F-PF7" secondAttribute="centerY" id="Ejr-z8-pDD"/>
+                                        <constraint firstItem="KTQ-fG-U4L" firstAttribute="centerX" secondItem="TJc-3F-PF7" secondAttribute="centerX" id="PZR-wY-QC8"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="F8s-Mq-eeW" id="1Zx-ZE-krt"/>

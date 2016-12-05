@@ -65,7 +65,7 @@ class SubmissionCellViewModel{
             self.cellHeight = newValue
         }
         get {
-            let minCellHeight = self.getMinimumCellHeight(dependingOnThumbnailImage: self.thumbnailImage)
+            let minCellHeight = self.getMinimumCellHeight(dependingOnThumbnailLink: self.thumbnailLink.value)
             return self.getCellHeight(withTitleString: self.titleString, minCellHeight: minCellHeight, maxCellHeight: self.MAX_CELL_HEIGHT)
         }
     }
@@ -97,11 +97,12 @@ class SubmissionCellViewModel{
         self.dateSubmittedString = self.createDateSubmittedString(gmtDate: subCellVmInitData.date)
         self.submittedByString = self.createSubmittedByUsernameString(username: subCellVmInitData.username)
         
-        self.thumbnailImage = self.createThumbnailImage(urlString: subCellVmInitData.thumbnailLink)
         self.submittedToSubverseString = self.createSubmittedToSubverseString(dateSubmittedString: self.dateSubmittedString, subverseName: self.subverseName)
-        
-        //self.minimumHeight = self.getMinimumCellHeight(dependingOnThumbnailImage: self.thumbnailImage)
-        //self.cellHeight = self.getCellHeight(withTitleString: subCellVmInitData.titleString, minCellHeight: self.minimumHeight, maxCellHeight: self.MAX_CELL_HEIGHT)
+    }
+    
+    // Use externally for whoever is doing the binding to separate/optimize loading
+    func createThumbnailImage() {
+        self.thumbnailImage = self.createThumbnailImage(urlString: self.thumbnailLink.value)
     }
     
     private func setupInternalBindings() {
@@ -120,8 +121,8 @@ class SubmissionCellViewModel{
     }
     
     // Minimum Cell Height
-    private func getMinimumCellHeight(dependingOnThumbnailImage thumbnailImage: UIImage?) -> CGFloat {
-        if thumbnailImage != nil {
+    private func getMinimumCellHeight(dependingOnThumbnailLink thumbnailLink: String) -> CGFloat {
+        if thumbnailLink != "" {
             return self.MINIMUM_CELL_HEIGHT_WITH_IMAGE
         }
         
@@ -138,7 +139,7 @@ class SubmissionCellViewModel{
         
         if self.thumbnailImage == nil {
             imageViewWidth = 0
-            imageViewHorizontalMargins = 15
+            imageViewHorizontalMargins = 50
         }
         
         let titleWidth = UIScreen.main.bounds.size.width - imageViewWidth - imageViewHorizontalMargins

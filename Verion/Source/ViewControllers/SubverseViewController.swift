@@ -12,6 +12,11 @@ class SubverseViewController: UITableViewController {
     
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
     private let CELL_SPACING: CGFloat = 10.0
+    private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
+    private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 10
+    private let NUM_OF_CELLS_TO_INCREMENT_BY = 10
+    private var numOfCellsToDisplay = 0
+    private var PULL_TO_REFRESH = "Pull to Refresh"
     
     var subverse = "frontpage"
     
@@ -20,7 +25,7 @@ class SubverseViewController: UITableViewController {
     
     private var subCellViewModels: [SubmissionCellViewModel] = []
     private var submissionDataModels: [SubmissionDataModelProtocol] = []
-    var isTableLoading = false // prevents table from rendering before cells completely bounded
+    var didTableLoadOnce = false // prevents table from rendering before cells completely bounded
     
     // Dependencies
     var sfxManager: SFXManagerType?
@@ -32,9 +37,10 @@ class SubverseViewController: UITableViewController {
         
         self.tableView.backgroundColor = self.BGCOLOR
         self.navigationController?.navigationBar.barTintColor = self.BGCOLOR
-        self.navigationBarLabel.text = "Loading..."
         
-        self.loadInitialTableCells(dataProvider: self.dataProvider)
+        self.numOfCellsToDisplay = self.NUM_OF_STARTING_CELLS_TO_DISPLAY
+        self.loadPullToRefreshControl()
+        self.loadTableCells(dataProvider: self.dataProvider)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -43,9 +49,25 @@ class SubverseViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    func loadInitialTableCells(dataProvider: DataProviderType) {
+    func loadPullToRefreshControl() {
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.attributedTitle = NSAttributedString.init(string: self.PULL_TO_REFRESH)
+        self.refreshControl?.addTarget(self, action: #selector(SubverseViewController.refresh(sender:)), for: .valueChanged)
         
-        self.isTableLoading = true
+    }
+    
+    func refresh(sender:AnyObject)
+    {
+        self.loadTableCells(dataProvider: self.dataProvider)
+        
+        self.refreshControl?.endRefreshing()
+        
+        self.refreshControl?.attributedTitle = NSAttributedString.init(string: "Refreshing...")
+    }
+    
+    func loadTableCells(dataProvider: DataProviderType) {
+        
+        self.navigationBarLabel.text = "Loading..."
         
         // Make initial request with DataProvider
         dataProvider.requestSubverseSubmissions(subverse: self.subverse) { submissionDataModels, error in
@@ -53,29 +75,33 @@ class SubverseViewController: UITableViewController {
             // Perform Data-binding in background thread
             // (Includes Initialization of ImageViews in viewModels)
             DispatchQueue.global(qos: .background).async {
+                
+                // Clear all current data
+                self.subCellViewModels.removeAll()
+                
                 // For each data model, initialize a subCell viewModel
-                for i in 0..<submissionDataModels.count {
+                for _ in 0..<submissionDataModels.count {
                     let subCellViewModel = SubmissionCellViewModel()
                     self.subCellViewModels.append(subCellViewModel)
-                    
-                    // Bind dataModel-viewModel-dataProvider
-                    self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: submissionDataModels[i])
-                    
-                    #if DEBUG
-                        print("Binding cell to viewModel \(i)...")
-                    #endif
                 }
+                
+                self.submissionDataModels = submissionDataModels
+                
+                // Bind set of cells to be loaded
+                self.bindCellsToBeDisplayed(startingIndexInclusive: 0, endingIndexExclusive: self.numOfCellsToDisplay)
                 
                 // Reload table, animated, back on main thread
                 DispatchQueue.main.async {
-                    self.isTableLoading = false
+                    self.didTableLoadOnce = true
                     
                     self.reloadTableAnimated(forTableView: self.tableView,
-                                             numberOfCells: self.subCellViewModels.count,
-                                             animation: UITableViewRowAnimation.bottom)
+                                             startingIndexInclusive: 0,
+                                             endingIndexExclusive: self.numOfCellsToDisplay,
+                                             animation: UITableViewRowAnimation.automatic)
                     
                     // Set Navigation title after finished loading table
                     self.navigationBarLabel.text = self.getNavigationLabelString(subverse: self.subverse)
+                    self.refreshControl?.attributedTitle = NSAttributedString.init(string: self.PULL_TO_REFRESH)
                 }
             }
             
@@ -90,8 +116,11 @@ class SubverseViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return self.subCellViewModels.count
+        guard self.subCellViewModels.count >= self.numOfCellsToDisplay else {
+            return 0
+        }
+        
+        return self.numOfCellsToDisplay
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -101,13 +130,19 @@ class SubverseViewController: UITableViewController {
 
     // Create the Submission Cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         // Table can be partially loaded with viewModels while still binding to cells
-        guard self.isTableLoading == false else {
+        guard self.didTableLoadOnce == true else {
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: "TransparentCell")!
             
             // Return an invisible cell
             return transparentCell
+        }
+        
+        // "Load More" cell
+        guard  !self.shouldLoadLoadMoreCell(indexPath: indexPath, numOfCellsCurrentlyDisplaying: self.numOfCellsToDisplay, numOfMaxCells: self.subCellViewModels.count) else {
+            let loadMoreCell = tableView.dequeueReusableCell(withIdentifier: "LoadMoreCell")
+            
+            return loadMoreCell!
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_CELL_REUSE_ID, for: indexPath) as! SubmissionCell
@@ -116,6 +151,16 @@ class SubverseViewController: UITableViewController {
         let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
         cell.bind(toViewModel: viewModel)
         self.sfxManager?.applyShadow(view: cell)
+        
+        
+        // Create Thumbnail in ViewModel and Attach in Background Queue
+        DispatchQueue.global(qos: .background).async {
+            viewModel.createThumbnailImage()
+            
+            DispatchQueue.main.async {
+                cell.bindThumbnailImage()
+            }
+        }
         
         return cell
     }
@@ -140,8 +185,9 @@ class SubverseViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var cellHeight: CGFloat = 0
         
-        guard self.isTableLoading == false else {
-            return cellHeight
+        // If Last element, return the LoadMore cell height
+        guard !self.shouldLoadLoadMoreCell(indexPath: indexPath, numOfCellsCurrentlyDisplaying: self.numOfCellsToDisplay, numOfMaxCells: self.subCellViewModels.count) else {
+            return self.LOAD_MORE_CELL_HEIGHT
         }
         
         if self.subCellViewModels.count > 0 {
@@ -156,6 +202,12 @@ class SubverseViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Deselect the row
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        // If the Load More Cells should->did load, then allow the touch of last cell to load more
+        if self.shouldLoadLoadMoreCell(indexPath: indexPath, numOfCellsCurrentlyDisplaying: self.numOfCellsToDisplay, numOfMaxCells: self.subCellViewModels.count) {
+            self.increaseAmountOfTableCellsAndReload(increaseBy: self.NUM_OF_CELLS_TO_INCREMENT_BY,
+                                                  maxLimit: self.subCellViewModels.count)
+        }
     }
     
  
@@ -177,10 +229,46 @@ class SubverseViewController: UITableViewController {
             
         })
     }
+    
+    private func shouldLoadLoadMoreCell(indexPath: IndexPath, numOfCellsCurrentlyDisplaying: Int, numOfMaxCells: Int) -> Bool {
+        let shouldLoad: Bool = !self.indexPathIsLastSectionOfMaximum(indexPath: indexPath, maxNumberOfCells: numOfMaxCells) && self.indexPathIsLastSectionOfCurrentDisplayed(indexPath: indexPath, numOfCellsCurrentlyDisplaying: self.numOfCellsToDisplay)
+        
+        return shouldLoad
+    }
+    
+    private func indexPathIsLastSectionOfCurrentDisplayed(indexPath: IndexPath, numOfCellsCurrentlyDisplaying: Int) -> Bool{
+        let isLastSection: Bool = (indexPath.section == (numOfCellsCurrentlyDisplaying-1))
+        
+        return isLastSection
+    }
+    
+    private func indexPathIsLastSectionOfMaximum(indexPath: IndexPath, maxNumberOfCells: Int) -> Bool{
+        let isLastSection: Bool = (indexPath.section == (maxNumberOfCells-1))
+        
+        return isLastSection
+    }
+    
+    private func bindCellsToBeDisplayed(startingIndexInclusive: Int, endingIndexExclusive: Int) {
+        
+        // For each cell
+        for i in startingIndexInclusive..<endingIndexExclusive {
+            // Bind dataModel-viewModel-dataProvider
+            
+            let subCellViewModel = self.subCellViewModels[i]
+            let dataModel = self.submissionDataModels[i]
+            
+            self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: dataModel)
+            #if DEBUG
+                //print("Binding cell to viewModel \(i)...")
+            #endif
+
+        }
+    }
  
-    func reloadTableAnimated(forTableView tableView: UITableView, numberOfCells: Int, animation: UITableViewRowAnimation) {
+    private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive: Int, animation: UITableViewRowAnimation) {
         tableView.reloadData()
-        let range = Range.init(uncheckedBounds: (lower: 0, upper: numberOfCells))
+        
+        let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
         let indexSet = IndexSet.init(integersIn: range)
         tableView.reloadSections(indexSet, with: animation)
     }
@@ -197,10 +285,50 @@ class SubverseViewController: UITableViewController {
         return subverseTitle
     }
     
+    func increaseAmountOfTableCellsAndReload(increaseBy numToIncrease: Int, maxLimit: Int) {
+        // Load more
+        var numOfCellsToIncreaseBy = numToIncrease
+        
+        if (self.numOfCellsToDisplay + numToIncrease) > maxLimit {
+            
+            numOfCellsToIncreaseBy = maxLimit - self.numOfCellsToDisplay
+            
+        } else {
+            numOfCellsToIncreaseBy = numToIncrease
+        }
+        
+        // This is what is necessary to increase table cells
+        self.numOfCellsToDisplay += numOfCellsToIncreaseBy
+        
+        let startingIndex = self.numOfCellsToDisplay - numToIncrease
+        
+        self.bindCellsToBeDisplayed(startingIndexInclusive: startingIndex,
+                                    endingIndexExclusive: self.numOfCellsToDisplay)
+        
+        self.reloadTableAnimated(forTableView: self.tableView,
+                                 startingIndexInclusive: startingIndex,
+                                 endingIndexExclusive: self.numOfCellsToDisplay,
+                                 animation: UITableViewRowAnimation.fade)
+    }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         // Forces redraw of shadows right before transition
         self.tableView.reloadData()
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        /*
+        // Ensure we hit bottom of table
+        guard indexPath.section >= (self.numOfCellsToDisplay - 1) else {
+            
+            return
+        }
+        
+        // Ensure we didn't reach the max number of cells
+        guard self.numOfCellsToDisplay != self.subCellViewModels.count else {
+            return
+        }
+        */
     }
     
     /*

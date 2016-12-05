@@ -1,5 +1,18 @@
 Random Notes
 
+- Load More when hit bottom
+	* Load more when hit bottom
+	* Load a cell for tapping Load More
+		* Create the cell
+		* Load the cell if the index is last element
+		* Put increaseNumber() in the row selected callback
+	* Put the event into a button 
+	* Don't give option to load more at end
+	* Only bind cells that are being displayed
+	* Attach binding of cells to when being displayed more
+
+* Refresh Control
+
 * Calculate minimum height
 	* In viewModel, if no image, minimum height is less
 	* Move height calculation to viewModel
