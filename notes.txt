@@ -1,6 +1,16 @@
 Random Notes
+- Sort Submissions by
+	- Hot (by rating)
+	- Top (by vote count)
+	- New (by date)
 
-- Load More when hit bottom
+- Refresh control
+	- Pull down to refresh
+	- Release to refresh
+	- Refreshing (animation?)
+	- Both orientations
+
+* Load More when hit bottom
 	* Load more when hit bottom
 	* Load a cell for tapping Load More
 		* Create the cell

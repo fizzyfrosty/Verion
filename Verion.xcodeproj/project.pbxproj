@@ -19,6 +19,7 @@
 		4375BFC61DF3737F00576CC6 /* SubmissionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC51DF3737F00576CC6 /* SubmissionType.swift */; };
 		4375BFC81DF3EDC300576CC6 /* Delayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC71DF3EDC300576CC6 /* Delayer.swift */; };
 		4375BFCA1DF5060F00576CC6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4375BFC91DF5060F00576CC6 /* Assets.xcassets */; };
+		4375BFCD1DF5D45400576CC6 /* SubverseRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFCC1DF5D45400576CC6 /* SubverseRefreshControl.swift */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -65,6 +66,7 @@
 		4375BFC51DF3737F00576CC6 /* SubmissionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionType.swift; sourceTree = "<group>"; };
 		4375BFC71DF3EDC300576CC6 /* Delayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delayer.swift; sourceTree = "<group>"; };
 		4375BFC91DF5060F00576CC6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4375BFCC1DF5D45400576CC6 /* SubverseRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseRefreshControl.swift; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -121,6 +123,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4375BFCB1DF5D43900576CC6 /* CustomControls */ = {
+			isa = PBXGroup;
+			children = (
+				4375BFCC1DF5D45400576CC6 /* SubverseRefreshControl.swift */,
+			);
+			path = CustomControls;
+			sourceTree = "<group>";
+		};
 		43F674D71DF16A07001F83BE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +142,7 @@
 		43F675111DF20078001F83BE /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4375BFCB1DF5D43900576CC6 /* CustomControls */,
 				43F675121DF20078001F83BE /* DataModels */,
 				43F675151DF20078001F83BE /* Networking */,
 				43F675181DF20078001F83BE /* SFX */,
@@ -406,6 +417,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4375BFCD1DF5D45400576CC6 /* SubverseRefreshControl.swift in Sources */,
 				43F675261DF20078001F83BE /* OfflineDataProvider.swift in Sources */,
 				43F675251DF20078001F83BE /* DataProviderType.swift in Sources */,
 				43F675231DF20078001F83BE /* SubmissionDataModelLegacy.swift in Sources */,
