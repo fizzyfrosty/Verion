@@ -18,6 +18,7 @@
 		4375BFC41DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */; };
 		4375BFC61DF3737F00576CC6 /* SubmissionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC51DF3737F00576CC6 /* SubmissionType.swift */; };
 		4375BFC81DF3EDC300576CC6 /* Delayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC71DF3EDC300576CC6 /* Delayer.swift */; };
+		4375BFCA1DF5060F00576CC6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4375BFC91DF5060F00576CC6 /* Assets.xcassets */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -36,7 +37,6 @@
 		43F6752E1DF20078001F83BE /* SubmissionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F675221DF20078001F83BE /* SubmissionCellViewModel.swift */; };
 		43F675301DF2050B001F83BE /* SubCellViewModelDataModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6752F1DF2050B001F83BE /* SubCellViewModelDataModelTest.swift */; };
 		43F9A02D1DEA3AE0001EB1FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F9A02C1DEA3AE0001EB1FC /* AppDelegate.swift */; };
-		43F9A0341DEA3AE0001EB1FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43F9A0331DEA3AE0001EB1FC /* Assets.xcassets */; };
 		43F9A0371DEA3AE0001EB1FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43F9A0351DEA3AE0001EB1FC /* LaunchScreen.storyboard */; };
 		43F9A0421DEA3AE0001EB1FC /* VerionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F9A0411DEA3AE0001EB1FC /* VerionTests.swift */; };
 		43F9A04F1DEA3C26001EB1FC /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
@@ -64,6 +64,7 @@
 		4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Bold.swift"; sourceTree = "<group>"; };
 		4375BFC51DF3737F00576CC6 /* SubmissionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionType.swift; sourceTree = "<group>"; };
 		4375BFC71DF3EDC300576CC6 /* Delayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delayer.swift; sourceTree = "<group>"; };
+		4375BFC91DF5060F00576CC6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -83,7 +84,6 @@
 		43F6752F1DF2050B001F83BE /* SubCellViewModelDataModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCellViewModelDataModelTest.swift; sourceTree = "<group>"; };
 		43F9A0291DEA3AE0001EB1FC /* Verion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Verion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F9A02C1DEA3AE0001EB1FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		43F9A0331DEA3AE0001EB1FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43F9A0361DEA3AE0001EB1FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43F9A0381DEA3AE0001EB1FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43F9A03D1DEA3AE0001EB1FC /* VerionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VerionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -218,8 +218,8 @@
 				43F675111DF20078001F83BE /* Source */,
 				43F674D71DF16A07001F83BE /* Resources */,
 				43F9A05B1DEA67A1001EB1FC /* Storyboards */,
-				43F9A0331DEA3AE0001EB1FC /* Assets.xcassets */,
 				43F9A0351DEA3AE0001EB1FC /* LaunchScreen.storyboard */,
+				4375BFC91DF5060F00576CC6 /* Assets.xcassets */,
 				43F9A0381DEA3AE0001EB1FC /* Info.plist */,
 			);
 			path = Verion;
@@ -351,7 +351,7 @@
 				432564B61DEEB798001B943A /* TabController.storyboard in Resources */,
 				43F674D91DF16A7C001F83BE /* SampleJsonSubmissions_legacy.txt in Resources */,
 				432564391DECAE8F001B943A /* Subverse.storyboard in Resources */,
-				43F9A0341DEA3AE0001EB1FC /* Assets.xcassets in Resources */,
+				4375BFCA1DF5060F00576CC6 /* Assets.xcassets in Resources */,
 				43F9A0B51DEA947B001EB1FC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

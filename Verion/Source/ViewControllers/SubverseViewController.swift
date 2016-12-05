@@ -153,6 +153,11 @@ class SubverseViewController: UITableViewController {
         return cellHeight
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Deselect the row
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
  
     // For detecting rotations beginning and finishing.
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {

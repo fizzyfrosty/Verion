@@ -1,16 +1,8 @@
 Random Notes
 
-- Calculate minimum height
-	- In viewModel, if no image, minimum height is less
-	- Move height calculation to viewModel
-
-"https://cdn.voat.co/thumbs/d2c55369-8aec-400d-bfb1-99ead9c88fa9.jpg"	
-"https://cdn.voat.co/thumbs/d2c55369-8aec-400d-bfb1-99ead9c88fa9.jpg"	
-https://cdn.voat.co/thumbs/8784c73a-af60-4536-ba78-d3c0b62cb692.jpg
-
-"https://cdn.voat.co/thumbs/d2c55369-8aec-400d-bfb1-99ead9c88fa9.jpg"
-
-thumbnailLink	String	"https://cdn.voat.co/thumbs/d2c55369-8aec-400d-bfb1-99ead9c88fa9.jpg"	
+* Calculate minimum height
+	* In viewModel, if no image, minimum height is less
+	* Move height calculation to viewModel
 
 * When thumbnail doesn't exist, self post
 	* When cell is binding to viewModel, identify that thumbnail image doesn't exist

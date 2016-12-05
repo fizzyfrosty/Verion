@@ -177,7 +177,8 @@ class OfflineDataProvider: DataProviderType {
     }
     
     private func getSubverseShortString(subverse: String) -> String {
-        let subverseString = "/v/\(subverse)"
+        // eg: (/v/whatever)
+        let subverseString = "(/v/\(subverse))"
         
         return subverseString
     }

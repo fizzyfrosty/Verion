@@ -31,7 +31,7 @@ class SubmissionCellViewModel{
     private let CELL_TITLE_FONT_SIZE: CGFloat = 18
     private let MAX_CELL_HEIGHT: CGFloat = 999
     private let MINIMUM_CELL_HEIGHT_WITH_IMAGE: CGFloat = 140.0
-    private let MINIMUM_CELL_HEIGHT_NO_IMAGE: CGFloat = 100.0
+    private let MINIMUM_CELL_HEIGHT_NO_IMAGE: CGFloat = 80.0
     
     // Variables for binding to UI
     private(set) var linkShortString: String = ""
@@ -60,8 +60,15 @@ class SubmissionCellViewModel{
     private(set) var date: Date?
     private(set) var dateSubmittedString = ""
     
-    private var minimumHeight: CGFloat = 120
-    private(set) var cellHeight: CGFloat = 0
+    var cellHeight: CGFloat {
+        set {
+            self.cellHeight = newValue
+        }
+        get {
+            let minCellHeight = self.getMinimumCellHeight(dependingOnThumbnailImage: self.thumbnailImage)
+            return self.getCellHeight(withTitleString: self.titleString, minCellHeight: minCellHeight, maxCellHeight: self.MAX_CELL_HEIGHT)
+        }
+    }
     
     // Lazy initialization
     init() {
@@ -93,8 +100,8 @@ class SubmissionCellViewModel{
         self.thumbnailImage = self.createThumbnailImage(urlString: subCellVmInitData.thumbnailLink)
         self.submittedToSubverseString = self.createSubmittedToSubverseString(dateSubmittedString: self.dateSubmittedString, subverseName: self.subverseName)
         
-        self.minimumHeight = self.getMinimumCellHeight(dependingOnThumbnailImage: self.thumbnailImage)
-        self.cellHeight = self.getCellHeight(withTitleString: subCellVmInitData.titleString, minCellHeight: self.minimumHeight, maxCellHeight: self.MAX_CELL_HEIGHT)
+        //self.minimumHeight = self.getMinimumCellHeight(dependingOnThumbnailImage: self.thumbnailImage)
+        //self.cellHeight = self.getCellHeight(withTitleString: subCellVmInitData.titleString, minCellHeight: self.minimumHeight, maxCellHeight: self.MAX_CELL_HEIGHT)
     }
     
     private func setupInternalBindings() {
@@ -126,8 +133,14 @@ class SubmissionCellViewModel{
         var cellHeight: CGFloat = 0
         
         // Width of label is screensize.width minus the imageSize and its margins
-        let imageViewHorizontalMargins: CGFloat = 25
-        let imageViewWidth: CGFloat = 75
+        var imageViewHorizontalMargins: CGFloat = 25
+        var imageViewWidth: CGFloat = 75
+        
+        if self.thumbnailImage == nil {
+            imageViewWidth = 0
+            imageViewHorizontalMargins = 15
+        }
+        
         let titleWidth = UIScreen.main.bounds.size.width - imageViewWidth - imageViewHorizontalMargins
         let titleSize = self.sizeForText(text: titleString, font: UIFont.init(name: self.CELL_TITLE_FONT_NAME, size: self.CELL_TITLE_FONT_SIZE)!, maxSize: CGSize(width: titleWidth, height: maxCellHeight))
         
@@ -157,8 +170,10 @@ class SubmissionCellViewModel{
             let imageData = try Data.init(contentsOf: url)
             image = UIImage.init(data: imageData)
         } catch {
+            // TODO: load image with a "image not available" image
+            image = UIImage.init(named: "noimageavailable")
             #if DEBUG
-            print("No Image found for thumbnail url: \(urlString)")
+                print("No Image found for thumbnail url: \(urlString)")
             #endif
         }
         

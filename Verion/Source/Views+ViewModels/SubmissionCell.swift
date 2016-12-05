@@ -46,7 +46,6 @@ class SubmissionCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    // TODO: Unfinished binding
     func bind(toViewModel viewModel: SubmissionCellViewModel) {
         self.viewModel = viewModel
         
@@ -61,6 +60,8 @@ class SubmissionCell: UITableViewCell {
             self.thumbnailWidthConstraint.constant = 75
             self.thumbnailImageView.image = viewModel.thumbnailImage
             self.thumbnailImageView.contentMode = .scaleAspectFit
+            self.thumbnailImageView.layer.borderWidth = 1.0
+            self.thumbnailImageView.layer.borderColor = UIColor.black.cgColor
         }
         
         // Thumbnail Label
