@@ -17,10 +17,24 @@ class SubverseViewController: UITableViewController {
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
     
-    private var REFRESH_CONTROL_PULL_DISTANCE: CGFloat = -100
+    private var REFRESH_CONTROL_PULL_DISTANCE: CGFloat = 50
     private var PULL_TO_REFRESH_STRING = "Pull to Refresh"
     private var PULL_TO_REFRESH_ATTRIBUTED_TITLE = NSAttributedString.init(string: "Pull to Refresh", attributes: [NSForegroundColorAttributeName : UIColor.white])
     private var customRefreshControl: SubverseRefreshControl?
+    private var SCROLLVIEW_CONTENT_OFFSET_PORTRAIT: CGFloat = 64
+    private var SCROLLVIEW_CONTENT_OFFSET_LANDSCAPE: CGFloat = 32
+    var scrollViewContentOffsetY:CGFloat {
+        get {
+            if UIDevice.current.orientation.isLandscape {
+                return SCROLLVIEW_CONTENT_OFFSET_LANDSCAPE
+            }
+            return SCROLLVIEW_CONTENT_OFFSET_PORTRAIT
+        }
+        set {
+            self.scrollViewContentOffsetY = newValue
+        }
+        
+    }// Set after orientation change
     
     private var RELEASE_TO_REFRESH_STRING = "Release to Refresh"
     private var RELEASE_TO_REFRESH_ATTRIBUTED_TITLE = NSAttributedString.init(string: "Release to Refresh", attributes: [NSForegroundColorAttributeName : UIColor.white])
@@ -49,6 +63,7 @@ class SubverseViewController: UITableViewController {
         self.numOfCellsToDisplay = self.NUM_OF_STARTING_CELLS_TO_DISPLAY
         self.loadPullToRefreshControl()
         self.loadTableCells(dataProvider: self.dataProvider) {}
+        self.navigationBarLabel.text = "Loading..."
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -68,33 +83,34 @@ class SubverseViewController: UITableViewController {
         self.refreshControl?.attributedTitle = NSAttributedString.init(string: "", attributes: [NSForegroundColorAttributeName : UIColor.white])
         self.tableView.addSubview(self.customRefreshControl!.backgroundView)
         
-        let height: CGFloat = -self.REFRESH_CONTROL_PULL_DISTANCE/2
+        let height: CGFloat = (self.scrollViewContentOffsetY)
         
-        self.customRefreshControl?.backgroundView.frame = CGRect(x: 0,
-                                                                 y: -height,
-                                                                 width: self.refreshControl!.frame.width,
-                                                                 height: height)
-        self.customRefreshControl?.label.center = CGPoint(x: self.customRefreshControl!.backgroundView.center.x,
-                                                          y: -self.customRefreshControl!.backgroundView.center.y)
+        self.customRefreshControl?.height = height
+        self.customRefreshControl?.update()
     }
     
     
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if scrollView.contentOffset.y <= self.REFRESH_CONTROL_PULL_DISTANCE {
+        if scrollView.contentOffset.y <= -(self.scrollViewContentOffsetY + self.REFRESH_CONTROL_PULL_DISTANCE) {
+            
+            self.refreshControl?.beginRefreshing()
+            self.customRefreshControl?.label.text = "Refreshing..."
+            self.customRefreshControl?.isRefreshing = true
+            
             //refresh logic
             self.loadTableCells(dataProvider: self.dataProvider) {
                 self.refreshControl?.endRefreshing()
+                self.customRefreshControl?.isRefreshing = false
             }
-            
-            self.refreshControl?.beginRefreshing()
-            //self.customRefreshControl?.label.text = "Refreshing..."
         }
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y <= self.REFRESH_CONTROL_PULL_DISTANCE {
-            //self.refreshControl?.layer.backgroundColor = self.BGCOLOR.cgColor
-            
+        guard self.customRefreshControl?.isRefreshing == false else {
+            return
+        }
+        
+        if scrollView.contentOffset.y <= -(self.scrollViewContentOffsetY + self.REFRESH_CONTROL_PULL_DISTANCE) {
             if self.customRefreshControl?.label.text != self.RELEASE_TO_REFRESH_STRING {
                 self.customRefreshControl?.label.text = self.RELEASE_TO_REFRESH_STRING
             }
@@ -105,13 +121,10 @@ class SubverseViewController: UITableViewController {
             if self.customRefreshControl?.label.text != self.PULL_TO_REFRESH_STRING{
                 self.customRefreshControl?.label.text = self.PULL_TO_REFRESH_STRING
             }
-            //self.refreshControl?.layer.backgroundColor = UIColor.gray.cgColor
         }
     }
     
     func loadTableCells(dataProvider: DataProviderType, completion: @escaping ()->()) {
-        
-        self.navigationBarLabel.text = "Loading..."
         
         // Make initial request with DataProvider
         dataProvider.requestSubverseSubmissions(subverse: self.subverse) { submissionDataModels, error in
@@ -277,18 +290,20 @@ class SubverseViewController: UITableViewController {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         
         if UIDevice.current.orientation.isLandscape {
+            
             #if DEBUG
                 print("Landscape")
             #endif
             
         } else {
+            
             #if DEBUG
                 print("Portrait")
             #endif
         }
     
         coordinator.animate(alongsideTransition: nil, completion: { _ in
-            
+            self.customRefreshControl?.update()
         })
     }
     
