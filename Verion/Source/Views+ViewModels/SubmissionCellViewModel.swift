@@ -26,6 +26,12 @@ class SubmissionCellViewModel{
     
     private let USERNAME_LABEL_FONT_SIZE: CGFloat = 12
     
+    // For autosizing of cell
+    private let CELL_TITLE_FONT_NAME = "AmericanTypewriter-Bold"
+    private let CELL_TITLE_FONT_SIZE: CGFloat = 18
+    private let MAX_CELL_HEIGHT: CGFloat = 999
+    private let MINIMUM_CELL_HEIGHT_WITH_IMAGE: CGFloat = 140.0
+    private let MINIMUM_CELL_HEIGHT_NO_IMAGE: CGFloat = 100.0
     
     // Variables for binding to UI
     private(set) var linkShortString: String = ""
@@ -54,6 +60,9 @@ class SubmissionCellViewModel{
     private(set) var date: Date?
     private(set) var dateSubmittedString = ""
     
+    private var minimumHeight: CGFloat = 120
+    private(set) var cellHeight: CGFloat = 0
+    
     // Lazy initialization
     init() {
         self.setupInternalBindings()
@@ -80,10 +89,12 @@ class SubmissionCellViewModel{
         self.date = subCellVmInitData.date
         self.dateSubmittedString = self.createDateSubmittedString(gmtDate: subCellVmInitData.date)
         self.submittedByString = self.createSubmittedByUsernameString(username: subCellVmInitData.username)
-        self.thumbnailImage = self.createThumbnailImage(urlString: subCellVmInitData.thumbnailLink)
         
-        // TODO: Add date to format
+        self.thumbnailImage = self.createThumbnailImage(urlString: subCellVmInitData.thumbnailLink)
         self.submittedToSubverseString = self.createSubmittedToSubverseString(dateSubmittedString: self.dateSubmittedString, subverseName: self.subverseName)
+        
+        self.minimumHeight = self.getMinimumCellHeight(dependingOnThumbnailImage: self.thumbnailImage)
+        self.cellHeight = self.getCellHeight(withTitleString: subCellVmInitData.titleString, minCellHeight: self.minimumHeight, maxCellHeight: self.MAX_CELL_HEIGHT)
     }
     
     private func setupInternalBindings() {
@@ -101,6 +112,37 @@ class SubmissionCellViewModel{
         }
     }
     
+    // Minimum Cell Height
+    private func getMinimumCellHeight(dependingOnThumbnailImage thumbnailImage: UIImage?) -> CGFloat {
+        if thumbnailImage != nil {
+            return self.MINIMUM_CELL_HEIGHT_WITH_IMAGE
+        }
+        
+        return self.MINIMUM_CELL_HEIGHT_NO_IMAGE
+    }
+    
+    // Cell height
+    private func getCellHeight(withTitleString titleString:String, minCellHeight: CGFloat, maxCellHeight: CGFloat) -> CGFloat {
+        var cellHeight: CGFloat = 0
+        
+        // Width of label is screensize.width minus the imageSize and its margins
+        let imageViewHorizontalMargins: CGFloat = 25
+        let imageViewWidth: CGFloat = 75
+        let titleWidth = UIScreen.main.bounds.size.width - imageViewWidth - imageViewHorizontalMargins
+        let titleSize = self.sizeForText(text: titleString, font: UIFont.init(name: self.CELL_TITLE_FONT_NAME, size: self.CELL_TITLE_FONT_SIZE)!, maxSize: CGSize(width: titleWidth, height: maxCellHeight))
+        
+        let titleHeight = titleSize.height
+        let titleTopMargin: CGFloat = 10
+        let titleBottomMargin: CGFloat = 10
+        let submittedByTextHeight: CGFloat = 50
+        
+        cellHeight = titleHeight + titleTopMargin + titleBottomMargin + submittedByTextHeight
+        
+        cellHeight = max(cellHeight, minCellHeight)
+        
+        return cellHeight
+    }
+    
     // Thumbnail Image
     private func createThumbnailImage(urlString: String) -> UIImage? {
         
@@ -110,10 +152,10 @@ class SubmissionCellViewModel{
         }
         
         var image: UIImage?
-        
+    
         do {
             let imageData = try Data.init(contentsOf: url)
-            image = UIImage.init(data: imageData)!;
+            image = UIImage.init(data: imageData)
         } catch {
             #if DEBUG
             print("No Image found for thumbnail url: \(urlString)")
@@ -122,6 +164,16 @@ class SubmissionCellViewModel{
         
         return image
     }
+    
+    /*
+    func getResizedImage(image: UIImage, toSize size: CGSize) -> UIImage {
+        UIGraphicsBeginImageContext(size)
+        image.draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: size))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }*/
     
     // "by username" string
     private func createSubmittedByUsernameString(username: String) -> NSMutableAttributedString {
@@ -202,6 +254,15 @@ class SubmissionCellViewModel{
         
         // Should appear to be (+1|-5)
         return "(+\(upvoteCount)|-\(downvoteCount))"
+    }
+    
+    
+    func sizeForText(text: String, font: UIFont, maxSize: CGSize) -> CGSize {
+        let attrString = NSAttributedString.init(string: text, attributes: [NSFontAttributeName:font])
+        let rect = attrString.boundingRect(with: maxSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
+        let size = CGSize(width: rect.width, height: rect.height)
+        
+        return size
     }
     
 }

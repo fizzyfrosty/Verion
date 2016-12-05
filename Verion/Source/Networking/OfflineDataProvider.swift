@@ -16,7 +16,7 @@ class OfflineDataProvider: DataProviderType {
     private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY = "SampleJsonSubmissions_legacy"
     private let SAMPLE_FILES_EXTENSION = "txt"
     private let VOAT_THUMBNAIL_URL = "https://cdn.voat.co/thumbs/"
-    private let DELAY_TIME_SECONDS = 2
+    private let DELAY_TIME_SECONDS = 0
     
     init(apiVersion: APIVersion) {
         self.apiVersion = apiVersion
@@ -40,7 +40,6 @@ class OfflineDataProvider: DataProviderType {
                 let submissionDataModel = self.getSubmissionDataModel(fromJson: submissionJson)
                 submissionDataModels.append(submissionDataModel)
             }
-            
             
             // TODO: Implement error return in a mock object?
             
@@ -140,8 +139,6 @@ class OfflineDataProvider: DataProviderType {
         
         // Get the date, expecting (eg): "2016-12-02T06:34:50.3834343" - note the T
         subCellVmInitData.date = self.getDateFromString(gmtString: dataModel.dateString)
-        
-        
         subCellVmInitData.thumbnailLink = self.getThumbnailLink(voatURL: self.VOAT_THUMBNAIL_URL, voatEndpoint: dataModel.thumbnailLink)
         subCellVmInitData.username = dataModel.username
         subCellVmInitData.subverseName = dataModel.subverseName
@@ -150,7 +147,7 @@ class OfflineDataProvider: DataProviderType {
     }
     
     private func getThumbnailLink(voatURL: String, voatEndpoint: String?) -> String {
-        guard voatEndpoint != nil && voatEndpoint != "" else {
+        guard voatEndpoint != "" && voatEndpoint != nil else {
             return ""
         }
         

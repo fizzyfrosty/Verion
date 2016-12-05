@@ -12,7 +12,7 @@ class SubverseViewController: UITableViewController {
     
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
     private let CELL_SPACING: CGFloat = 10.0
-    private let MINIMUM_CELL_HEIGHT: CGFloat = 130.0
+    
     var subverse = "frontpage"
     
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
@@ -21,11 +21,6 @@ class SubverseViewController: UITableViewController {
     private var subCellViewModels: [SubmissionCellViewModel] = []
     private var submissionDataModels: [SubmissionDataModelProtocol] = []
     var isTableLoading = false // prevents table from rendering before cells completely bounded
-    
-    // For autosizing of cell
-    let CELL_TITLE_FONT_NAME = "AmericanTypewriter-Bold"
-    let CELL_TITLE_FONT_SIZE: CGFloat = 18
-    let MAX_CELL_HEIGHT: CGFloat = 999
     
     // Dependencies
     var sfxManager: SFXManagerType?
@@ -110,6 +105,7 @@ class SubverseViewController: UITableViewController {
         // Table can be partially loaded with viewModels while still binding to cells
         guard self.isTableLoading == false else {
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: "TransparentCell")!
+            
             // Return an invisible cell
             return transparentCell
         }
@@ -144,28 +140,19 @@ class SubverseViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var cellHeight: CGFloat = 0
         
+        guard self.isTableLoading == false else {
+            return cellHeight
+        }
+        
         if self.subCellViewModels.count > 0 {
             // Get corresponding viewModel
             let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
-            
-            // Width of label is screensize.width minus the imageSize and its margins
-            let imageViewHorizontalMargins: CGFloat = 25
-            let imageViewWidth: CGFloat = 75
-            let titleWidth = UIScreen.main.bounds.size.width - imageViewWidth - imageViewHorizontalMargins
-            let titleSize = self.sizeForText(text: viewModel.titleString, font: UIFont.init(name: self.CELL_TITLE_FONT_NAME, size: self.CELL_TITLE_FONT_SIZE)!, maxSize: CGSize(width: titleWidth, height: self.MAX_CELL_HEIGHT))
-            
-            let titleHeight = titleSize.height
-            let titleTopMargin: CGFloat = 10
-            let titleBottomMargin: CGFloat = 10
-            let submittedByTextHeight: CGFloat = 50
-            
-            cellHeight = titleHeight + titleTopMargin + titleBottomMargin + submittedByTextHeight
-            
-            cellHeight = max(cellHeight, self.MINIMUM_CELL_HEIGHT)
+            cellHeight = viewModel.cellHeight
         }
         
         return cellHeight
     }
+    
  
     // For detecting rotations beginning and finishing.
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -205,16 +192,6 @@ class SubverseViewController: UITableViewController {
         return subverseTitle
     }
     
-    func sizeForText(text: String, font: UIFont, maxSize: CGSize) -> CGSize {
-        let attrString = NSAttributedString.init(string: text, attributes: [NSFontAttributeName:font])
-        let rect = attrString.boundingRect(with: maxSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
-        let size = CGSize(width: rect.width, height: rect.height)
-        
-        return size
-    }
-        
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         // Forces redraw of shadows right before transition

@@ -14,7 +14,7 @@
         <scene sceneID="Sia-EV-FWe">
             <objects>
                 <tableViewController storyboardIdentifier="SubverseViewController" id="F8s-Mq-eeW" customClass="SubverseViewController" customModule="Verion" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="195" sectionHeaderHeight="28" sectionFooterHeight="28" id="w23-3f-rjt">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="195" sectionHeaderHeight="28" sectionFooterHeight="28" id="w23-3f-rjt">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -23,7 +23,7 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="195"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zkz-TG-hiR" id="UhV-ny-uL2">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="194"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="195"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DCG-A5-oBB">
@@ -266,6 +266,7 @@
                                     <outlet property="submittedToSubverseLabel" destination="CPa-1S-dXB" id="8wc-nJ-T0y"/>
                                     <outlet property="thumbnailImageView" destination="DCG-A5-oBB" id="c5w-n1-Lpb"/>
                                     <outlet property="thumbnailLabel" destination="uKj-ML-4YP" id="aYm-ev-0Cz"/>
+                                    <outlet property="thumbnailWidthConstraint" destination="iyL-oW-bmD" id="wOt-Wb-gSX"/>
                                     <outlet property="titleLabel" destination="lys-ee-fMK" id="00s-sa-0IH"/>
                                     <outlet property="upvoteButton" destination="pYi-Ci-SdD" id="RgV-pu-pEZ"/>
                                     <outlet property="voteCountLabel" destination="dOY-UI-5m0" id="cnn-8P-BAm"/>
@@ -276,7 +277,7 @@
                                 <rect key="frame" x="0.0" y="223" width="414" height="106"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Psj-3K-KKX" id="bOP-Bb-zPk">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="105"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="106"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="[This is a transparent cell]" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5o-Kp-e3M">

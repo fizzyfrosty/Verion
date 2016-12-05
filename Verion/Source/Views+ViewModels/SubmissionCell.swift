@@ -12,6 +12,7 @@ import Bond
 class SubmissionCell: UITableViewCell {
     
     
+    @IBOutlet var thumbnailWidthConstraint: NSLayoutConstraint!
     @IBOutlet var thumbnailImageView: UIImageView!
     @IBOutlet var thumbnailLabel: UILabel!
     @IBOutlet var titleLabel: UILabel!
@@ -54,8 +55,13 @@ class SubmissionCell: UITableViewCell {
         self.titleLabel.text = viewModel.titleString
         
         // Thumbnail Image
-        self.thumbnailImageView.image = viewModel.thumbnailImage
-        self.thumbnailImageView.contentMode = .scaleAspectFit
+        if viewModel.thumbnailImage == nil {
+            self.thumbnailWidthConstraint.constant = 0
+        } else {
+            self.thumbnailWidthConstraint.constant = 75
+            self.thumbnailImageView.image = viewModel.thumbnailImage
+            self.thumbnailImageView.contentMode = .scaleAspectFit
+        }
         
         // Thumbnail Label
         self.thumbnailLabel.text = viewModel.linkShortString
