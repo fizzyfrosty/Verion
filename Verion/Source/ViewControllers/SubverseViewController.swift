@@ -13,8 +13,8 @@ class SubverseViewController: UITableViewController {
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
     private let CELL_SPACING: CGFloat = 10.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
-    private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 10
-    private let NUM_OF_CELLS_TO_INCREMENT_BY = 10
+    private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
+    private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
     private var PULL_TO_REFRESH = "Pull to Refresh"
     
@@ -88,7 +88,7 @@ class SubverseViewController: UITableViewController {
                 self.submissionDataModels = submissionDataModels
                 
                 // Bind set of cells to be loaded
-                self.bindCellsToBeDisplayed(startingIndexInclusive: 0, endingIndexExclusive: self.numOfCellsToDisplay)
+                self.bindCellsToBeDisplayed(startingIndexInclusive: 0, endingIndexExclusive: self.subCellViewModels.count)
                 
                 // Reload table, animated, back on main thread
                 DispatchQueue.main.async {
@@ -207,6 +207,23 @@ class SubverseViewController: UITableViewController {
         if self.shouldLoadLoadMoreCell(indexPath: indexPath, numOfCellsCurrentlyDisplaying: self.numOfCellsToDisplay, numOfMaxCells: self.subCellViewModels.count) {
             self.increaseAmountOfTableCellsAndReload(increaseBy: self.NUM_OF_CELLS_TO_INCREMENT_BY,
                                                   maxLimit: self.subCellViewModels.count)
+            
+            /*
+            self.tableView.beginUpdates()
+            self.numOfCellsToDisplay += 2
+            let range = Range.init(uncheckedBounds: (lower: self.numOfCellsToDisplay-2, upper: self.numOfCellsToDisplay))
+            let indexSet = IndexSet.init(integersIn: range)
+            self.tableView.insertSections(indexSet, with: .automatic)
+            self.tableView.endUpdates()
+ 
+            
+            
+            self.tableView.beginUpdates()
+            let range2 = Range.init(uncheckedBounds: (lower: self.numOfCellsToDisplay-3, upper: self.numOfCellsToDisplay))
+            let indexSet2 = IndexSet.init(integersIn: range2)
+            self.tableView.reloadSections(indexSet2, with: .automatic)
+            self.tableView.endUpdates()
+            */
         }
     }
     
@@ -264,10 +281,30 @@ class SubverseViewController: UITableViewController {
 
         }
     }
- 
-    private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive: Int, animation: UITableViewRowAnimation) {
-        tableView.reloadData()
+    
+    private func insertSectionsAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive: Int, animation: UITableViewRowAnimation) {
+
         
+        tableView.beginUpdates()
+        let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
+        let indexSet = IndexSet.init(integersIn: range)
+        tableView.insertSections(indexSet, with: .automatic)
+        tableView.endUpdates()
+        
+        
+        // Refresh the cell that said "Load More Submissions"
+        tableView.beginUpdates()
+        let refreshRange = Range.init(uncheckedBounds: (lower: startingIndexInclusive-1, upper: startingIndexInclusive))
+        let refreshIndexSet = IndexSet.init(integersIn: refreshRange)
+        tableView.reloadSections(refreshIndexSet, with: .automatic)
+        tableView.endUpdates()
+ 
+    }
+ 
+    private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive:
+        Int, animation: UITableViewRowAnimation) {
+        
+        tableView.reloadData()
         let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
         let indexSet = IndexSet.init(integersIn: range)
         tableView.reloadSections(indexSet, with: animation)
@@ -287,7 +324,7 @@ class SubverseViewController: UITableViewController {
     
     func increaseAmountOfTableCellsAndReload(increaseBy numToIncrease: Int, maxLimit: Int) {
         // Load more
-        var numOfCellsToIncreaseBy = numToIncrease
+        var numOfCellsToIncreaseBy = 0
         
         if (self.numOfCellsToDisplay + numToIncrease) > maxLimit {
             
@@ -297,18 +334,25 @@ class SubverseViewController: UITableViewController {
             numOfCellsToIncreaseBy = numToIncrease
         }
         
+        let startingIndex = self.numOfCellsToDisplay
+        
         // This is what is necessary to increase table cells
         self.numOfCellsToDisplay += numOfCellsToIncreaseBy
         
-        let startingIndex = self.numOfCellsToDisplay - numToIncrease
+        self.insertSectionsAnimated(forTableView: self.tableView,
+                                    startingIndexInclusive: startingIndex,
+                                    endingIndexExclusive: self.numOfCellsToDisplay,
+                                    animation: .automatic)
         
-        self.bindCellsToBeDisplayed(startingIndexInclusive: startingIndex,
-                                    endingIndexExclusive: self.numOfCellsToDisplay)
+    }
+    
+    func reloadDataAnimatedKeepingOffset()
+    {
+        let offset = self.tableView.contentOffset
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
         
-        self.reloadTableAnimated(forTableView: self.tableView,
-                                 startingIndexInclusive: startingIndex,
-                                 endingIndexExclusive: self.numOfCellsToDisplay,
-                                 animation: UITableViewRowAnimation.fade)
+        self.tableView.contentOffset = offset
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
