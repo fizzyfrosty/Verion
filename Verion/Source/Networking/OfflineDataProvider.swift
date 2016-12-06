@@ -16,7 +16,7 @@ class OfflineDataProvider: DataProviderType {
     private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY = "SampleJsonSubmissions_legacy"
     private let SAMPLE_FILES_EXTENSION = "txt"
     private let VOAT_THUMBNAIL_URL = "https://cdn.voat.co/thumbs/"
-    private let DELAY_TIME_SECONDS = 0
+    private let DELAY_TIME_SECONDS = 2
     
     init(apiVersion: APIVersion) {
         self.apiVersion = apiVersion

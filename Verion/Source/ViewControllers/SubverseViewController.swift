@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
-class SubverseViewController: UITableViewController {
+class SubverseViewController: UITableViewController, NVActivityIndicatorViewable {
+    
     
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
     private let CELL_SPACING: CGFloat = 10.0
@@ -36,6 +38,9 @@ class SubverseViewController: UITableViewController {
         
     }// Set after orientation change
     
+    
+    private var ACTIVITY_INDICATOR_LENGTH = 50
+    
     private var RELEASE_TO_REFRESH_STRING = "Release to Refresh"
     private var RELEASE_TO_REFRESH_ATTRIBUTED_TITLE = NSAttributedString.init(string: "Release to Refresh", attributes: [NSForegroundColorAttributeName : UIColor.white])
     
@@ -52,7 +57,7 @@ class SubverseViewController: UITableViewController {
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
-    
+    var activityIndicatorPresenter: NVActivityIndicatorPresenter?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +67,10 @@ class SubverseViewController: UITableViewController {
         
         self.numOfCellsToDisplay = self.NUM_OF_STARTING_CELLS_TO_DISPLAY
         self.loadPullToRefreshControl()
-        self.loadTableCells(dataProvider: self.dataProvider) {}
+        self.showActivityIndicator()
+        self.loadTableCells(dataProvider: self.dataProvider) {
+            self.hideActivityIndicator()
+        }
         self.navigationBarLabel.text = "Loading..."
         
         // Uncomment the following line to preserve selection between presentations
@@ -89,18 +97,32 @@ class SubverseViewController: UITableViewController {
         self.customRefreshControl?.update()
     }
     
+    func showActivityIndicator() {
+        let activityData = ActivityData.init(size: CGSize(width: self.ACTIVITY_INDICATOR_LENGTH, height: self.ACTIVITY_INDICATOR_LENGTH),
+                                             type: NVActivityIndicatorType.ballSpinFadeLoader)
+        self.activityIndicatorPresenter?.startAnimating(activityData)
+    }
+    
+    func hideActivityIndicator() {
+        self.activityIndicatorPresenter?.stopAnimating()
+    }
     
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView.contentOffset.y <= -(self.scrollViewContentOffsetY + self.REFRESH_CONTROL_PULL_DISTANCE) {
             
+            // Refresh control activated
             self.refreshControl?.beginRefreshing()
             self.customRefreshControl?.label.text = "Refreshing..."
             self.customRefreshControl?.isRefreshing = true
             
             //refresh logic
+            
+            
             self.loadTableCells(dataProvider: self.dataProvider) {
                 self.refreshControl?.endRefreshing()
                 self.customRefreshControl?.isRefreshing = false
+                
+                
             }
         }
     }
@@ -494,6 +516,7 @@ extension SwinjectStoryboard {
         defaultContainer.registerForStoryboard(SubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+            C.activityIndicatorPresenter = NVActivityIndicatorPresenter.sharedInstance
         })
     }
 }

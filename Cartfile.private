@@ -13,3 +13,5 @@ github "Quick/Nimble"
 # due to SwiftyJSON not being compiled locally
 
 github "SwiftyJSON/SwiftyJSON"
+
+github "ninjaprox/NVActivityIndicatorView"

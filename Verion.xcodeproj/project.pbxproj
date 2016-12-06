@@ -20,6 +20,7 @@
 		4375BFC81DF3EDC300576CC6 /* Delayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC71DF3EDC300576CC6 /* Delayer.swift */; };
 		4375BFCA1DF5060F00576CC6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4375BFC91DF5060F00576CC6 /* Assets.xcassets */; };
 		4375BFCD1DF5D45400576CC6 /* SubverseRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFCC1DF5D45400576CC6 /* SubverseRefreshControl.swift */; };
+		4375C0011DF62F6700576CC6 /* NVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375C0001DF62F6700576CC6 /* NVActivityIndicatorView.framework */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -67,6 +68,7 @@
 		4375BFC71DF3EDC300576CC6 /* Delayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delayer.swift; sourceTree = "<group>"; };
 		4375BFC91DF5060F00576CC6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4375BFCC1DF5D45400576CC6 /* SubverseRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseRefreshControl.swift; sourceTree = "<group>"; };
+		4375C0001DF62F6700576CC6 /* NVActivityIndicatorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NVActivityIndicatorView.framework; path = Carthage/Build/iOS/NVActivityIndicatorView.framework; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */,
 				43F9A04F1DEA3C26001EB1FC /* Swinject.framework in Frameworks */,
 				43F9A0501DEA3C26001EB1FC /* SwinjectStoryboard.framework in Frameworks */,
+				4375C0011DF62F6700576CC6 /* NVActivityIndicatorView.framework in Frameworks */,
 				4300A0C11DF0EF0A00497FE4 /* Bond.framework in Frameworks */,
 				4300A0C21DF0EF0A00497FE4 /* ReactiveKit.framework in Frameworks */,
 			);
@@ -250,6 +253,7 @@
 		43F9A04C1DEA3C26001EB1FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4375C0001DF62F6700576CC6 /* NVActivityIndicatorView.framework */,
 				4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */,
 				43F674241DF114CD001F83BE /* Nimble.framework */,
 				43F674251DF114CD001F83BE /* Quick.framework */,
@@ -403,6 +407,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Bond.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/ReactiveKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/NVActivityIndicatorView.framework",
 			);
 			outputPaths = (
 			);
