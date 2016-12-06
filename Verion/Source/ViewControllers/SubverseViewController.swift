@@ -11,7 +11,7 @@ import NVActivityIndicatorView
 
 class SubverseViewController: UITableViewController, NVActivityIndicatorViewable {
     
-    
+    // Cell configuration
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
     private let CELL_SPACING: CGFloat = 10.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
@@ -19,6 +19,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
     
+    // Pull to Refresh control configuration
     private var REFRESH_CONTROL_PULL_DISTANCE: CGFloat = 50
     private var PULL_TO_REFRESH_STRING = "Pull to Refresh"
     private var PULL_TO_REFRESH_ATTRIBUTED_TITLE = NSAttributedString.init(string: "Pull to Refresh", attributes: [NSForegroundColorAttributeName : UIColor.white])
@@ -36,28 +37,33 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             self.scrollViewContentOffsetY = newValue
         }
         
-    }// Set after orientation change
-    
-    
-    private var ACTIVITY_INDICATOR_LENGTH = 50
+    }
     
     private var RELEASE_TO_REFRESH_STRING = "Release to Refresh"
     private var RELEASE_TO_REFRESH_ATTRIBUTED_TITLE = NSAttributedString.init(string: "Release to Refresh", attributes: [NSForegroundColorAttributeName : UIColor.white])
     
     
+    // Navigation Bar items
+    private var ACTIVITY_INDICATOR_LENGTH: CGFloat = 25.0
+    var activityIndicator: NVActivityIndicatorView?
+    
     var subverse = "frontpage"
     
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
-    @IBOutlet var navigationBarLabel: UILabel!
+    @IBOutlet var navigationBarLabel: SpringLabel!
+    @IBOutlet var navigationBarView: UIView!
     
+    
+    // Data Models and View Models
     private var subCellViewModels: [SubmissionCellViewModel] = []
     private var submissionDataModels: [SubmissionDataModelProtocol] = []
     var didTableLoadOnce = false // prevents table from rendering before cells completely bounded
     
+    
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
-    var activityIndicatorPresenter: NVActivityIndicatorPresenter?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,11 +73,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         self.numOfCellsToDisplay = self.NUM_OF_STARTING_CELLS_TO_DISPLAY
         self.loadPullToRefreshControl()
-        self.showActivityIndicator()
+        self.loadActivityIndicator()
+        self.showNavBarActivityIndicator()
+        
         self.loadTableCells(dataProvider: self.dataProvider) {
-            self.hideActivityIndicator()
+            self.hideNavBarActivityIndicator()
         }
-        self.navigationBarLabel.text = "Loading..."
+
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -94,35 +102,55 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         let height: CGFloat = (self.scrollViewContentOffsetY)
         
         self.customRefreshControl?.height = height
-        self.customRefreshControl?.update()
+        self.customRefreshControl?.prepareFrameForShowing()
     }
     
-    func showActivityIndicator() {
-        let activityData = ActivityData.init(size: CGSize(width: self.ACTIVITY_INDICATOR_LENGTH, height: self.ACTIVITY_INDICATOR_LENGTH),
-                                             type: NVActivityIndicatorType.ballSpinFadeLoader)
-        self.activityIndicatorPresenter?.startAnimating(activityData)
+    func loadActivityIndicator() {
+        
+        let activityIndicatorFrame = CGRect(x: 0,
+                                            y: 0,
+                                            width: self.ACTIVITY_INDICATOR_LENGTH,
+                                            height: self.ACTIVITY_INDICATOR_LENGTH)
+        
+        self.activityIndicator = NVActivityIndicatorView.init(frame: activityIndicatorFrame,
+                                                              type: NVActivityIndicatorType.ballPulse,
+                                                              color: UIColor.white,
+                                                              padding: 0)
+        
+        self.activityIndicator?.center = self.navigationBarLabel.center
+        
+        self.navigationBarView.addSubview(self.activityIndicator!)
     }
     
-    func hideActivityIndicator() {
-        self.activityIndicatorPresenter?.stopAnimating()
+    func showNavBarActivityIndicator() {
+        self.activityIndicator?.startAnimating()
+        
+        self.navigationBarLabel.isHidden = true
     }
+    
+    func hideNavBarActivityIndicator() {
+        self.activityIndicator?.stopAnimating()
+        
+        self.navigationBarLabel.isHidden = false
+        self.navigationBarLabel.animation = "fadeIn"
+        self.navigationBarLabel.animate()
+    }
+    
     
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView.contentOffset.y <= -(self.scrollViewContentOffsetY + self.REFRESH_CONTROL_PULL_DISTANCE) {
             
             // Refresh control activated
             self.refreshControl?.beginRefreshing()
-            self.customRefreshControl?.label.text = "Refreshing..."
             self.customRefreshControl?.isRefreshing = true
-            
+            self.customRefreshControl?.showActivityIndicator()
             //refresh logic
             
             
             self.loadTableCells(dataProvider: self.dataProvider) {
                 self.refreshControl?.endRefreshing()
                 self.customRefreshControl?.isRefreshing = false
-                
-                
+                self.customRefreshControl?.hideActivityIndicator()
             }
         }
     }
@@ -325,7 +353,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
     
         coordinator.animate(alongsideTransition: nil, completion: { _ in
-            self.customRefreshControl?.update()
+            self.customRefreshControl?.prepareFrameForShowing()
         })
     }
     
@@ -516,7 +544,6 @@ extension SwinjectStoryboard {
         defaultContainer.registerForStoryboard(SubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
-            C.activityIndicatorPresenter = NVActivityIndicatorPresenter.sharedInstance
         })
     }
 }

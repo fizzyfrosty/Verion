@@ -10,8 +10,10 @@ import UIKit
 
 class Delayer {
     
-    static func delay(seconds: Int, completion: @escaping ()->Void){
-        let deadlineTime = DispatchTime.now() + DispatchTimeInterval.seconds(seconds)
+    static func delay(seconds: Float, completion: @escaping ()->Void){
+        let milliSeconds: Int = Int(seconds * 1000)
+        
+        let deadlineTime = DispatchTime.now() + DispatchTimeInterval.milliseconds(milliSeconds)
         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
             completion()
             
