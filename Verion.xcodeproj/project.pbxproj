@@ -50,6 +50,10 @@
 		4375C03C1DF67EDA00576CC6 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C01F1DF67EDA00576CC6 /* TransitionManager.swift */; };
 		4375C03D1DF67EDA00576CC6 /* TransitionZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0201DF67EDA00576CC6 /* TransitionZoom.swift */; };
 		4375C03E1DF67EDA00576CC6 /* UnwindSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0211DF67EDA00576CC6 /* UnwindSegue.swift */; };
+		4375C0401DF74B1700576CC6 /* Comments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4375C03F1DF74B1700576CC6 /* Comments.storyboard */; };
+		4375C0421DF7524700576CC6 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0411DF7524700576CC6 /* CommentsViewController.swift */; };
+		4375C0461DF753BB00576CC6 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0451DF753BB00576CC6 /* CommentCell.swift */; };
+		4375C0481DF753CB00576CC6 /* CommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0471DF753CB00576CC6 /* CommentCellViewModel.swift */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -63,7 +67,6 @@
 		43F675291DF20078001F83BE /* SFXManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6751B1DF20078001F83BE /* SFXManagerType.swift */; };
 		43F6752A1DF20078001F83BE /* SubverseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6751D1DF20078001F83BE /* SubverseViewController.swift */; };
 		43F6752B1DF20078001F83BE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6751E1DF20078001F83BE /* TabBarController.swift */; };
-		43F6752C1DF20078001F83BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6751F1DF20078001F83BE /* ViewController.swift */; };
 		43F6752D1DF20078001F83BE /* SubmissionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F675211DF20078001F83BE /* SubmissionCell.swift */; };
 		43F6752E1DF20078001F83BE /* SubmissionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F675221DF20078001F83BE /* SubmissionCellViewModel.swift */; };
 		43F675301DF2050B001F83BE /* SubCellViewModelDataModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6752F1DF2050B001F83BE /* SubCellViewModelDataModelTest.swift */; };
@@ -72,7 +75,6 @@
 		43F9A0421DEA3AE0001EB1FC /* VerionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F9A0411DEA3AE0001EB1FC /* VerionTests.swift */; };
 		43F9A04F1DEA3C26001EB1FC /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
 		43F9A0501DEA3C26001EB1FC /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */; };
-		43F9A0B51DEA947B001EB1FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43F9A0B41DEA947B001EB1FC /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +130,10 @@
 		4375C01F1DF67EDA00576CC6 /* TransitionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
 		4375C0201DF67EDA00576CC6 /* TransitionZoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionZoom.swift; sourceTree = "<group>"; };
 		4375C0211DF67EDA00576CC6 /* UnwindSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnwindSegue.swift; sourceTree = "<group>"; };
+		4375C03F1DF74B1700576CC6 /* Comments.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Comments.storyboard; sourceTree = "<group>"; };
+		4375C0411DF7524700576CC6 /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
+		4375C0451DF753BB00576CC6 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		4375C0471DF753CB00576CC6 /* CommentCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellViewModel.swift; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -141,7 +147,6 @@
 		43F6751B1DF20078001F83BE /* SFXManagerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFXManagerType.swift; sourceTree = "<group>"; };
 		43F6751D1DF20078001F83BE /* SubverseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseViewController.swift; sourceTree = "<group>"; };
 		43F6751E1DF20078001F83BE /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
-		43F6751F1DF20078001F83BE /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		43F675211DF20078001F83BE /* SubmissionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCell.swift; sourceTree = "<group>"; };
 		43F675221DF20078001F83BE /* SubmissionCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewModel.swift; sourceTree = "<group>"; };
 		43F6752F1DF2050B001F83BE /* SubCellViewModelDataModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCellViewModelDataModelTest.swift; sourceTree = "<group>"; };
@@ -154,7 +159,6 @@
 		43F9A0431DEA3AE0001EB1FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43F9A04D1DEA3C26001EB1FC /* Swinject.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Swinject.framework; path = Carthage/Build/iOS/Swinject.framework; sourceTree = "<group>"; };
 		43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwinjectStoryboard.framework; path = Carthage/Build/iOS/SwinjectStoryboard.framework; sourceTree = "<group>"; };
-		43F9A0B41DEA947B001EB1FC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,7 +301,7 @@
 			children = (
 				43F6751D1DF20078001F83BE /* SubverseViewController.swift */,
 				43F6751E1DF20078001F83BE /* TabBarController.swift */,
-				43F6751F1DF20078001F83BE /* ViewController.swift */,
+				4375C0411DF7524700576CC6 /* CommentsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -307,6 +311,8 @@
 			children = (
 				43F675211DF20078001F83BE /* SubmissionCell.swift */,
 				43F675221DF20078001F83BE /* SubmissionCellViewModel.swift */,
+				4375C0451DF753BB00576CC6 /* CommentCell.swift */,
+				4375C0471DF753CB00576CC6 /* CommentCellViewModel.swift */,
 			);
 			path = "Views+ViewModels";
 			sourceTree = "<group>";
@@ -373,8 +379,8 @@
 		43F9A05B1DEA67A1001EB1FC /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				43F9A0B41DEA947B001EB1FC /* Main.storyboard */,
 				432564381DECAE8F001B943A /* Subverse.storyboard */,
+				4375C03F1DF74B1700576CC6 /* Comments.storyboard */,
 				432564B51DEEB798001B943A /* TabController.storyboard */,
 			);
 			path = Storyboards;
@@ -467,13 +473,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4375C0401DF74B1700576CC6 /* Comments.storyboard in Resources */,
 				43F9A0371DEA3AE0001EB1FC /* LaunchScreen.storyboard in Resources */,
 				4375C0311DF67EDA00576CC6 /* LoadingView.xib in Resources */,
 				432564B61DEEB798001B943A /* TabController.storyboard in Resources */,
 				43F674D91DF16A7C001F83BE /* SampleJsonSubmissions_legacy.txt in Resources */,
 				432564391DECAE8F001B943A /* Subverse.storyboard in Resources */,
 				4375BFCA1DF5060F00576CC6 /* Assets.xcassets in Resources */,
-				43F9A0B51DEA947B001EB1FC /* Main.storyboard in Resources */,
 				4375C02E1DF67EDA00576CC6 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -537,15 +543,16 @@
 				4375C02D1DF67EDA00576CC6 /* ImageLoader.swift in Sources */,
 				43F675251DF20078001F83BE /* DataProviderType.swift in Sources */,
 				4375C0301DF67EDA00576CC6 /* LoadingView.swift in Sources */,
+				4375C0421DF7524700576CC6 /* CommentsViewController.swift in Sources */,
 				4375C0341DF67EDA00576CC6 /* Spring.swift in Sources */,
 				4375C0241DF67EDA00576CC6 /* AutoTextView.swift in Sources */,
 				4375C03C1DF67EDA00576CC6 /* TransitionManager.swift in Sources */,
 				4375C02C1DF67EDA00576CC6 /* DesignableView.swift in Sources */,
+				4375C0461DF753BB00576CC6 /* CommentCell.swift in Sources */,
 				4375C0231DF67EDA00576CC6 /* AsyncImageView.swift in Sources */,
 				43F675231DF20078001F83BE /* SubmissionDataModelLegacy.swift in Sources */,
 				4375C0391DF67EDA00576CC6 /* SpringTextField.swift in Sources */,
 				43F6752B1DF20078001F83BE /* TabBarController.swift in Sources */,
-				43F6752C1DF20078001F83BE /* ViewController.swift in Sources */,
 				4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */,
 				4375C0381DF67EDA00576CC6 /* SpringLabel.swift in Sources */,
 				4375C03B1DF67EDA00576CC6 /* SpringView.swift in Sources */,
@@ -570,6 +577,7 @@
 				4375C03A1DF67EDA00576CC6 /* SpringTextView.swift in Sources */,
 				4375BFC61DF3737F00576CC6 /* SubmissionType.swift in Sources */,
 				4375C0291DF67EDA00576CC6 /* DesignableTabBarController.swift in Sources */,
+				4375C0481DF753CB00576CC6 /* CommentCellViewModel.swift in Sources */,
 				43F675241DF20078001F83BE /* SubmissionDataModelProtocol.swift in Sources */,
 				4375C0221DF67EDA00576CC6 /* AsyncButton.swift in Sources */,
 				4375C0331DF67EDA00576CC6 /* SoundPlayer.swift in Sources */,

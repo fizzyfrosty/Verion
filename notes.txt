@@ -1,14 +1,25 @@
 Random Notes
+
+- Submission View 
+	- Displaying kinds of content
+		- Image/Gif
+		- Video
+		- Link
+		- Text Post
+		- 
+
+
+
 - Sort Submissions by
 	- Hot (by rating)
 	- Top (by vote count)
 	- New (by date)
 
-- Refresh control
-	- Pull down to refresh
-	- Release to refresh
-	- Refreshing (animation?)
-	- Both orientations
+* Refresh control
+	* Pull down to refresh
+	* Release to refresh
+	* Refreshing (animation?)
+	* Both orientations
 
 * Load More when hit bottom
 	* Load more when hit bottom

@@ -1,0 +1,112 @@
+[
+  {
+    "Id": 7088129,
+    "Date": "2016-12-06T10:29:52.907",
+    "LastEditDate": "2016-12-06T10:48:23.817",
+    "Likes": 34,
+    "Dislikes": 0,
+    "CommentContent": "You can see how they force themselves to put \"false\" and \"falsely\" every other sentence in an attempt to compensate for the lack of substance to back their dismissal of rather compelling evidence against the Clintons.\n\n> X isn't true because it's false. According to (unqualified joe), X has been falsely twisted into a falsehood. 'I said X ain't no true and all and every claims against Clinton are only false as Clinton has never had anyone assasinated and #pizzagate is not true. I should know because I'm (an unqualified joe)\" said (another unqualified joe) about the false accusations that have spread among fake-news websites.  The FBI has not immediately commented on the matter, which goes to show how fake it is. NYPD confirmed that they haven't investigated the affair and found it to be entirely false.\n\n> This brings to light how damaging the 1st amendment can be to innocent lives. Is it time to ditch the first amendment?\nThat's what the residents of the Roses' Elders Home, Washington DC seem to think. \"Hillary Clinton should cancel the election that was rigged by the Russian Federation, and throw Donald Trump in jail for treason\" said Mrs Smiths, 98, who lives in fear since the election results were announced. \n\n>\n> (Corrupt Journalist) for the Washington Post",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "standalone"
+  },
+  {
+    "Id": 7087958,
+    "Date": "2016-12-06T10:00:08.03",
+    "LastEditDate": null,
+    "Likes": 19,
+    "Dislikes": 0,
+    "CommentContent": "The author fails to mention this post she made were she specifies that she believes [there is human trafficking occurring](https://archive.is/XV5t0) in the \"Clinton's Caracol Complex\". The author leaves this post out of his article, but includes [a more sedate post](http://i.imgur.com/TmiB2gU.png) she made about Clinton. Because the two posts are linked side by side in almost every context I've seen them in, I have to believe he's seen and read the first post in his research and this is a blatant attempt to deceive his readers. Without the first post, it looks like wild conjecture that she was researching a link between human trafficking and Clinton, which is what this article attempts to portray it as.\r\n\r\nAlso the key \"friend\" that this article continuously cites to back up their claim Petersen was not investigating Clinton, is a Denver based dominatrix. Not exactly a solid witness to the the professional pursuits Ms. Petersen might have had in Haiti.\r\n\r\nAnd still the U.S State Department has not made an official claim about her death. To my knowledge this is the first mainstream publication that has covered her death at all, and the only reason for it to exist is to further discredit \"fake news\". Something is strange here.",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "softcell"
+  },
+  {
+    "Id": 7088165,
+    "Date": "2016-12-06T10:37:28.277",
+    "LastEditDate": null,
+    "Likes": 10,
+    "Dislikes": 0,
+    "CommentContent": "\"anti trafficking zealots\" they reveal themselves completely now. ",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "YouaremeandIamyou"
+  },
+  {
+    "Id": 7088058,
+    "Date": "2016-12-06T10:18:25.633",
+    "LastEditDate": null,
+    "Likes": 10,
+    "Dislikes": 0,
+    "CommentContent": "I'm starting to wonder if Jeff Bezos is part of the pedophile club. Why is he defending these people so vehemently?",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "pray_the_gay_away"
+  },
+  {
+    "Id": 7088089,
+    "Date": "2016-12-06T10:23:41.22",
+    "LastEditDate": null,
+    "Likes": 7,
+    "Dislikes": 0,
+    "CommentContent": "Hmmm can someone link to an archive link that proves it was her facebook that posted about Clinton foundation? Still images won't convince skeptics.\r\n\r\nBTW, them mentioning her \"dominatrix friend\" is a subtle attempt at character assassination of a dead person they are supposedly defending. That's new... the backhanded virtue signal.",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "AnyDentistryStuff"
+  },
+  {
+    "Id": 7087959,
+    "Date": "2016-12-06T10:00:10.86",
+    "LastEditDate": null,
+    "Likes": 5,
+    "Dislikes": 0,
+    "CommentContent": "https://archive.is/T4Hrx :  \n\n >‘Pizzagate’ rumors falsely link death of sex-worker activist to nonexistent Clinton probe - The Washington Post \n\n 'The blog post Petersen shared months ago with Robinson, for instance, morphed into a blog post she allegedly wrote herself about the Clintons. ' \n\n 'Send us facts to check by filling out this formCheck out our guide to all Trump and Clinton fact checksSign up for The Fact Checker weekly newsletter' \n\n '“Monica Peterson went to the country of Haiti to investigate links between the Clinton Foundation and human trafficking. ' \n\n 'The website for human trafficking is down for maintenance. ' \n\n 'The easy acceptance of the false claim underscores how bogus facts about sex trafficking – which The Fact Checker has examined extensively — are so easily spread. ' \n\n [This has been an automated message.](https://vgy.me/865qud.jpg)",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "derram"
+  },
+  {
+    "Id": 7088372,
+    "Date": "2016-12-06T11:10:05.847",
+    "LastEditDate": "2016-12-06T11:12:10.81",
+    "Likes": 5,
+    "Dislikes": 0,
+    "CommentContent": "The question now is if this is a lead or a dead end. I have't seen anything that proves to me that she was indeed investigating the Clinton Foundation. She's still on my list but I couldn't find any proof. Please link me to sources.\n\nI'm sorry, but this (https://archive.is/XV5t0/042b013fa55b3d36ad29c586a7981cde7f959c48.png) isn't a reliable source to me. No name, no date, no link - anybody can make something like that up :/\n\nSeeing that WaPo jumps on this so fast makes me believe that it was planted. Be careful what you spread as 'confirmed' just because someone tells you so!\n\nEdit: For the record: I would LIKE to believe this to be a real lead, I just can't with what I see right now...",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "SsupGuys"
+  },
+  {
+    "Id": 7088233,
+    "Date": "2016-12-06T10:48:39.21",
+    "LastEditDate": null,
+    "Likes": 3,
+    "Dislikes": 0,
+    "CommentContent": "Its crazy the amount of effort these articles go to. \r\n\"FOUR PINOCCHIOS\" \r\nAre you fucking serious? & the whole \"Please, quit sharing this nonsense on social media and let her family and friends have some peace.\"\r\nYOU BULLSHIT PUPPET MEDIA OUTLETS ARE THE REASON WE ARE RATTLING CAGES FOR JUSTICE. \r\n\r\nThis whole thing & how some people are actually buying into the classic 'tinfoil tales' msm version keeps reminding me of a Matrix Quote. \r\n\r\n\"You have to understand. Most people are not ready to be unplugged. And many of them are so inured and so hopelessly dependent on the system that they will fight to protect it.\"\r\n\r\nKeep exposing them. Keep finding a hole in every story. We will win this war. ",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "Wellwerefucked"
+  },
+  {
+    "Id": 7089560,
+    "Date": "2016-12-06T13:36:51.403",
+    "LastEditDate": null,
+    "Likes": 3,
+    "Dislikes": 0,
+    "CommentContent": "Washington Post is fake news",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "RicksonStark"
+  },
+  {
+    "Id": 7088230,
+    "Date": "2016-12-06T10:48:12.783",
+    "LastEditDate": null,
+    "Likes": 2,
+    "Dislikes": 0,
+    "CommentContent": "\"Please, quit sharing this nonsense on social media and let her family and friends have some peace.\"\r\n\r\nIn other words, the article says if we continue to investigate pizzagate, we are personally responsible for the family's pain. Maybe the WaPo should guilt-trip the people who actually killed her.\r\n",
+    "ParentId": null,
+    "MessageId": 1465286,
+    "Name": "ketzel"
+  }
+]
