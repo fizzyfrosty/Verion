@@ -23,14 +23,6 @@ class SubmissionCellViewViewModelBindingsTest: QuickSpec {
         let subverseController = subverseVcSb.instantiateViewController(withIdentifier: "SubverseViewController") as! SubverseViewController
         _ = subverseController.view
         
-        // TODO: Move this into test for subverseController loading correct data
-        // Register a dummy dataProvider, it should automatically load the controller with dummy data
-        /*
-        SwinjectStoryboard.defaultContainer.register(<#T##serviceType: Service.Type##Service.Type#>){ _ in
-            
-        }
-    */
-        
         
         describe("a submission cell when bounded to the ViewModel") {
             
@@ -46,7 +38,7 @@ class SubmissionCellViewViewModelBindingsTest: QuickSpec {
                 expect(submissionCell.titleLabel.text).to(equal(viewModel.titleString))
             }
             
-            // TODO: Thumbnail
+            // TODO: UI display unit test
             xit("has the thumbnail loaded") {
                 
             }
@@ -106,8 +98,6 @@ class SubmissionCellViewViewModelBindingsTest: QuickSpec {
         // TODO: Test that a submission cell is resized properly for long titles
         
         
-        
-        // TODO:
         // Test event bindings for upvote and downvote
     }
     

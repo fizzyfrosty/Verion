@@ -11,12 +11,44 @@ import UIKit
 class CommentsViewController: UITableViewController {
     
     
+    // Cell configuration
+    let COMMENT_CELL_REUSE_ID = "CommentCell"
+    let COMMENT_SUBMISSION_CELL_REUSE_ID = "CommentSubmissionCell"
+    let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
+    let LOAD_MORE_COMMENTS_CELL_REUSE_ID = "LoadMoreComments"
+    private let CELL_SPACING: CGFloat = 10.0
+    private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
+    private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
+    private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
+    private var numOfCellsToDisplay = 0
     
+    
+    // Dependencies
+    var sfxManager: SFXManagerType?
+    var dataProvider: DataProviderType?
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.tintColor = UIColor.white
 
+        
+        // TODO: Comment View Controller main functions
+        // Load Refresh Control
+        
+        // Load Activity Indicator
+        
+        // Show NavigationBar activity indicator
+        
+        // Load Submission Post
+        
+        // Load Comment Cells
+        
+        self.tableView.dataSource = self
+        self.tableView.reloadData()
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -30,26 +62,26 @@ class CommentsViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 100
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath)
 
         // Configure the cell...
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.

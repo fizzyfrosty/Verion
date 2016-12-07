@@ -271,6 +271,7 @@
                                     <outlet property="upvoteButton" destination="pYi-Ci-SdD" id="RgV-pu-pEZ"/>
                                     <outlet property="voteCountLabel" destination="dOY-UI-5m0" id="cnn-8P-BAm"/>
                                     <outlet property="voteSeparatedCountLabel" destination="Ven-pj-A0k" id="xFB-ab-yeL"/>
+                                    <segue destination="RhN-nn-wht" kind="show" id="KBj-rG-KlQ"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransparentCell" rowHeight="106" id="Psj-3K-KKX" customClass="SubmissionCell" customModule="Verion" customModuleProvider="target">
@@ -384,7 +385,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5rG-4y-cbK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1870" y="-1505"/>
+            <point key="canvasLocation" x="1172" y="-2183"/>
+        </scene>
+        <!--Comments-->
+        <scene sceneID="rIV-nA-Fq5">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Comments" id="RhN-nn-wht" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fn7-Lb-ExD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1717" y="-1560"/>
         </scene>
         <!--Voat-->
         <scene sceneID="SON-ar-vYs">
@@ -392,7 +401,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yLU-5D-v3o" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Voat" id="ry9-XI-261"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DGQ-Oh-8hA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="DGQ-Oh-8hA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

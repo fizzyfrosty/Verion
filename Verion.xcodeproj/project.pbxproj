@@ -54,6 +54,7 @@
 		4375C0421DF7524700576CC6 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0411DF7524700576CC6 /* CommentsViewController.swift */; };
 		4375C0461DF753BB00576CC6 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0451DF753BB00576CC6 /* CommentCell.swift */; };
 		4375C0481DF753CB00576CC6 /* CommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0471DF753CB00576CC6 /* CommentCellViewModel.swift */; };
+		4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -134,6 +135,7 @@
 		4375C0411DF7524700576CC6 /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		4375C0451DF753BB00576CC6 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		4375C0471DF753CB00576CC6 /* CommentCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellViewModel.swift; sourceTree = "<group>"; };
+		4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelProtocol.swift; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 			children = (
 				43F675131DF20078001F83BE /* SubmissionDataModelLegacy.swift */,
 				43F675141DF20078001F83BE /* SubmissionDataModelProtocol.swift */,
+				4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */,
 				4375BFC51DF3737F00576CC6 /* SubmissionType.swift */,
 			);
 			path = DataModels;
@@ -300,8 +303,8 @@
 			isa = PBXGroup;
 			children = (
 				43F6751D1DF20078001F83BE /* SubverseViewController.swift */,
-				43F6751E1DF20078001F83BE /* TabBarController.swift */,
 				4375C0411DF7524700576CC6 /* CommentsViewController.swift */,
+				43F6751E1DF20078001F83BE /* TabBarController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -544,6 +547,7 @@
 				43F675251DF20078001F83BE /* DataProviderType.swift in Sources */,
 				4375C0301DF67EDA00576CC6 /* LoadingView.swift in Sources */,
 				4375C0421DF7524700576CC6 /* CommentsViewController.swift in Sources */,
+				4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */,
 				4375C0341DF67EDA00576CC6 /* Spring.swift in Sources */,
 				4375C0241DF67EDA00576CC6 /* AutoTextView.swift in Sources */,
 				4375C03C1DF67EDA00576CC6 /* TransitionManager.swift in Sources */,

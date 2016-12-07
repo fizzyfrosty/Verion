@@ -65,13 +65,14 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     var dataProvider: DataProviderType!
     
     
+    // MARK: - Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.backgroundColor = self.BGCOLOR
         self.navigationController?.navigationBar.barTintColor = self.BGCOLOR
         
-        self.numOfCellsToDisplay = self.NUM_OF_STARTING_CELLS_TO_DISPLAY
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
         self.showNavBarActivityIndicator()
@@ -105,6 +106,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.customRefreshControl?.prepareFrameForShowing()
     }
     
+    // TODO: Make a dependency, load from injector
     func loadActivityIndicator() {
         
         let activityIndicatorFrame = CGRect(x: 0,
@@ -176,6 +178,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     func loadTableCells(dataProvider: DataProviderType, completion: @escaping ()->()) {
         
+        self.numOfCellsToDisplay = self.NUM_OF_STARTING_CELLS_TO_DISPLAY
+        
         // Make initial request with DataProvider
         dataProvider.requestSubverseSubmissions(subverse: self.subverse) { submissionDataModels, error in
             
@@ -238,7 +242,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
 
     // Create the Submission Cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Table can be partially loaded with viewModels while still binding to cells
+        
+        // On first load, do not display any cells until table is finished loading
         guard self.didTableLoadOnce == true else {
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: "TransparentCell")!
             
@@ -253,6 +258,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             return loadMoreCell!
         }
         
+        // Regular submission cell loading
         let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_CELL_REUSE_ID, for: indexPath) as! SubmissionCell
         
         // Create cell if viewModel exists
@@ -315,23 +321,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         if self.shouldLoadLoadMoreCell(indexPath: indexPath, numOfCellsCurrentlyDisplaying: self.numOfCellsToDisplay, numOfMaxCells: self.subCellViewModels.count) {
             self.increaseAmountOfTableCellsAndReload(increaseBy: self.NUM_OF_CELLS_TO_INCREMENT_BY,
                                                   maxLimit: self.subCellViewModels.count)
-            
-            /*
-            self.tableView.beginUpdates()
-            self.numOfCellsToDisplay += 2
-            let range = Range.init(uncheckedBounds: (lower: self.numOfCellsToDisplay-2, upper: self.numOfCellsToDisplay))
-            let indexSet = IndexSet.init(integersIn: range)
-            self.tableView.insertSections(indexSet, with: .automatic)
-            self.tableView.endUpdates()
- 
-            
-            
-            self.tableView.beginUpdates()
-            let range2 = Range.init(uncheckedBounds: (lower: self.numOfCellsToDisplay-3, upper: self.numOfCellsToDisplay))
-            let indexSet2 = IndexSet.init(integersIn: range2)
-            self.tableView.reloadSections(indexSet2, with: .automatic)
-            self.tableView.endUpdates()
-            */
         }
     }
     
@@ -470,20 +459,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.tableView.reloadData()
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        /*
-        // Ensure we hit bottom of table
-        guard indexPath.section >= (self.numOfCellsToDisplay - 1) else {
-            
-            return
-        }
-        
-        // Ensure we didn't reach the max number of cells
-        guard self.numOfCellsToDisplay != self.subCellViewModels.count else {
-            return
-        }
-        */
-    }
     
     /*
     // Override to support conditional editing of the table view.
@@ -542,6 +517,11 @@ extension SwinjectStoryboard {
         }
         
         defaultContainer.registerForStoryboard(SubverseViewController.self, initCompleted: { (ResolverType, C) in
+            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+        })
+        
+        defaultContainer.registerForStoryboard(CommentsViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
         })

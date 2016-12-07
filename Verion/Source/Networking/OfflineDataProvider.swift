@@ -60,6 +60,11 @@ class OfflineDataProvider: DataProviderType {
         subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
     }
     
+    func requestComments(submissionId: Int, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void {
+        
+    }
+    
+    // MARK: - private functions
     private func getSubmissionDataModel(fromJson json: JSON) -> SubmissionDataModelProtocol {
         let submissionDataModel = SubmissionDataModelLegacy()
         

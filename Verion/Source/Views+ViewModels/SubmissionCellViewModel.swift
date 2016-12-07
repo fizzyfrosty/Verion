@@ -166,12 +166,12 @@ class SubmissionCellViewModel{
         }
         
         var image: UIImage?
-    
+        
+        // TODO: Unit test
         do {
             let imageData = try Data.init(contentsOf: url)
             image = UIImage.init(data: imageData)
         } catch {
-            // TODO: load image with a "image not available" image
             image = UIImage.init(named: "noimageavailable")
             #if DEBUG
                 print("No Image found for thumbnail url: \(urlString)")
