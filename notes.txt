@@ -8,7 +8,15 @@ Random Notes
 		- Text Post
 		- 
 
-
+- Comments Storyboard
+	* Create cells
+	- Autolayout
+		- Submission
+		- Comment
+		- Load More
+		- hW
+		- wR hC
+	- 
 
 - Sort Submissions by
 	- Hot (by rating)
@@ -161,6 +169,22 @@ List of things to complete for Subverse View Controller
 
 
 Features List
+
+Main features required to publish:
+- Welcome Screen
+- Display Submissions of a Subverse
+- Show Subverse submission content
+- Show Comments
+- Find Subverse
+
+Features to add:
+- Login
+- Comment
+- Upvote/downvote
+- Messages
+	- View
+	- Reply
+
 
 Not Logged In
 
