@@ -75,6 +75,12 @@ class CommentsViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard indexPath.section != 0 else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_SUBMISSION_CELL_REUSE_ID, for: indexPath)
+            return cell
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath)
 
         // Configure the cell...

@@ -8,7 +8,7 @@ Random Notes
 		- Text Post
 		- 
 
-- Comments Storyboard
+- Comments View Controller
 	* Create cells
 	- Autolayout
 		- Submission
@@ -16,7 +16,13 @@ Random Notes
 		- Load More
 		- hW
 		- wR hC
-	- 
+	- CommentSubmissionCellViewModel
+	- CommentCellViewModel
+	- Comment Data Model
+	- Load data
+		- Submission info
+		- Comments
+		- Nested comments?
 
 - Sort Submissions by
 	- Hot (by rating)
