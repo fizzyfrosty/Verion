@@ -13,7 +13,7 @@ class CommentsViewController: UITableViewController {
     
     // Cell configuration
     let COMMENT_CELL_REUSE_ID = "CommentCell"
-    let COMMENT_SUBMISSION_CELL_REUSE_ID = "CommentSubmissionCell"
+    let COMMENT_TITLE_CELL_REUSE_ID = "CommentTitleCell"
     let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
     let LOAD_MORE_COMMENTS_CELL_REUSE_ID = "LoadMoreComments"
     private let CELL_SPACING: CGFloat = 10.0
@@ -77,7 +77,7 @@ class CommentsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard indexPath.section != 0 else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_SUBMISSION_CELL_REUSE_ID, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_TITLE_CELL_REUSE_ID, for: indexPath)
             return cell
         }
         
