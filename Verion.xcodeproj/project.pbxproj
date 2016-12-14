@@ -55,6 +55,17 @@
 		4375C0461DF753BB00576CC6 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0451DF753BB00576CC6 /* CommentCell.swift */; };
 		4375C0481DF753CB00576CC6 /* CommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0471DF753CB00576CC6 /* CommentCellViewModel.swift */; };
 		4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */; };
+		4375C0781E0112EB00576CC6 /* SubmissionTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0771E0112EB00576CC6 /* SubmissionTitleCell.swift */; };
+		4375C07A1E0112FC00576CC6 /* SubmissionTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0791E0112FC00576CC6 /* SubmissionTextCell.swift */; };
+		4375C07C1E01130B00576CC6 /* SubmissionImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C07B1E01130B00576CC6 /* SubmissionImageCell.swift */; };
+		4375C07E1E01131F00576CC6 /* SubmissionLinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C07D1E01131F00576CC6 /* SubmissionLinkCell.swift */; };
+		4375C0801E01134900576CC6 /* CommentsSortByCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C07F1E01134900576CC6 /* CommentsSortByCell.swift */; };
+		4375C0821E01137700576CC6 /* SubmissionTitleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0811E01137700576CC6 /* SubmissionTitleCellViewModel.swift */; };
+		4375C0841E01138100576CC6 /* SubmissionTextCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0831E01138100576CC6 /* SubmissionTextCellViewModel.swift */; };
+		4375C0861E01138D00576CC6 /* SubmissionImageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0851E01138D00576CC6 /* SubmissionImageCellViewModel.swift */; };
+		4375C0881E01139600576CC6 /* SubmissionLinkCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0871E01139600576CC6 /* SubmissionLinkCellViewModel.swift */; };
+		4375C08A1E0113A300576CC6 /* CommentsSortByCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0891E0113A300576CC6 /* CommentsSortByCellViewModel.swift */; };
+		4375C08C1E011F8E00576CC6 /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C08B1E011F8E00576CC6 /* SortType.swift */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -136,6 +147,17 @@
 		4375C0451DF753BB00576CC6 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		4375C0471DF753CB00576CC6 /* CommentCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellViewModel.swift; sourceTree = "<group>"; };
 		4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelProtocol.swift; sourceTree = "<group>"; };
+		4375C0771E0112EB00576CC6 /* SubmissionTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionTitleCell.swift; sourceTree = "<group>"; };
+		4375C0791E0112FC00576CC6 /* SubmissionTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionTextCell.swift; sourceTree = "<group>"; };
+		4375C07B1E01130B00576CC6 /* SubmissionImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionImageCell.swift; sourceTree = "<group>"; };
+		4375C07D1E01131F00576CC6 /* SubmissionLinkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionLinkCell.swift; sourceTree = "<group>"; };
+		4375C07F1E01134900576CC6 /* CommentsSortByCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsSortByCell.swift; sourceTree = "<group>"; };
+		4375C0811E01137700576CC6 /* SubmissionTitleCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionTitleCellViewModel.swift; sourceTree = "<group>"; };
+		4375C0831E01138100576CC6 /* SubmissionTextCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionTextCellViewModel.swift; sourceTree = "<group>"; };
+		4375C0851E01138D00576CC6 /* SubmissionImageCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionImageCellViewModel.swift; sourceTree = "<group>"; };
+		4375C0871E01139600576CC6 /* SubmissionLinkCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionLinkCellViewModel.swift; sourceTree = "<group>"; };
+		4375C0891E0113A300576CC6 /* CommentsSortByCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsSortByCellViewModel.swift; sourceTree = "<group>"; };
+		4375C08B1E011F8E00576CC6 /* SortType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -273,6 +295,7 @@
 				43F675141DF20078001F83BE /* SubmissionDataModelProtocol.swift */,
 				4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */,
 				4375BFC51DF3737F00576CC6 /* SubmissionType.swift */,
+				4375C08B1E011F8E00576CC6 /* SortType.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -316,6 +339,16 @@
 				43F675221DF20078001F83BE /* SubmissionCellViewModel.swift */,
 				4375C0451DF753BB00576CC6 /* CommentCell.swift */,
 				4375C0471DF753CB00576CC6 /* CommentCellViewModel.swift */,
+				4375C0771E0112EB00576CC6 /* SubmissionTitleCell.swift */,
+				4375C0811E01137700576CC6 /* SubmissionTitleCellViewModel.swift */,
+				4375C0791E0112FC00576CC6 /* SubmissionTextCell.swift */,
+				4375C0831E01138100576CC6 /* SubmissionTextCellViewModel.swift */,
+				4375C07B1E01130B00576CC6 /* SubmissionImageCell.swift */,
+				4375C0851E01138D00576CC6 /* SubmissionImageCellViewModel.swift */,
+				4375C07D1E01131F00576CC6 /* SubmissionLinkCell.swift */,
+				4375C0871E01139600576CC6 /* SubmissionLinkCellViewModel.swift */,
+				4375C07F1E01134900576CC6 /* CommentsSortByCell.swift */,
+				4375C0891E0113A300576CC6 /* CommentsSortByCellViewModel.swift */,
 			);
 			path = "Views+ViewModels";
 			sourceTree = "<group>";
@@ -542,7 +575,10 @@
 				4375C0371DF67EDA00576CC6 /* SpringImageView.swift in Sources */,
 				4375C02F1DF67EDA00576CC6 /* KeyboardLayoutConstraint.swift in Sources */,
 				4375C03D1DF67EDA00576CC6 /* TransitionZoom.swift in Sources */,
+				4375C07C1E01130B00576CC6 /* SubmissionImageCell.swift in Sources */,
+				4375C08A1E0113A300576CC6 /* CommentsSortByCellViewModel.swift in Sources */,
 				43F675261DF20078001F83BE /* OfflineDataProvider.swift in Sources */,
+				4375C0781E0112EB00576CC6 /* SubmissionTitleCell.swift in Sources */,
 				4375C02D1DF67EDA00576CC6 /* ImageLoader.swift in Sources */,
 				43F675251DF20078001F83BE /* DataProviderType.swift in Sources */,
 				4375C0301DF67EDA00576CC6 /* LoadingView.swift in Sources */,
@@ -552,10 +588,13 @@
 				4375C0241DF67EDA00576CC6 /* AutoTextView.swift in Sources */,
 				4375C03C1DF67EDA00576CC6 /* TransitionManager.swift in Sources */,
 				4375C02C1DF67EDA00576CC6 /* DesignableView.swift in Sources */,
+				4375C0861E01138D00576CC6 /* SubmissionImageCellViewModel.swift in Sources */,
 				4375C0461DF753BB00576CC6 /* CommentCell.swift in Sources */,
+				4375C0821E01137700576CC6 /* SubmissionTitleCellViewModel.swift in Sources */,
 				4375C0231DF67EDA00576CC6 /* AsyncImageView.swift in Sources */,
 				43F675231DF20078001F83BE /* SubmissionDataModelLegacy.swift in Sources */,
 				4375C0391DF67EDA00576CC6 /* SpringTextField.swift in Sources */,
+				4375C0881E01139600576CC6 /* SubmissionLinkCellViewModel.swift in Sources */,
 				43F6752B1DF20078001F83BE /* TabBarController.swift in Sources */,
 				4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */,
 				4375C0381DF67EDA00576CC6 /* SpringLabel.swift in Sources */,
@@ -569,6 +608,8 @@
 				43F6752D1DF20078001F83BE /* SubmissionCell.swift in Sources */,
 				4375C0361DF67EDA00576CC6 /* SpringButton.swift in Sources */,
 				4375BFC41DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift in Sources */,
+				4375C0801E01134900576CC6 /* CommentsSortByCell.swift in Sources */,
+				4375C0841E01138100576CC6 /* SubmissionTextCellViewModel.swift in Sources */,
 				43F9A02D1DEA3AE0001EB1FC /* AppDelegate.swift in Sources */,
 				4375C02B1DF67EDA00576CC6 /* DesignableTextView.swift in Sources */,
 				4375C0271DF67EDA00576CC6 /* DesignableImageView.swift in Sources */,
@@ -579,9 +620,12 @@
 				4375C03E1DF67EDA00576CC6 /* UnwindSegue.swift in Sources */,
 				4375C0321DF67EDA00576CC6 /* Misc.swift in Sources */,
 				4375C03A1DF67EDA00576CC6 /* SpringTextView.swift in Sources */,
+				4375C07A1E0112FC00576CC6 /* SubmissionTextCell.swift in Sources */,
 				4375BFC61DF3737F00576CC6 /* SubmissionType.swift in Sources */,
+				4375C07E1E01131F00576CC6 /* SubmissionLinkCell.swift in Sources */,
 				4375C0291DF67EDA00576CC6 /* DesignableTabBarController.swift in Sources */,
 				4375C0481DF753CB00576CC6 /* CommentCellViewModel.swift in Sources */,
+				4375C08C1E011F8E00576CC6 /* SortType.swift in Sources */,
 				43F675241DF20078001F83BE /* SubmissionDataModelProtocol.swift in Sources */,
 				4375C0221DF67EDA00576CC6 /* AsyncButton.swift in Sources */,
 				4375C0331DF67EDA00576CC6 /* SoundPlayer.swift in Sources */,

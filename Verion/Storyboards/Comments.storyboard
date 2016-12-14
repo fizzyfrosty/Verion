@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentTitleCell" rowHeight="103" id="EAa-UB-42V">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionTextCell" rowHeight="103" id="EAa-UB-42V" customClass="SubmissionTextCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="103"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EAa-UB-42V" id="TXe-az-oeF">
@@ -41,8 +41,11 @@
                                         <constraint firstItem="sDy-ZO-fkZ" firstAttribute="leading" secondItem="TXe-az-oeF" secondAttribute="leadingMargin" id="nxD-S4-Qvt"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textView" destination="sDy-ZO-fkZ" id="cwH-k4-duo"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentTextCell" rowHeight="63" id="Wc8-gh-16C">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionTitleCell" rowHeight="63" id="Wc8-gh-16C" customClass="SubmissionTitleCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="131" width="375" height="63"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wc8-gh-16C" id="nhx-sf-6xL">
@@ -97,8 +100,15 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.99867409467697144" green="0.8766668438911438" blue="0.94623047113418579" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="separatedVoteCountLabel" destination="5Sf-09-q01" id="C5W-t2-6LR"/>
+                                    <outlet property="timeAndSubverseLabel" destination="LS2-4O-nOJ" id="JTs-jA-6HF"/>
+                                    <outlet property="titleLabel" destination="rNF-gk-nwL" id="JSM-XZ-dgw"/>
+                                    <outlet property="userLabel" destination="dJZ-zq-vV3" id="c0p-Us-Aee"/>
+                                    <outlet property="voteCountLabel" destination="gDx-Qh-iYu" id="m5B-up-qMY"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentLinkCell" rowHeight="86" id="lPg-Ys-ZWr">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionLinkCell" rowHeight="86" id="lPg-Ys-ZWr" customClass="SubmissionLinkCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="194" width="375" height="86"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lPg-Ys-ZWr" id="MI2-5w-LL1">
@@ -137,8 +147,14 @@
                                         <constraint firstItem="h9D-ht-9h2" firstAttribute="top" secondItem="MI2-5w-LL1" secondAttribute="topMargin" constant="8" id="qIZ-yE-ORw"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="domainLabel" destination="h9D-ht-9h2" id="PCN-JR-RnW"/>
+                                    <outlet property="endpointLabel" destination="cQl-GG-8gV" id="o4o-A3-fuJ"/>
+                                    <outlet property="thumbnailImage" destination="Fcv-Ew-aFS" id="M1l-LA-R7b"/>
+                                    <outlet property="thumbnailImageView" destination="Fcv-Ew-aFS" id="egU-m9-oFZ"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentSortByCell" rowHeight="45" id="ccz-4A-7er">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentSortByCell" rowHeight="45" id="ccz-4A-7er" customClass="CommentsSortByCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="280" width="375" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ccz-4A-7er" id="rET-Su-rtf">
@@ -193,8 +209,14 @@
                                         <constraint firstItem="sKj-Ti-WWD" firstAttribute="leading" secondItem="a9n-9A-FiF" secondAttribute="trailing" constant="31" id="ugu-xh-09d"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="commentButton" destination="I4h-Dz-OH0" id="96B-vr-Fvj"/>
+                                    <outlet property="downvoteButton" destination="sKj-Ti-WWD" id="lc6-Vl-fnn"/>
+                                    <outlet property="sortByButton" destination="dKf-59-R6Y" id="ffL-cy-g5J"/>
+                                    <outlet property="upvoteButton" destination="a9n-9A-FiF" id="1tV-iT-tL9"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentImageCell" rowHeight="103" id="aA6-ga-0cr">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionImageCell" rowHeight="103" id="aA6-ga-0cr" customClass="SubmissionImageCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="325" width="375" height="103"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aA6-ga-0cr" id="UJ6-UU-KoL">
@@ -213,6 +235,9 @@
                                         <constraint firstAttribute="bottom" secondItem="N7t-Cu-5pJ" secondAttribute="bottom" id="ky0-VO-HdU"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="submissionImageView" destination="N7t-Cu-5pJ" id="Q50-GH-fP9"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="160" id="oMF-Ty-rs7" customClass="CommentCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="428" width="375" height="160"/>
