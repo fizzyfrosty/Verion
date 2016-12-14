@@ -66,6 +66,8 @@
 		4375C0881E01139600576CC6 /* SubmissionLinkCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0871E01139600576CC6 /* SubmissionLinkCellViewModel.swift */; };
 		4375C08A1E0113A300576CC6 /* CommentsSortByCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0891E0113A300576CC6 /* CommentsSortByCellViewModel.swift */; };
 		4375C08C1E011F8E00576CC6 /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C08B1E011F8E00576CC6 /* SortType.swift */; };
+		4375C08E1E01317F00576CC6 /* ActivityIndicatorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */; };
+		4375C0901E01397A00576CC6 /* ActivityIndicatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C08F1E01397A00576CC6 /* ActivityIndicatorCell.swift */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -158,6 +160,8 @@
 		4375C0871E01139600576CC6 /* SubmissionLinkCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionLinkCellViewModel.swift; sourceTree = "<group>"; };
 		4375C0891E0113A300576CC6 /* CommentsSortByCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsSortByCellViewModel.swift; sourceTree = "<group>"; };
 		4375C08B1E011F8E00576CC6 /* SortType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
+		4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorProvider.swift; sourceTree = "<group>"; };
+		4375C08F1E01397A00576CC6 /* ActivityIndicatorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorCell.swift; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -217,6 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				4375BFCC1DF5D45400576CC6 /* SubverseRefreshControl.swift */,
+				4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */,
 			);
 			path = CustomControls;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 				4375C0871E01139600576CC6 /* SubmissionLinkCellViewModel.swift */,
 				4375C07F1E01134900576CC6 /* CommentsSortByCell.swift */,
 				4375C0891E0113A300576CC6 /* CommentsSortByCellViewModel.swift */,
+				4375C08F1E01397A00576CC6 /* ActivityIndicatorCell.swift */,
 			);
 			path = "Views+ViewModels";
 			sourceTree = "<group>";
@@ -597,6 +603,8 @@
 				4375C0881E01139600576CC6 /* SubmissionLinkCellViewModel.swift in Sources */,
 				43F6752B1DF20078001F83BE /* TabBarController.swift in Sources */,
 				4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */,
+				4375C08E1E01317F00576CC6 /* ActivityIndicatorProvider.swift in Sources */,
+				4375C0901E01397A00576CC6 /* ActivityIndicatorCell.swift in Sources */,
 				4375C0381DF67EDA00576CC6 /* SpringLabel.swift in Sources */,
 				4375C03B1DF67EDA00576CC6 /* SpringView.swift in Sources */,
 				43F6752A1DF20078001F83BE /* SubverseViewController.swift in Sources */,

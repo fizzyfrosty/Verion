@@ -7,13 +7,15 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class CommentsViewController: UITableViewController {
     
     
     // Cell configuration
     let COMMENT_CELL_REUSE_ID = "CommentCell"
-    let COMMENT_TITLE_CELL_REUSE_ID = "CommentTitleCell"
+    let SUBMISSION_TITLE_CELL_REUSE_ID = "SubmissionTitleCell"
+    let ACTIVITY_INDICATOR_CELL_REUSE_ID = "ActivityIndicatorCell"
     let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
     let LOAD_MORE_COMMENTS_CELL_REUSE_ID = "LoadMoreComments"
     private let CELL_SPACING: CGFloat = 10.0
@@ -22,6 +24,12 @@ class CommentsViewController: UITableViewController {
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
     
+    
+    
+    
+    // Navigation Bar items
+    private var ACTIVITY_INDICATOR_LENGTH: CGFloat = 25.0
+    private var activityIndicatorCell: ActivityIndicatorCell?
     
     // Dependencies
     var sfxManager: SFXManagerType?
@@ -55,7 +63,8 @@ class CommentsViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -65,11 +74,15 @@ class CommentsViewController: UITableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        guard self.areCommentsLoaded() != false else {
+            return 1
+        }
+        
         return 100
     }
 
@@ -77,9 +90,18 @@ class CommentsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard indexPath.section != 0 else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_TITLE_CELL_REUSE_ID, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath)
             return cell
         }
+        
+        // Loading Cell
+        guard self.areCommentsLoaded() != false else {
+            self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID) as! ActivityIndicatorCell?
+            self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH)
+            self.activityIndicatorCell?.showActivityIndicator()
+            return self.activityIndicatorCell!
+        }
+        
         
         let cell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath)
 
@@ -88,6 +110,10 @@ class CommentsViewController: UITableViewController {
         return cell
     }
     
+    // TODO: detect that comments are loaded
+    func areCommentsLoaded() -> Bool {
+        return false
+    }
 
     /*
     // Override to support conditional editing of the table view.
@@ -133,5 +159,31 @@ class CommentsViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // For detecting rotations beginning and finishing.
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        self.activityIndicatorCell?.hideActivityIndicator()
+        
+        if UIDevice.current.orientation.isLandscape {
+            
+            #if DEBUG
+                print("Landscape")
+            #endif
+            
+        } else {
+            
+            #if DEBUG
+                print("Portrait")
+            #endif
+        }
+        
+        coordinator.animate(alongsideTransition: nil, completion: { _ in
+            // Reset activity indicator cell position
+            self.activityIndicatorCell?.reloadPosition()
+            self.activityIndicatorCell?.showActivityIndicator()
+        })
+    }
+
 
 }

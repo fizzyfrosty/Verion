@@ -109,15 +109,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     // TODO: Make a dependency, load from injector
     func loadActivityIndicator() {
         
-        let activityIndicatorFrame = CGRect(x: 0,
-                                            y: 0,
-                                            width: self.ACTIVITY_INDICATOR_LENGTH,
-                                            height: self.ACTIVITY_INDICATOR_LENGTH)
-        
-        self.activityIndicator = NVActivityIndicatorView.init(frame: activityIndicatorFrame,
-                                                              type: NVActivityIndicatorType.ballPulse,
-                                                              color: UIColor.white,
-                                                              padding: 0)
+        self.activityIndicator = ActivityIndicatorProvider.getActivityIndicator(type: .ballPulse, length: self.ACTIVITY_INDICATOR_LENGTH)
         
         self.activityIndicator?.center = self.navigationBarLabel.center
         

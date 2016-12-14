@@ -10,21 +10,34 @@ Random Notes
 
 - Comments View Controller
 	* Create cells
-	- Autolayout
+	* Autolayout
 		* Submission
 		* Comment
 		* Load More
 		* hW
 		* wR hC
-	- SubmissionCellViewModel
-		- SubmissionTitleCellViewModel
-		- SubmissionTextCellViewModel
-		- SubmissionImageCellViewModel
-		- SubmissionLinkCellViewModel
-		- CommentSortByCellViewModel
+	* SubmissionCellViewModel
+		* SubmissionTitleCellViewModel
+		* SubmissionTextCellViewModel
+		* SubmissionImageCellViewModel
+		* SubmissionLinkCellViewModel
+		* CommentSortByCellViewModel
+
+	- Initial load, show loading until submission done loading
+		- Activity Indicator Provider, for both view controllers
+
+	- Title
+	- Text
+	- Image/Gif
+	- Link
+	- SortBy
+	- Comments
+
+	- Offline Data Provider
+		- use Legacy comment data (model), make request?
+		- use Legacy submission data, no need to request. pass on from tapped cell?	
 		
 	- CommentCellViewModel
-
 	- Comment Data Model
 
 	- Load data
