@@ -63,7 +63,8 @@ class OfflineDataProvider: DataProviderType {
     }
     
     func bind(subTitleViewModel: SubmissionTitleCellViewModel, dataModel: SubmissionDataModelProtocol) {
-        
+        let subTitleCellVmInitData = self.dataProviderHelper.getSubTitleCellVmInitData(fromDataModel: dataModel)
+        subTitleViewModel.loadInitData(subTitleCellVMInitData: subTitleCellVmInitData)
     }
     
     func bind(subTextCellViewModel: SubmissionTextCellViewModel, dataModel: SubmissionDataModelProtocol) {
@@ -85,6 +86,7 @@ class OfflineDataProvider: DataProviderType {
         let subLinkCellVmInitData = self.dataProviderHelper.getSubLinkCellVmInitData(fromDataModel: dataModel)
         subLinkCellViewModel.loadInitData(subLinkCellVMInitData: subLinkCellVmInitData)
     }
+    
     
     func requestComments(submissionId: Int, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void {
         

@@ -10,8 +10,11 @@ import UIKit
 
 
 
-class CommentsSortByCellViewModel: NSObject {
+class CommentsSortByCellViewModel {
     
-    
+    var sortType: SortTypeComments = .top
 
+    init() {
+        
+    }
 }

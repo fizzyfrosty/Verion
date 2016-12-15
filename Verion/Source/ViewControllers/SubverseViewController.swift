@@ -61,6 +61,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // Segue
     private var selectedIndex: Int = 0
+    private let SUBMISSION_SEGUE_IDENTIFIER = "SubmissionSegue"
     
     // Dependencies
     var sfxManager: SFXManagerType?
@@ -319,6 +320,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         else {
             // Will transition to segue, remember the index
             self.selectedIndex = indexPath.section
+            
+            self.performSegue(withIdentifier: self.SUBMISSION_SEGUE_IDENTIFIER, sender: self)
         }
     }
     
@@ -453,7 +456,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "SubmissionSegue" {
+        if segue.identifier == self.SUBMISSION_SEGUE_IDENTIFIER {
             if let nextVc = segue.destination as? CommentsViewController {
                 nextVc.submissionDataModel = self.submissionDataModels[self.selectedIndex]
             }

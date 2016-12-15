@@ -3,11 +3,11 @@ Random Notes
 
 Immediate tasks:
 
-- Bind title cell view model to submission data
-- Bind sortby cell view model to submission data
+* Bind title cell view model to submission data
+x Bind sortby cell view model to submission data
 
 - Bind viewModels to cells
-	- title
+	* title
 	- content: 
 		- text
 		- image

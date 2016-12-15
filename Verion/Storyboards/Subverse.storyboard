@@ -271,7 +271,6 @@
                                     <outlet property="upvoteButton" destination="pYi-Ci-SdD" id="RgV-pu-pEZ"/>
                                     <outlet property="voteCountLabel" destination="dOY-UI-5m0" id="cnn-8P-BAm"/>
                                     <outlet property="voteSeparatedCountLabel" destination="Ven-pj-A0k" id="xFB-ab-yeL"/>
-                                    <segue destination="RhN-nn-wht" kind="show" identifier="SubmissionSegue" id="KBj-rG-KlQ"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransparentCell" rowHeight="106" id="Psj-3K-KKX" customClass="SubmissionCell" customModule="Verion" customModuleProvider="target">
@@ -343,6 +342,7 @@
                     <connections>
                         <outlet property="navigationBarLabel" destination="qTf-IN-Mtm" id="cpM-BJ-lhB"/>
                         <outlet property="navigationBarView" destination="6pl-ni-vmX" id="Ql5-qc-jlR"/>
+                        <segue destination="RhN-nn-wht" kind="show" identifier="SubmissionSegue" id="wp9-Ez-gIr"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vwD-o5-dvw" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -172,7 +172,13 @@ class CommentsViewController: UITableViewController {
             
             // If first row, Title Cell
             if indexPath.row == 0 {
-                cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath)
+                
+                let titleCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath) as! SubmissionTitleCell
+                
+                titleCell.bind(toViewModel: self.submissionTitleVm!)
+                
+                return titleCell
+                
             } else if indexPath.row == 1 {
                 // If second row, Content Cell
                 

@@ -16,6 +16,19 @@ class DataProviderHelper {
     let API_V1_NOTSUPPORTED_ERROR_MESSAGE = "API.v1 not yet implemented"
     
     
+    func getSubTitleCellVmInitData(fromDataModel dataModel: SubmissionDataModelProtocol) -> SubmissionTitleCellViewModelInitData {
+        let subTitleCellVmInitData: SubmissionTitleCellViewModelInitData
+        
+        switch dataModel.apiVersion {
+        case .legacy:
+            subTitleCellVmInitData = self.getSubmissionTitleCellViewModelInitDataFromLegacyDataModel(dataModel: dataModel as! SubmissionDataModelLegacy)
+        case .v1:
+            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+        }
+        
+        return subTitleCellVmInitData
+    }
+    
     func getImageLink(fromDataModel dataModel: SubmissionDataModelProtocol) -> String {
         
         var imageLink = ""
@@ -58,6 +71,19 @@ class DataProviderHelper {
         return mediaType
     }
     
+    private func getSubmissionTitleCellViewModelInitDataFromLegacyDataModel(dataModel: SubmissionDataModelLegacy) -> SubmissionTitleCellViewModelInitData {
+        var subTitleCellVmInitData = SubmissionTitleCellViewModelInitData()
+        subTitleCellVmInitData.date = self.getDateFromString(gmtString: dataModel.dateString)
+        subTitleCellVmInitData.downvoteCount = dataModel.downvoteCount
+        subTitleCellVmInitData.subverseString = dataModel.subverseName
+        subTitleCellVmInitData.titleString = dataModel.title
+        subTitleCellVmInitData.upvoteCount = dataModel.upvoteCount
+        subTitleCellVmInitData.usernameString = dataModel.username
+        subTitleCellVmInitData.voteTotalCount = dataModel.voteCount
+        
+        return subTitleCellVmInitData
+    }
+    
     private func getSubmissionMediaTypeFromLegacyDataModel(submissionDataModel: SubmissionDataModelLegacy) -> SubmissionMediaType {
         
         // TODO: implement
@@ -86,6 +112,7 @@ class DataProviderHelper {
         submissionDataModel.dateString = json["Date"].stringValue
         submissionDataModel.downvoteCount = json["Dislikes"].intValue
         submissionDataModel.upvoteCount = json["Likes"].intValue
+        submissionDataModel.voteCount = json["Likes"].intValue - json["Dislikes"].intValue
         submissionDataModel.id = json["Id"].int64Value
         submissionDataModel.lastEditDateString = json["LastEditDate"].stringValue
         submissionDataModel.linkDescription = json["Linkdescription"].stringValue

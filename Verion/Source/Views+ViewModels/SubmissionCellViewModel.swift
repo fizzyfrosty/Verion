@@ -25,6 +25,7 @@ struct SubmissionCellViewModelInitData {
 class SubmissionCellViewModel{
     
     private let USERNAME_LABEL_FONT_SIZE: CGFloat = 12
+    private let textFormatter = SubmissionTextFormatter()
     
     // For autosizing of cell
     private let CELL_TITLE_FONT_NAME = "AmericanTypewriter-Bold"
@@ -94,10 +95,10 @@ class SubmissionCellViewModel{
         self.username = subCellVmInitData.username
         self.subverseName = subCellVmInitData.subverseName
         self.date = subCellVmInitData.date
-        self.dateSubmittedString = self.createDateSubmittedString(gmtDate: subCellVmInitData.date)
-        self.submittedByString = self.createSubmittedByUsernameString(username: subCellVmInitData.username)
+        self.dateSubmittedString = self.textFormatter.createDateSubmittedString(gmtDate: subCellVmInitData.date)
+        self.submittedByString = self.textFormatter.createSubmittedByUsernameString(username: subCellVmInitData.username, fontSize: self.USERNAME_LABEL_FONT_SIZE)
         
-        self.submittedToSubverseString = self.createSubmittedToSubverseString(dateSubmittedString: self.dateSubmittedString, subverseName: self.subverseName)
+        self.submittedToSubverseString = self.textFormatter.createSubmittedToSubverseString(dateSubmittedString: self.dateSubmittedString, subverseName: self.subverseName)
     }
     
     // Use externally for whoever is doing the binding to separate/optimize loading
@@ -110,13 +111,13 @@ class SubmissionCellViewModel{
         _ = self.upvoteCount.observeNext { _ in
             self.voteCountTotal.value = self.upvoteCount.value - self.downvoteCount.value
             
-            self.voteSeparatedCountString.value = self.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+            self.voteSeparatedCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
         }
         
         _ = self.downvoteCount.observeNext { _ in
             self.voteCountTotal.value = self.upvoteCount.value - self.downvoteCount.value
             
-            self.voteSeparatedCountString.value = self.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+            self.voteSeparatedCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
         }
     }
     
@@ -163,97 +164,6 @@ class SubmissionCellViewModel{
         let image = ImageDownloader.downloadImage(urlString: urlString)
         
         return image
-    }
-    
-    /*
-    func getResizedImage(image: UIImage, toSize size: CGSize) -> UIImage {
-        UIGraphicsBeginImageContext(size)
-        image.draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: size))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-    }*/
-    
-    // "by username" string
-    private func createSubmittedByUsernameString(username: String) -> NSMutableAttributedString {
-        let attrString = NSMutableAttributedString()
-        _ = attrString.normal(text: "by ").bold(text: username, fontSize: self.USERNAME_LABEL_FONT_SIZE)
-        return attrString
-    }
-    
-    // "to subverse" string
-    private func createSubmittedToSubverseString(dateSubmittedString: String, subverseName: String) -> NSMutableAttributedString {
-        let attrString = NSMutableAttributedString()
-        
-        // eg: 9 hours ago to /v/whatever
-        _ = attrString.normal(text: "\(dateSubmittedString) ago to /v/\(subverseName)")
-        return attrString
-    }
-    
-    private func createDateSubmittedString(gmtDate: Date) -> String {
-        let currentDate = Date()
-        let dateComponents: Set<Calendar.Component> = [Calendar.Component.year, .month, .day, .hour, .minute, .second]
-        let differenceComponents = Calendar.current.dateComponents(dateComponents, from: gmtDate, to: currentDate)
-        
-        let dateSubmittedString: String
-        let dateUnitString: String
-        if differenceComponents.year != 0 {
-            if differenceComponents.year! > 1 {
-                dateUnitString = "years"
-            } else {
-                dateUnitString = "year"
-            }
-            // eg: 1 yr or 2 years
-            dateSubmittedString = "\(differenceComponents.year!) \(dateUnitString)"
-            
-        } else if differenceComponents.month != 0{
-            if differenceComponents.month! > 1 {
-                dateUnitString = "months"
-            } else {
-                dateUnitString = "month"
-            }
-            // eg: 1 month, 2 months
-            dateSubmittedString = "\(differenceComponents.month!) \(dateUnitString)"
-            
-        } else if differenceComponents.day != 0 {
-            if differenceComponents.day! > 1 {
-                dateUnitString = "days"
-            } else {
-                dateUnitString = "day"
-            }
-            // eg: 1 day, 2 days
-            dateSubmittedString = "\(differenceComponents.day!) \(dateUnitString)"
-            
-        } else if differenceComponents.hour != 0 {
-            if differenceComponents.hour! > 1 {
-                dateUnitString = "hours"
-            } else {
-                dateUnitString = "hour"
-            }
-            // eg: 1 hour, 2 hours
-            dateSubmittedString = "\(differenceComponents.hour!) \(dateUnitString)"
-            
-        } else if differenceComponents.minute != 0 {
-            dateUnitString = "min"
-            
-            // eg: 1 min, 2 min
-            dateSubmittedString = "\(differenceComponents.minute!) \(dateUnitString)"
-        } else {
-            dateUnitString = "sec"
-            
-            // eg: 1 sec, 34 sec
-            dateSubmittedString = "\(differenceComponents.second!) \(dateUnitString)"
-        }
-        
-        return dateSubmittedString
-    }
-    
-    // Vote Count Separated String
-    private func createVoteCountSeparatedString(upvoteCount: Int, downvoteCount: Int) -> String {
-        
-        // Should appear to be (+1|-5)
-        return "(+\(upvoteCount)|-\(downvoteCount))"
     }
     
     

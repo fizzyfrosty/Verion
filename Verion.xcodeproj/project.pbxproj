@@ -15,6 +15,7 @@
 		432564BB1DEED077001B943A /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */; };
 		43433D791E0272860017FAB0 /* DataProviderHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D781E0272860017FAB0 /* DataProviderHelper.swift */; };
 		43433D7B1E027FD00017FAB0 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */; };
+		43433D7D1E02B8750017FAB0 /* SubmissionTextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D7C1E02B8750017FAB0 /* SubmissionTextFormatter.swift */; };
 		4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */; };
 		4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */; };
 		4375BFC41DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */; };
@@ -110,6 +111,7 @@
 		432564B51DEEB798001B943A /* TabController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabController.storyboard; sourceTree = "<group>"; };
 		43433D781E0272860017FAB0 /* DataProviderHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProviderHelper.swift; sourceTree = "<group>"; };
 		43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		43433D7C1E02B8750017FAB0 /* SubmissionTextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionTextFormatter.swift; sourceTree = "<group>"; };
 		4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
 		4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Bold.swift"; sourceTree = "<group>"; };
@@ -329,6 +331,7 @@
 				43F6751A1DF20078001F83BE /* SFXManagerDummy.swift */,
 				43F6751B1DF20078001F83BE /* SFXManagerType.swift */,
 				4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */,
+				43433D7C1E02B8750017FAB0 /* SubmissionTextFormatter.swift */,
 			);
 			path = SFX;
 			sourceTree = "<group>";
@@ -644,6 +647,7 @@
 				4375C08C1E011F8E00576CC6 /* SortType.swift in Sources */,
 				43F675241DF20078001F83BE /* SubmissionDataModelProtocol.swift in Sources */,
 				4375C0221DF67EDA00576CC6 /* AsyncButton.swift in Sources */,
+				43433D7D1E02B8750017FAB0 /* SubmissionTextFormatter.swift in Sources */,
 				4375C0331DF67EDA00576CC6 /* SoundPlayer.swift in Sources */,
 				43F675271DF20078001F83BE /* SFXManager.swift in Sources */,
 			);
