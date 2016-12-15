@@ -39,5 +39,8 @@ class SubmissionLinkCellViewModel {
         self.link = subLinkCellVMInitData.link
     }
     
-    // TODO: Create-thumbnail func for async loading
+    func downloadThumbnail() {
+        self.thumbnailImage = ImageDownloader.downloadImage(urlString: thumbnailLink)
+    }
+    
 }

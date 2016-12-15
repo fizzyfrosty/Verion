@@ -23,5 +23,9 @@ class SubmissionImageCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func bindImage(fromViewModel viewModel: SubmissionImageCellViewModel) {
+        self.submissionImageView.image = viewModel.image
+    }
 
 }

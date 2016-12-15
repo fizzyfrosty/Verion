@@ -8,14 +8,15 @@ x Bind sortby cell view model to submission data
 
 - Bind viewModels to cells
 	* title
-	- content: 
+	* content: 
 		* text
-		- image
+		* image
 			- jpg/png
-			- gifs
-		- link
-	- sortby
-- Load correct content cell
+			- gifs?
+		* link
+	* sortby
+* Load correct content cell
+
 - Calculate cell height for
 	- title cell
 	- content cell

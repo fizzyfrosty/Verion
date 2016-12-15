@@ -17,6 +17,7 @@ class CommentsViewController: UITableViewController {
     let SUBMISSION_TITLE_CELL_REUSE_ID = "SubmissionTitleCell"
     let SUBMISSION_TEXT_CELL_REUSE_ID = "SubmissionTextCell"
     let SUBMISSION_LINK_CELL_REUSE_ID = "SubmissionLinkCell"
+    let SUBMISSION_IMAGE_CELL_REUSE_ID = "SubmissionImageCell"
     
     let ACTIVITY_INDICATOR_CELL_REUSE_ID = "ActivityIndicatorCell"
     let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
@@ -92,8 +93,7 @@ class CommentsViewController: UITableViewController {
         
         self.loadSubmissionTitle(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
         self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
-        // last: should be here
-        //self.loadSortedByBar()
+        self.loadSortedByBar()
         
         completion()
     }
@@ -133,7 +133,7 @@ class CommentsViewController: UITableViewController {
     
     // TODO: Load sortBy cell
     func loadSortedByBar() {
-        
+        self.commentsSortByVm = CommentsSortByCellViewModel()
     }
     
     // TODO: load comments from data provider
@@ -169,9 +169,7 @@ class CommentsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard indexPath.section != 0 else {
-            
-            var cell: UITableViewCell
+        if indexPath.section == 0 {
             
             // If first row, Title Cell
             if indexPath.row == 0 {
@@ -190,6 +188,32 @@ class CommentsViewController: UITableViewController {
                     textCell.bind(toViewModel: self.submissionTextContentVm!)
                     
                     return textCell
+                case .image:
+                    let imageCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_IMAGE_CELL_REUSE_ID, for: indexPath) as! SubmissionImageCell
+                    
+                    DispatchQueue.global(qos: .background).async {
+                        self.submissionImageContentVm?.downloadImage()
+                        
+                        DispatchQueue.main.async {
+                            imageCell.bindImage(fromViewModel: self.submissionImageContentVm!)
+                        }
+                    }
+                    
+                    return imageCell
+                case .link:
+                    let linkCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_LINK_CELL_REUSE_ID, for: indexPath) as! SubmissionLinkCell
+                    linkCell.bind(toViewModel: self.submissionLinkContentVm!)
+                    
+                    DispatchQueue.global(qos: .background).async {
+                        self.submissionLinkContentVm?.downloadThumbnail()
+                        
+                        DispatchQueue.main.async {
+                            linkCell.bindThumbnailImage(fromViewModel: self.submissionLinkContentVm!)
+                        }
+                    }
+                    
+                    return linkCell
+                    
                 default:
                     let linkCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_LINK_CELL_REUSE_ID, for: indexPath)
                     
@@ -197,14 +221,16 @@ class CommentsViewController: UITableViewController {
                 }
             } else {
                 // If third row, SortedBy Cell
-                cell = tableView.dequeueReusableCell(withIdentifier: self.SORTED_BY_CELL_REUSE_ID, for: indexPath)
+                let sortByCell = tableView.dequeueReusableCell(withIdentifier: self.SORTED_BY_CELL_REUSE_ID, for: indexPath) as! CommentsSortByCell
+                sortByCell.bind(toViewModel: self.commentsSortByVm!)
+                sortByCell.navigationController = self.navigationController
+                
+                return sortByCell
             }
-            
-            return cell
         }
         
         // Loading Cell
-        guard self.areCommentsLoaded() != false else {
+        if self.areCommentsLoaded() == false {
             
             // Activity Indicator
             if self.activityIndicatorCell != nil {
@@ -228,6 +254,12 @@ class CommentsViewController: UITableViewController {
     // TODO: detect that comments are loaded
     func areCommentsLoaded() -> Bool {
         return false
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        
     }
 
     /*

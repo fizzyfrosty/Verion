@@ -14,6 +14,7 @@ class SubmissionLinkCell: UITableViewCell {
     @IBOutlet var domainLabel: UILabel!
     @IBOutlet var endpointLabel: UILabel!
     
+    @IBOutlet var thumbnailWidthConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,4 +27,22 @@ class SubmissionLinkCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    func bind(toViewModel viewModel: SubmissionLinkCellViewModel) {
+        self.domainLabel.text = viewModel.domainString
+        
+        self.endpointLabel.text = viewModel.endpointString
+    }
+    
+    func bindThumbnailImage(fromViewModel viewModel: SubmissionLinkCellViewModel) {
+        
+        self.thumbnailImageView.image = viewModel.thumbnailImage
+        
+        // TODO: use an image representing the web
+        if self.thumbnailImageView.image == nil {
+            self.thumbnailImageView.image = UIImage(named: "noimageavailable")
+        }
+        
+        self.thumbnailImageView.layer.borderWidth = 1.0
+        self.thumbnailImageView.layer.borderColor = UIColor.black.cgColor
+    }
 }

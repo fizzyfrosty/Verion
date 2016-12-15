@@ -7,12 +7,12 @@
 //
 
 import UIKit
-
+import Bond
 
 
 class CommentsSortByCellViewModel {
     
-    var sortType: SortTypeComments = .top
+    var sortType = Observable<SortTypeComments>(.top)//: SortTypeComments = .top
 
     init() {
         

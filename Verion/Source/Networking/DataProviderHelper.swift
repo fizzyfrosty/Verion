@@ -120,7 +120,7 @@ class DataProviderHelper {
         submissionDataModel.username = json["Name"].stringValue
         submissionDataModel.rank = json["Rank"].doubleValue
         submissionDataModel.subverseName = json["Subverse"].stringValue
-        submissionDataModel.thumbnailLink = json["Thumbnail"].stringValue
+        submissionDataModel.thumbnailLink = self.getThumbnailLink(voatURL: self.VOAT_THUMBNAIL_URL, voatEndpoint: json["Thumbnail"].stringValue)
         submissionDataModel.title = json["Title"].stringValue
         submissionDataModel.type = json["Type"].intValue
         submissionDataModel.dateString = json["Date"].stringValue
@@ -197,7 +197,7 @@ class DataProviderHelper {
         
         // Get the date, expecting (eg): "2016-12-02T06:34:50.3834343" - note the T
         subCellVmInitData.date = self.getDateFromString(gmtString: dataModel.dateString)
-        subCellVmInitData.thumbnailLink = self.getThumbnailLink(voatURL: self.VOAT_THUMBNAIL_URL, voatEndpoint: dataModel.thumbnailLink)
+        subCellVmInitData.thumbnailLink = dataModel.thumbnailLink
         subCellVmInitData.username = dataModel.username
         subCellVmInitData.subverseName = dataModel.subverseName
         

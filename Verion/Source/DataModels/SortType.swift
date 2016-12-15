@@ -8,13 +8,13 @@
 
 import Foundation
 
-enum SortTypeComments {
-    case new
-    case top
+enum SortTypeComments: String {
+    case new = "New"
+    case top = "Top"
 }
 
-enum SortTypeSubmissions {
-    case hot
-    case top
-    case new
+enum SortTypeSubmissions: String {
+    case hot = "Hot"
+    case top = "Top"
+    case new = "New"
 }
