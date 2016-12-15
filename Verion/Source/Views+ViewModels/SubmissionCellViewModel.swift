@@ -160,23 +160,7 @@ class SubmissionCellViewModel{
     // Thumbnail Image
     private func createThumbnailImage(urlString: String) -> UIImage? {
         
-        guard let url = URL.init(string: urlString) else {
-            // Empty or nil string returns nothing
-            return nil
-        }
-        
-        var image: UIImage?
-        
-        // TODO: Unit test
-        do {
-            let imageData = try Data.init(contentsOf: url)
-            image = UIImage.init(data: imageData)
-        } catch {
-            image = UIImage.init(named: "noimageavailable")
-            #if DEBUG
-                print("No Image found for thumbnail url: \(urlString)")
-            #endif
-        }
+        let image = ImageDownloader.downloadImage(urlString: urlString)
         
         return image
     }

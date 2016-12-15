@@ -10,7 +10,7 @@ import UIKit
 
 class SubmissionImageCellViewModel {
     
-    private(set) var imageLink = ""
+    var imageLink = ""
     private(set) var image: UIImage?
 
     
@@ -18,5 +18,9 @@ class SubmissionImageCellViewModel {
         self.imageLink = imageLink
         
         // TODO: Bind image loading?
+    }
+    
+    func downloadImage() {
+        self.image = ImageDownloader.downloadImage(urlString: self.imageLink)
     }
 }

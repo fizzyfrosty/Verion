@@ -10,7 +10,7 @@ import UIKit
 
 class SubmissionTextCellViewModel {
     
-    private(set) var textString = ""
+    var textString = ""
     
     init(text: String) {
         self.textString = text

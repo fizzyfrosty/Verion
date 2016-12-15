@@ -1,5 +1,31 @@
 Random Notes
 
+
+Immediate tasks:
+
+- Bind title cell view model to submission data
+- Bind sortby cell view model to submission data
+
+- Bind viewModels to cells
+	- title
+	- content: 
+		- text
+		- image
+			- jpg/png
+			- gifs
+		- link
+	- sortby
+- Load correct content cell
+- Calculate cell height for
+	- title cell
+	- content cell
+		- text
+		- image
+		- link
+	- sortby
+
+- Test displaying Image content type
+
 - Submission View 
 	- Displaying kinds of content
 		- Image/Gif
@@ -24,13 +50,20 @@ Random Notes
 		* CommentSortByCellViewModel
 
 	- Initial load, show loading until submission done loading
-		- Activity Indicator Provider, for both view controllers
+		x Activity Indicator Provider, for both view controllers
+		* Made an activity indicator cell for the comments
+		* Start animating on load
+		- Stop on data returned closure
 
 	- Title
 	- Text
 	- Image/Gif
 	- Link
 	- SortBy
+
+<------ Stop here
+
+
 	- Comments
 
 	- Offline Data Provider

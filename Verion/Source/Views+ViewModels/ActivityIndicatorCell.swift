@@ -49,7 +49,11 @@ class ActivityIndicatorCell: UITableViewCell {
     
     func hideActivityIndicator() {
         self.activityIndicator?.stopAnimating()
+        self.activityIndicator?.removeFromSuperview()
     }
 
+    func removeActivityIndicator() {
+        self.activityIndicator?.removeFromSuperview()
+    }
 
 }

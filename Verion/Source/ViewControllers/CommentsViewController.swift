@@ -18,13 +18,24 @@ class CommentsViewController: UITableViewController {
     let ACTIVITY_INDICATOR_CELL_REUSE_ID = "ActivityIndicatorCell"
     let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
     let LOAD_MORE_COMMENTS_CELL_REUSE_ID = "LoadMoreComments"
+    let SORTED_BY_CELL_REUSE_ID = "SortByCell"
     private let CELL_SPACING: CGFloat = 10.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
     private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
     
+    var submissionDataModel: SubmissionDataModelProtocol?
     
+    // View Models
+    var submissionMediaType: SubmissionMediaType = .none
+    var submissionTitleVm: SubmissionTitleCellViewModel?
+    var submissionImageContentVm: SubmissionImageCellViewModel?
+    var submissionTextContentVm: SubmissionTextCellViewModel?
+    var submissionLinkContentVm: SubmissionLinkCellViewModel?
+    var commentsSortByVm: CommentsSortByCellViewModel?
+    
+    var commentsViewModels: [CommentCellViewModel] = []
     
     
     // Navigation Bar items
@@ -45,15 +56,20 @@ class CommentsViewController: UITableViewController {
         // TODO: Comment View Controller main functions
         // Load Refresh Control
         
-        // Load Activity Indicator
-        
-        // Show NavigationBar activity indicator
-        
         // Load Submission Post
+        // the SubmissionDataModel will have been loaded pre-segue
+        // Bind the model to stuff
         
-        // Load Comment Cells
+        DispatchQueue.global(qos: .background).async {
+            self.loadSubmissionInfo() {
+                // On completed, reload table animated
+                DispatchQueue.main.async {
+                    self.reloadTableAnimated()
+                }
+            }
+        }
         
-        self.tableView.dataSource = self
+        self.loadCommentCells()
         self.tableView.reloadData()
         
         
@@ -64,6 +80,63 @@ class CommentsViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    // TODO: Reload the table
+    func reloadTableAnimated() {
+        
+    }
+    
+    func loadSubmissionInfo(completion: @escaping ()->()) {
+        
+        self.loadSubmissionTitle(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
+        self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
+        // last: should be here
+        //self.loadSortedByBar()
+        
+        completion()
+    }
+    
+    func loadSubmissionTitle(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?) {
+        // Bind the submission data model to a new submission title cell view model
+        let submissionTitleCellViewModel = SubmissionTitleCellViewModel()
+        dataProvider?.bind(subTitleViewModel: submissionTitleCellViewModel, dataModel: submissionDataModel)
+        
+        self.submissionTitleVm = submissionTitleCellViewModel
+    }
+    
+    func loadContent(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?) {
+        // Determine the content type
+        self.submissionMediaType = (dataProvider?.getSubmissionMediaType(submissionDataModel: submissionDataModel))!
+        
+        // Hook up the view models with the data provider based on content type
+        switch self.submissionMediaType {
+        case .text:
+            // Bind the text view model using data provider
+            self.submissionTextContentVm = SubmissionTextCellViewModel(text: "")
+            dataProvider?.bind(subTextCellViewModel: self.submissionTextContentVm!, dataModel: submissionDataModel)
+        case .link:
+            self.submissionLinkContentVm = SubmissionLinkCellViewModel()
+            dataProvider?.bind(subLinkCellViewModel: self.submissionLinkContentVm!, dataModel: submissionDataModel)
+        case .image:
+            self.submissionImageContentVm = SubmissionImageCellViewModel.init(imageLink: "")
+            dataProvider?.bind(subImageCellViewModel: self.submissionImageContentVm!, dataModel: submissionDataModel)
+        default:
+            // TODO: Default case is a "Link" type, no matter the media content
+            self.submissionLinkContentVm = SubmissionLinkCellViewModel()
+            dataProvider?.bind(subLinkCellViewModel: self.submissionLinkContentVm!, dataModel: submissionDataModel)
+            break
+        }
+    }
+    
+    
+    // TODO: Load sortBy cell
+    func loadSortedByBar() {
+        
+    }
+    
+    // TODO: load comments from data provider
+    func loadCommentCells() {
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -78,7 +151,11 @@ class CommentsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        
+        if section == 0 {
+            return 3
+        }
+        
         guard self.areCommentsLoaded() != false else {
             return 1
         }
@@ -90,12 +167,33 @@ class CommentsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard indexPath.section != 0 else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath)
+            
+            var cell: UITableViewCell
+            
+            // If first row, Title Cell
+            if indexPath.row == 0 {
+                cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath)
+            } else if indexPath.row == 1 {
+                // If second row, Content Cell
+                
+                // FIXME: Return content cell, temporarily use title cell
+                cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath)
+            } else {
+                // If third row, SortedBy Cell
+                cell = tableView.dequeueReusableCell(withIdentifier: self.SORTED_BY_CELL_REUSE_ID, for: indexPath)
+            }
+            
             return cell
         }
         
         // Loading Cell
         guard self.areCommentsLoaded() != false else {
+            
+            // Activity Indicator
+            if self.activityIndicatorCell != nil {
+                self.activityIndicatorCell?.removeActivityIndicator()
+            }
+            
             self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID) as! ActivityIndicatorCell?
             self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH)
             self.activityIndicatorCell?.showActivityIndicator()
@@ -150,15 +248,6 @@ class CommentsViewController: UITableViewController {
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     // For detecting rotations beginning and finishing.
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {

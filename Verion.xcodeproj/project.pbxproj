@@ -13,6 +13,8 @@
 		432564B61DEEB798001B943A /* TabController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564B51DEEB798001B943A /* TabController.storyboard */; };
 		432564BA1DEED077001B943A /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
 		432564BB1DEED077001B943A /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */; };
+		43433D791E0272860017FAB0 /* DataProviderHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D781E0272860017FAB0 /* DataProviderHelper.swift */; };
+		43433D7B1E027FD00017FAB0 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */; };
 		4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */; };
 		4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */; };
 		4375BFC41DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */; };
@@ -106,6 +108,8 @@
 		4300A0C01DF0EF0A00497FE4 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/iOS/ReactiveKit.framework; sourceTree = "<group>"; };
 		432564381DECAE8F001B943A /* Subverse.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Subverse.storyboard; sourceTree = "<group>"; };
 		432564B51DEEB798001B943A /* TabController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabController.storyboard; sourceTree = "<group>"; };
+		43433D781E0272860017FAB0 /* DataProviderHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProviderHelper.swift; sourceTree = "<group>"; };
+		43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
 		4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Bold.swift"; sourceTree = "<group>"; };
@@ -310,8 +314,10 @@
 			children = (
 				43F675161DF20078001F83BE /* DataProviderType.swift */,
 				43F675171DF20078001F83BE /* OfflineDataProvider.swift */,
+				43433D781E0272860017FAB0 /* DataProviderHelper.swift */,
 				4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */,
 				4375BFC71DF3EDC300576CC6 /* Delayer.swift */,
+				43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -587,11 +593,13 @@
 				4375C0781E0112EB00576CC6 /* SubmissionTitleCell.swift in Sources */,
 				4375C02D1DF67EDA00576CC6 /* ImageLoader.swift in Sources */,
 				43F675251DF20078001F83BE /* DataProviderType.swift in Sources */,
+				43433D791E0272860017FAB0 /* DataProviderHelper.swift in Sources */,
 				4375C0301DF67EDA00576CC6 /* LoadingView.swift in Sources */,
 				4375C0421DF7524700576CC6 /* CommentsViewController.swift in Sources */,
 				4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */,
 				4375C0341DF67EDA00576CC6 /* Spring.swift in Sources */,
 				4375C0241DF67EDA00576CC6 /* AutoTextView.swift in Sources */,
+				43433D7B1E027FD00017FAB0 /* ImageDownloader.swift in Sources */,
 				4375C03C1DF67EDA00576CC6 /* TransitionManager.swift in Sources */,
 				4375C02C1DF67EDA00576CC6 /* DesignableView.swift in Sources */,
 				4375C0861E01138D00576CC6 /* SubmissionImageCellViewModel.swift in Sources */,

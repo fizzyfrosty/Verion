@@ -59,6 +59,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private var submissionDataModels: [SubmissionDataModelProtocol] = []
     var didTableLoadOnce = false // prevents table from rendering before cells completely bounded
     
+    // Segue
+    private var selectedIndex: Int = 0
     
     // Dependencies
     var sfxManager: SFXManagerType?
@@ -314,6 +316,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             self.increaseAmountOfTableCellsAndReload(increaseBy: self.NUM_OF_CELLS_TO_INCREMENT_BY,
                                                   maxLimit: self.subCellViewModels.count)
         }
+        else {
+            // Will transition to segue, remember the index
+            self.selectedIndex = indexPath.section
+        }
     }
     
  
@@ -444,6 +450,15 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.tableView.endUpdates()
         
         self.tableView.contentOffset = offset
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SubmissionSegue" {
+            if let nextVc = segue.destination as? CommentsViewController {
+                nextVc.submissionDataModel = self.submissionDataModels[self.selectedIndex]
+            }
+            
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

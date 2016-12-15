@@ -154,7 +154,7 @@
                                     <outlet property="thumbnailImageView" destination="Fcv-Ew-aFS" id="egU-m9-oFZ"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentSortByCell" rowHeight="45" id="ccz-4A-7er" customClass="CommentsSortByCell" customModule="Verion" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SortByCell" rowHeight="45" id="ccz-4A-7er" customClass="CommentsSortByCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="280" width="375" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ccz-4A-7er" id="rET-Su-rtf">

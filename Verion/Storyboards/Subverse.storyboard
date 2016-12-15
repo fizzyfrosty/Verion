@@ -271,7 +271,7 @@
                                     <outlet property="upvoteButton" destination="pYi-Ci-SdD" id="RgV-pu-pEZ"/>
                                     <outlet property="voteCountLabel" destination="dOY-UI-5m0" id="cnn-8P-BAm"/>
                                     <outlet property="voteSeparatedCountLabel" destination="Ven-pj-A0k" id="xFB-ab-yeL"/>
-                                    <segue destination="RhN-nn-wht" kind="show" id="KBj-rG-KlQ"/>
+                                    <segue destination="RhN-nn-wht" kind="show" identifier="SubmissionSegue" id="KBj-rG-KlQ"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransparentCell" rowHeight="106" id="Psj-3K-KKX" customClass="SubmissionCell" customModule="Verion" customModuleProvider="target">
@@ -401,7 +401,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yLU-5D-v3o" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Voat" id="ry9-XI-261"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="DGQ-Oh-8hA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DGQ-Oh-8hA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
