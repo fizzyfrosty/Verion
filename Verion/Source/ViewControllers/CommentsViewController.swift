@@ -15,6 +15,9 @@ class CommentsViewController: UITableViewController {
     // Cell configuration
     let COMMENT_CELL_REUSE_ID = "CommentCell"
     let SUBMISSION_TITLE_CELL_REUSE_ID = "SubmissionTitleCell"
+    let SUBMISSION_TEXT_CELL_REUSE_ID = "SubmissionTextCell"
+    let SUBMISSION_LINK_CELL_REUSE_ID = "SubmissionLinkCell"
+    
     let ACTIVITY_INDICATOR_CELL_REUSE_ID = "ActivityIndicatorCell"
     let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
     let LOAD_MORE_COMMENTS_CELL_REUSE_ID = "LoadMoreComments"
@@ -174,16 +177,24 @@ class CommentsViewController: UITableViewController {
             if indexPath.row == 0 {
                 
                 let titleCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath) as! SubmissionTitleCell
-                
                 titleCell.bind(toViewModel: self.submissionTitleVm!)
                 
                 return titleCell
                 
             } else if indexPath.row == 1 {
-                // If second row, Content Cell
                 
-                // FIXME: Return content cell, temporarily use title cell
-                cell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath)
+                // If second row, Content Cell
+                switch self.submissionMediaType {
+                case .text:
+                    let textCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TEXT_CELL_REUSE_ID, for: indexPath) as! SubmissionTextCell
+                    textCell.bind(toViewModel: self.submissionTextContentVm!)
+                    
+                    return textCell
+                default:
+                    let linkCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_LINK_CELL_REUSE_ID, for: indexPath)
+                    
+                    return linkCell
+                }
             } else {
                 // If third row, SortedBy Cell
                 cell = tableView.dequeueReusableCell(withIdentifier: self.SORTED_BY_CELL_REUSE_ID, for: indexPath)

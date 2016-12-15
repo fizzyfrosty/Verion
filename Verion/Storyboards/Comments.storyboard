@@ -150,7 +150,6 @@
                                 <connections>
                                     <outlet property="domainLabel" destination="h9D-ht-9h2" id="PCN-JR-RnW"/>
                                     <outlet property="endpointLabel" destination="cQl-GG-8gV" id="o4o-A3-fuJ"/>
-                                    <outlet property="thumbnailImage" destination="Fcv-Ew-aFS" id="M1l-LA-R7b"/>
                                     <outlet property="thumbnailImageView" destination="Fcv-Ew-aFS" id="egU-m9-oFZ"/>
                                 </connections>
                             </tableViewCell>

@@ -21,5 +21,9 @@ class SubmissionTextCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func bind(toViewModel viewModel: SubmissionTextCellViewModel) {
+        self.textView.text = viewModel.textString
+    }
 
 }

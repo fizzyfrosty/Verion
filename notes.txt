@@ -9,7 +9,7 @@ x Bind sortby cell view model to submission data
 - Bind viewModels to cells
 	* title
 	- content: 
-		- text
+		* text
 		- image
 			- jpg/png
 			- gifs
