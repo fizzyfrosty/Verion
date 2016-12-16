@@ -18,72 +18,44 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionTextCell" rowHeight="103" id="EAa-UB-42V" customClass="SubmissionTextCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="103"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EAa-UB-42V" id="TXe-az-oeF">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="103"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="sDy-ZO-fkZ">
-                                            <rect key="frame" x="8" y="8" width="359" height="87"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        </textView>
-                                    </subviews>
-                                    <color key="backgroundColor" red="1" green="0.79790140190000003" blue="0.9905122462" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstItem="sDy-ZO-fkZ" firstAttribute="bottom" secondItem="TXe-az-oeF" secondAttribute="bottomMargin" id="2Qk-c6-vk3"/>
-                                        <constraint firstItem="sDy-ZO-fkZ" firstAttribute="top" secondItem="TXe-az-oeF" secondAttribute="topMargin" id="NcZ-bz-vZv"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="sDy-ZO-fkZ" secondAttribute="trailing" id="ea1-Q1-UV4"/>
-                                        <constraint firstItem="sDy-ZO-fkZ" firstAttribute="leading" secondItem="TXe-az-oeF" secondAttribute="leadingMargin" id="nxD-S4-Qvt"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="textView" destination="sDy-ZO-fkZ" id="cwH-k4-duo"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionTitleCell" rowHeight="63" id="Wc8-gh-16C" customClass="SubmissionTitleCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="131" width="375" height="63"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="63"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wc8-gh-16C" id="nhx-sf-6xL">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sdfsdfsdfsd fringilla tincidunt. Suspendisse nec tortor urna. And then he said, let there be cake!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rNF-gk-nwL">
-                                            <rect key="frame" x="8" y="8" width="359" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <rect key="frame" x="8" y="8" width="359" height="28"/>
+                                            <fontDescription key="fontDescription" name="AmericanTypewriter-Semibold" family="American Typewriter" pointSize="12"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gDx-Qh-iYu">
-                                            <rect key="frame" x="8" y="28.5" width="11" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <rect key="frame" x="8" y="36" width="8" height="13.5"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
+                                            <color key="textColor" red="0.18346711124261195" green="0.42928066842268442" blue="0.99867409467697144" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(+4|-1)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Sf-09-q01">
-                                            <rect key="frame" x="22" y="28.5" width="53" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <rect key="frame" x="19" y="38" width="31" height="11"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User234" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJZ-zq-vV3">
-                                            <rect key="frame" x="78" y="28.5" width="67" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <rect key="frame" x="53" y="36" width="48.5" height="13.5"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
+                                            <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9 hours ago to /v/whatever" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LS2-4O-nOJ">
-                                            <rect key="frame" x="148" y="28.5" width="205" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                            <rect key="frame" x="104.5" y="36" width="141" height="13.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="1" green="0.87789865920824606" blue="0.9452516799781947" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" red="0.95379541277280311" green="0.95379541277280311" blue="0.95379541277280311" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="LS2-4O-nOJ" firstAttribute="centerY" secondItem="gDx-Qh-iYu" secondAttribute="centerY" id="3Iq-bH-yDX"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="rNF-gk-nwL" secondAttribute="trailing" id="9Zm-qM-Wfa"/>
@@ -99,13 +71,39 @@
                                         <constraint firstItem="5Sf-09-q01" firstAttribute="leading" secondItem="gDx-Qh-iYu" secondAttribute="trailing" constant="3" id="yxd-lI-TNY"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" red="0.99867409467697144" green="0.8766668438911438" blue="0.94623047113418579" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="separatedVoteCountLabel" destination="5Sf-09-q01" id="C5W-t2-6LR"/>
                                     <outlet property="timeAndSubverseLabel" destination="LS2-4O-nOJ" id="JTs-jA-6HF"/>
                                     <outlet property="titleLabel" destination="rNF-gk-nwL" id="JSM-XZ-dgw"/>
                                     <outlet property="userLabel" destination="dJZ-zq-vV3" id="c0p-Us-Aee"/>
                                     <outlet property="voteCountLabel" destination="gDx-Qh-iYu" id="m5B-up-qMY"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionTextCell" rowHeight="103" id="EAa-UB-42V" customClass="SubmissionTextCell" customModule="Verion" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="91" width="375" height="103"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EAa-UB-42V" id="TXe-az-oeF">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="103"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="sDy-ZO-fkZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="sDy-ZO-fkZ" firstAttribute="leading" secondItem="TXe-az-oeF" secondAttribute="leading" id="Rbx-wB-EPi"/>
+                                        <constraint firstAttribute="trailing" secondItem="sDy-ZO-fkZ" secondAttribute="trailing" id="apc-hi-GEm"/>
+                                        <constraint firstItem="sDy-ZO-fkZ" firstAttribute="top" secondItem="TXe-az-oeF" secondAttribute="top" id="ldW-RY-yU8"/>
+                                        <constraint firstAttribute="bottom" secondItem="sDy-ZO-fkZ" secondAttribute="bottom" constant="10" id="o2B-jj-Tp7"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textView" destination="sDy-ZO-fkZ" id="cwH-k4-duo"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionLinkCell" rowHeight="86" id="lPg-Ys-ZWr" customClass="SubmissionLinkCell" customModule="Verion" customModuleProvider="target">
@@ -123,19 +121,18 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Domain" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9D-ht-9h2">
-                                            <rect key="frame" x="111" y="18" width="256" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <rect key="frame" x="111" y="18" width="256" height="19.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="/endpoint/of/domain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cQl-GG-8gV">
-                                            <rect key="frame" x="111" y="47" width="256" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <rect key="frame" x="111" y="45.5" width="256" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="1" green="0.79790140188606196" blue="0.99051224622080869" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="Fcv-Ew-aFS" firstAttribute="leading" secondItem="MI2-5w-LL1" secondAttribute="leadingMargin" constant="8" id="JD4-Ch-5BM"/>
                                         <constraint firstItem="h9D-ht-9h2" firstAttribute="leading" secondItem="Fcv-Ew-aFS" secondAttribute="trailing" constant="20" id="LuW-Uy-2r1"/>
@@ -193,7 +190,7 @@
                                             <state key="normal" image="comment_bubble_medium"/>
                                         </button>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.99867409467697144" green="0.8766668438911438" blue="0.94623047113418579" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" red="0.95379541280000002" green="0.95379541280000002" blue="0.95379541280000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="I4h-Dz-OH0" firstAttribute="leading" secondItem="HaL-ct-pFh" secondAttribute="trailing" id="97w-xJ-nFI"/>
                                         <constraint firstItem="a9n-9A-FiF" firstAttribute="centerY" secondItem="rET-Su-rtf" secondAttribute="centerY" id="BJN-um-7Rw"/>
