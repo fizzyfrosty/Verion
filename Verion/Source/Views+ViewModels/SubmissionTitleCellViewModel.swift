@@ -48,8 +48,8 @@ class SubmissionTitleCellViewModel {
     }
     
     let CELL_TITLE_FONT_NAME = "AmericanTypewriter-Semibold"
-    let CELL_TITLE_FONT_SIZE: CGFloat = 12.0
-    let TITLE_MARGINS: CGFloat = 20.0
+    let CELL_TITLE_FONT_SIZE: CGFloat = 14.0
+    let TITLE_MARGINS: CGFloat = 16.0
     let MAX_CELL_HEIGHT: CGFloat = 999.0
     let CELL_VERTICAL_OFFSET: CGFloat = 30.0 // Represents everything vertically that isn't the title.
     
