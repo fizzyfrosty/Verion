@@ -144,7 +144,7 @@ class SubmissionCellViewModel{
         }
         
         let titleWidth = UIScreen.main.bounds.size.width - imageViewWidth - imageViewHorizontalMargins
-        let titleSize = self.sizeForText(text: titleString, font: UIFont.init(name: self.CELL_TITLE_FONT_NAME, size: self.CELL_TITLE_FONT_SIZE)!, maxSize: CGSize(width: titleWidth, height: maxCellHeight))
+        let titleSize = CellHeightCalculator.sizeForText(text: titleString, font: UIFont.init(name: self.CELL_TITLE_FONT_NAME, size: self.CELL_TITLE_FONT_SIZE)!, maxSize: CGSize(width: titleWidth, height: maxCellHeight))
         
         let titleHeight = titleSize.height
         let titleTopMargin: CGFloat = 10
@@ -164,15 +164,6 @@ class SubmissionCellViewModel{
         let image = ImageDownloader.downloadImage(urlString: urlString)
         
         return image
-    }
-    
-    
-    func sizeForText(text: String, font: UIFont, maxSize: CGSize) -> CGSize {
-        let attrString = NSAttributedString.init(string: text, attributes: [NSFontAttributeName:font])
-        let rect = attrString.boundingRect(with: maxSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
-        let size = CGSize(width: rect.width, height: rect.height)
-        
-        return size
     }
     
 }

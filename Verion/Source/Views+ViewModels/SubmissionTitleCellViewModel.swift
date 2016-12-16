@@ -37,6 +37,22 @@ class SubmissionTitleCellViewModel {
     private(set) var dateString = "" // eg: 9 hours ago
     private(set) var timeAndSubverseString = NSMutableAttributedString()
     
+    // Cell Height
+    var cellHeight: CGFloat {
+        set {
+            self.cellHeight = newValue
+        }
+        get {
+            return self.getCellHeight(titleString: self.titleString)
+        }
+    }
+    
+    let CELL_TITLE_FONT_NAME = "AmericanTypewriter-Semibold"
+    let CELL_TITLE_FONT_SIZE: CGFloat = 12.0
+    let TITLE_MARGINS: CGFloat = 20.0
+    let MAX_CELL_HEIGHT: CGFloat = 999.0
+    let CELL_VERTICAL_OFFSET: CGFloat = 30.0 // Represents everything vertically that isn't the title.
+    
     init() {
         self.loadInitData(subTitleCellVMInitData: SubmissionTitleCellViewModelInitData())
         self.setupInternalBindings()
@@ -83,6 +99,17 @@ class SubmissionTitleCellViewModel {
         
         // Should appear to be (+1|-5)
         return "(+\(upvoteCount)|-\(downvoteCount))"
+    }
+    
+    private func getCellHeight(titleString: String) -> CGFloat {
+        
+        let titleWidth = UIScreen.main.bounds.width - self.TITLE_MARGINS
+        
+        let titleSize = CellHeightCalculator.sizeForText(text: titleString, font: UIFont.init(name: self.CELL_TITLE_FONT_NAME, size: self.CELL_TITLE_FONT_SIZE)!, maxSize: CGSize(width: titleWidth, height: self.MAX_CELL_HEIGHT))
+        
+        let cellHeight = titleSize.height + self.CELL_VERTICAL_OFFSET
+        
+        return cellHeight
     }
     
 }

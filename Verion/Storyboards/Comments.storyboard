@@ -87,17 +87,17 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="sDy-ZO-fkZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
+                                            <rect key="frame" x="8" y="0.0" width="359" height="93"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </string>
                                             <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="sDy-ZO-fkZ" firstAttribute="leading" secondItem="TXe-az-oeF" secondAttribute="leading" id="Rbx-wB-EPi"/>
-                                        <constraint firstAttribute="trailing" secondItem="sDy-ZO-fkZ" secondAttribute="trailing" id="apc-hi-GEm"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="sDy-ZO-fkZ" secondAttribute="trailing" id="db2-7O-Kh9"/>
+                                        <constraint firstItem="sDy-ZO-fkZ" firstAttribute="leading" secondItem="TXe-az-oeF" secondAttribute="leadingMargin" id="iIB-bH-BNw"/>
                                         <constraint firstItem="sDy-ZO-fkZ" firstAttribute="top" secondItem="TXe-az-oeF" secondAttribute="top" id="ldW-RY-yU8"/>
                                         <constraint firstAttribute="bottom" secondItem="sDy-ZO-fkZ" secondAttribute="bottom" constant="10" id="o2B-jj-Tp7"/>
                                     </constraints>

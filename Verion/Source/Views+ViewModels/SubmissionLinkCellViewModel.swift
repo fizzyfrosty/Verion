@@ -24,6 +24,14 @@ class SubmissionLinkCellViewModel {
     private(set) var endpointString = ""
     private(set) var link = ""
     
+    var cellHeight: CGFloat {
+        get {
+            return self.CELL_HEIGHT
+        }
+    }
+    private let CELL_HEIGHT: CGFloat = 100.0
+    
+    
     init() {
         self.loadInitData(subLinkCellVMInitData: SubmissionLinkCellViewModelInitData())
     }

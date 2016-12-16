@@ -17,17 +17,18 @@ x Bind sortby cell view model to submission data
 	* sortby
 * Load correct content cell
 
-- Format text
-	- title
-	- content cell
+* Format text
+	* title
+	* content cell
 
 - Calculate cell height for
-	- title cell
+	* title cell
 	- content cell
-		- text
+		* text
+		* AttributedText
 		- image
-		- link
-	- sortby
+		* link
+	* sortby
 
 
 - Test displaying Image content type

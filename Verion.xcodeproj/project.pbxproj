@@ -16,6 +16,9 @@
 		43433D791E0272860017FAB0 /* DataProviderHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D781E0272860017FAB0 /* DataProviderHelper.swift */; };
 		43433D7B1E027FD00017FAB0 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */; };
 		43433D7D1E02B8750017FAB0 /* SubmissionTextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D7C1E02B8750017FAB0 /* SubmissionTextFormatter.swift */; };
+		43433D7F1E03C8290017FAB0 /* CellHeightCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D7E1E03C8290017FAB0 /* CellHeightCalculator.swift */; };
+		43433D861E03DCF80017FAB0 /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43433D821E03DCF80017FAB0 /* TSBaseParser.m */; };
+		43433D871E03DCF80017FAB0 /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43433D851E03DCF80017FAB0 /* TSMarkdownParser.m */; };
 		4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */; };
 		4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */; };
 		4375BFC41DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */; };
@@ -112,6 +115,13 @@
 		43433D781E0272860017FAB0 /* DataProviderHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProviderHelper.swift; sourceTree = "<group>"; };
 		43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		43433D7C1E02B8750017FAB0 /* SubmissionTextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionTextFormatter.swift; sourceTree = "<group>"; };
+		43433D7E1E03C8290017FAB0 /* CellHeightCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellHeightCalculator.swift; sourceTree = "<group>"; };
+		43433D811E03DCF80017FAB0 /* TSBaseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBaseParser.h; sourceTree = "<group>"; };
+		43433D821E03DCF80017FAB0 /* TSBaseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBaseParser.m; sourceTree = "<group>"; };
+		43433D831E03DCF80017FAB0 /* TSMarkdownParser-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TSMarkdownParser-Prefix.pch"; sourceTree = "<group>"; };
+		43433D841E03DCF80017FAB0 /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
+		43433D851E03DCF80017FAB0 /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
+		43433D881E03DD570017FAB0 /* Verion-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Verion-Bridging-Header.h"; sourceTree = "<group>"; };
 		4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
 		4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Bold.swift"; sourceTree = "<group>"; };
@@ -223,6 +233,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		43433D801E03DCF80017FAB0 /* TSMarkdownParser */ = {
+			isa = PBXGroup;
+			children = (
+				43433D811E03DCF80017FAB0 /* TSBaseParser.h */,
+				43433D821E03DCF80017FAB0 /* TSBaseParser.m */,
+				43433D831E03DCF80017FAB0 /* TSMarkdownParser-Prefix.pch */,
+				43433D841E03DCF80017FAB0 /* TSMarkdownParser.h */,
+				43433D851E03DCF80017FAB0 /* TSMarkdownParser.m */,
+			);
+			path = TSMarkdownParser;
+			sourceTree = "<group>";
+		};
 		4375BFCB1DF5D43900576CC6 /* CustomControls */ = {
 			isa = PBXGroup;
 			children = (
@@ -235,6 +257,7 @@
 		4375C0021DF67EDA00576CC6 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				43433D801E03DCF80017FAB0 /* TSMarkdownParser */,
 				4375C0031DF67EDA00576CC6 /* Spring */,
 			);
 			path = Libraries;
@@ -332,6 +355,7 @@
 				43F6751B1DF20078001F83BE /* SFXManagerType.swift */,
 				4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */,
 				43433D7C1E02B8750017FAB0 /* SubmissionTextFormatter.swift */,
+				43433D7E1E03C8290017FAB0 /* CellHeightCalculator.swift */,
 			);
 			path = SFX;
 			sourceTree = "<group>";
@@ -391,6 +415,7 @@
 			isa = PBXGroup;
 			children = (
 				43F9A02C1DEA3AE0001EB1FC /* AppDelegate.swift */,
+				43433D881E03DD570017FAB0 /* Verion-Bridging-Header.h */,
 				43F675111DF20078001F83BE /* Source */,
 				43F674D71DF16A07001F83BE /* Resources */,
 				43F9A05B1DEA67A1001EB1FC /* Storyboards */,
@@ -610,6 +635,7 @@
 				4375C0821E01137700576CC6 /* SubmissionTitleCellViewModel.swift in Sources */,
 				4375C0231DF67EDA00576CC6 /* AsyncImageView.swift in Sources */,
 				43F675231DF20078001F83BE /* SubmissionDataModelLegacy.swift in Sources */,
+				43433D7F1E03C8290017FAB0 /* CellHeightCalculator.swift in Sources */,
 				4375C0391DF67EDA00576CC6 /* SpringTextField.swift in Sources */,
 				4375C0881E01139600576CC6 /* SubmissionLinkCellViewModel.swift in Sources */,
 				43F6752B1DF20078001F83BE /* TabBarController.swift in Sources */,
@@ -631,6 +657,8 @@
 				4375C0841E01138100576CC6 /* SubmissionTextCellViewModel.swift in Sources */,
 				43F9A02D1DEA3AE0001EB1FC /* AppDelegate.swift in Sources */,
 				4375C02B1DF67EDA00576CC6 /* DesignableTextView.swift in Sources */,
+				43433D861E03DCF80017FAB0 /* TSBaseParser.m in Sources */,
+				43433D871E03DCF80017FAB0 /* TSMarkdownParser.m in Sources */,
 				4375C0271DF67EDA00576CC6 /* DesignableImageView.swift in Sources */,
 				4375C0251DF67EDA00576CC6 /* BlurView.swift in Sources */,
 				43F6752E1DF20078001F83BE /* SubmissionCellViewModel.swift in Sources */,
@@ -792,6 +820,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.Verion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Verion/Verion-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -811,6 +840,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.Verion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Verion/Verion-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

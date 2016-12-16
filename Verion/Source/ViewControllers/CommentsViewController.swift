@@ -172,6 +172,45 @@ class CommentsViewController: UITableViewController {
         return 100
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard self.areSubmissionViewModelsLoaded() != false else {
+            return 0
+        }
+        
+        if indexPath.section == 0 {
+            // Title row
+            if indexPath.row == 0 {
+                let submissionTitleCellVm = self.submissionTitleVm!
+                
+                return submissionTitleCellVm.cellHeight
+            }
+            // Content row
+            else if indexPath.row == 1 {
+                switch self.submissionMediaType {
+                case .text:
+                    let submissionTextCellVm = self.submissionTextContentVm!
+                    return submissionTextCellVm.cellHeight
+                case .link:
+                    let submissionLinkCellVm = self.submissionLinkContentVm!
+                    return submissionLinkCellVm.cellHeight
+                case .image:
+                    let submissionImageCellVm = self.submissionImageContentVm!
+                    return submissionImageCellVm.cellHeight
+                default:
+                    return 0
+                }
+            }
+            // Sort By row
+            else if indexPath.row == 2 {
+                let sortByCellVm = self.commentsSortByVm!
+                return sortByCellVm.cellHeight
+            }
+        }
+        
+        let defaultCellHeight: CGFloat = 100
+        
+        return defaultCellHeight
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         

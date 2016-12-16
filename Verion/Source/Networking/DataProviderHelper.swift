@@ -229,7 +229,7 @@ class DataProviderHelper {
         let separatedStrings = filteredString.components(separatedBy: "/")
         
         var linkShortString = separatedStrings[0]
-        linkShortString = "(\(linkShortString))"
+        linkShortString = "\(linkShortString)"
         
         return linkShortString
     }

@@ -16,7 +16,6 @@ class SubmissionTitleCell: UITableViewCell {
     @IBOutlet var userLabel: UILabel!
     @IBOutlet var timeAndSubverseLabel: UILabel!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -50,5 +49,7 @@ class SubmissionTitleCell: UITableViewCell {
         // Time and Subverse
         self.timeAndSubverseLabel.attributedText = viewModel.timeAndSubverseString
     }
+    
+    
 
 }

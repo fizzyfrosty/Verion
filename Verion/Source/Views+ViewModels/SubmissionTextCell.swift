@@ -20,10 +20,13 @@ class SubmissionTextCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        self.textView.isScrollEnabled = false
     }
     
     func bind(toViewModel viewModel: SubmissionTextCellViewModel) {
-        self.textView.text = viewModel.textString
+        // FIXME: Remove when attributed text is done
+        //self.textView.text = viewModel.textString
+        self.textView.attributedText = viewModel.attributedTextString
     }
 
 }
