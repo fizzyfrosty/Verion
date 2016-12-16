@@ -86,7 +86,7 @@ class CommentsViewController: UITableViewController {
     
     // TODO: Reload the table
     func reloadTableAnimated() {
-        
+        self.tableView.reloadData()
     }
     
     func loadSubmissionInfo(completion: @escaping ()->()) {
@@ -156,7 +156,13 @@ class CommentsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
-            return 3
+            // View Models must be initialized
+            if self.areSubmissionViewModelsLoaded() == true {
+                return 3
+            }
+            else {
+                return 0
+            }
         }
         
         guard self.areCommentsLoaded() != false else {
@@ -259,7 +265,11 @@ class CommentsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        
+        // If touched sorted By bar, trigger the segue
+        if indexPath.section == 0 && indexPath.row == 2 {
+            let sortByCell = tableView.cellForRow(at: indexPath) as! CommentsSortByCell
+            sortByCell.sortByTouched(self)
+        }
     }
 
     /*
@@ -323,5 +333,13 @@ class CommentsViewController: UITableViewController {
         })
     }
 
+    func areSubmissionViewModelsLoaded() -> Bool {
+        // The commentsSortByViewModel should be the last one to be loaded
+        if self.commentsSortByVm != nil {
+            return true
+        }
+        
+        return false
+    }
 
 }

@@ -6,7 +6,7 @@ Immediate tasks:
 * Bind title cell view model to submission data
 x Bind sortby cell view model to submission data
 
-- Bind viewModels to cells
+* Bind viewModels to cells
 	* title
 	* content: 
 		* text
@@ -17,6 +17,10 @@ x Bind sortby cell view model to submission data
 	* sortby
 * Load correct content cell
 
+- Format text
+	- title
+	- content cell
+
 - Calculate cell height for
 	- title cell
 	- content cell
@@ -25,7 +29,10 @@ x Bind sortby cell view model to submission data
 		- link
 	- sortby
 
+
 - Test displaying Image content type
+	* jpg
+	- gif
 
 - Submission View 
 	- Displaying kinds of content
@@ -56,11 +63,11 @@ x Bind sortby cell view model to submission data
 		* Start animating on load
 		- Stop on data returned closure
 
-	- Title
-	- Text
-	- Image/Gif
-	- Link
-	- SortBy
+	* Title
+	* Text
+	* Image/Gif
+	* Link
+	* SortBy
 
 <------ Stop here
 
