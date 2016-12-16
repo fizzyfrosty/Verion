@@ -93,7 +93,6 @@ class OfflineDataProvider: DataProviderType {
     }
     
     func getSubmissionMediaType(submissionDataModel: SubmissionDataModelProtocol) -> SubmissionMediaType {
-        
         let mediaType = self.dataProviderHelper.getSubmissionMediaType(fromDataModel: submissionDataModel)
         
         return mediaType

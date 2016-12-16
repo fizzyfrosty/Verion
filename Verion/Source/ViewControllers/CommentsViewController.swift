@@ -11,6 +11,13 @@ import NVActivityIndicatorView
 
 class CommentsViewController: UITableViewController {
     
+    // Display formatting
+    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
+    private let CELL_SPACING: CGFloat = 10.0
+    private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
+    private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
+    private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
+    private var numOfCellsToDisplay = 0
     
     // Cell configuration
     let COMMENT_CELL_REUSE_ID = "CommentCell"
@@ -23,11 +30,7 @@ class CommentsViewController: UITableViewController {
     let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
     let LOAD_MORE_COMMENTS_CELL_REUSE_ID = "LoadMoreComments"
     let SORTED_BY_CELL_REUSE_ID = "SortByCell"
-    private let CELL_SPACING: CGFloat = 10.0
-    private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
-    private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
-    private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
-    private var numOfCellsToDisplay = 0
+    
     
     var submissionDataModel: SubmissionDataModelProtocol?
     
@@ -54,6 +57,7 @@ class CommentsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.backgroundColor = self.BGCOLOR
         self.navigationController?.navigationBar.tintColor = UIColor.white
 
         
@@ -171,6 +175,22 @@ class CommentsViewController: UITableViewController {
         
         return 100
     }
+    
+    // Background
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view: UIView = UIView()
+        view.backgroundColor = UIColor.clear
+        return view
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // No header for first cell
+        if section == 0 {
+            return 0
+        }
+        
+        return self.CELL_SPACING
+    }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard self.areSubmissionViewModelsLoaded() != false else {
@@ -237,10 +257,11 @@ class CommentsViewController: UITableViewController {
                     let imageCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_IMAGE_CELL_REUSE_ID, for: indexPath) as! SubmissionImageCell
                     
                     DispatchQueue.global(qos: .background).async {
-                        self.submissionImageContentVm?.downloadImage()
-                        
-                        DispatchQueue.main.async {
-                            imageCell.bindImage(fromViewModel: self.submissionImageContentVm!)
+                        self.submissionImageContentVm?.downloadImage() {
+                            DispatchQueue.main.async {
+                                imageCell.bindImage(fromViewModel: self.submissionImageContentVm!)
+                                self.reloadTableAnimated()
+                            }
                         }
                     }
                     

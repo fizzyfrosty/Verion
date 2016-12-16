@@ -21,12 +21,12 @@ x Bind sortby cell view model to submission data
 	* title
 	* content cell
 
-- Calculate cell height for
+* Calculate cell height for
 	* title cell
-	- content cell
+	* content cell
 		* text
 		* AttributedText
-		- image
+		* image
 		* link
 	* sortby
 

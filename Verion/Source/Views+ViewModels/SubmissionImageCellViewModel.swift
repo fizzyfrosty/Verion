@@ -15,7 +15,12 @@ class SubmissionImageCellViewModel {
 
     var cellHeight: CGFloat {
         get {
-            return self.CELL_HEIGHT
+            if self.image == nil {
+                return self.CELL_HEIGHT
+            }
+            else {
+                return self.getAspectFitHeight(forImage: self.image!)
+            }
         }
     }
     private let CELL_HEIGHT: CGFloat = 100.0
@@ -26,8 +31,23 @@ class SubmissionImageCellViewModel {
         // TODO: Bind image loading?
     }
     
-    func downloadImage() {
+    func downloadImage(completion: @escaping ()->()) {
         self.image = ImageDownloader.downloadImage(urlString: self.imageLink)
+        
+        completion()
+    }
+    
+    private func getAspectFitHeight(forImage image: UIImage) -> CGFloat {
+        
+        let imageWidth = image.size.width
+        let imageHeight = image.size.height
+        let screenWidth = UIScreen.main.bounds.width
+        let aspectRatio = imageWidth/imageHeight
+        
+        
+        let height: CGFloat = screenWidth / aspectRatio
+        
+        return height
     }
     
 }
