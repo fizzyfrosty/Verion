@@ -364,7 +364,7 @@ class CommentsViewController: UITableViewController {
                 self.activityIndicatorCell?.removeActivityIndicator()
             }
             
-            self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID) as! ActivityIndicatorCell?
+            self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID, for: indexPath) as? ActivityIndicatorCell
             self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH)
             self.activityIndicatorCell?.showActivityIndicator()
             return self.activityIndicatorCell!
