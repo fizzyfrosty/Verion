@@ -13,12 +13,14 @@ class OfflineDataProvider: DataProviderType {
     
     var dataProviderHelper = DataProviderHelper()
     
-    let apiVersion: APIVersion?
+    var apiVersion: APIVersion = .legacy // default to be overwritten by initializer
     private let NUM_OF_TEST_DATA_CELLS = 6
     private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY = "SampleJsonSubmissions_legacy"
+    private let SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_LEGACY = "SampleSubverseList_legacy"
     private let SAMPLE_FILES_EXTENSION = "txt"
     
     private let DELAY_TIME_SECONDS: Float = 1.0
+    private let SEARCH_RESULTS_DELAY_TIME: Float = 0.25
     
     init(apiVersion: APIVersion) {
         self.apiVersion = apiVersion
@@ -47,6 +49,28 @@ class OfflineDataProvider: DataProviderType {
             
             // Return the data models
             completion(submissionDataModels, nil)
+        }
+    }
+    
+    func requestSubverseList(completion: @escaping ([SubverseSearchResultDataModelProtocol], Error?) -> Void) {
+        Delayer.delay(seconds: self.SEARCH_RESULTS_DELAY_TIME) {
+            var subverseDataModels = [SubverseSearchResultDataModelProtocol]()
+            
+            // Load sample json data
+            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_LEGACY, withExtension: self.SAMPLE_FILES_EXTENSION)
+            
+            // For each submission, create a data model
+            for i in 0..<sampleJson.count {
+                // Get data model from sample JSON
+                let subverseJson = sampleJson[i]
+                let subverseDataModel = self.dataProviderHelper.getSubverseDataModel(fromJson: subverseJson, apiVersion: self.apiVersion)
+                subverseDataModels.append(subverseDataModel)
+            }
+            
+            // TODO: Implement error return in a mock object?
+            
+            // Return the data models
+            completion(subverseDataModels, nil)
         }
     }
     
@@ -87,6 +111,10 @@ class OfflineDataProvider: DataProviderType {
         subLinkCellViewModel.loadInitData(subLinkCellVMInitData: subLinkCellVmInitData)
     }
     
+    func bind(subverseSearchResultCellViewModel: SubverseSearchResultCellViewModel, dataModel: SubverseSearchResultDataModelProtocol) {
+        let subverseSearchResultCellVmInitData = self.dataProviderHelper.getSubverseSearchResultCellVmInitData(fromDataModel: dataModel)
+        subverseSearchResultCellViewModel.loadInitData(initData: subverseSearchResultCellVmInitData)
+    }
     
     func requestComments(submissionId: Int, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void {
         

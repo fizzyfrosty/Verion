@@ -3,6 +3,53 @@ Random Notes
 
 Immediate tasks:
 
+
+
+- Get sample Legacy and v1 comment json data
+- Data models
+	- legacy comments
+	- v1 comments
+* Storyboard Comment Cell
+	* layouts
+	* formatting
+- View Model
+	- Children nodes?
+- Fetch data from OfflineDataProvider
+	- return legacy data models
+	- bind to viewModels
+	- Show Comment Cells on finish/reload table
+- Collapsable comments
+
+
+- Launch links into web browser in Submission Content Cell
+- Load real data using alamofire from voat.co
+
+
+
+
+
+* Search for Subverse
+	* Create new view controller 
+	* Search Bar
+		* Create
+		* Setup
+	* Get sample json data
+	* Populate with sample json data
+	* Filter subverses
+* On return, go back to submissions controller
+	* reload and populate with subverse
+	* Make request based on subverse name
+* On cancel, pop the search controller
+
+* Display message/ui for subverses not in list of filtered
+* Invalid subverse entered
+	* show ui for nonexistent subverse
+
+* Turn subverse name into button, same action as search icon
+
+
+
+
 * Bind title cell view model to submission data
 x Bind sortby cell view model to submission data
 
@@ -252,15 +299,12 @@ Features to add:
 
 Not Logged In
 
-- Get main Submissions
-	- show rating
-	- upvote, downvote
-	- 
+* Get main Submissions
+	* show rating
 - Sort by
-- Show page dividers
-- Find subverses
+* Find subverses
 
-- Retrieve and show single threads
+* Retrieve and show single threads
 	- Comments
 	- Videos
 	- Images

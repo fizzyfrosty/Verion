@@ -8,6 +8,10 @@
 
 import UIKit
 
-class SubverseSearchResultDataModelLegacy: NSObject {
-
+class SubverseSearchResultDataModelLegacy: SubverseSearchResultDataModelProtocol {
+    var apiVersion = APIVersion.legacy
+    
+    var subverseName = ""
+    var subverseDescription = ""
+    var subscriberCount: Int = 0
 }

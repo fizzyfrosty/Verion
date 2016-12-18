@@ -1,7 +1,78 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="EkB-Qz-Cdg">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <scenes/>
+    <scenes>
+        <!--Find Subverse View Controller-->
+        <scene sceneID="vXw-N8-kdh">
+            <objects>
+                <tableViewController id="EkB-Qz-Cdg" customClass="FindSubverseViewController" customModule="Verion" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" id="vDT-NZ-cjl">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubverseSearchResultCell" id="5BK-k8-ug2" customClass="SubverseSearchResultCell" customModule="Verion" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="55"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5BK-k8-ug2" id="y8d-qd-FUv">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="33023 subscribers" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCj-as-fLu">
+                                            <rect key="frame" x="247" y="29" width="120" height="14.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="120" id="568-cU-Y3j"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subverse" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l9H-dk-ovX">
+                                            <rect key="frame" x="8" y="8" width="71.5" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MRL-zM-mN6">
+                                            <rect key="frame" x="8" y="29" width="64" height="14.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="bCj-as-fLu" firstAttribute="bottom" secondItem="MRL-zM-mN6" secondAttribute="bottom" id="8UQ-pR-bSq"/>
+                                        <constraint firstItem="MRL-zM-mN6" firstAttribute="leading" secondItem="l9H-dk-ovX" secondAttribute="leading" id="XnD-Xs-ihE"/>
+                                        <constraint firstItem="l9H-dk-ovX" firstAttribute="top" secondItem="y8d-qd-FUv" secondAttribute="topMargin" id="YEj-JX-scT"/>
+                                        <constraint firstItem="MRL-zM-mN6" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="bCj-as-fLu" secondAttribute="leading" constant="-20" id="ZZs-Nf-GUv"/>
+                                        <constraint firstItem="l9H-dk-ovX" firstAttribute="leading" secondItem="y8d-qd-FUv" secondAttribute="leadingMargin" id="dWR-Yg-Dyq"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="MRL-zM-mN6" secondAttribute="bottom" id="gP8-lV-tbo"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="bCj-as-fLu" secondAttribute="trailing" id="ti4-2g-TFd"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="subscriberCountLabel" destination="bCj-as-fLu" id="fe4-FE-yOM"/>
+                                    <outlet property="subverseDescription" destination="MRL-zM-mN6" id="vIu-eu-lno"/>
+                                    <outlet property="subverseLabel" destination="l9H-dk-ovX" id="YeZ-ij-ffd"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="EkB-Qz-Cdg" id="m3F-O5-cYK"/>
+                            <outlet property="delegate" destination="EkB-Qz-Cdg" id="b33-LZ-fXd"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2DD-Xf-20g" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="56.799999999999997" y="-132.68365817091455"/>
+        </scene>
+    </scenes>
 </document>

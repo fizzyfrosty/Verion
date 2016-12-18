@@ -15,6 +15,18 @@ class DataProviderHelper {
     private let VOAT_THUMBNAIL_URL = "https://cdn.voat.co/thumbs/"
     let API_V1_NOTSUPPORTED_ERROR_MESSAGE = "API.v1 not yet implemented"
     
+    func getSubverseSearchResultCellVmInitData(fromDataModel dataModel: SubverseSearchResultDataModelProtocol) -> SubverseSearchResultCellViewModelInitData{
+        let subverseSearchResultCellVmInitData: SubverseSearchResultCellViewModelInitData
+        
+        switch dataModel.apiVersion {
+        case .legacy:
+            subverseSearchResultCellVmInitData = self.getSubverseSearchResultCellVmInitDataFromLegacy(dataModel: dataModel as! SubverseSearchResultDataModelLegacy)
+        case .v1:
+            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+        }
+        
+        return subverseSearchResultCellVmInitData
+    }
     
     func getSubTitleCellVmInitData(fromDataModel dataModel: SubmissionDataModelProtocol) -> SubmissionTitleCellViewModelInitData {
         let subTitleCellVmInitData: SubmissionTitleCellViewModelInitData
@@ -71,6 +83,16 @@ class DataProviderHelper {
         return mediaType
     }
     
+    private func getSubverseSearchResultCellVmInitDataFromLegacy(dataModel: SubverseSearchResultDataModelLegacy) -> SubverseSearchResultCellViewModelInitData {
+        var subverseSearchResultCellVmInitData = SubverseSearchResultCellViewModelInitData()
+        
+        subverseSearchResultCellVmInitData.subverseString = dataModel.subverseName
+        subverseSearchResultCellVmInitData.subscriberCount = dataModel.subscriberCount
+        subverseSearchResultCellVmInitData.subverseDescription = dataModel.subverseDescription
+        
+        return subverseSearchResultCellVmInitData
+    }
+    
     private func getSubmissionTitleCellViewModelInitDataFromLegacyDataModel(dataModel: SubmissionDataModelLegacy) -> SubmissionTitleCellViewModelInitData {
         var subTitleCellVmInitData = SubmissionTitleCellViewModelInitData()
         subTitleCellVmInitData.date = self.getDateFromString(gmtString: dataModel.dateString)
@@ -103,6 +125,18 @@ class DataProviderHelper {
         }
         
         return legacyMediaType
+    }
+    
+    func getSubverseDataModel(fromJson json:JSON, apiVersion: APIVersion) -> SubverseSearchResultDataModelProtocol {
+        let subverseDataModel: SubverseSearchResultDataModelProtocol
+        switch apiVersion {
+        case .legacy:
+            subverseDataModel = self.getSubverseDataModelLegacy(fromJson: json)
+        case .v1:
+            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+        }
+        
+        return subverseDataModel
     }
     
     func getSubmissionDataModel(fromJson json: JSON) -> SubmissionDataModelProtocol {
@@ -160,6 +194,43 @@ class DataProviderHelper {
     }
     
     // MARK: - private methods
+    
+    // Subverse Search Result Data Model - Legacy
+    private func getSubverseDataModelLegacy(fromJson json: JSON) -> SubverseSearchResultDataModelLegacy {
+        let subverseDataModelLegacy = SubverseSearchResultDataModelLegacy()
+        
+        // Expecting a single string, eg: "Name: news,Description: A place for major news from around the world,Subscribers: 70441,Created: Apr  7 2014  4:15PM"
+        let subverseInfoString = json.stringValue
+        
+        // Name: news|--split--here--|A place for major news from around the world,Subscribers: 70441,Created: Apr  7 2014  4:15PM
+        let nameAndRest = subverseInfoString.components(separatedBy: ",Description: ")
+        
+        // Name: news
+        let nameWithHeader = nameAndRest[0]
+        
+        // news
+        let name = nameWithHeader.replacingOccurrences(of: "Name: ", with: "")
+        
+        // A place for major news from around the world|--split--here--|70441,Created: Apr  7 2014  4:15PM
+        let descriptionAndRest = nameAndRest[1].components(separatedBy: ",Subscribers: ")
+        
+        // A place for major news from around the world
+        let description = descriptionAndRest[0]
+        
+        // 70441|--split--here--|Apr  7 2014  4:15PM
+        let subscribersAndRest = descriptionAndRest[1].components(separatedBy: ",Created: ")
+        
+        // 70441
+        let subscribers = subscribersAndRest[0]
+        
+        subverseDataModelLegacy.subscriberCount = Int(subscribers)!
+        subverseDataModelLegacy.subverseName = name
+        subverseDataModelLegacy.subverseDescription = description
+        
+        return subverseDataModelLegacy
+    }
+    
+    // Submission Link-Content Init Data - Legacy
     private func getSubLinkCellVmInitDataFromLegacyDataModel(dataModel: SubmissionDataModelLegacy) -> SubmissionLinkCellViewModelInitData {
         
         var subLinkCellVmInitData = SubmissionLinkCellViewModelInitData()
@@ -171,6 +242,7 @@ class DataProviderHelper {
         return subLinkCellVmInitData
     }
     
+    // Submission Cell Init Data - Legacy
     private func getSubCellVmInitDataFromLegacyDataModel(dataModel: SubmissionDataModelLegacy) -> SubmissionCellViewModelInitData {
         
         var subCellVmInitData = SubmissionCellViewModelInitData()

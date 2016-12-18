@@ -50,7 +50,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     var subverse = "frontpage"
     
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
-    @IBOutlet var navigationBarLabel: SpringLabel!
+    @IBOutlet var navigationBarCenterButton: SpringButton!
     @IBOutlet var navigationBarView: UIView!
     
     
@@ -62,10 +62,21 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     // Segue
     private var selectedIndex: Int = 0
     private let SUBMISSION_SEGUE_IDENTIFIER = "SubmissionSegue"
+    private let FIND_SUBVERSE_SEGUE_IDENTIFIER = "FindSubverseSegue"
     
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
+    
+    
+    @IBAction func findSubverseButtonPress(_ sender: Any) {
+        self.performSegue(withIdentifier: self.FIND_SUBVERSE_SEGUE_IDENTIFIER, sender: sender)
+    }
+    
+    @IBAction func findSubverseNameButtonPress(_ sender: Any) {
+        self.performSegue(withIdentifier: self.FIND_SUBVERSE_SEGUE_IDENTIFIER, sender: sender)
+    }
+    
     
     
     // MARK: - Methods
@@ -80,7 +91,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.loadActivityIndicator()
         self.showNavBarActivityIndicator()
         
-        self.loadTableCells(dataProvider: self.dataProvider) {
+        self.loadTableCells() {
             self.hideNavBarActivityIndicator()
         }
 
@@ -114,7 +125,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         self.activityIndicator = ActivityIndicatorProvider.getActivityIndicator(type: .ballPulse, length: self.ACTIVITY_INDICATOR_LENGTH)
         
-        self.activityIndicator?.center = self.navigationBarLabel.center
+        self.activityIndicator?.center = self.navigationBarCenterButton.center
         
         self.navigationBarView.addSubview(self.activityIndicator!)
     }
@@ -122,15 +133,21 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     func showNavBarActivityIndicator() {
         self.activityIndicator?.startAnimating()
         
-        self.navigationBarLabel.isHidden = true
+        self.navigationBarCenterButton.isHidden = true
+    }
+    
+    func setNavigationBarCenterButtonName(string: String) {
+        self.navigationBarCenterButton.setTitle(string, for: .normal)
+        self.navigationBarCenterButton.setTitle(string, for: .selected)
+        self.navigationBarCenterButton.setTitle(string, for: .disabled)
     }
     
     func hideNavBarActivityIndicator() {
         self.activityIndicator?.stopAnimating()
         
-        self.navigationBarLabel.isHidden = false
-        self.navigationBarLabel.animation = "fadeIn"
-        self.navigationBarLabel.animate()
+        self.navigationBarCenterButton.isHidden = false
+        self.navigationBarCenterButton.animation = "fadeIn"
+        self.navigationBarCenterButton.animate()
     }
     
     
@@ -144,7 +161,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             //refresh logic
             
             
-            self.loadTableCells(dataProvider: self.dataProvider) {
+            self.loadTableCells() {
                 self.refreshControl?.endRefreshing()
                 self.customRefreshControl?.isRefreshing = false
                 self.customRefreshControl?.hideActivityIndicator()
@@ -171,12 +188,22 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
     }
     
-    func loadTableCells(dataProvider: DataProviderType, completion: @escaping ()->()) {
+    // public function to call loading from outside of VC
+    func loadTableCells(forSubverse subverseString: String) {
+        self.subverse = subverseString
+        
+        self.showNavBarActivityIndicator()
+        self.loadTableCells {
+            self.hideNavBarActivityIndicator()
+        }
+    }
+    
+    private func loadTableCells(completion: @escaping ()->()) {
         
         self.numOfCellsToDisplay = self.NUM_OF_STARTING_CELLS_TO_DISPLAY
         
         // Make initial request with DataProvider
-        dataProvider.requestSubverseSubmissions(subverse: self.subverse) { submissionDataModels, error in
+        self.dataProvider.requestSubverseSubmissions(subverse: self.subverse) { submissionDataModels, error in
             
             // Perform Data-binding in background thread
             // (Includes Initialization of ImageViews in viewModels)
@@ -206,7 +233,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                                              animation: UITableViewRowAnimation.automatic)
                     
                     // Set Navigation title after finished loading table
-                    self.navigationBarLabel.text = self.getNavigationLabelString(subverse: self.subverse)
+                    let subverseTitle = self.getNavigationLabelString(subverse: self.subverse)
+                    self.setNavigationBarCenterButtonName(string: subverseTitle)
                     
                     completion()
                 }
@@ -457,9 +485,16 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == self.SUBMISSION_SEGUE_IDENTIFIER {
+            
+            // Comments View Controller segue
             if let nextVc = segue.destination as? CommentsViewController {
                 nextVc.submissionDataModel = self.submissionDataModels[self.selectedIndex]
             }
+            
+        } else if segue.identifier == self.FIND_SUBVERSE_SEGUE_IDENTIFIER {
+            
+            
+            // Find Subverse View Controller segue
             
         }
     }
@@ -534,6 +569,11 @@ extension SwinjectStoryboard {
         defaultContainer.registerForStoryboard(CommentsViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+        })
+        
+        defaultContainer.registerForStoryboard(FindSubverseViewController.self, initCompleted: { (ResolverType, C) in
+            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+            
         })
     }
 }

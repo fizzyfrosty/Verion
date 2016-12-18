@@ -10,6 +10,10 @@ import UIKit
 
 class SubverseSearchResultCell: UITableViewCell {
 
+    @IBOutlet var subverseLabel: UILabel!
+    @IBOutlet var subscriberCountLabel: UILabel!
+    @IBOutlet var subverseDescription: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -21,4 +25,15 @@ class SubverseSearchResultCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    func bind(toViewModel viewModel: SubverseSearchResultCellViewModel) {
+        
+        self.subverseLabel.text = viewModel.subverseString
+        _ = viewModel.subscriberCountString.observeNext() { string in
+            self.subscriberCountLabel.text = string
+        }
+        
+        self.subverseLabel.text = viewModel.subverseString
+        
+        self.subverseDescription.text = viewModel.subverseDescription
+    }
 }

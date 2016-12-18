@@ -47,7 +47,6 @@ class SubmissionTitleCellViewModel {
         }
     }
     
-    let CELL_TITLE_FONT_NAME = "AmericanTypewriter-Semibold"
     let CELL_TITLE_FONT_SIZE: CGFloat = 14.0
     let TITLE_MARGINS: CGFloat = 16.0
     let MAX_CELL_HEIGHT: CGFloat = 999.0
@@ -105,7 +104,8 @@ class SubmissionTitleCellViewModel {
         
         let titleWidth = UIScreen.main.bounds.width - self.TITLE_MARGINS
         
-        let titleSize = CellHeightCalculator.sizeForText(text: titleString, font: UIFont.init(name: self.CELL_TITLE_FONT_NAME, size: self.CELL_TITLE_FONT_SIZE)!, maxSize: CGSize(width: titleWidth, height: self.MAX_CELL_HEIGHT))
+        let font = UIFont.boldSystemFont(ofSize: self.CELL_TITLE_FONT_SIZE)
+        let titleSize = CellHeightCalculator.sizeForText(text: titleString, font: font, maxSize: CGSize(width: titleWidth, height: self.MAX_CELL_HEIGHT))
         
         let cellHeight = titleSize.height + self.CELL_VERTICAL_OFFSET
         

@@ -8,6 +8,6 @@
 
 import UIKit
 
-class SubverseSearchResultDataModelProtocol: NSObject {
-
+protocol SubverseSearchResultDataModelProtocol{
+    var apiVersion: APIVersion {get}
 }
