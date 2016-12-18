@@ -30,7 +30,7 @@ class CommentsSortByCell: UITableViewCell {
         }
         
         // Create action sheet
-        let alertController = UIAlertController.init(title: "Sort by", message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController.init(title: "Sort Comments by", message: nil, preferredStyle: .actionSheet)
         let topButton = UIAlertAction.init(title: "Top", style: .default, handler: { alertAction in
             self.viewModel?.sortType.value = .top
         })
