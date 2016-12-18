@@ -9,5 +9,5 @@
 import UIKit
 
 protocol CommentDataModelProtocol {
-
+    var apiVersion: APIVersion {get}
 }

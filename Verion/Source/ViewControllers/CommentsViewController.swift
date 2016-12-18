@@ -15,6 +15,7 @@ class CommentsViewController: UITableViewController {
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
     private let CELL_SPACING: CGFloat = 10.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
+    private let LOADING_CELL_HEIGHT: CGFloat = 50.0
     private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
@@ -43,7 +44,8 @@ class CommentsViewController: UITableViewController {
     var commentsSortByVm: CommentsSortByCellViewModel?
     
     var commentsViewModels: [CommentCellViewModel] = []
-    
+    var commentDataModels: [CommentDataModelProtocol] = []
+    var areCommentsLoaded = false
     
     // Navigation Bar items
     private var ACTIVITY_INDICATOR_LENGTH: CGFloat = 25.0
@@ -68,18 +70,12 @@ class CommentsViewController: UITableViewController {
         // the SubmissionDataModel will have been loaded pre-segue
         // Bind the model to stuff
         
-        DispatchQueue.global(qos: .background).async {
-            self.loadSubmissionInfo() {
-                // On completed, reload table animated
-                DispatchQueue.main.async {
-                    self.reloadTableAnimated()
-                }
+        
+        self.loadSubmissionInfo {
+            self.loadCommentCells {
+                
             }
         }
-        
-        self.loadCommentCells()
-        self.tableView.reloadData()
-        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -90,16 +86,30 @@ class CommentsViewController: UITableViewController {
     
     // TODO: Reload the table
     func reloadTableAnimated() {
-        self.tableView.reloadData()
+        self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: 1, endingIndexExclusive: self.commentsViewModels.count+1, animation: .automatic)
+    }
+    
+    private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive:
+        Int, animation: UITableViewRowAnimation) {
+        
+        tableView.reloadData()
+        let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
+        let indexSet = IndexSet.init(integersIn: range)
+        tableView.reloadSections(indexSet, with: animation)
     }
     
     func loadSubmissionInfo(completion: @escaping ()->()) {
-        
-        self.loadSubmissionTitle(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
-        self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
-        self.loadSortedByBar()
-        
-        completion()
+        DispatchQueue.global(qos: .background).async {
+            self.loadSubmissionTitle(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
+            self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
+            self.loadSortedByBar()
+            
+            DispatchQueue.main.async {
+                self.reloadTableAnimated()
+                
+                completion()
+            }
+        }
     }
     
     func loadSubmissionTitle(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?) {
@@ -141,8 +151,36 @@ class CommentsViewController: UITableViewController {
     }
     
     // TODO: load comments from data provider
-    func loadCommentCells() {
+    func loadCommentCells(completion: @escaping ()->()) {
+        self.dataProvider?.requestComments(submissionId: (self.submissionDataModel?.id)!, completion: { (commentDataModels, error) in
+            
+            DispatchQueue.global(qos: .background).async {
+                
+                // Clear all current data
+                self.commentsViewModels.removeAll()
+                self.commentDataModels = commentDataModels
+                
+                for i in 0..<commentDataModels.count {
+                    let commentViewModel = CommentCellViewModel()
+                    self.commentsViewModels.append(commentViewModel)
+                    
+                    let dataModel = commentDataModels[i]
+                    
+                    self.dataProvider?.bind(commentCellViewModel: commentViewModel, dataModel: dataModel)
+                }
+                
+                self.areCommentsLoaded = true
+                
+                DispatchQueue.main.async {
+                    self.reloadTableAnimated()
+                    
+                    completion()
+                }
+                
+            }
+        })
         
+        completion()
     }
     
     override func didReceiveMemoryWarning() {
@@ -153,12 +191,21 @@ class CommentsViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 2
+        let numOfSections: Int
+        
+        if self.areCommentsLoaded == false {
+            numOfSections = 2
+        }
+        else {
+            numOfSections = self.commentsViewModels.count + 1 // 1 extra section for submission cells
+        }
+        
+        return numOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        // Submission Cells
         if section == 0 {
             // View Models must be initialized
             if self.areSubmissionViewModelsLoaded() == true {
@@ -167,13 +214,13 @@ class CommentsViewController: UITableViewController {
             else {
                 return 0
             }
-        }
-        
-        guard self.areCommentsLoaded() != false else {
+        } else {
+            
+            // Always 1 row per comments
             return 1
         }
         
-        return 100
+        
     }
     
     // Background
@@ -227,9 +274,22 @@ class CommentsViewController: UITableViewController {
             }
         }
         
-        let defaultCellHeight: CGFloat = 100
+        guard self.areCommentsLoaded != false else {
+            return self.LOADING_CELL_HEIGHT
+        }
         
-        return defaultCellHeight
+        if self.commentsViewModels.count > 0 {
+            // Comment Cell Height
+            let commentCellVm = self.commentsViewModels[indexPath.section-1]
+            let cellHeight = commentCellVm.cellHeight
+            
+            return cellHeight
+        }
+        
+        // This should never be reached
+        let defaultHeight: CGFloat = 50.0
+        
+        return defaultHeight
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -290,15 +350,16 @@ class CommentsViewController: UITableViewController {
                 let sortByCell = tableView.dequeueReusableCell(withIdentifier: self.SORTED_BY_CELL_REUSE_ID, for: indexPath) as! CommentsSortByCell
                 sortByCell.bind(toViewModel: self.commentsSortByVm!)
                 sortByCell.navigationController = self.navigationController
+                self.sfxManager?.applyShadow(view: sortByCell)
                 
                 return sortByCell
             }
         }
         
-        // Loading Cell
-        if self.areCommentsLoaded() == false {
+        // Loading Comment Cell
+        if self.areCommentsLoaded == false {
             
-            // Activity Indicator
+            // Activity Indicator for a 'Loading' cell
             if self.activityIndicatorCell != nil {
                 self.activityIndicatorCell?.removeActivityIndicator()
             }
@@ -308,18 +369,19 @@ class CommentsViewController: UITableViewController {
             self.activityIndicatorCell?.showActivityIndicator()
             return self.activityIndicatorCell!
         }
-        
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    
-    // TODO: detect that comments are loaded
-    func areCommentsLoaded() -> Bool {
-        return false
+        else {
+            // Comment cells
+            
+            let commentCell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath) as! CommentCell
+            let commentCellViewModel = self.commentsViewModels[indexPath.section-1]
+            commentCell.delegate = self
+            commentCell.bind(toViewModel: commentCellViewModel)
+            
+            
+            self.sfxManager?.applyShadow(view: commentCell)
+            
+            return commentCell
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -330,6 +392,19 @@ class CommentsViewController: UITableViewController {
             let sortByCell = tableView.cellForRow(at: indexPath) as! CommentsSortByCell
             sortByCell.sortByTouched(self)
         }
+        // TODO: Launch link from content cell
+        
+        
+        // Minimize comment cell
+        if indexPath.section >= 1 {
+            let commentCellVm = self.commentsViewModels[indexPath.section-1]
+            commentCellVm.toggleMinimized()
+        }
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        // Forces redraw of shadows right before transition
+        self.tableView.reloadData()
     }
 
     /*
@@ -401,5 +476,15 @@ class CommentsViewController: UITableViewController {
         
         return false
     }
+}
 
+extension CommentsViewController: CommentCellDelegate {
+    func commentCellDidChange(commentCell: CommentCell) {
+        // Get the index, reload table row
+        if let indexPath = self.tableView.indexPath(for: commentCell) {
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+        
+    }
 }

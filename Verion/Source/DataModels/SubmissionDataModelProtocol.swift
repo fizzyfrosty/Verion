@@ -10,4 +10,5 @@ import Foundation
 
 protocol SubmissionDataModelProtocol {
     var apiVersion: APIVersion {get}
+    var id: Int64 {get set}
 }

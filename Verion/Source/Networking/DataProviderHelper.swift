@@ -15,6 +15,19 @@ class DataProviderHelper {
     private let VOAT_THUMBNAIL_URL = "https://cdn.voat.co/thumbs/"
     let API_V1_NOTSUPPORTED_ERROR_MESSAGE = "API.v1 not yet implemented"
     
+    func getCommentCellVmInitData(fromDataModel dataModel: CommentDataModelProtocol) -> CommentCellViewModelInitData {
+        let commentViewModelInitData: CommentCellViewModelInitData
+        
+        switch dataModel.apiVersion {
+        case .legacy:
+            commentViewModelInitData = self.getCommentViewModelInitDataFromLegacy(dataModel: dataModel as! CommentDataModelLegacy)
+        case .v1:
+            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+        }
+        
+        return commentViewModelInitData
+    }
+    
     func getSubverseSearchResultCellVmInitData(fromDataModel dataModel: SubverseSearchResultDataModelProtocol) -> SubverseSearchResultCellViewModelInitData{
         let subverseSearchResultCellVmInitData: SubverseSearchResultCellViewModelInitData
         
@@ -106,9 +119,9 @@ class DataProviderHelper {
         return subTitleCellVmInitData
     }
     
+    // This should be for offline-use ONLY
     private func getSubmissionMediaTypeFromLegacyDataModel(submissionDataModel: SubmissionDataModelLegacy) -> SubmissionMediaType {
         
-        // TODO: implement
         var legacyMediaType: SubmissionMediaType = .none
         
         // If data model is text, return text.
@@ -125,6 +138,19 @@ class DataProviderHelper {
         }
         
         return legacyMediaType
+    }
+    
+    func getCommentDataModel(fromJson json: JSON, apiVersion: APIVersion) -> CommentDataModelProtocol{
+        let commentDataModel: CommentDataModelProtocol
+        
+        switch apiVersion {
+        case .legacy:
+            commentDataModel = self.getCommentDataModelLegacy(fromJson: json)
+        case .v1:
+            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+        }
+        
+        return commentDataModel
     }
     
     func getSubverseDataModel(fromJson json:JSON, apiVersion: APIVersion) -> SubverseSearchResultDataModelProtocol {
@@ -194,6 +220,34 @@ class DataProviderHelper {
     }
     
     // MARK: - private methods
+    
+    private func getCommentViewModelInitDataFromLegacy(dataModel: CommentDataModelLegacy) -> CommentCellViewModelInitData{
+        var commentCellVmInitData = CommentCellViewModelInitData()
+        
+        commentCellVmInitData.date = self.getDateFromString(gmtString: dataModel.dateString)
+        commentCellVmInitData.downvoteCount = dataModel.downvoteCount
+        commentCellVmInitData.textString = dataModel.commentContent
+        commentCellVmInitData.upvoteCount = dataModel.upvoteCount
+        commentCellVmInitData.usernameString = dataModel.username
+        commentCellVmInitData.voteCountTotal = dataModel.upvoteCount - dataModel.downvoteCount
+        
+        return commentCellVmInitData
+    }
+    
+    private func getCommentDataModelLegacy(fromJson json: JSON) -> CommentDataModelLegacy {
+        let commentDataModelLegacy = CommentDataModelLegacy()
+        
+        commentDataModelLegacy.commentContent = json["CommentContent"].stringValue
+        commentDataModelLegacy.dateString = json["Date"].stringValue
+        commentDataModelLegacy.downvoteCount = json["Dislikes"].intValue
+        commentDataModelLegacy.id = json["Id"].int64Value
+        commentDataModelLegacy.messageId = json["MessageId"].int64Value
+        commentDataModelLegacy.parentId = json["ParentId"].int64Value
+        commentDataModelLegacy.upvoteCount = json["Likes"].intValue
+        commentDataModelLegacy.username = json["Name"].stringValue
+        
+        return commentDataModelLegacy
+    }
     
     // Subverse Search Result Data Model - Legacy
     private func getSubverseDataModelLegacy(fromJson json: JSON) -> SubverseSearchResultDataModelLegacy {

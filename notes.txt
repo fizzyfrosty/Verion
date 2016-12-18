@@ -5,24 +5,30 @@ Immediate tasks:
 
 
 
-- Get sample Legacy and v1 comment json data
-- Data models
-	- legacy comments
-	- v1 comments
+* Get sample Legacy comment json data
+* Data models
+	* legacy comments
+	x v1 comments
 * Storyboard Comment Cell
 	* layouts
 	* formatting
-- View Model
-	- Children nodes?
-- Fetch data from OfflineDataProvider
-	- return legacy data models
-	- bind to viewModels
-	- Show Comment Cells on finish/reload table
-- Collapsable comments
-
+* View Model
+	x Children nodes?
+* Fetch data from OfflineDataProvider
+	* return legacy data models
+	* bind to viewModels
+	* Show Comment Cells on finish/reload table
+* Cell Height
+* Loading Cell
+* Reload table animated
+* Shadows
+* Collapsable comments
+- Children?
 
 - Launch links into web browser in Submission Content Cell
 - Load real data using alamofire from voat.co
+- Sort By new/top for comments
+- Sort By for submissions
 
 
 

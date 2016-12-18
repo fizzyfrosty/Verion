@@ -86,6 +86,7 @@
 		4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */; };
 		4375C08C1E011F8E00576CC6 /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C08B1E011F8E00576CC6 /* SortType.swift */; };
 		4375C08E1E01317F00576CC6 /* ActivityIndicatorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */; };
+		43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -199,6 +200,7 @@
 		4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelProtocol.swift; sourceTree = "<group>"; };
 		4375C08B1E011F8E00576CC6 /* SortType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
 		4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorProvider.swift; sourceTree = "<group>"; };
+		43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelLegacy.swift; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 				43F675131DF20078001F83BE /* SubmissionDataModelLegacy.swift */,
 				43F675141DF20078001F83BE /* SubmissionDataModelProtocol.swift */,
 				4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */,
+				43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */,
 				43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */,
 				43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */,
 				4375BFC51DF3737F00576CC6 /* SubmissionType.swift */,
@@ -727,6 +730,7 @@
 				4375C0281DF67EDA00576CC6 /* DesignableLabel.swift in Sources */,
 				43433DA81E057E620017FAB0 /* SubmissionImageCellViewModel.swift in Sources */,
 				4375C03E1DF67EDA00576CC6 /* UnwindSegue.swift in Sources */,
+				43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */,
 				4375C0321DF67EDA00576CC6 /* Misc.swift in Sources */,
 				4375C03A1DF67EDA00576CC6 /* SpringTextView.swift in Sources */,
 				4375BFC61DF3737F00576CC6 /* SubmissionType.swift in Sources */,

@@ -341,7 +341,7 @@
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gq-0f-ZE4" userLabel="CenterButton" customClass="SpringButton" customModule="Verion" customModuleProvider="target">
-                                    <rect key="frame" x="139" y="-2.3333333333333321" width="30" height="41.333333333333329"/>
+                                    <rect key="frame" x="139.33333333333334" y="-2.3333333333333321" width="30" height="41.333333333333329"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                     <size key="titleShadowOffset" width="0.0" height="1"/>
                                     <state key="normal">
@@ -360,6 +360,7 @@
                                 <constraint firstItem="8gq-0f-ZE4" firstAttribute="leading" secondItem="ogj-YO-4Rr" secondAttribute="trailing" constant="5" id="TK1-t0-uzv"/>
                                 <constraint firstItem="GBf-by-T52" firstAttribute="centerY" secondItem="8gq-0f-ZE4" secondAttribute="centerY" id="gc0-Qk-uEk"/>
                                 <constraint firstItem="ogj-YO-4Rr" firstAttribute="centerY" secondItem="8gq-0f-ZE4" secondAttribute="centerY" id="neZ-vf-rHA"/>
+                                <constraint firstItem="8gq-0f-ZE4" firstAttribute="width" relation="lessThanOrEqual" secondItem="6pl-ni-vmX" secondAttribute="width" multiplier="0.75" id="rB0-hq-xwk"/>
                                 <constraint firstItem="GBf-by-T52" firstAttribute="leading" secondItem="6pl-ni-vmX" secondAttribute="leadingMargin" constant="8" id="wHA-rG-jCe"/>
                             </constraints>
                         </view>

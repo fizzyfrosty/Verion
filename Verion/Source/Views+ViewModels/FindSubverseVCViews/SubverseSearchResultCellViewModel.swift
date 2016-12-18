@@ -37,6 +37,11 @@ class SubverseSearchResultCellViewModel {
         }
     }
     
+    init() {
+        let initData = SubverseSearchResultCellViewModelInitData()
+        self.loadInitData(initData: initData)
+    }
+    
     func loadInitData(initData: SubverseSearchResultCellViewModelInitData) {
         
         // Bindings

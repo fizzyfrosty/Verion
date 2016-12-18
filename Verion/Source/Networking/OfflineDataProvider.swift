@@ -17,6 +17,7 @@ class OfflineDataProvider: DataProviderType {
     private let NUM_OF_TEST_DATA_CELLS = 6
     private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY = "SampleJsonSubmissions_legacy"
     private let SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_LEGACY = "SampleSubverseList_legacy"
+    private let SAMPLE_JSON_COMMENTS_FILE_LEGACY = "SampleComments_legacy"
     private let SAMPLE_FILES_EXTENSION = "txt"
     
     private let DELAY_TIME_SECONDS: Float = 1.0
@@ -74,6 +75,28 @@ class OfflineDataProvider: DataProviderType {
         }
     }
     
+    func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void {
+        Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
+            var commentDataModels = [CommentDataModelProtocol]()
+            
+            // Load sample json data
+            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_COMMENTS_FILE_LEGACY,
+                                                                   withExtension: self.SAMPLE_FILES_EXTENSION)
+            
+            // For each submission, create a datamodel
+            for i in 0..<sampleJson.count {
+                // Get data model from sample JSON
+                let commentJson = sampleJson[i]
+                let commentDataModel = self.dataProviderHelper.getCommentDataModel(fromJson: commentJson, apiVersion: self.apiVersion)
+                commentDataModels.append(commentDataModel)
+            }
+            
+            // Return the data models
+            completion(commentDataModels, nil)
+            
+        }
+    }
+    
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {
         
         // TODO: UPVOTE/DOWNVOTE feature isn't supported by legacy api. Will do later when I get new API key
@@ -116,8 +139,9 @@ class OfflineDataProvider: DataProviderType {
         subverseSearchResultCellViewModel.loadInitData(initData: subverseSearchResultCellVmInitData)
     }
     
-    func requestComments(submissionId: Int, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void {
-        
+    func bind(commentCellViewModel: CommentCellViewModel, dataModel: CommentDataModelProtocol) {
+        let commentCellVmInitData = self.dataProviderHelper.getCommentCellVmInitData(fromDataModel: dataModel)
+        commentCellViewModel.loadInitData(initData: commentCellVmInitData)
     }
     
     func getSubmissionMediaType(submissionDataModel: SubmissionDataModelProtocol) -> SubmissionMediaType {

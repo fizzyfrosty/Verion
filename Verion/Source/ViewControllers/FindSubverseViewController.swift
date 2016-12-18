@@ -36,6 +36,10 @@ class FindSubverseViewController: UITableViewController {
             
             DispatchQueue.global(qos: .background).async {
                 
+                // Clear
+                self.allSubverseSearchResultViewModels.removeAll()
+                self.filteredSubverseSearchResultViewModels.removeAll()
+                
                 // prepend all/frontpage subverses first
                 self.allSubverseSearchResultViewModels.append(self.getFrontpageSubverse())
                 self.allSubverseSearchResultViewModels.append(self.getAllSubverse())

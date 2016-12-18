@@ -22,7 +22,7 @@ import UIKit
 protocol DataProviderType {
     
     func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void
-    func requestComments(submissionId: Int, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void
+    func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void
     func requestSubverseList(completion: @escaping ([SubverseSearchResultDataModelProtocol], Error?) ->Void) -> Void
     
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void
@@ -31,6 +31,7 @@ protocol DataProviderType {
     func bind(subImageCellViewModel: SubmissionImageCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void
     func bind(subLinkCellViewModel: SubmissionLinkCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void
     func bind(subverseSearchResultCellViewModel: SubverseSearchResultCellViewModel, dataModel: SubverseSearchResultDataModelProtocol) -> Void
+    func bind(commentCellViewModel: CommentCellViewModel, dataModel: CommentDataModelProtocol) -> Void
     
     
     func getSubmissionMediaType(submissionDataModel: SubmissionDataModelProtocol) -> SubmissionMediaType

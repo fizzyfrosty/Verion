@@ -11,6 +11,7 @@ import UIKit
 class SubmissionDataModelLegacy: SubmissionDataModelProtocol {
     
     var apiVersion: APIVersion = APIVersion.legacy
+    var id: Int64 = 0
     
     var commentCount = 0
     var dateString = ""
@@ -20,7 +21,7 @@ class SubmissionDataModelLegacy: SubmissionDataModelProtocol {
     var upvoteCount = 0
     var voteCount = 0
     
-    var id: Int64 = 0
+    
     
     var linkDescription = ""
     var messageContent = ""

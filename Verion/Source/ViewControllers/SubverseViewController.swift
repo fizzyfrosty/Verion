@@ -406,7 +406,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             #if DEBUG
                 //print("Binding cell to viewModel \(i)...")
             #endif
-
         }
     }
     
@@ -472,15 +471,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                                     endingIndexExclusive: self.numOfCellsToDisplay,
                                     animation: .automatic)
         
-    }
-    
-    func reloadDataAnimatedKeepingOffset()
-    {
-        let offset = self.tableView.contentOffset
-        self.tableView.beginUpdates()
-        self.tableView.endUpdates()
-        
-        self.tableView.contentOffset = offset
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
