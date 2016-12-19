@@ -106,6 +106,7 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebViewProgressDel
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        self.webView.stopLoading()
         self.progressView?.removeFromSuperview()
     }
 

@@ -70,6 +70,9 @@ class SubmissionCellViewModel{
         }
     }
     
+    // A reference to the corresponding data model
+    var dataModel: SubmissionDataModelProtocol?
+    
     // Lazy initialization
     init() {
         self.setupInternalBindings()

@@ -61,7 +61,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // Data Models and View Models
     private var subCellViewModels: [SubmissionCellViewModel] = []
-    private var submissionDataModels: [SubmissionDataModelProtocol] = []
     var didTableLoadOnce = false // prevents table from rendering before cells completely bounded
     
     // Segue
@@ -264,12 +263,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 self.subCellViewModels.removeAll()
                 
                 // For each data model, initialize a subCell viewModel
-                for _ in 0..<submissionDataModels.count {
+                for i in 0..<submissionDataModels.count {
                     let subCellViewModel = SubmissionCellViewModel()
+                    subCellViewModel.dataModel = submissionDataModels[i]
+                    
                     self.subCellViewModels.append(subCellViewModel)
                 }
                 
-                self.submissionDataModels = submissionDataModels
                 
                 // Bind set of cells to be loaded
                 self.bindCellsToBeDisplayed(startingIndexInclusive: 0, endingIndexExclusive: self.subCellViewModels.count)
@@ -450,9 +450,9 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             // Bind dataModel-viewModel-dataProvider
             
             let subCellViewModel = self.subCellViewModels[i]
-            let dataModel = self.submissionDataModels[i]
+            let dataModel = subCellViewModel.dataModel
             
-            self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: dataModel)
+            self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: dataModel!)
             #if DEBUG
                 //print("Binding cell to viewModel \(i)...")
             #endif
@@ -535,7 +535,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             
             // Comments View Controller segue
             if let nextVc = segue.destination as? CommentsViewController {
-                nextVc.submissionDataModel = self.submissionDataModels[self.selectedIndex]
+                nextVc.submissionDataModel = self.subCellViewModels[self.selectedIndex].dataModel
             }
             
         } else if segue.identifier == self.FIND_SUBVERSE_SEGUE_IDENTIFIER {
@@ -568,12 +568,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             })
         }
         self.sortByButton.title = sortType.rawValue
-        // Set title
-        /*
-        self.sortByButton.setTitle(sortType.rawValue, for: .normal)
-        self.sortByButton.setTitle(sortType.rawValue, for: .selected)
-        self.sortByButton.setTitle(sortType.rawValue, for: .disabled)
-        */
+        
+        
     }
     
     /*
