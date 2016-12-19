@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol CommentsSortByCellDelegate: class {
+    func commentsSortByCell(cell: CommentsSortByCell, didSortBy sortType: SortTypeComments)
+}
+
 class CommentsSortByCell: UITableViewCell {
 
     @IBOutlet var sortByButton: UIButton!
@@ -22,37 +26,58 @@ class CommentsSortByCell: UITableViewCell {
     
     let SORT_BY_STRING = "Sorted by:"
     
-    @IBAction func sortByTouched(_ sender: Any) {
+    // Delegate for sorting by view controller
+    weak var delegate: CommentsSortByCellDelegate?
+    
+    @IBAction func sortByTouched(_ sender: UIButton) {
         
+        // Present UI for selecting options. It will merely change the View Model, which will dictate action taken.
         guard self.navigationController != nil else {
             print("Error: Unable to present SortBy Actionsheet. Navigation controller for Sort-by Cell is not set.")
             return
         }
         
         // Create action sheet
-        if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.phone {
-            let alertController = UIAlertController.init(title: "Sort Comments by", message: nil, preferredStyle: .actionSheet)
-            let topButton = UIAlertAction.init(title: "Top", style: .default, handler: { alertAction in
-                self.viewModel?.sortType.value = .top
+        let alertController = UIAlertController.init(title: "Sort Comments by", message: nil, preferredStyle: .actionSheet)
+        
+        // Create Actions corresponding to SortByComments enum choices
+        var sortByActions = [UIAlertAction]()
+        for sortByType in SortTypeComments.allValues {
+            let sortChoice = UIAlertAction.init(title: sortByType.rawValue, style: .default, handler: { alertAction in
+                
+                // Set the view model
+                self.viewModel?.sortType.value = sortByType
+                
+                // Pass to delegate for actual sorting
+                if let _ = self.delegate?.commentsSortByCell(cell: self, didSortBy: sortByType) {
+                } else {
+                    print("Warning: CommentsSortByCell's delegate may not be set.")
+                }
             })
             
-            let newButton = UIAlertAction.init(title: "New", style: .default, handler: { alertAction in
-                self.viewModel?.sortType.value = .new
-            })
-            
-            let cancelButton = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
-            
-            alertController.addAction(topButton)
-            alertController.addAction(newButton)
-            alertController.addAction(cancelButton)
-            
-            navigationController?.present(alertController, animated: true, completion: {
-            })
-        }
-        else if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad {
-            
+            sortByActions.append(sortChoice)
         }
         
+        // Cancel Button
+        let cancelButton = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+        
+        // Populate alert controller with actions
+        for sortByAction in sortByActions {
+            alertController.addAction(sortByAction)
+        }
+        alertController.addAction(cancelButton)
+        
+        
+        // Custom presentation for iPad
+        if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad {
+            alertController.popoverPresentationController?.sourceView = sender
+            alertController.popoverPresentationController?.sourceRect = sender.bounds
+        }
+        
+        // Present
+        navigationController?.present(alertController, animated: true, completion: {
+            
+        })
     }
     
     override func awakeFromNib() {
@@ -77,6 +102,7 @@ class CommentsSortByCell: UITableViewCell {
             let titleString = self.getButtonTitleString(sortTypeString: sortTypeComment.rawValue)
             self.setButtonTitle(titleString: titleString)
         }
+        
     }
     
     private func getButtonTitleString(sortTypeString: String) -> String {

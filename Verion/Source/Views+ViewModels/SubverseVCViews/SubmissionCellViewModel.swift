@@ -20,6 +20,7 @@ struct SubmissionCellViewModelInitData {
     var username: String = "SampleUsername"
     var subverseName: String = "SampleSubverse"
     var date: Date = Date()
+    var rank: Double = 3.322
 }
 
 class SubmissionCellViewModel{
@@ -60,11 +61,9 @@ class SubmissionCellViewModel{
     
     private(set) var date: Date?
     private(set) var dateSubmittedString = ""
+    private(set) var rank: Double = 0.0
     
     var cellHeight: CGFloat {
-        set {
-            self.cellHeight = newValue
-        }
         get {
             let minCellHeight = self.getMinimumCellHeight(dependingOnThumbnailLink: self.thumbnailLink.value)
             return self.getCellHeight(withTitleString: self.titleString, minCellHeight: minCellHeight, maxCellHeight: self.MAX_CELL_HEIGHT)
@@ -95,6 +94,7 @@ class SubmissionCellViewModel{
         self.username = subCellVmInitData.username
         self.subverseName = subCellVmInitData.subverseName
         self.date = subCellVmInitData.date
+        self.rank = subCellVmInitData.rank
         self.dateSubmittedString = self.textFormatter.createDateSubmittedString(gmtDate: subCellVmInitData.date)
         self.submittedByString = self.textFormatter.createSubmittedByUsernameString(username: subCellVmInitData.username, fontSize: self.USERNAME_LABEL_FONT_SIZE)
         
@@ -138,7 +138,8 @@ class SubmissionCellViewModel{
         var imageViewHorizontalMargins: CGFloat = 25
         var imageViewWidth: CGFloat = 75
         
-        if self.thumbnailImage == nil {
+        // Only change margins for computing height if there is absolutely no thumbnail
+        if self.thumbnailImage == nil && self.thumbnailLink.value == "" {
             imageViewWidth = 0
             imageViewHorizontalMargins = 50
         }

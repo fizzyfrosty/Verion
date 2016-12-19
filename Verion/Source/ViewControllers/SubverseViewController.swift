@@ -36,11 +36,16 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         set {
             self.scrollViewContentOffsetY = newValue
         }
-        
     }
     
     private var RELEASE_TO_REFRESH_STRING = "Release to Refresh"
     private var RELEASE_TO_REFRESH_ATTRIBUTED_TITLE = NSAttributedString.init(string: "Release to Refresh", attributes: [NSForegroundColorAttributeName : UIColor.white])
+    
+    // Sorting
+    private let SORT_BY_TITLE = "Sort Submissions by"
+    private var sortType: SortTypeSubmissions = .hot
+
+    @IBOutlet var sortByButton: UIBarButtonItem!
     
     
     // Navigation Bar items
@@ -68,13 +73,59 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
     
-    
+    // UIOutlets and actions
     @IBAction func findSubverseButtonPress(_ sender: Any) {
         self.performSegue(withIdentifier: self.FIND_SUBVERSE_SEGUE_IDENTIFIER, sender: sender)
     }
     
     @IBAction func findSubverseNameButtonPress(_ sender: Any) {
         self.performSegue(withIdentifier: self.FIND_SUBVERSE_SEGUE_IDENTIFIER, sender: sender)
+    }
+    
+    
+    @IBAction func pressedSortBy(_ sender: UIBarButtonItem) {
+        // Create actionsheet and show
+        
+        // Create action sheet
+        let alertController = UIAlertController.init(title: self.SORT_BY_TITLE, message: nil, preferredStyle: .actionSheet)
+        
+        // Create Actions corresponding to SortByComments enum choices
+        var sortByActions = [UIAlertAction]()
+        for sortByType in SortTypeSubmissions.allValues {
+            let sortAction = UIAlertAction.init(title: sortByType.rawValue, style: .default, handler: { alertAction in
+                
+                // Set the view model
+                self.sortType = sortByType
+                
+                self.sortSubmissions(bySortType: self.sortType)
+                
+                // Reload table
+                self.reloadTableAnimated()
+            })
+            
+            sortByActions.append(sortAction)
+        }
+        
+        // Cancel Button
+        let cancelButton = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+        
+        // Populate alert controller with actions
+        for sortByAction in sortByActions {
+            alertController.addAction(sortByAction)
+        }
+        alertController.addAction(cancelButton)
+        
+        // Custom presentation for iPad
+        if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad {
+            let barButtonView: UIView = sender.value(forKey: "view") as! UIView
+            alertController.popoverPresentationController?.sourceView = barButtonView
+            alertController.popoverPresentationController?.sourceRect = barButtonView.bounds
+        }
+        
+        // Present
+        navigationController?.present(alertController, animated: true, completion: {
+            
+        })
     }
     
     
@@ -223,14 +274,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 // Bind set of cells to be loaded
                 self.bindCellsToBeDisplayed(startingIndexInclusive: 0, endingIndexExclusive: self.subCellViewModels.count)
                 
+                self.sortSubmissions(bySortType: self.sortType)
+                
                 // Reload table, animated, back on main thread
                 DispatchQueue.main.async {
                     self.didTableLoadOnce = true
                     
-                    self.reloadTableAnimated(forTableView: self.tableView,
-                                             startingIndexInclusive: 0,
-                                             endingIndexExclusive: self.numOfCellsToDisplay,
-                                             animation: UITableViewRowAnimation.automatic)
+                    self.reloadTableAnimated()
                     
                     // Set Navigation title after finished loading table
                     let subverseTitle = self.getNavigationLabelString(subverse: self.subverse)
@@ -411,12 +461,12 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     private func insertSectionsAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive: Int, animation: UITableViewRowAnimation) {
 
-        
         tableView.beginUpdates()
         let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
         let indexSet = IndexSet.init(integersIn: range)
         tableView.insertSections(indexSet, with: .automatic)
         tableView.endUpdates()
+        
         
         
         // Refresh the cell that said "Load More Submissions"
@@ -426,6 +476,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         tableView.reloadSections(refreshIndexSet, with: .automatic)
         tableView.endUpdates()
  
+    }
+    
+    private func reloadTableAnimated() {
+        self.reloadTableAnimated(forTableView: self.tableView,
+                                 startingIndexInclusive: 0,
+                                 endingIndexExclusive: self.numOfCellsToDisplay,
+                                 animation: UITableViewRowAnimation.automatic)
     }
  
     private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive:
@@ -494,6 +551,30 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.tableView.reloadData()
     }
     
+    private func sortSubmissions(bySortType sortType: SortTypeSubmissions) {
+        // Sort it all
+        switch sortType {
+        case .hot:
+            self.subCellViewModels.sort(by: { (viewModelA, viewModelB) -> Bool in
+                return viewModelA.rank > viewModelB.rank
+            })
+        case .new:
+            self.subCellViewModels.sort(by: { (viewModelA, viewModelB) -> Bool in
+                return viewModelA.date?.compare(viewModelB.date!) == ComparisonResult.orderedDescending
+            })
+        case .top:
+            self.subCellViewModels.sort(by: { (viewModelA, viewModelB) -> Bool in
+                return viewModelA.voteCountTotal.value > viewModelB.voteCountTotal.value
+            })
+        }
+        self.sortByButton.title = sortType.rawValue
+        // Set title
+        /*
+        self.sortByButton.setTitle(sortType.rawValue, for: .normal)
+        self.sortByButton.setTitle(sortType.rawValue, for: .selected)
+        self.sortByButton.setTitle(sortType.rawValue, for: .disabled)
+        */
+    }
     
     /*
     // Override to support conditional editing of the table view.

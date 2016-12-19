@@ -33,8 +33,12 @@ Immediate tasks:
 * Launch links into web browser in Submission Content Cell
 * Launch links from comments or text posts into web browser
 
-- Sort By new/top for comments
-- Sort By for submissions
+* Action Sheet substitute implementation for iPad
+* Sort By new for comments
+* Sort by top for comments
+
+* Sort By for submissions
+
 
 
 - Load real data using alamofire from voat.co

@@ -321,8 +321,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="ErV-85-pwb">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" title="Hot" style="done" id="jU9-nf-ecW">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="pressedSortBy:" destination="F8s-Mq-eeW" id="Lf5-RE-2vw"/>
+                            </connections>
+                        </barButtonItem>
                         <view key="titleView" contentMode="scaleToFill" id="6pl-ni-vmX">
-                            <rect key="frame" x="54" y="5" width="307" height="35"/>
+                            <rect key="frame" x="95" y="5" width="307" height="35"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogj-YO-4Rr">
@@ -334,15 +340,9 @@
                                         <action selector="findSubverseButtonPress:" destination="F8s-Mq-eeW" eventType="touchUpInside" id="Xqp-XO-CgO"/>
                                     </connections>
                                 </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GBf-by-T52">
-                                    <rect key="frame" x="16" y="3" width="30" height="30"/>
-                                    <state key="normal" title="Top">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gq-0f-ZE4" userLabel="CenterButton" customClass="SpringButton" customModule="Verion" customModuleProvider="target">
-                                    <rect key="frame" x="139.33333333333334" y="-2.3333333333333321" width="30" height="41.333333333333329"/>
-                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                    <rect key="frame" x="139.33333333333334" y="0.33333333333333215" width="30" height="36"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <size key="titleShadowOffset" width="0.0" height="1"/>
                                     <state key="normal">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -358,10 +358,8 @@
                                 <constraint firstItem="8gq-0f-ZE4" firstAttribute="centerX" secondItem="6pl-ni-vmX" secondAttribute="centerX" id="EwD-Id-wrr"/>
                                 <constraint firstItem="8gq-0f-ZE4" firstAttribute="centerY" secondItem="6pl-ni-vmX" secondAttribute="centerY" id="OBJ-BT-I5E"/>
                                 <constraint firstItem="8gq-0f-ZE4" firstAttribute="leading" secondItem="ogj-YO-4Rr" secondAttribute="trailing" constant="5" id="TK1-t0-uzv"/>
-                                <constraint firstItem="GBf-by-T52" firstAttribute="centerY" secondItem="8gq-0f-ZE4" secondAttribute="centerY" id="gc0-Qk-uEk"/>
                                 <constraint firstItem="ogj-YO-4Rr" firstAttribute="centerY" secondItem="8gq-0f-ZE4" secondAttribute="centerY" id="neZ-vf-rHA"/>
                                 <constraint firstItem="8gq-0f-ZE4" firstAttribute="width" relation="lessThanOrEqual" secondItem="6pl-ni-vmX" secondAttribute="width" multiplier="0.75" id="rB0-hq-xwk"/>
-                                <constraint firstItem="GBf-by-T52" firstAttribute="leading" secondItem="6pl-ni-vmX" secondAttribute="leadingMargin" constant="8" id="wHA-rG-jCe"/>
                             </constraints>
                         </view>
                     </navigationItem>
@@ -370,6 +368,7 @@
                         <outlet property="navigationBarCenterButton" destination="8gq-0f-ZE4" id="8gU-C9-lkO"/>
                         <outlet property="navigationBarView" destination="6pl-ni-vmX" id="Ql5-qc-jlR"/>
                         <outlet property="searchDisplayController" destination="eOH-KZ-tDI" id="8bU-3R-tJa"/>
+                        <outlet property="sortByButton" destination="jU9-nf-ecW" id="n6M-Pd-DMh"/>
                         <segue destination="RhN-nn-wht" kind="show" identifier="SubmissionSegue" id="wp9-Ez-gIr"/>
                         <segue destination="VLv-MA-aW6" kind="show" identifier="FindSubverseSegue" id="Ei1-5x-hNC"/>
                     </connections>

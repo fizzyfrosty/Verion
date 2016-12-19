@@ -326,6 +326,7 @@ class DataProviderHelper {
         subCellVmInitData.thumbnailLink = dataModel.thumbnailLink
         subCellVmInitData.username = dataModel.username
         subCellVmInitData.subverseName = dataModel.subverseName
+        subCellVmInitData.rank = dataModel.rank
         
         return subCellVmInitData
     }

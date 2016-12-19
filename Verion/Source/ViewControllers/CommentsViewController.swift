@@ -9,7 +9,7 @@
 import UIKit
 import NVActivityIndicatorView
 
-class CommentsViewController: UITableViewController, UITextViewDelegate {
+class CommentsViewController: UITableViewController, UITextViewDelegate, CommentsSortByCellDelegate {
     
     // Display formatting
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 1.0, green: 88.0/255.0, blue: 88.0/255.0, alpha: 1.0)
@@ -345,6 +345,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate {
                 let sortByCell = tableView.dequeueReusableCell(withIdentifier: self.SORTED_BY_CELL_REUSE_ID, for: indexPath) as! CommentsSortByCell
                 sortByCell.bind(toViewModel: self.commentsSortByVm!)
                 sortByCell.navigationController = self.navigationController
+                sortByCell.delegate = self
                 self.sfxManager?.applyShadow(view: sortByCell)
                 
                 return sortByCell
@@ -384,7 +385,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate {
         // If touched sorted By bar, trigger the segue
         if indexPath.section == 0 && indexPath.row == 2 {
             let sortByCell = tableView.cellForRow(at: indexPath) as! CommentsSortByCell
-            sortByCell.sortByTouched(self)
+            sortByCell.sortByTouched(sortByCell.sortByButton)
         }
         
         // If is a content cell, launch link
@@ -492,6 +493,26 @@ class CommentsViewController: UITableViewController, UITextViewDelegate {
         self.loadWebViewController(forLink: linkString)
         
         return false
+    }
+    
+    func commentsSortByCell(cell: CommentsSortByCell, didSortBy sortType: SortTypeComments) {
+        // Sort the comment cells
+        
+        // By New - ComparisonResult.orderedDescending
+        if sortType == SortTypeComments.new {
+            self.commentsViewModels.sort { (commentVmA, commentVmB) -> Bool in
+                return commentVmA.date?.compare(commentVmB.date!) == ComparisonResult.orderedDescending
+            }
+        }
+        // By Top
+        else if sortType == SortTypeComments.top {
+            self.commentsViewModels.sort(by: { (commentVmA, commentVmB) -> Bool in
+                return commentVmA.voteCountTotal.value >= commentVmB.voteCountTotal.value
+            })
+        }
+        
+        // Reload the table
+        self.reloadTableAnimated()
     }
 }
 
