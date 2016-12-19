@@ -79,16 +79,17 @@ class CommentCellViewModel {
         self.dateString = self.textFormatter.createDateSubmittedString(gmtDate: self.date!) + " ago"
         
         // Bindings
-        _ = self.upvoteCount.observeNext() { upvoteCount in
-            self.separatedVoteCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+        _ = self.upvoteCount.observeNext() { [weak self] upvoteCount in
+            self?.separatedVoteCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
             
-            self.voteCountTotal.value = self.getVoteCountTotal(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+            
+            self?.voteCountTotal.value = (self?.getVoteCountTotal(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
         }
         
-        _ = self.downvoteCount.observeNext() { downvoteCount in
-            self.separatedVoteCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+        _ = self.downvoteCount.observeNext() { [weak self] downvoteCount in
+            self?.separatedVoteCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
             
-            self.voteCountTotal.value = self.getVoteCountTotal(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+            self?.voteCountTotal.value = (self?.getVoteCountTotal(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
         }
     }
     

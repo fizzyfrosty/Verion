@@ -61,6 +61,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // Data Models and View Models
     private var subCellViewModels: [SubmissionCellViewModel] = []
+    private var submissionDataModels: [SubmissionDataModelProtocol] = []
     var didTableLoadOnce = false // prevents table from rendering before cells completely bounded
     
     // Segue
@@ -260,7 +261,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             DispatchQueue.global(qos: .background).async {
                 
                 // Clear all current data
-                self.subCellViewModels.removeAll()
+                self.cleanupModels()
                 
                 // For each data model, initialize a subCell viewModel
                 for i in 0..<submissionDataModels.count {
@@ -269,6 +270,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                     
                     self.subCellViewModels.append(subCellViewModel)
                 }
+                self.submissionDataModels = submissionDataModels
                 
                 
                 // Bind set of cells to be loaded
@@ -569,7 +571,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
         self.sortByButton.title = sortType.rawValue
         
-        
+    }
+    
+    private func cleanupModels() {
+        self.subCellViewModels.removeAll()
+        self.submissionDataModels.removeAll()
     }
     
     /*

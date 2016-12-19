@@ -9,10 +9,10 @@
 import Foundation
 
 enum SortTypeComments: String {
-    case new = "New"
     case top = "Top"
+    case new = "New"
     
-    static let allValues = [new, top]
+    static let allValues = [top, new]
 }
 
 enum SortTypeSubmissions: String {

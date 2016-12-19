@@ -27,7 +27,7 @@ class SubmissionCell: UITableViewCell {
     @IBOutlet var submittedByUserLabel: UILabel!
     @IBOutlet var submittedToSubverseLabel: UILabel!
     
-    var viewModel: SubmissionCellViewModel?
+    weak var viewModel: SubmissionCellViewModel?
     
     let BORDER_WIDTH: CGFloat = 1
     let BORDER_COLOR: CGColor = UIColor(colorLiteralRed: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).cgColor
@@ -71,14 +71,14 @@ class SubmissionCell: UITableViewCell {
         
         // Vote Count Label
         self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
-        _ = viewModel.voteCountTotal.observeNext() { count in
-            self.voteCountLabel.text = String(count)
+        _ = viewModel.voteCountTotal.observeNext() { [weak self] count in
+            self?.voteCountLabel.text = String(count)
         }
         
         // Separated Vote Count Label
         self.voteSeparatedCountLabel.text = viewModel.voteSeparatedCountString.value
-        _ = viewModel.voteSeparatedCountString.observeNext() { separatedCountString in
-            self.voteSeparatedCountLabel.text = separatedCountString
+        _ = viewModel.voteSeparatedCountString.observeNext() { [weak self] separatedCountString in
+            self?.voteSeparatedCountLabel.text = separatedCountString
         }
         
         // Comments Label

@@ -45,14 +45,14 @@ class SubverseSearchResultCellViewModel {
     func loadInitData(initData: SubverseSearchResultCellViewModelInitData) {
         
         // Bindings
-        _ = self.subscriberCount.observeNext() { subscriberCount in
+        _ = self.subscriberCount.observeNext() { [weak self] subscriberCount in
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal
             
             if subscriberCount == 0 {
-                self.subscriberCountString.value = ""
+                self?.subscriberCountString.value = ""
             } else {
-                self.subscriberCountString.value = "\(numberFormatter.string(from: NSNumber(value: subscriberCount))!) subscribers"
+                self?.subscriberCountString.value = "\(numberFormatter.string(from: NSNumber(value: subscriberCount))!) subscribers"
             }
         }
         

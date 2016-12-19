@@ -514,6 +514,12 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         // Reload the table
         self.reloadTableAnimated()
     }
+    
+    deinit {
+        self.tableView.dataSource = nil
+        self.tableView.delegate = nil
+        
+    }
 }
 
 extension CommentsViewController: CommentCellDelegate {

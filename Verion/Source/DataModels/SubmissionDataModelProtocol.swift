@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SubmissionDataModelProtocol {
+protocol SubmissionDataModelProtocol: class {
     var apiVersion: APIVersion {get}
     var id: Int64 {get set}
 }

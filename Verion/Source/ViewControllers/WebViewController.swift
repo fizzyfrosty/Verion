@@ -39,6 +39,7 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebViewProgressDel
 
         self.progressView = self.getProgressView(webView: self.webView, progressProxy: self.progressProxy)
         self.navigationController?.navigationBar.addSubview(self.progressView!)
+        self.webView.scalesPageToFit = true
         
         self.loadLink()
     }
@@ -106,8 +107,18 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebViewProgressDel
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        self.webView.delegate = nil
+        self.progressProxy.webViewProxyDelegate = nil
+        self.progressProxy.progressDelegate = nil
         self.webView.stopLoading()
         self.progressView?.removeFromSuperview()
+        self.progressView = nil
+    }
+    
+    deinit {
+        #if DEBUG
+        print("deallocated webview")
+        #endif
     }
 
     /*

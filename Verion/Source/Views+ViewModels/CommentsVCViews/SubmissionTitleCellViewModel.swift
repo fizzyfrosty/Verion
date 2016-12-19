@@ -80,16 +80,16 @@ class SubmissionTitleCellViewModel {
     
     private func setupInternalBindings() {
         // Bindings for upvotes and downvotes to update votecount separated string and total vote count
-        _ = self.upvoteCount.observeNext { _ in
-            self.voteCountTotal.value = self.upvoteCount.value - self.downvoteCount.value
+        _ = self.upvoteCount.observeNext { [weak self] _ in
+            self?.voteCountTotal.value = (self?.upvoteCount.value)! - (self?.downvoteCount.value)!
             
-            self.voteSeparatedCountString.value = self.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+            self?.voteSeparatedCountString.value = (self?.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
         }
         
-        _ = self.downvoteCount.observeNext { _ in
-            self.voteCountTotal.value = self.upvoteCount.value - self.downvoteCount.value
+        _ = self.downvoteCount.observeNext { [weak self] _ in
+            self?.voteCountTotal.value = (self?.upvoteCount.value)! - (self?.downvoteCount.value)!
             
-            self.voteSeparatedCountString.value = self.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+            self?.voteSeparatedCountString.value = (self?.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
         }
     }
     

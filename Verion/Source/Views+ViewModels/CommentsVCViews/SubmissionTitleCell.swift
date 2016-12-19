@@ -32,14 +32,14 @@ class SubmissionTitleCell: UITableViewCell {
         self.titleLabel.text = viewModel.titleString
         
         // Total Vote count
-        _ = viewModel.voteCountTotal.observeNext { (int) in
-            self.voteCountLabel.text = String(int)
+        _ = viewModel.voteCountTotal.observeNext { [weak self] (int) in
+            self?.voteCountLabel.text = String(int)
         }
         self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
         
         // Separated vote count
-        _ = viewModel.voteSeparatedCountString.observeNext(with: { (string) in
-            self.separatedVoteCountLabel.text = string
+        _ = viewModel.voteSeparatedCountString.observeNext(with: { [weak self] (string) in
+            self?.separatedVoteCountLabel.text = string
         })
         self.separatedVoteCountLabel.text = viewModel.voteSeparatedCountString.value
         

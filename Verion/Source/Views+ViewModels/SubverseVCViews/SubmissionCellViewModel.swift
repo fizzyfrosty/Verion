@@ -71,12 +71,17 @@ class SubmissionCellViewModel{
     }
     
     // A reference to the corresponding data model
-    var dataModel: SubmissionDataModelProtocol?
+    weak var dataModel: SubmissionDataModelProtocol?
     
     // Lazy initialization
     init() {
         self.setupInternalBindings()
         self.loadInitData(subCellVmInitData: SubmissionCellViewModelInitData())
+    }
+    
+    init(withoutAnything: Bool) {
+        self.setupInternalBindings()
+        //self.loadInitData(subCellVmInitData: SubmissionCellViewModelInitData())
     }
     
     // Custom initialization
@@ -111,16 +116,24 @@ class SubmissionCellViewModel{
     
     private func setupInternalBindings() {
         // Bindings for upvotes and downvotes to update votecount separated string and total vote count
-        _ = self.upvoteCount.observeNext { _ in
-            self.voteCountTotal.value = self.upvoteCount.value - self.downvoteCount.value
+        _ = self.upvoteCount.observeNext {[weak self] _ in
+            self?.voteCountTotal.value = (self?.upvoteCount.value)! - (self?.downvoteCount.value)!
             
-            self.voteSeparatedCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+            self?.voteSeparatedCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
         }
         
-        _ = self.downvoteCount.observeNext { _ in
-            self.voteCountTotal.value = self.upvoteCount.value - self.downvoteCount.value
+        
+        _ = self.downvoteCount.observeNext { [weak self] _ in
+            self?.voteCountTotal.value = (self?.upvoteCount.value)! - (self?.downvoteCount.value)!
             
-            self.voteSeparatedCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+            self?.voteSeparatedCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
+        }
+    }
+    
+    private func cleanupInternalBindings() {
+        _ = self.upvoteCount.observeNext { _ in
+        }
+        _ = self.downvoteCount.observeNext { _ in
         }
     }
     
@@ -168,6 +181,12 @@ class SubmissionCellViewModel{
         let image = ImageDownloader.downloadImage(urlString: urlString)
         
         return image
+    }
+    
+    deinit {
+        #if DEBUG
+        //print("deallocating SubverseViewModel")
+        #endif
     }
     
 }

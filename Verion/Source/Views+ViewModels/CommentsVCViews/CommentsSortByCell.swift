@@ -98,9 +98,9 @@ class CommentsSortByCell: UITableViewCell {
         
         
         // Bind the viewModel to the button's title
-        _ = self.viewModel?.sortType.observeNext() { sortTypeComment in
-            let titleString = self.getButtonTitleString(sortTypeString: sortTypeComment.rawValue)
-            self.setButtonTitle(titleString: titleString)
+        _ = self.viewModel?.sortType.observeNext() { [weak self] sortTypeComment in
+            let titleString = self?.getButtonTitleString(sortTypeString: sortTypeComment.rawValue)
+            self?.setButtonTitle(titleString: titleString!)
         }
         
     }

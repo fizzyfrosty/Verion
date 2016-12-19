@@ -28,4 +28,10 @@ class SFXManager: SFXManagerType {
         let shadowPath: CGPath = UIBezierPath(rect: shadowFrame).cgPath
         view.layer.shadowPath = shadowPath
     }
+    
+    deinit {
+        #if DEBUG
+        //print("Deallocated SFXManager")
+        #endif
+    }
 }

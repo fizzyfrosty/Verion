@@ -28,8 +28,8 @@ class SubverseSearchResultCell: UITableViewCell {
     func bind(toViewModel viewModel: SubverseSearchResultCellViewModel) {
         
         self.subverseLabel.text = viewModel.subverseString
-        _ = viewModel.subscriberCountString.observeNext() { string in
-            self.subscriberCountLabel.text = string
+        _ = viewModel.subscriberCountString.observeNext() {[weak self] string in
+            self?.subscriberCountLabel.text = string
         }
         
         self.subverseLabel.text = viewModel.subverseString
