@@ -30,24 +30,29 @@ class CommentsSortByCell: UITableViewCell {
         }
         
         // Create action sheet
-        let alertController = UIAlertController.init(title: "Sort Comments by", message: nil, preferredStyle: .actionSheet)
-        let topButton = UIAlertAction.init(title: "Top", style: .default, handler: { alertAction in
-            self.viewModel?.sortType.value = .top
-        })
-        
-        let newButton = UIAlertAction.init(title: "New", style: .default, handler: { alertAction in
-            self.viewModel?.sortType.value = .new
-        })
-        
-        let cancelButton = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
-        
-        alertController.addAction(topButton)
-        alertController.addAction(newButton)
-        alertController.addAction(cancelButton)
-        
-        navigationController?.present(alertController, animated: true, completion: { 
+        if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.phone {
+            let alertController = UIAlertController.init(title: "Sort Comments by", message: nil, preferredStyle: .actionSheet)
+            let topButton = UIAlertAction.init(title: "Top", style: .default, handler: { alertAction in
+                self.viewModel?.sortType.value = .top
+            })
             
-        })
+            let newButton = UIAlertAction.init(title: "New", style: .default, handler: { alertAction in
+                self.viewModel?.sortType.value = .new
+            })
+            
+            let cancelButton = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+            
+            alertController.addAction(topButton)
+            alertController.addAction(newButton)
+            alertController.addAction(cancelButton)
+            
+            navigationController?.present(alertController, animated: true, completion: {
+            })
+        }
+        else if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad {
+            
+        }
+        
     }
     
     override func awakeFromNib() {

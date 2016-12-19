@@ -49,7 +49,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     var subverse = "frontpage"
     
-    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
+    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 1.0, green: 88.0/255.0, blue: 88.0/255.0, alpha: 1.0)
     @IBOutlet var navigationBarCenterButton: SpringButton!
     @IBOutlet var navigationBarView: UIView!
     

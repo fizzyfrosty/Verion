@@ -9,10 +9,10 @@
 import UIKit
 import NVActivityIndicatorView
 
-class CommentsViewController: UITableViewController {
+class CommentsViewController: UITableViewController, UITextViewDelegate {
     
     // Display formatting
-    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 0.8, green: 0.4, blue: 0.4, alpha: 1.0)
+    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 1.0, green: 88.0/255.0, blue: 88.0/255.0, alpha: 1.0)
     private let CELL_SPACING: CGFloat = 10.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
     private let LOADING_CELL_HEIGHT: CGFloat = 50.0
@@ -32,6 +32,7 @@ class CommentsViewController: UITableViewController {
     let LOAD_MORE_COMMENTS_CELL_REUSE_ID = "LoadMoreComments"
     let SORTED_BY_CELL_REUSE_ID = "SortByCell"
     
+    let WEBVIEW_SEGUE_ID = "WebViewSegue"
     
     var submissionDataModel: SubmissionDataModelProtocol?
     
@@ -51,6 +52,9 @@ class CommentsViewController: UITableViewController {
     private var ACTIVITY_INDICATOR_LENGTH: CGFloat = 25.0
     private var activityIndicatorCell: ActivityIndicatorCell?
     
+    // Web View Controller 
+    var linkString = ""
+    
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType?
@@ -65,12 +69,6 @@ class CommentsViewController: UITableViewController {
         
         // TODO: Comment View Controller main functions
         // Load Refresh Control
-        
-        // Load Submission Post
-        // the SubmissionDataModel will have been loaded pre-segue
-        // Bind the model to stuff
-        
-        
         self.loadSubmissionInfo {
             self.loadCommentCells {
                 
@@ -311,7 +309,7 @@ class CommentsViewController: UITableViewController {
                 case .text:
                     let textCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TEXT_CELL_REUSE_ID, for: indexPath) as! SubmissionTextCell
                     textCell.bind(toViewModel: self.submissionTextContentVm!)
-                    
+                    textCell.textView.delegate = self
                     return textCell
                 case .image:
                     let imageCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_IMAGE_CELL_REUSE_ID, for: indexPath) as! SubmissionImageCell
@@ -324,7 +322,6 @@ class CommentsViewController: UITableViewController {
                             }
                         }
                     }
-                    
                     return imageCell
                 case .link:
                     let linkCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_LINK_CELL_REUSE_ID, for: indexPath) as! SubmissionLinkCell
@@ -332,12 +329,10 @@ class CommentsViewController: UITableViewController {
                     
                     DispatchQueue.global(qos: .background).async {
                         self.submissionLinkContentVm?.downloadThumbnail()
-                        
                         DispatchQueue.main.async {
                             linkCell.bindThumbnailImage(fromViewModel: self.submissionLinkContentVm!)
                         }
                     }
-                    
                     return linkCell
                     
                 default:
@@ -376,8 +371,7 @@ class CommentsViewController: UITableViewController {
             let commentCellViewModel = self.commentsViewModels[indexPath.section-1]
             commentCell.delegate = self
             commentCell.bind(toViewModel: commentCellViewModel)
-            
-            
+            commentCell.textView.delegate = self
             self.sfxManager?.applyShadow(view: commentCell)
             
             return commentCell
@@ -392,8 +386,13 @@ class CommentsViewController: UITableViewController {
             let sortByCell = tableView.cellForRow(at: indexPath) as! CommentsSortByCell
             sortByCell.sortByTouched(self)
         }
-        // TODO: Launch link from content cell
         
+        // If is a content cell, launch link
+        if indexPath.section == 0 && indexPath.row == 1 {
+            if self.submissionMediaType != .text && self.submissionMediaType != .image {
+                self.loadWebViewController(forLink: self.submissionLinkContentVm!.link)
+            }
+        }
         
         // Minimize comment cell
         if indexPath.section >= 1 {
@@ -442,6 +441,12 @@ class CommentsViewController: UITableViewController {
     }
     */
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == self.WEBVIEW_SEGUE_ID {
+            let webViewVC = segue.destination as! WebViewController
+            webViewVC.link = self.linkString
+        }
+    }
     
     // For detecting rotations beginning and finishing.
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -467,12 +472,24 @@ class CommentsViewController: UITableViewController {
             self.activityIndicatorCell?.showActivityIndicator()
         })
     }
+    
+    func loadWebViewController(forLink link: String) {
+        self.linkString = link
+        self.performSegue(withIdentifier: self.WEBVIEW_SEGUE_ID, sender: self)
+    }
 
     func areSubmissionViewModelsLoaded() -> Bool {
         // The commentsSortByViewModel should be the last one to be loaded
         if self.commentsSortByVm != nil {
             return true
         }
+        
+        return false
+    }
+    
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        let linkString = URL.absoluteString
+        self.loadWebViewController(forLink: linkString)
         
         return false
     }

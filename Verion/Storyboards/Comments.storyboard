@@ -455,10 +455,21 @@
                             <outlet property="delegate" destination="9gY-hq-qgn" id="t1l-ha-SIp"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="k57-r0-5LX" kind="show" identifier="WebViewSegue" id="X75-d5-V62"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hGN-ef-pFB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="36" y="115.59220389805098"/>
+            <point key="canvasLocation" x="159" y="162"/>
+        </scene>
+        <!--WebView-->
+        <scene sceneID="gkh-YF-c2a">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="WebView" storyboardName="WebView" id="k57-r0-5LX" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BfI-Mb-3mX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="778" y="162"/>
         </scene>
     </scenes>
     <resources>
