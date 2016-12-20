@@ -8,10 +8,11 @@ github "ReactiveKit/Bond" ~> 5.1
 github "Quick/Quick"
 github "Quick/Nimble"
 
-
-#Run: carthage update --platform iOS --no-use-binaries
-# due to SwiftyJSON not being compiled locally
-
 github "SwiftyJSON/SwiftyJSON"
 
 github "ninjaprox/NVActivityIndicatorView"
+
+github "Alamofire/Alamofire" ~> 4.0
+
+#Run: carthage update --platform iOS --no-use-binaries
+# due to SwiftyJSON not being compiled locally

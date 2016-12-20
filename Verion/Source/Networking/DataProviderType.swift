@@ -19,7 +19,9 @@
 
 import UIKit
 
-protocol DataProviderType {
+protocol DataProviderType: class {
+    var apiVersion: APIVersion {get}
+    init(apiVersion: APIVersion)
     
     func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void
     func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void

@@ -14,7 +14,6 @@ class OfflineDataProvider: DataProviderType {
     var dataProviderHelper = DataProviderHelper()
     
     var apiVersion: APIVersion = .legacy // default to be overwritten by initializer
-    private let NUM_OF_TEST_DATA_CELLS = 6
     private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY = "SampleJsonSubmissions_legacy"
     private let SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_LEGACY = "SampleSubverseList_legacy"
     private let SAMPLE_JSON_COMMENTS_FILE_LEGACY = "SampleComments_legacy"
@@ -23,7 +22,7 @@ class OfflineDataProvider: DataProviderType {
     private let DELAY_TIME_SECONDS: Float = 1.0
     private let SEARCH_RESULTS_DELAY_TIME: Float = 0.25
     
-    init(apiVersion: APIVersion) {
+    required init(apiVersion: APIVersion) {
         self.apiVersion = apiVersion
     }
     
