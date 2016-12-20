@@ -109,6 +109,9 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 
                 self.sortSubmissions(bySortType: self.sortType)
                 
+                // Send to top
+                self.tableView.setContentOffset(CGPoint(x: 0.0, y: -self.tableView.contentInset.top), animated: true)
+                
                 // Reload table
                 self.reloadTableAnimated(lastCellIndex: self.numOfCellsToDisplay)
             })

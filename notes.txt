@@ -6,11 +6,13 @@ Immediate tasks:
 
 
 * Support Images
-- Save last browsed subverse
-- Welcome Screen
-
 * On launching Find Subverse going back to Subverse Controller, clear it
 * When loading subverse, disable scrolling
+* On Sort, scroll to top
+
+
+- Save last browsed subverse
+- Welcome Screen
 
 - Add sidebar for most visited subverses?
 - Add subverse to favorites

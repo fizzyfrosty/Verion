@@ -215,8 +215,8 @@ class FindSubverseViewController: UITableViewController {
         
         self.filteredSubverseSearchResultViewModels = self.allSubverseSearchResultViewModels.filter() { viewModel in
             let searchTextLowerCased = searchText.lowercased()
-            if viewModel.subverseString.contains(searchTextLowerCased) ||
-                viewModel.subverseDescription.contains(searchTextLowerCased) {
+            if viewModel.subverseString.lowercased().contains(searchTextLowerCased) ||
+                viewModel.subverseDescription.lowercased().contains(searchTextLowerCased) {
                 return true
             }
             return false
