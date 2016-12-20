@@ -5,6 +5,15 @@ Immediate tasks:
 
 
 
+- Support Images
+- Add sidebar for most visited subverses?
+- Add subverse to favorites
+
+
+
+
+
+
 * Get sample Legacy comment json data
 * Data models
 	* legacy comments
@@ -39,11 +48,7 @@ Immediate tasks:
 
 * Sort By for submissions
 
-
-
-- Load real data using alamofire from voat.co
-
-
+* Load real data using alamofire from voat.co
 
 
 
@@ -108,7 +113,7 @@ x Bind sortby cell view model to submission data
 		* Link
 		* Text Post
 
-- Comments View Controller
+* Comments View Controller
 	* Create cells
 	* Autolayout
 		* Submission
@@ -135,23 +140,23 @@ x Bind sortby cell view model to submission data
 	* Link
 	* SortBy
 
-	- Comments
-	- Offline Data Provider
-		- use Legacy comment data (model), make request?
-		- use Legacy submission data, no need to request. pass on from tapped cell?	
+	* Comments
+	* Offline Data Provider
+		* use Legacy comment data (model), make request?
+		* use Legacy submission data, no need to request. pass on from tapped cell?	
 		
-	- CommentCellViewModel
-	- Comment Data Model
+	* CommentCellViewModel
+	* Comment Data Model
 
-	- Load data
-		- Submission info
-		- Comments
-		- Nested comments?
+	* Load data
+		* Submission info
+		* Comments
+		x Nested comments?
 
-- Sort Submissions by
-	- Hot (by rating)
-	- Top (by vote count)
-	- New (by date)
+* Sort Submissions by
+	* Hot (by rating)
+	* Top (by vote count)
+	* New (by date)
 
 * Refresh control
 	* Pull down to refresh

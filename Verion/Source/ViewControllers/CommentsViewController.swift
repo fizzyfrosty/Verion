@@ -11,9 +11,10 @@ import NVActivityIndicatorView
 
 class CommentsViewController: UITableViewController, UITextViewDelegate, CommentsSortByCellDelegate {
     
+    var backgroundColor = UIColor.white
+    
     // Display formatting
-    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 1.0, green: 88.0/255.0, blue: 88.0/255.0, alpha: 1.0)
-    private let CELL_SPACING: CGFloat = 10.0
+    private let CELL_SPACING: CGFloat = 5.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
     private let LOADING_CELL_HEIGHT: CGFloat = 50.0
     private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
@@ -63,7 +64,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.backgroundColor = self.BGCOLOR
+        self.tableView.backgroundColor = self.backgroundColor
         self.navigationController?.navigationBar.tintColor = UIColor.white
 
         

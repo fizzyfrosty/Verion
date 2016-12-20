@@ -19,7 +19,7 @@ class CellHeightCalculator {
     }
     
     static func sizeForAttributedText(text: NSAttributedString, maxSize: CGSize) -> CGSize {
-        let rect = text.boundingRect(with: maxSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
+        let rect = text.boundingRect(with: maxSize, options: [NSStringDrawingOptions.usesLineFragmentOrigin, .usesFontLeading], context: nil)
         let size = CGSize(width: rect.width, height: rect.height)
         
         return size

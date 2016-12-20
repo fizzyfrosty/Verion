@@ -38,7 +38,7 @@ class CommentCellViewModel {
     
     // Cell Height
     private let CELL_VERTICAL_MARGINS: CGFloat = 65.0
-    private let CELL_HORIZONTAL_MARGINS: CGFloat = 20.0
+    private let CELL_HORIZONTAL_MARGINS: CGFloat = 25.0
     private let CELL_MAX_HEIGHT: CGFloat = 9999.0
     private let CELL_MINIMIZED_HEIGHT: CGFloat = 30.0
     var cellHeight: CGFloat{
@@ -73,7 +73,7 @@ class CommentCellViewModel {
         self.downvoteCount.value = initData.downvoteCount
         self.usernameString = initData.usernameString
         self.textString = initData.textString
-        self.attributedTextString = TSMarkdownParser.standard().attributedString(fromMarkdown: self.textString)
+        self.attributedTextString = MarkdownParser.attributedString(fromMarkdownString: self.textString)
         
         self.separatedVoteCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
         self.dateString = self.textFormatter.createDateSubmittedString(gmtDate: self.date!) + " ago"
@@ -98,6 +98,6 @@ class CommentCellViewModel {
     }
     
     private func getVoteCountTotal( upvoteCount: Int, downvoteCount: Int) -> Int {
-        return upvoteCount + downvoteCount
+        return upvoteCount - downvoteCount
     }
 }

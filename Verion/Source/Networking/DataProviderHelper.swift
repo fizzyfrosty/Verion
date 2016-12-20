@@ -393,11 +393,12 @@ class DataProviderHelper {
     
     // Param expecting (eg): "2016-12-02T06:34:50.3834343" - note the T
     private func getDateFromString(gmtString: String) -> Date {
-        
-        let prunedGMTDateString = gmtString.replacingOccurrences(of: "T", with: " ")
+        let index = gmtString.index(gmtString.startIndex, offsetBy: 19)
+        let truncatedDateString = gmtString.substring(to: index)
+        let prunedGMTDateString = truncatedDateString.replacingOccurrences(of: "T", with: " ")
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SS"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         
         if let gmtDate = dateFormatter.date(from: prunedGMTDateString) {

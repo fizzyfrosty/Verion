@@ -20,7 +20,7 @@ class CommentsSortByCellViewModel {
         }
     }
     
-    private let CELL_HEIGHT: CGFloat = 45.0
+    private let CELL_HEIGHT: CGFloat = 78.0 // original 45 without label
 
     init() {
         

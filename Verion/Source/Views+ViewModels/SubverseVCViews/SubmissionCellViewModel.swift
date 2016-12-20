@@ -166,7 +166,7 @@ class SubmissionCellViewModel{
         let titleHeight = titleSize.height
         let titleTopMargin: CGFloat = 10
         let titleBottomMargin: CGFloat = 10
-        let submittedByTextHeight: CGFloat = 50
+        let submittedByTextHeight: CGFloat = 55
         
         cellHeight = titleHeight + titleTopMargin + titleBottomMargin + submittedByTextHeight
         

@@ -13,7 +13,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // Cell configuration
     let SUBMISSION_CELL_REUSE_ID = "SubmissionCell"
-    private let CELL_SPACING: CGFloat = 10.0
+    private let CELL_SPACING: CGFloat = 0.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
     private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
@@ -26,6 +26,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private var customRefreshControl: SubverseRefreshControl?
     private var SCROLLVIEW_CONTENT_OFFSET_PORTRAIT: CGFloat = 64
     private var SCROLLVIEW_CONTENT_OFFSET_LANDSCAPE: CGFloat = 32
+    private var isLoadingRequest = false
     var scrollViewContentOffsetY:CGFloat {
         get {
             if UIDevice.current.orientation.isLandscape {
@@ -54,9 +55,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     var subverse = "frontpage"
     
-    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 1.0, green: 88.0/255.0, blue: 88.0/255.0, alpha: 1.0)
+    private let NAVIGATION_BG_COLOR: UIColor = UIColor(colorLiteralRed: 95.0/255.0, green: 173.0/255.0, blue: 220.0/255.0, alpha: 1.0)
+    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 95.0/255.0, green: 173.0/255.0, blue: 220.0/255.0, alpha: 1.0)
     @IBOutlet var navigationBarCenterButton: SpringButton!
     @IBOutlet var navigationBarView: UIView!
+    
     
     
     // Data Models and View Models
@@ -135,8 +138,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.barTintColor = self.NAVIGATION_BG_COLOR
         self.tableView.backgroundColor = self.BGCOLOR
-        self.navigationController?.navigationBar.barTintColor = self.BGCOLOR
         
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
@@ -251,7 +254,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     private func loadTableCells(completion: @escaping ()->()) {
         
-        self.numOfCellsToDisplay = self.NUM_OF_STARTING_CELLS_TO_DISPLAY
+        guard self.isLoadingRequest != true else {
+            return
+        }
+        
+        self.isLoadingRequest = true
         
         // Make initial request with DataProvider
         self.dataProvider.requestSubverseSubmissions(subverse: self.subverse) { submissionDataModels, error in
@@ -278,6 +285,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 
                 self.sortSubmissions(bySortType: self.sortType)
                 
+                self.numOfCellsToDisplay = min(self.NUM_OF_STARTING_CELLS_TO_DISPLAY, self.submissionDataModels.count)
+                
                 // Reload table, animated, back on main thread
                 DispatchQueue.main.async {
                     self.didTableLoadOnce = true
@@ -288,6 +297,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                     let subverseTitle = self.getNavigationLabelString(subverse: self.subverse)
                     self.setNavigationBarCenterButtonName(string: subverseTitle)
                     
+                    self.isLoadingRequest = false
                     completion()
                 }
             }
@@ -339,7 +349,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // Create cell if viewModel exists
         let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
         cell.bind(toViewModel: viewModel)
-        self.sfxManager?.applyShadow(view: cell)
+        //self.sfxManager?.applyShadow(view: cell)
         
         
         // Create Thumbnail in ViewModel and Attach in Background Queue
@@ -490,10 +500,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive:
         Int, animation: UITableViewRowAnimation) {
         
-        tableView.reloadData()
-        let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
-        let indexSet = IndexSet.init(integersIn: range)
-        tableView.reloadSections(indexSet, with: animation)
+            tableView.reloadData()
+            let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
+            let indexSet = IndexSet.init(integersIn: range)
+            tableView.reloadSections(indexSet, with: animation)
+        
     }
     
     func getNavigationLabelString(subverse: String) -> String{
@@ -536,8 +547,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         if segue.identifier == self.SUBMISSION_SEGUE_IDENTIFIER {
             
             // Comments View Controller segue
-            if let nextVc = segue.destination as? CommentsViewController {
-                nextVc.submissionDataModel = self.subCellViewModels[self.selectedIndex].dataModel
+            if let commentsViewController = segue.destination as? CommentsViewController {
+                commentsViewController.submissionDataModel = self.subCellViewModels[self.selectedIndex].dataModel
+                commentsViewController.backgroundColor = self.BGCOLOR
+                
             }
             
         } else if segue.identifier == self.FIND_SUBVERSE_SEGUE_IDENTIFIER {

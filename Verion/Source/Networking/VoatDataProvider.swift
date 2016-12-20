@@ -16,13 +16,16 @@ class VoatDataProvider: DataProviderType {
     var apiVersion: APIVersion = .legacy // default to be overwritten by initializer
     
     private let VOAT_GET_FRONTPAGE_100_SUBMISSIONS_URL_STRING = "https://voat.co/api/frontpage"
+    private let VOAT_GET_TOP_200_SUBVERSE_NAMES_URL_STRING = "https://voat.co/api/top200subverses"
+    private let VOAT_GET_SUBVERSE_SUBMISSIONS_URL_STRING = "https://voat.co/api/subversefrontpage?subverse="
+    private let VOAT_GET_COMMENTS_FOR_SUBMISSION_URL_STRING = "https://voat.co/api/submissioncomments?submissionId="
+    
+    private let VALIDATION_SUCCESSFUL_MESSAGE = "Validation successful"
+    
+    private let FRONTPAGE_SUBVERSE_NAME = "frontpage"
     
     required init(apiVersion: APIVersion) {
         self.apiVersion = apiVersion
-    }
-    
-    func requestSubverseList(completion: @escaping ([SubverseSearchResultDataModelProtocol], Error?) -> Void) {
-        
     }
     
     func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?) -> Void) {
@@ -30,10 +33,24 @@ class VoatDataProvider: DataProviderType {
         
         var jsonData: JSON?
         
+        var requestUrlString: String?
+        
+        switch subverse {
+        case self.FRONTPAGE_SUBVERSE_NAME:
+            requestUrlString = self.VOAT_GET_FRONTPAGE_100_SUBMISSIONS_URL_STRING
+        default:
+            requestUrlString = self.VOAT_GET_SUBVERSE_SUBMISSIONS_URL_STRING + subverse.lowercased()
+        }
+        
         // Get data with Alamofire
-        Alamofire.request(self.VOAT_GET_FRONTPAGE_100_SUBMISSIONS_URL_STRING).validate().responseJSON() { response in
+        Alamofire.request(requestUrlString!).validate().responseJSON() { response in
             switch response.result {
             case .success:
+                
+                #if DEBUG
+                    print(self.VALIDATION_SUCCESSFUL_MESSAGE)
+                #endif
+                
                 jsonData = JSON.init(data: response.data!)
                 
                 // For each submission, create a datamodel
@@ -49,7 +66,6 @@ class VoatDataProvider: DataProviderType {
                 // Return the data models
                 completion(submissionDataModels, nil)
                 
-                print("Validation successful")
             case .failure(let error):
                 print(error)
                 
@@ -58,8 +74,76 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
-    func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?) -> Void) {
+    func requestSubverseList(completion: @escaping ([SubverseSearchResultDataModelProtocol], Error?) -> Void) {
         
+        // Get data with Alamofire
+        Alamofire.request(self.VOAT_GET_TOP_200_SUBVERSE_NAMES_URL_STRING).validate().responseJSON() { response in
+            
+            var subverseDataModels = [SubverseSearchResultDataModelProtocol]()
+            var jsonData: JSON?
+            
+            switch response.result {
+            case .success:
+                #if DEBUG
+                    print(self.VALIDATION_SUCCESSFUL_MESSAGE)
+                #endif
+                
+                jsonData = JSON.init(data: response.data!)
+                
+                // For each submission, create a data model
+                for i in 0..<jsonData!.count {
+                    // Get data model from sample JSON
+                    let subverseJson = jsonData![i]
+                    let subverseDataModel = self.dataProviderHelper.getSubverseDataModel(fromJson: subverseJson, apiVersion: self.apiVersion)
+                    subverseDataModels.append(subverseDataModel)
+                }
+                
+                // TODO: Implement error
+                
+                // Return the data models
+                completion(subverseDataModels, nil)
+            case .failure(let error):
+                print(error)
+                
+                completion(subverseDataModels, error)
+            }
+        }
+    }
+    
+    func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?) -> Void) {
+        var commentDataModels = [CommentDataModelProtocol]()
+        
+        let requestUrlString = self.VOAT_GET_COMMENTS_FOR_SUBMISSION_URL_STRING + String(submissionId)
+        var jsonData: JSON?
+        
+        Alamofire.request(requestUrlString).validate().responseJSON { response in
+            switch response.result {
+            case .success:
+                #if DEBUG
+                    print(self.VALIDATION_SUCCESSFUL_MESSAGE)
+                #endif
+                
+                jsonData = JSON.init(data: response.data!)
+                
+                // For each submission, create a data model
+                for i in 0..<jsonData!.count {
+                    
+                    // Get data model from sample JSON
+                    let commentJson = jsonData![i]
+                    let commentDataModel = self.dataProviderHelper.getCommentDataModel(fromJson: commentJson, apiVersion: self.apiVersion)
+                    commentDataModels.append(commentDataModel)
+                }
+                
+                // TODO: Implement error
+                
+                // Return the data models
+                completion(commentDataModels, nil)
+            case .failure(let error):
+                print(error)
+                
+                completion(commentDataModels, error)
+            }
+        }
     }
     
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {

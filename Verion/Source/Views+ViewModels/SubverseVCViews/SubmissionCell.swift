@@ -29,8 +29,8 @@ class SubmissionCell: UITableViewCell {
     
     weak var viewModel: SubmissionCellViewModel?
     
-    let BORDER_WIDTH: CGFloat = 1
-    let BORDER_COLOR: CGColor = UIColor(colorLiteralRed: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).cgColor
+    let BORDER_WIDTH: CGFloat = 0.5
+    let BORDER_COLOR: CGColor = UIColor(colorLiteralRed: 0.9, green: 0.9, blue: 0.9, alpha: 1.0).cgColor
     
     override func awakeFromNib() {
         super.awakeFromNib()

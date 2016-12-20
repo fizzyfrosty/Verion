@@ -11,6 +11,7 @@ import UIKit
 class FindSubverseViewController: UITableViewController {
     
     let searchController = UISearchController.init(searchResultsController: nil)
+    let PLACEHOLDER_TEXT = "Find Subverse"
     
     let SUBVERSE_SEARCH_RESULT_CELL_REUSE_ID = "SubverseSearchResultCell"
     
@@ -26,6 +27,7 @@ class FindSubverseViewController: UITableViewController {
         super.viewDidLoad()
 
         self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.searchController.searchBar.placeholder = self.PLACEHOLDER_TEXT
         
 
         // Set up search bar
@@ -42,7 +44,6 @@ class FindSubverseViewController: UITableViewController {
                 
                 // prepend all/frontpage subverses first
                 self.allSubverseSearchResultViewModels.append(self.getFrontpageSubverse())
-                self.allSubverseSearchResultViewModels.append(self.getAllSubverse())
                 
                 // Bind viewmodels to data models
                 for dataModel in subverseSearchResultsDataModels {
@@ -71,6 +72,7 @@ class FindSubverseViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    // Not used, because something wrong with legacy api
     func getAllSubverse() -> SubverseSearchResultCellViewModel {
         var initData = SubverseSearchResultCellViewModelInitData()
         initData.subverseString = "all"
