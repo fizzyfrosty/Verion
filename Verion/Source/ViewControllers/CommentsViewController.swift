@@ -107,6 +107,12 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             self.loadSortedByBar()
             
             DispatchQueue.main.async {
+                self.tableView.reloadData()
+                let titleIndexPath = IndexPath.init(row: 0, section: 0)
+                let contentIndexPath = IndexPath.init(row: 1, section: 0)
+                let sortByCellIndexPath = IndexPath.init(row: 2, section: 0)
+                self.tableView.reloadRows(at: [titleIndexPath, contentIndexPath, sortByCellIndexPath], with: .fade)
+                
                 completion()
             }
         }
@@ -120,6 +126,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.submissionTitleVm = submissionTitleCellViewModel
     }
     
+    // This loads the middle cell, the Content Cell of the first section
     func loadContent(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?, completion: @escaping ()->()) {
         // Determine the content type
         self.submissionMediaType = (dataProvider?.getSubmissionMediaType(submissionDataModel: submissionDataModel))!
@@ -134,8 +141,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         default:
             // Temporarily set as Link
             self.submissionMediaType = .link
-            self.submissionLinkContentVm = SubmissionLinkCellViewModel()
-            dataProvider?.bind(subLinkCellViewModel: self.submissionLinkContentVm, dataModel: submissionDataModel)
             
             
             // If not text, either link or image. Make a request to further determine content type
@@ -148,14 +153,17 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                     // An image
                     self.submissionImageContentVm = SubmissionImageCellViewModel.init(imageData: data!)
                     dataProvider?.bind(subImageCellViewModel: self.submissionImageContentVm, dataModel: submissionDataModel)
-                    
-                    DispatchQueue.main.async {
-                        
-                        // Reload just the image/content cell
-                        self.tableView.reloadData()
-                        let imageCellIndexPath = IndexPath.init(row: 1, section: 0)
-                        self.tableView.reloadRows(at: [imageCellIndexPath], with: .fade)
-                    }
+                } else {
+                    // A link
+                    self.submissionLinkContentVm = SubmissionLinkCellViewModel()
+                    dataProvider?.bind(subLinkCellViewModel: self.submissionLinkContentVm, dataModel: submissionDataModel)
+                }
+                
+                DispatchQueue.main.async {
+                    // Reload just the image/content cell
+                    self.tableView.reloadData()
+                    let imageCellIndexPath = IndexPath.init(row: 1, section: 0)
+                    self.tableView.reloadRows(at: [imageCellIndexPath], with: .fade)
                 }
                 
                 completion()

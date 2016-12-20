@@ -26,7 +26,7 @@ typedef NSFont UIFont;
 #if TARGET_OS_TV
     NSUInteger defaultSize = 29;
 #else
-    NSUInteger defaultSize = 14;
+    NSUInteger defaultSize = 16;
 #endif
     
     self.defaultAttributes = @{ NSFontAttributeName: [UIFont systemFontOfSize:defaultSize] };

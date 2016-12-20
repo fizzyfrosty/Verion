@@ -344,6 +344,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // On first load, do not display any cells until table is finished loading
         guard self.isLoadingRequest != true else {
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: "TransparentCell")!
+            transparentCell.isHidden = true
             
             // Return an invisible cell
             return transparentCell

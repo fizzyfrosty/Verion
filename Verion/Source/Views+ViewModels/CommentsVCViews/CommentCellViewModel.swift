@@ -37,7 +37,7 @@ class CommentCellViewModel {
     var textFormatter = SubmissionTextFormatter()
     
     // Cell Height
-    private let CELL_VERTICAL_MARGINS: CGFloat = 65.0
+    private let CELL_VERTICAL_MARGINS: CGFloat = 55.0
     private let CELL_HORIZONTAL_MARGINS: CGFloat = 25.0
     private let CELL_MAX_HEIGHT: CGFloat = 9999.0
     private let CELL_MINIMIZED_HEIGHT: CGFloat = 30.0
