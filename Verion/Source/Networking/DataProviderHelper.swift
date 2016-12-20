@@ -8,12 +8,26 @@
 
 import UIKit
 import SwiftyJSON
+import Alamofire
 
 class DataProviderHelper {
     
     
     private let VOAT_THUMBNAIL_URL = "https://cdn.voat.co/thumbs/"
     let API_V1_NOTSUPPORTED_ERROR_MESSAGE = "API.v1 not yet implemented"
+    
+    func getContentUrlString(fromSubmissionDataModel dataModel: SubmissionDataModelProtocol) -> String {
+        var urlString: String = ""
+        
+        switch dataModel.apiVersion {
+        case .legacy:
+            urlString = self.getContentUrlStringFromLegacy(submissionDataModel: dataModel as! SubmissionDataModelLegacy)
+        case .v1:
+            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+        }
+        
+        return urlString
+    }
     
     func getCommentCellVmInitData(fromDataModel dataModel: CommentDataModelProtocol) -> CommentCellViewModelInitData {
         let commentViewModelInitData: CommentCellViewModelInitData
@@ -129,8 +143,10 @@ class DataProviderHelper {
             legacyMediaType = .text
         } else {
             // If it is link..., make a request, get the content type back from the request
+            Alamofire.request(submissionDataModel.messageContent).validate().responseJSON { response in
+                // Parse the content type returned, jpg, png, gif, etc.
+            }
             
-            // Parse the content type returned, jpg, png, gif, etc.
             
             // Set and return
             
@@ -220,6 +236,10 @@ class DataProviderHelper {
     }
     
     // MARK: - private methods
+    
+    private func getContentUrlStringFromLegacy(submissionDataModel: SubmissionDataModelLegacy) -> String {
+        return submissionDataModel.messageContent
+    }
     
     private func getCommentViewModelInitDataFromLegacy(dataModel: CommentDataModelLegacy) -> CommentCellViewModelInitData{
         var commentCellVmInitData = CommentCellViewModelInitData()

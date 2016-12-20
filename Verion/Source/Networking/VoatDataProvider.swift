@@ -28,6 +28,31 @@ class VoatDataProvider: DataProviderType {
         self.apiVersion = apiVersion
     }
     
+    func requestContent(submissionDataModel: SubmissionDataModelProtocol, completion: @escaping (Data?, SubmissionMediaType, Error?) -> Void) {
+        let requestUrlString = self.dataProviderHelper.getContentUrlString(fromSubmissionDataModel: submissionDataModel)
+        
+        Alamofire.request(requestUrlString).validate().responseData { responseData in
+            switch responseData.result {
+            case .success:
+                var data: Data?
+                var mediaType: SubmissionMediaType = .link
+                // Check the mime type
+                let mimeType = responseData.response?.mimeType
+                let truncatedMimeType = (mimeType?.components(separatedBy: "/"))?[0]
+                if truncatedMimeType == "image" {
+                    mediaType = .image
+                    
+                    data = responseData.data
+                }
+                
+                completion(data, mediaType, nil)
+                
+            case .failure(let error):
+                completion(nil, SubmissionMediaType.link, error)
+            }
+        }
+    }
+    
     func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?) -> Void) {
         var submissionDataModels = [SubmissionDataModelProtocol]()
         
@@ -194,6 +219,8 @@ class VoatDataProvider: DataProviderType {
     }
     
     func getSubmissionMediaType(submissionDataModel: SubmissionDataModelProtocol) -> SubmissionMediaType {
+        
+        // Make a request with the link. Check the mime type
         let mediaType = self.dataProviderHelper.getSubmissionMediaType(fromDataModel: submissionDataModel)
         
         return mediaType

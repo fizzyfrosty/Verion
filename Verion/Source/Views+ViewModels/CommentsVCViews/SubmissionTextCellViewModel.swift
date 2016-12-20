@@ -32,13 +32,16 @@ class SubmissionTextCellViewModel {
     private let MAX_CELL_HEIGHT: CGFloat = 99999.0
     private let CELL_VERTICAL_OFFSET: CGFloat = 27.0 // Represents everything vertically that isn't the title.
 
+    init() {
+        
+    }
     
     init(text: String) {
         self.textString = text
     }
 
     private func getCellHeight(text: NSAttributedString) -> CGFloat {
-        let margins: CGFloat = 25.0
+        let margins: CGFloat = 26.0
         let width = UIScreen.main.bounds.width - margins
         
         let titleSize = CellHeightCalculator.sizeForAttributedText(text: text, maxSize: CGSize(width: width, height: self.MAX_CELL_HEIGHT))

@@ -246,6 +246,12 @@ class FindSubverseViewController: UITableViewController {
             _ = self.navigationController?.popViewController(animated: true)
         }
     }
+    
+    deinit {
+        #if DEBUG
+            print ("Deallocated Find Subverse View Controller")
+        #endif
+    }
 }
 
 extension FindSubverseViewController: UISearchControllerDelegate {

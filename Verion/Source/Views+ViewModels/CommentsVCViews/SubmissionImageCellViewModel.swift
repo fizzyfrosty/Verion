@@ -11,6 +11,11 @@ import UIKit
 class SubmissionImageCellViewModel {
     
     var imageLink = ""
+    var imageData: Data? {
+        didSet {
+            self.image = UIImage.init(data: self.imageData!)
+        }
+    }
     private(set) var image: UIImage?
 
     var cellHeight: CGFloat {
@@ -23,18 +28,21 @@ class SubmissionImageCellViewModel {
             }
         }
     }
-    private let CELL_HEIGHT: CGFloat = 100.0
+    private let CELL_HEIGHT: CGFloat = 0.0
+    
+    init () {
+        
+    }
+    
+    init(imageData: Data) {
+        self.imageData = imageData
+        self.image = UIImage.init(data: self.imageData!)
+    }
     
     init(imageLink: String) {
         self.imageLink = imageLink
         
         // TODO: Bind image loading?
-    }
-    
-    func downloadImage(completion: @escaping ()->()) {
-        self.image = ImageDownloader.downloadImage(urlString: self.imageLink)
-        
-        completion()
     }
     
     private func getAspectFitHeight(forImage image: UIImage) -> CGFloat {

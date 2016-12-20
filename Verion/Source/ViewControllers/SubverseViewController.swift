@@ -26,7 +26,15 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private var customRefreshControl: SubverseRefreshControl?
     private var SCROLLVIEW_CONTENT_OFFSET_PORTRAIT: CGFloat = 64
     private var SCROLLVIEW_CONTENT_OFFSET_LANDSCAPE: CGFloat = 32
-    private var isLoadingRequest = false
+    private var isLoadingRequest = false {
+        didSet {
+            if isLoadingRequest == false {
+                self.tableView?.isScrollEnabled = true
+            } else {
+                self.tableView?.isScrollEnabled = false
+            }
+        }
+    }
     var scrollViewContentOffsetY:CGFloat {
         get {
             if UIDevice.current.orientation.isLandscape {
@@ -65,7 +73,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     // Data Models and View Models
     private var subCellViewModels: [SubmissionCellViewModel] = []
     private var submissionDataModels: [SubmissionDataModelProtocol] = []
-    var didTableLoadOnce = false // prevents table from rendering before cells completely bounded
     
     // Segue
     private var selectedIndex: Int = 0
@@ -103,7 +110,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 self.sortSubmissions(bySortType: self.sortType)
                 
                 // Reload table
-                self.reloadTableAnimated()
+                self.reloadTableAnimated(lastCellIndex: self.numOfCellsToDisplay)
             })
             
             sortByActions.append(sortAction)
@@ -244,9 +251,16 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // public function to call loading from outside of VC
     func loadTableCells(forSubverse subverseString: String) {
-        self.subverse = subverseString
+        // Clear subverse
+        self.cleanupModels()
         
+        self.numOfCellsToDisplay = min(self.NUM_OF_STARTING_CELLS_TO_DISPLAY, self.submissionDataModels.count)
+        self.reloadTableAnimated(lastCellIndex: self.numOfCellsToDisplay)
+        
+        self.subverse = subverseString
         self.showNavBarActivityIndicator()
+        
+        
         self.loadTableCells {
             self.hideNavBarActivityIndicator()
         }
@@ -289,15 +303,14 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 
                 // Reload table, animated, back on main thread
                 DispatchQueue.main.async {
-                    self.didTableLoadOnce = true
                     
-                    self.reloadTableAnimated()
+                    self.isLoadingRequest = false
+                    self.reloadTableAnimated(lastCellIndex: self.numOfCellsToDisplay)
                     
                     // Set Navigation title after finished loading table
                     let subverseTitle = self.getNavigationLabelString(subverse: self.subverse)
                     self.setNavigationBarCenterButtonName(string: subverseTitle)
                     
-                    self.isLoadingRequest = false
                     completion()
                 }
             }
@@ -329,7 +342,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // On first load, do not display any cells until table is finished loading
-        guard self.didTableLoadOnce == true else {
+        guard self.isLoadingRequest != true else {
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: "TransparentCell")!
             
             // Return an invisible cell
@@ -490,10 +503,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
  
     }
     
-    private func reloadTableAnimated() {
+    private func reloadTableAnimated(lastCellIndex: Int) {
         self.reloadTableAnimated(forTableView: self.tableView,
                                  startingIndexInclusive: 0,
-                                 endingIndexExclusive: self.numOfCellsToDisplay,
+                                 endingIndexExclusive: lastCellIndex,
                                  animation: UITableViewRowAnimation.automatic)
     }
  
@@ -510,11 +523,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     func getNavigationLabelString(subverse: String) -> String{
         let subverseTitle: String
         
-        if subverse == "frontpage" {
-            subverseTitle = subverse
-        } else {
-            subverseTitle = "/v/" + subverse
-        }
+        subverseTitle = subverse
         
         return subverseTitle
     }

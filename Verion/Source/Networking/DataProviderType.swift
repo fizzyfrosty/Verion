@@ -23,9 +23,10 @@ protocol DataProviderType: class {
     var apiVersion: APIVersion {get}
     init(apiVersion: APIVersion)
     
-    func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void
-    func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void
-    func requestSubverseList(completion: @escaping ([SubverseSearchResultDataModelProtocol], Error?) ->Void) -> Void
+    func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void)
+    func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?)->Void)
+    func requestSubverseList(completion: @escaping ([SubverseSearchResultDataModelProtocol], Error?) ->Void)
+    func requestContent(submissionDataModel: SubmissionDataModelProtocol, completion: @escaping (Data?, SubmissionMediaType, Error?) -> Void)
     
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void
     func bind(subTitleViewModel: SubmissionTitleCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void

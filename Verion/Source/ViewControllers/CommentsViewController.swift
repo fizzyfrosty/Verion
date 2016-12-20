@@ -40,9 +40,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     // View Models
     var submissionMediaType: SubmissionMediaType = .none
     var submissionTitleVm: SubmissionTitleCellViewModel?
-    var submissionImageContentVm: SubmissionImageCellViewModel?
-    var submissionTextContentVm: SubmissionTextCellViewModel?
-    var submissionLinkContentVm: SubmissionLinkCellViewModel?
+    var submissionImageContentVm: SubmissionImageCellViewModel = SubmissionImageCellViewModel()
+    var submissionTextContentVm: SubmissionTextCellViewModel = SubmissionTextCellViewModel()
+    var submissionLinkContentVm: SubmissionLinkCellViewModel = SubmissionLinkCellViewModel()
     var commentsSortByVm: CommentsSortByCellViewModel?
     
     var commentsViewModels: [CommentCellViewModel] = []
@@ -100,12 +100,13 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     func loadSubmissionInfo(completion: @escaping ()->()) {
         DispatchQueue.global(qos: .background).async {
             self.loadSubmissionTitle(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
-            self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
+            self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider) {
+            }
+            
+            // This is required to complete table cell generation
             self.loadSortedByBar()
             
             DispatchQueue.main.async {
-                self.reloadTableAnimated()
-                
                 completion()
             }
         }
@@ -119,7 +120,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.submissionTitleVm = submissionTitleCellViewModel
     }
     
-    func loadContent(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?) {
+    func loadContent(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?, completion: @escaping ()->()) {
         // Determine the content type
         self.submissionMediaType = (dataProvider?.getSubmissionMediaType(submissionDataModel: submissionDataModel))!
         
@@ -128,18 +129,48 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         case .text:
             // Bind the text view model using data provider
             self.submissionTextContentVm = SubmissionTextCellViewModel(text: "")
-            dataProvider?.bind(subTextCellViewModel: self.submissionTextContentVm!, dataModel: submissionDataModel)
+            dataProvider?.bind(subTextCellViewModel: self.submissionTextContentVm, dataModel: submissionDataModel)
+            completion()
+        default:
+            // Temporarily set as Link
+            self.submissionMediaType = .link
+            self.submissionLinkContentVm = SubmissionLinkCellViewModel()
+            dataProvider?.bind(subLinkCellViewModel: self.submissionLinkContentVm, dataModel: submissionDataModel)
+            
+            
+            // If not text, either link or image. Make a request to further determine content type
+            self.dataProvider?.requestContent(submissionDataModel: self.submissionDataModel!, completion: { (data, mediaType, error) in
+                
+                // Reupdate media type
+                self.submissionMediaType = mediaType
+                
+                if mediaType == SubmissionMediaType.image {
+                    // An image
+                    self.submissionImageContentVm = SubmissionImageCellViewModel.init(imageData: data!)
+                    dataProvider?.bind(subImageCellViewModel: self.submissionImageContentVm, dataModel: submissionDataModel)
+                    
+                    DispatchQueue.main.async {
+                        
+                        // Reload just the image/content cell
+                        self.tableView.reloadData()
+                        let imageCellIndexPath = IndexPath.init(row: 1, section: 0)
+                        self.tableView.reloadRows(at: [imageCellIndexPath], with: .fade)
+                    }
+                }
+                
+                completion()
+            })
+            
+            break;
+            
+            /*
         case .link:
             self.submissionLinkContentVm = SubmissionLinkCellViewModel()
             dataProvider?.bind(subLinkCellViewModel: self.submissionLinkContentVm!, dataModel: submissionDataModel)
         case .image:
             self.submissionImageContentVm = SubmissionImageCellViewModel.init(imageLink: "")
             dataProvider?.bind(subImageCellViewModel: self.submissionImageContentVm!, dataModel: submissionDataModel)
-        default:
-            // TODO: Default case is a "Link" type, no matter the media content
-            self.submissionLinkContentVm = SubmissionLinkCellViewModel()
-            dataProvider?.bind(subLinkCellViewModel: self.submissionLinkContentVm!, dataModel: submissionDataModel)
-            break
+ */
         }
     }
     
@@ -254,13 +285,13 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             else if indexPath.row == 1 {
                 switch self.submissionMediaType {
                 case .text:
-                    let submissionTextCellVm = self.submissionTextContentVm!
+                    let submissionTextCellVm = self.submissionTextContentVm
                     return submissionTextCellVm.cellHeight
                 case .link:
-                    let submissionLinkCellVm = self.submissionLinkContentVm!
+                    let submissionLinkCellVm = self.submissionLinkContentVm
                     return submissionLinkCellVm.cellHeight
                 case .image:
-                    let submissionImageCellVm = self.submissionImageContentVm!
+                    let submissionImageCellVm = self.submissionImageContentVm
                     return submissionImageCellVm.cellHeight
                 default:
                     return 0
@@ -309,29 +340,21 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 switch self.submissionMediaType {
                 case .text:
                     let textCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TEXT_CELL_REUSE_ID, for: indexPath) as! SubmissionTextCell
-                    textCell.bind(toViewModel: self.submissionTextContentVm!)
+                    textCell.bind(toViewModel: self.submissionTextContentVm)
                     textCell.textView.delegate = self
                     return textCell
                 case .image:
                     let imageCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_IMAGE_CELL_REUSE_ID, for: indexPath) as! SubmissionImageCell
-                    
-                    DispatchQueue.global(qos: .background).async {
-                        self.submissionImageContentVm?.downloadImage() {
-                            DispatchQueue.main.async {
-                                imageCell.bindImage(fromViewModel: self.submissionImageContentVm!)
-                                self.reloadTableAnimated()
-                            }
-                        }
-                    }
+                    imageCell.bindImage(fromViewModel: self.submissionImageContentVm)
                     return imageCell
                 case .link:
                     let linkCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_LINK_CELL_REUSE_ID, for: indexPath) as! SubmissionLinkCell
-                    linkCell.bind(toViewModel: self.submissionLinkContentVm!)
+                    linkCell.bind(toViewModel: self.submissionLinkContentVm)
                     
                     DispatchQueue.global(qos: .background).async {
-                        self.submissionLinkContentVm?.downloadThumbnail()
+                        self.submissionLinkContentVm.downloadThumbnail()
                         DispatchQueue.main.async {
-                            linkCell.bindThumbnailImage(fromViewModel: self.submissionLinkContentVm!)
+                            linkCell.bindThumbnailImage(fromViewModel: self.submissionLinkContentVm)
                         }
                     }
                     return linkCell
@@ -391,8 +414,16 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         
         // If is a content cell, launch link
         if indexPath.section == 0 && indexPath.row == 1 {
-            if self.submissionMediaType != .text && self.submissionMediaType != .image {
-                self.loadWebViewController(forLink: self.submissionLinkContentVm!.link)
+            if self.submissionMediaType != .text {
+                switch self.submissionMediaType {
+                case .link:
+                    self.loadWebViewController(forLink: self.submissionLinkContentVm.link)
+                case .image:
+                    self.loadWebViewController(forLink: self.submissionImageContentVm.imageLink)
+                default:
+                    break;
+                }
+                
             }
         }
         
@@ -496,6 +527,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         return false
     }
     
+    // delegate callback
     func commentsSortByCell(cell: CommentsSortByCell, didSortBy sortType: SortTypeComments) {
         // Sort the comment cells
         
@@ -520,6 +552,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.tableView.dataSource = nil
         self.tableView.delegate = nil
         
+        #if DEBUG
+        print ("Deallocated Comments View Controller")
+        #endif
     }
 }
 
