@@ -3,26 +3,33 @@ Random Notes
 
 Immediate tasks:
 
+- Sidebar
+	- subverse history
+	- clear history
+	- (optional) current subverse info
+	- Favorites (optional)
+	- Add subverse to favorites
+	- Favorites list, remove
 
+- Data persistence
+	- Save last browsed subverse
+	- Sidebar subverse history
+- Welcome Screen?
+- Ads
+- IAP
+- Analytics
+
+
+* Created Website
+* Mailchimp for mailing list
 
 * Support Images
 * On launching Find Subverse going back to Subverse Controller, clear it
 * When loading subverse, disable scrolling
 * On Sort, scroll to top
 
-
 * activity indicator for loading image/gif
 * progress indicator for loading gif
-- Save last browsed subverse
-- Welcome Screen
-
-- Add sidebar for most visited subverses?
-- Add subverse to favorites
-
-
-
-
-
 
 * Get sample Legacy comment json data
 * Data models

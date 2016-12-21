@@ -157,7 +157,7 @@ class SubmissionCellViewModel{
         // Only change margins for computing height if there is absolutely no thumbnail
         if self.thumbnailImage == nil && self.thumbnailLink.value == "" {
             imageViewWidth = 0
-            imageViewHorizontalMargins = 40
+            imageViewHorizontalMargins = 50
         }
         
         let titleWidth = UIScreen.main.bounds.size.width - imageViewWidth - imageViewHorizontalMargins
