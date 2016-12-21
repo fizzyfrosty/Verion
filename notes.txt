@@ -11,6 +11,8 @@ Immediate tasks:
 * On Sort, scroll to top
 
 
+* activity indicator for loading image/gif
+* progress indicator for loading gif
 - Save last browsed subverse
 - Welcome Screen
 

@@ -98,7 +98,7 @@ class DataProviderHelper {
     }
     
     func getSubmissionMediaType(fromDataModel dataModel: SubmissionDataModelProtocol) -> SubmissionMediaType {
-        var mediaType = SubmissionMediaType.none
+        var mediaType = SubmissionMediaType.undetermined
         
         switch dataModel.apiVersion {
         case .legacy:
@@ -136,21 +136,14 @@ class DataProviderHelper {
     // This should be for offline-use ONLY
     private func getSubmissionMediaTypeFromLegacyDataModel(submissionDataModel: SubmissionDataModelLegacy) -> SubmissionMediaType {
         
-        var legacyMediaType: SubmissionMediaType = .none
+        var legacyMediaType: SubmissionMediaType = .undetermined
         
         // If data model is text, return text.
         if submissionDataModel.type == SubmissionType.text.rawValue {
             legacyMediaType = .text
         } else {
-            // If it is link..., make a request, get the content type back from the request
-            Alamofire.request(submissionDataModel.messageContent).validate().responseJSON { response in
-                // Parse the content type returned, jpg, png, gif, etc.
-            }
             
-            
-            // Set and return
-            
-            legacyMediaType = .link
+            legacyMediaType = .undetermined
         }
         
         return legacyMediaType

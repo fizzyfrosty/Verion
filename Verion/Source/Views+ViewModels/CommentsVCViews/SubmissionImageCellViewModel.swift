@@ -11,13 +11,12 @@ import UIKit
 class SubmissionImageCellViewModel {
     
     var imageLink = ""
-    var imageData: Data? {
-        didSet {
-            self.image = UIImage.init(data: self.imageData!)
-        }
-    }
-    private(set) var image: UIImage?
-
+    private(set) var isGif: Bool = false
+    private(set) var imageData: Data?
+    
+    var animatedImage: FLAnimatedImage?
+    var image: UIImage?
+    
     var cellHeight: CGFloat {
         get {
             if self.image == nil {
@@ -30,19 +29,24 @@ class SubmissionImageCellViewModel {
     }
     private let CELL_HEIGHT: CGFloat = 0.0
     
-    init () {
+    init() {
         
     }
     
-    init(imageData: Data) {
+    init(imageData: Data, isGif: Bool) {
+        
+        self.isGif = isGif
+        
         self.imageData = imageData
-        self.image = UIImage.init(data: self.imageData!)
+        self.image = UIImage.init(data: self.imageData!)!
+        
+        if self.isGif == true {
+            self.animatedImage = FLAnimatedImage.init(animatedGIFData: self.imageData)
+        }
     }
     
-    init(imageLink: String) {
-        self.imageLink = imageLink
+    func restartGifAnimation() {
         
-        // TODO: Bind image loading?
     }
     
     private func getAspectFitHeight(forImage image: UIImage) -> CGFloat {

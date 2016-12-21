@@ -168,11 +168,10 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N7t-Cu-5pJ">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N7t-Cu-5pJ" customClass="FLAnimatedImageView">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
                                         </imageView>
                                     </subviews>
-                                    <color key="backgroundColor" red="1" green="0.79790140190000003" blue="0.9905122462" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="N7t-Cu-5pJ" secondAttribute="trailing" id="1sl-UI-New"/>
                                         <constraint firstItem="N7t-Cu-5pJ" firstAttribute="leading" secondItem="UJ6-UU-KoL" secondAttribute="leading" id="Yfk-Xd-o3c"/>
@@ -441,7 +440,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity Indicator Cell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9HT-ku-PrE">
-                                            <rect key="frame" x="107" y="10" width="161.5" height="21"/>
+                                            <rect key="frame" x="107.5" y="9.5" width="161.5" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -449,14 +448,43 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
+                                        <constraint firstItem="9HT-ku-PrE" firstAttribute="centerY" secondItem="768-bQ-cAn" secondAttribute="centerY" id="ECk-vJ-CTL"/>
                                         <constraint firstItem="9HT-ku-PrE" firstAttribute="centerX" secondItem="768-bQ-cAn" secondAttribute="centerX" id="aAV-Ch-9CH"/>
-                                        <constraint firstItem="9HT-ku-PrE" firstAttribute="centerY" secondItem="768-bQ-cAn" secondAttribute="centerY" id="d2b-CG-iX6"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="contentView" destination="768-bQ-cAn" id="NMi-a5-53G"/>
                                     <outlet property="mainLabel" destination="9HT-ku-PrE" id="dBE-bj-7k5"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProgressIndicatorCell" rowHeight="40" id="s0T-md-8vr" customClass="ProgressIndicatorCell" customModule="Verion" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="691" width="375" height="40"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s0T-md-8vr" id="97w-Jm-eaA">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progress %" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ADc-XO-bis">
+                                            <rect key="frame" x="145.5" y="1.5" width="85.5" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PS6-gV-8WX">
+                                            <rect key="frame" x="50" y="28" width="275" height="2"/>
+                                        </progressView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="PS6-gV-8WX" secondAttribute="trailing" constant="50" id="PaA-Fa-75Z"/>
+                                        <constraint firstItem="PS6-gV-8WX" firstAttribute="leading" secondItem="97w-Jm-eaA" secondAttribute="leading" constant="50" id="eBc-XM-q7N"/>
+                                        <constraint firstItem="PS6-gV-8WX" firstAttribute="top" secondItem="ADc-XO-bis" secondAttribute="bottom" constant="5" id="hfS-PU-y1V"/>
+                                        <constraint firstItem="ADc-XO-bis" firstAttribute="centerX" secondItem="97w-Jm-eaA" secondAttribute="centerX" id="jxV-yT-0LL"/>
+                                        <constraint firstAttribute="bottom" secondItem="PS6-gV-8WX" secondAttribute="bottom" constant="10" id="z1l-0T-a9N"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="progressBar" destination="PS6-gV-8WX" id="Kib-YI-xmg"/>
+                                    <outlet property="progressLabel" destination="ADc-XO-bis" id="YQ0-Ek-wZw"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

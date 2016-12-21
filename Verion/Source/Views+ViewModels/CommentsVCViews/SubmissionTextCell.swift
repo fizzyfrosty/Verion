@@ -24,8 +24,6 @@ class SubmissionTextCell: UITableViewCell {
     }
     
     func bind(toViewModel viewModel: SubmissionTextCellViewModel) {
-        // FIXME: Remove when attributed text is done
-        //self.textView.text = viewModel.textString
         self.textView.attributedText = viewModel.attributedTextString
     }
 

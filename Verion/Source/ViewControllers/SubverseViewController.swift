@@ -184,7 +184,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.customRefreshControl?.prepareFrameForShowing()
     }
     
-    // TODO: Make a dependency, load from injector
     func loadActivityIndicator() {
         
         self.activityIndicator = ActivityIndicatorProvider.getActivityIndicator(type: .ballPulse, length: self.ACTIVITY_INDICATOR_LENGTH)

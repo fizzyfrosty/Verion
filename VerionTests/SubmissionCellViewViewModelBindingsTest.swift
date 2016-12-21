@@ -38,7 +38,7 @@ class SubmissionCellViewViewModelBindingsTest: QuickSpec {
                 expect(submissionCell.titleLabel.text).to(equal(viewModel.titleString))
             }
             
-            // TODO: UI display unit test
+            // UI display unit test
             xit("has the thumbnail loaded") {
                 
             }
@@ -95,7 +95,7 @@ class SubmissionCellViewViewModelBindingsTest: QuickSpec {
             }
         }
         
-        // TODO: Test that a submission cell is resized properly for long titles
+        // Test that a submission cell is resized properly for long titles
         
         
         // Test event bindings for upvote and downvote

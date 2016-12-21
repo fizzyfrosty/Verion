@@ -12,4 +12,7 @@
 #import "TSBaseParser.h"
 #import "TSMarkdownParser.h"
 
+#import "FLAnimatedImage.h"
+
+
 #endif /* Verion_Bridging_Header_h */

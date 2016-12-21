@@ -14,10 +14,9 @@ enum SubmissionType: Int {
 }
 
 enum SubmissionMediaType {
-    case none
+    case undetermined
     case text
     case image
-    case gif
     case video
     case link
 }

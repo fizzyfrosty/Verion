@@ -26,8 +26,8 @@ class OfflineDataProvider: DataProviderType {
         self.apiVersion = apiVersion
     }
     
-    func requestContent(submissionDataModel: SubmissionDataModelProtocol, completion: @escaping (Data?, SubmissionMediaType, Error?) -> Void) {
-        completion(nil, SubmissionMediaType.link, nil)
+    func requestContent(submissionDataModel: SubmissionDataModelProtocol, downloadProgress: @escaping (Double)->(), completion: @escaping (Data?, SubmissionMediaType, Bool, Error?) -> Void) {
+        completion(nil, SubmissionMediaType.link, false, nil)
     }
     
     func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void {

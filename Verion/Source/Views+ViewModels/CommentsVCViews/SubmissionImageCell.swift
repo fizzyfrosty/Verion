@@ -10,7 +10,7 @@ import UIKit
 
 class SubmissionImageCell: UITableViewCell {
 
-    @IBOutlet var submissionImageView: UIImageView!
+    @IBOutlet var submissionImageView: FLAnimatedImageView!
     
     
     override func awakeFromNib() {
@@ -25,7 +25,18 @@ class SubmissionImageCell: UITableViewCell {
     }
     
     func bindImage(fromViewModel viewModel: SubmissionImageCellViewModel) {
-        self.submissionImageView.image = viewModel.image
+        if viewModel.isGif {
+            self.submissionImageView.animatedImage = viewModel.animatedImage
+        } else {
+            self.submissionImageView.image = viewModel.image
+        }
+        
+    }
+    
+    deinit {
+        #if DEBUG
+        print("Deallocated Image View")
+        #endif
     }
 
 }

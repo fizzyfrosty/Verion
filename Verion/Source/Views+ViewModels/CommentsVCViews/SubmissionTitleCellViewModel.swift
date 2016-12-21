@@ -72,7 +72,6 @@ class SubmissionTitleCellViewModel {
         self.date = subTitleCellVMInitData.date
         self.subverseString = subTitleCellVMInitData.subverseString
         
-        // TODO: calculate date string
         self.dateString = self.textFormatter.createDateSubmittedString(gmtDate: self.date!)
         self.timeAndSubverseString = self.textFormatter.createSubmittedToSubverseString(dateSubmittedString: self.dateString, subverseName: self.subverseString)
         

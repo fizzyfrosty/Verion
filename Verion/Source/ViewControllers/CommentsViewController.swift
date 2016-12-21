@@ -27,6 +27,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     let SUBMISSION_TEXT_CELL_REUSE_ID = "SubmissionTextCell"
     let SUBMISSION_LINK_CELL_REUSE_ID = "SubmissionLinkCell"
     let SUBMISSION_IMAGE_CELL_REUSE_ID = "SubmissionImageCell"
+    let PROGRESS_INDICATOR_CELL_REUSE_ID = "ProgressIndicatorCell"
     
     let ACTIVITY_INDICATOR_CELL_REUSE_ID = "ActivityIndicatorCell"
     let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
@@ -38,12 +39,17 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var submissionDataModel: SubmissionDataModelProtocol?
     
     // View Models
-    var submissionMediaType: SubmissionMediaType = .none
+    var submissionMediaType: SubmissionMediaType = .undetermined {
+        didSet {
+            print("Set: \(self.submissionMediaType)")
+        }
+    }
     var submissionTitleVm: SubmissionTitleCellViewModel?
     var submissionImageContentVm: SubmissionImageCellViewModel = SubmissionImageCellViewModel()
     var submissionTextContentVm: SubmissionTextCellViewModel = SubmissionTextCellViewModel()
     var submissionLinkContentVm: SubmissionLinkCellViewModel = SubmissionLinkCellViewModel()
     var commentsSortByVm: CommentsSortByCellViewModel?
+    var progressCellVm: ProgressIndicatorCellViewModel = ProgressIndicatorCellViewModel()
     
     var commentsViewModels: [CommentCellViewModel] = []
     var commentDataModels: [CommentDataModelProtocol] = []
@@ -68,8 +74,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.navigationController?.navigationBar.tintColor = UIColor.white
 
         
-        // TODO: Comment View Controller main functions
-        // Load Refresh Control
         self.loadSubmissionInfo {
             self.loadCommentCells {
                 
@@ -83,8 +87,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    // TODO: Reload the table
-    func reloadTableAnimated() {
+    
+    func reloadTableCommentsAnimated() {
         self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: 1, endingIndexExclusive: self.commentsViewModels.count+1, animation: .automatic)
     }
     
@@ -139,26 +143,29 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             dataProvider?.bind(subTextCellViewModel: self.submissionTextContentVm, dataModel: submissionDataModel)
             completion()
         default:
-            // Temporarily set as Link
-            self.submissionMediaType = .link
-            
-            
             // If not text, either link or image. Make a request to further determine content type
-            self.dataProvider?.requestContent(submissionDataModel: self.submissionDataModel!, completion: { (data, mediaType, error) in
+            
+            // Request
+            self.dataProvider?.requestContent(submissionDataModel: self.submissionDataModel!, downloadProgress: { progress in
+                self.progressCellVm.progress.value = progress
                 
-                // Reupdate media type
+            }, completion: { (data, mediaType, isGif, error) in
+                
+                // Reupdate media type and the (correct) content view model
                 self.submissionMediaType = mediaType
                 
-                if mediaType == SubmissionMediaType.image {
+                if self.submissionMediaType == SubmissionMediaType.image {
                     // An image
-                    self.submissionImageContentVm = SubmissionImageCellViewModel.init(imageData: data!)
+                    self.submissionImageContentVm = SubmissionImageCellViewModel.init(imageData: data!, isGif: isGif)
                     dataProvider?.bind(subImageCellViewModel: self.submissionImageContentVm, dataModel: submissionDataModel)
-                } else {
+                }
+                else {
                     // A link
                     self.submissionLinkContentVm = SubmissionLinkCellViewModel()
                     dataProvider?.bind(subLinkCellViewModel: self.submissionLinkContentVm, dataModel: submissionDataModel)
                 }
                 
+                // When finished downloading, reload the Content Cell
                 DispatchQueue.main.async {
                     // Reload just the image/content cell
                     self.tableView.reloadData()
@@ -170,25 +177,15 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             })
             
             break;
-            
-            /*
-        case .link:
-            self.submissionLinkContentVm = SubmissionLinkCellViewModel()
-            dataProvider?.bind(subLinkCellViewModel: self.submissionLinkContentVm!, dataModel: submissionDataModel)
-        case .image:
-            self.submissionImageContentVm = SubmissionImageCellViewModel.init(imageLink: "")
-            dataProvider?.bind(subImageCellViewModel: self.submissionImageContentVm!, dataModel: submissionDataModel)
- */
         }
     }
     
     
-    // TODO: Load sortBy cell
     func loadSortedByBar() {
         self.commentsSortByVm = CommentsSortByCellViewModel()
     }
     
-    // TODO: load comments from data provider
+    // Load Comments from Data Provider
     func loadCommentCells(completion: @escaping ()->()) {
         self.dataProvider?.requestComments(submissionId: (self.submissionDataModel?.id)!, completion: { (commentDataModels, error) in
             
@@ -210,7 +207,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 self.areCommentsLoaded = true
                 
                 DispatchQueue.main.async {
-                    self.reloadTableAnimated()
+                    self.reloadTableCommentsAnimated()
                     
                     completion()
                 }
@@ -301,6 +298,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 case .image:
                     let submissionImageCellVm = self.submissionImageContentVm
                     return submissionImageCellVm.cellHeight
+                case .undetermined:
+                    return self.progressCellVm.cellHeight
                 default:
                     return 0
                 }
@@ -351,10 +350,13 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                     textCell.bind(toViewModel: self.submissionTextContentVm)
                     textCell.textView.delegate = self
                     return textCell
+                    
                 case .image:
                     let imageCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_IMAGE_CELL_REUSE_ID, for: indexPath) as! SubmissionImageCell
                     imageCell.bindImage(fromViewModel: self.submissionImageContentVm)
+                    
                     return imageCell
+                    
                 case .link:
                     let linkCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_LINK_CELL_REUSE_ID, for: indexPath) as! SubmissionLinkCell
                     linkCell.bind(toViewModel: self.submissionLinkContentVm)
@@ -367,8 +369,16 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                     }
                     return linkCell
                     
+                case .undetermined:
+                    // No submission type determined, is probably loading
+                    let progressIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.PROGRESS_INDICATOR_CELL_REUSE_ID, for: indexPath) as! ProgressIndicatorCell
+                    progressIndicatorCell.bind(toViewModel: self.progressCellVm)
+                    
+                    return progressIndicatorCell
+                    
                 default:
-                    let linkCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_LINK_CELL_REUSE_ID, for: indexPath)
+                    // Default to a link cell with no bindings
+                    let linkCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_LINK_CELL_REUSE_ID, for: indexPath) as! SubmissionLinkCell
                     
                     return linkCell
                 }
@@ -552,8 +562,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             })
         }
         
-        // Reload the table
-        self.reloadTableAnimated()
+        // Reload the Comments
+        self.reloadTableCommentsAnimated()
     }
     
     deinit {

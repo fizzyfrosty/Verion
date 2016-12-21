@@ -28,27 +28,52 @@ class VoatDataProvider: DataProviderType {
         self.apiVersion = apiVersion
     }
     
-    func requestContent(submissionDataModel: SubmissionDataModelProtocol, completion: @escaping (Data?, SubmissionMediaType, Error?) -> Void) {
+    func requestContent(submissionDataModel: SubmissionDataModelProtocol, downloadProgress: @escaping (Double)->(), completion: @escaping (Data?, SubmissionMediaType, Bool, Error?) -> Void) {
         let requestUrlString = self.dataProviderHelper.getContentUrlString(fromSubmissionDataModel: submissionDataModel)
         
-        Alamofire.request(requestUrlString).validate().responseData { responseData in
-            switch responseData.result {
-            case .success:
-                var data: Data?
+        // --------To download a file to device, need to specify destination:
+        // http://stackoverflow.com/questions/39490390/alamofire-download-issue
+        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                                    .userDomainMask, true)[0]
+            let documentsURL = URL(fileURLWithPath: documentsPath, isDirectory: true)
+            let fileURL = documentsURL.appendingPathComponent("tempFile")
+            
+            return (fileURL, [.removePreviousFile, .createIntermediateDirectories]) }
+        // ----------------------------------------------------------
+        
+        
+        Alamofire.download(requestUrlString, to: destination).downloadProgress {(progress) in
+            downloadProgress(progress.fractionCompleted)
+        }
+        .responseData { (response) in
+            
+            if let data = response.result.value {
                 var mediaType: SubmissionMediaType = .link
+                var isGif: Bool = false
+                
                 // Check the mime type
-                let mimeType = responseData.response?.mimeType
-                let truncatedMimeType = (mimeType?.components(separatedBy: "/"))?[0]
-                if truncatedMimeType == "image" {
+                let mimeType = response.response?.mimeType
+                let mimeComponents = mimeType?.components(separatedBy: "/")
+                let generalMimeType = mimeComponents?[0]
+                let detailedMimeType = mimeComponents?[1]
+                
+                // Only return data (imageData) if it was an image
+                if generalMimeType == "image" {
                     mediaType = .image
                     
-                    data = responseData.data
+                    if detailedMimeType == "gif" {
+                        isGif = true
+                    } else {
+                        isGif = false
+                    }
+                    
+                    //data = response.result.value
                 }
                 
-                completion(data, mediaType, nil)
-                
-            case .failure(let error):
-                completion(nil, SubmissionMediaType.link, error)
+                completion(data, mediaType, isGif, nil)
+            } else {
+                completion(nil, SubmissionMediaType.link, false, response.result.error)
             }
         }
     }

@@ -16,7 +16,7 @@ class CommentsSortByCell: UITableViewCell {
 
     @IBOutlet var sortByButton: UIButton!
     
-    // TODO: These are for v1 api implementation
+    // These are for v1 api implementation
     @IBOutlet var upvoteButton: UIButton!
     @IBOutlet var downvoteButton: UIButton!
     @IBOutlet var commentButton: UIButton!

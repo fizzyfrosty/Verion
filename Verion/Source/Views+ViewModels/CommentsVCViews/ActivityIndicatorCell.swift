@@ -27,7 +27,6 @@ class ActivityIndicatorCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    // TODO: Make a dependency, load from injector
     func loadActivityIndicator(length: CGFloat) {
         self.activityIndicatorLength = length
         
