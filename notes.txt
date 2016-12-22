@@ -14,11 +14,24 @@ Immediate tasks:
 - Data persistence
 	- Save last browsed subverse
 	- Sidebar subverse history
-- Welcome Screen?
-- Ads
-- IAP
+
 - Analytics
 
+- Ads
+- IAP
+
+- Welcome Screen?
+
+
+
+* Make gif/video
+	- frontpage
+	- scroll
+	- go into image
+	- go back
+	- find new subverse
+	- scroll down to load more
+	- go back to front page
 
 * Created Website
 * Mailchimp for mailing list
