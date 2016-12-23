@@ -70,3 +70,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension SwinjectStoryboard {
+    class func setup() {
+        let defaultContainer = SwinjectStoryboard.defaultContainer
+        
+        defaultContainer.register(SFXManagerType.self, factory: { _ in
+            SFXManager()
+        })
+        
+        defaultContainer.register(DataProviderType.self){ _ in
+            //OfflineDataProvider(apiVersion: .legacy)
+            VoatDataProvider(apiVersion: .legacy)
+        }
+        
+        defaultContainer.storyboardInitCompleted(SubverseViewController.self, initCompleted: { (ResolverType, C) in
+            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+        })
+        
+        defaultContainer.storyboardInitCompleted(CommentsViewController.self, initCompleted: { (ResolverType, C) in
+            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+        })
+        
+        defaultContainer.storyboardInitCompleted(FindSubverseViewController.self, initCompleted: { (ResolverType, C) in
+            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+            
+        })
+        
+        
+    }
+}
+
+
+

@@ -641,37 +641,3 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
 
 }
 
-
-
-// Mark: - Swinject
-import SwinjectStoryboard
-
-extension SwinjectStoryboard {
-    class func setup() {
-        let defaultContainer = SwinjectStoryboard.defaultContainer
-        
-        defaultContainer.register(SFXManagerType.self, factory: { _ in
-            SFXManager()
-        })
-        
-        defaultContainer.register(DataProviderType.self){ _ in
-            //OfflineDataProvider(apiVersion: .legacy)
-            VoatDataProvider(apiVersion: .legacy)
-        }
-        
-        defaultContainer.registerForStoryboard(SubverseViewController.self, initCompleted: { (ResolverType, C) in
-            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
-            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
-        })
-        
-        defaultContainer.registerForStoryboard(CommentsViewController.self, initCompleted: { (ResolverType, C) in
-            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
-            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
-        })
-        
-        defaultContainer.registerForStoryboard(FindSubverseViewController.self, initCompleted: { (ResolverType, C) in
-            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
-            
-        })
-    }
-}

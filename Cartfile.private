@@ -1,7 +1,7 @@
-github "Swinject/Swinject" "2.0.0-beta.2"
+github "Swinject/Swinject" "2.0.0-beta.3"
 
 # Uncomment if you use SwinjectStoryboard
-github "Swinject/SwinjectStoryboard" "1.0.0-beta.2"
+github "Swinject/SwinjectStoryboard" "1.0.0-beta.3"
 
 github "ReactiveKit/Bond" ~> 5.1
 
@@ -20,3 +20,5 @@ github "Alamofire/Alamofire" ~> 4.0
 github "bahlo/SwiftGif" ~> 1.6.1
 
 github "Flipboard/FLAnimatedImage"
+
+github "dekatotoro/SlideMenuControllerSwift"

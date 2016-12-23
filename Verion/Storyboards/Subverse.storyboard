@@ -444,7 +444,7 @@
         <!--Voat-->
         <scene sceneID="SON-ar-vYs">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yLU-5D-v3o" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SubverseNavController" automaticallyAdjustsScrollViewInsets="NO" id="yLU-5D-v3o" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Voat" id="ry9-XI-261"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="DGQ-Oh-8hA">

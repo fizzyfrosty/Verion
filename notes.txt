@@ -3,6 +3,14 @@ Random Notes
 
 Immediate tasks:
 
+* Research side menu
+* Sketch template
+
+* Import slidermenu
+* Create Storyboard
+* Create View Controllers
+* Hook up data
+
 - Sidebar
 	- subverse history
 	- clear history
@@ -15,12 +23,32 @@ Immediate tasks:
 	- Save last browsed subverse
 	- Sidebar subverse history
 
+
+- Program against v1 api
+	- Subverse list request
+		- DataModel
+		- Bind DataModel to Subverse View Model
+	- subverse submissions
+	- comments
+
+
+
 - Analytics
 
 - Ads
 - IAP
 
+- Website: new pages
+	- donate page
+	- landing page
+- Paypal
 - Welcome Screen?
+
+
+
+- Set up website for donations
+- paypal
+
 
 
 
