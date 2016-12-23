@@ -11,18 +11,15 @@ Immediate tasks:
 * Create View Controllers
 * Hook up data
 
+* Data persistence
+
 - Sidebar
 	- subverse history
 	- clear history
 	- (optional) current subverse info
 	- Favorites (optional)
-	- Add subverse to favorites
-	- Favorites list, remove
-
-- Data persistence
-	- Save last browsed subverse
-	- Sidebar subverse history
-
+		- Add subverse to favorites
+		- Favorites list, remove
 
 - Program against v1 api
 	- Subverse list request

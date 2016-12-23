@@ -18,20 +18,47 @@ class LeftMenuController: UITableViewController {
     private let SUBVERSE_CELL_REUSE_ID = "SubverseCell"
     private var subverseCellViewModels = [SubverseCellViewModel]()
     
+    let testValues = ["abc", "123", "banana"]
+    
     weak var delegate: LeftMenuControllerDelegate?
     
     // Dependencies
-    
+    var dataManager: DataManagerProtocol?
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Load data from data manager
+        self.loadData()
+        self.tableView.reloadData()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    private func loadData() {
+        if let verionDataModel = dataManager?.getSavedData() {
+            self.subverseCellViewModels = self.createSubverseViewModels(withNames: verionDataModel.subversesVisited)
+        }
+        
+        // FIXME: temporarily populate with view models
+        self.subverseCellViewModels = self.createSubverseViewModels(withNames: self.testValues)
+    }
+    
+    private func createSubverseViewModels(withNames names: [String]) -> [SubverseCellViewModel]{
+        var subverseCellViewModels: [SubverseCellViewModel] = []
+        for i in 0..<names.count {
+            let subverseCellViewModel = SubverseCellViewModel()
+            subverseCellViewModel.subverseName = names[i]
+            
+            subverseCellViewModels.append(subverseCellViewModel)
+        }
+        
+        return subverseCellViewModels
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,23 +70,29 @@ class LeftMenuController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return self.subverseCellViewModels.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBVERSE_CELL_REUSE_ID, for: indexPath) as! SubverseCell
+        
+        let viewModel = self.subverseCellViewModels[indexPath.row]
+        cell.bind(toViewModel: viewModel)
 
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    
 
     /*
     // Override to support conditional editing of the table view.

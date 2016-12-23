@@ -67,6 +67,9 @@
 		43B056701E0D3FA0007083E8 /* SubverseCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0566F1E0D3FA0007083E8 /* SubverseCellViewModel.swift */; };
 		43B056731E0D416C007083E8 /* DataManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056721E0D416C007083E8 /* DataManagerProtocol.swift */; };
 		43B056751E0D4272007083E8 /* VerionDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056741E0D4272007083E8 /* VerionDataModel.swift */; };
+		43B0567D1E0D5F88007083E8 /* VerionDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0567C1E0D5F88007083E8 /* VerionDataManager.swift */; };
+		43B0567F1E0D5FD3007083E8 /* DataManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0567E1E0D5FD3007083E8 /* DataManagerHelper.swift */; };
+		43B056811E0D6AFE007083E8 /* DataManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056801E0D6AFE007083E8 /* DataManagerTest.swift */; };
 		43DF44561E089F1B00478AD9 /* VoatDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */; };
 		43DF44581E08A59200478AD9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43DF44571E08A59200478AD9 /* Alamofire.framework */; };
 		43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */; };
@@ -200,6 +203,9 @@
 		43B0566F1E0D3FA0007083E8 /* SubverseCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseCellViewModel.swift; sourceTree = "<group>"; };
 		43B056721E0D416C007083E8 /* DataManagerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManagerProtocol.swift; sourceTree = "<group>"; };
 		43B056741E0D4272007083E8 /* VerionDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerionDataModel.swift; sourceTree = "<group>"; };
+		43B0567C1E0D5F88007083E8 /* VerionDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerionDataManager.swift; sourceTree = "<group>"; };
+		43B0567E1E0D5FD3007083E8 /* DataManagerHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManagerHelper.swift; sourceTree = "<group>"; };
+		43B056801E0D6AFE007083E8 /* DataManagerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManagerTest.swift; sourceTree = "<group>"; };
 		43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoatDataProvider.swift; sourceTree = "<group>"; };
 		43DF44571E08A59200478AD9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkdownParser.swift; sourceTree = "<group>"; };
@@ -388,6 +394,8 @@
 			isa = PBXGroup;
 			children = (
 				43B056721E0D416C007083E8 /* DataManagerProtocol.swift */,
+				43B0567E1E0D5FD3007083E8 /* DataManagerHelper.swift */,
+				43B0567C1E0D5F88007083E8 /* VerionDataManager.swift */,
 			);
 			path = DataAccess;
 			sourceTree = "<group>";
@@ -597,6 +605,7 @@
 				43F9A0411DEA3AE0001EB1FC /* VerionTests.swift */,
 				43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */,
 				43F6752F1DF2050B001F83BE /* SubCellViewModelDataModelTest.swift */,
+				43B056801E0D6AFE007083E8 /* DataManagerTest.swift */,
 				43F9A0431DEA3AE0001EB1FC /* Info.plist */,
 			);
 			path = VerionTests;
@@ -813,6 +822,7 @@
 				4375C0421DF7524700576CC6 /* CommentsViewController.swift in Sources */,
 				43DF45DE1E0A2BBD00478AD9 /* SpringLabel.swift in Sources */,
 				43DF45D31E0A2BBD00478AD9 /* ImageLoader.swift in Sources */,
+				43B0567F1E0D5FD3007083E8 /* DataManagerHelper.swift in Sources */,
 				4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */,
 				43B056751E0D4272007083E8 /* VerionDataModel.swift in Sources */,
 				43433DAF1E057E620017FAB0 /* SubmissionCell.swift in Sources */,
@@ -852,6 +862,7 @@
 				43DF45E91E0A2BBD00478AD9 /* SwiftyMarkdown.swift in Sources */,
 				43433D8E1E057C160017FAB0 /* FindSubverseViewController.swift in Sources */,
 				43DF45DA1E0A2BBD00478AD9 /* Spring.swift in Sources */,
+				43B0567D1E0D5F88007083E8 /* VerionDataManager.swift in Sources */,
 				43DF45E11E0A2BBD00478AD9 /* SpringView.swift in Sources */,
 				43DF45C81E0A2BBD00478AD9 /* AsyncButton.swift in Sources */,
 				43433DA81E057E620017FAB0 /* SubmissionImageCellViewModel.swift in Sources */,
@@ -891,6 +902,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43F9A0421DEA3AE0001EB1FC /* VerionTests.swift in Sources */,
+				43B056811E0D6AFE007083E8 /* DataManagerTest.swift in Sources */,
 				43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */,
 				43F675301DF2050B001F83BE /* SubCellViewModelDataModelTest.swift in Sources */,
 			);

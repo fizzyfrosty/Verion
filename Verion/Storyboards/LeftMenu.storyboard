@@ -13,36 +13,61 @@
         <scene sceneID="P89-UU-NAR">
             <objects>
                 <tableViewController storyboardIdentifier="LeftMenuController" id="ZSt-el-yrS" customClass="LeftMenuController" customModule="Verion" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5CC-vi-Ax5">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="48" sectionHeaderHeight="28" sectionFooterHeight="28" id="5CC-vi-Ax5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.062745098039215685" green="0.062745098039215685" blue="0.062745098039215685" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SubverseNameCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubverseCell" id="s2f-fC-YWQ" customClass="SubverseCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SubverseNameCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubverseCell" rowHeight="48" id="s2f-fC-YWQ" customClass="SubverseCell" customModule="Verion" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s2f-fC-YWQ" id="udq-Wc-y7u">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dCO-R3-Gn8">
-                                            <rect key="frame" x="15" y="11" width="42" height="21"/>
+                                            <rect key="frame" x="15" y="13.5" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Disclosure Indicator" translatesAutoresizingMaskIntoConstraints="NO" id="q4t-iC-u43">
-                                            <rect key="frame" x="279" y="15" width="8" height="13"/>
+                                            <rect key="frame" x="354" y="17.5" width="8" height="13"/>
                                         </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lz6-bG-JWB" userLabel="light_gray_separator">
+                                            <rect key="frame" x="0.0" y="46" width="375" height="1"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="H5y-w8-eM3"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feI-E0-OvX" userLabel="black_separator">
+                                            <rect key="frame" x="0.0" y="46" width="375" height="2"/>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="2" id="hfc-0Z-WTt"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.12549019607843137" green="0.12549019607843137" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstItem="q4t-iC-u43" firstAttribute="trailing" secondItem="udq-Wc-y7u" secondAttribute="trailingMargin" constant="-80" id="00y-6P-Adj"/>
+                                        <constraint firstItem="q4t-iC-u43" firstAttribute="trailing" secondItem="udq-Wc-y7u" secondAttribute="trailingMargin" constant="-5" id="00y-6P-Adj"/>
                                         <constraint firstItem="dCO-R3-Gn8" firstAttribute="leading" secondItem="udq-Wc-y7u" secondAttribute="leading" constant="15" id="3xa-61-iCb"/>
+                                        <constraint firstAttribute="trailing" secondItem="Lz6-bG-JWB" secondAttribute="trailing" id="Cue-a5-FDr"/>
+                                        <constraint firstItem="Lz6-bG-JWB" firstAttribute="leading" secondItem="udq-Wc-y7u" secondAttribute="leading" id="E7f-JY-sPy"/>
+                                        <constraint firstAttribute="trailing" secondItem="feI-E0-OvX" secondAttribute="trailing" id="HzY-fa-ThA"/>
+                                        <constraint firstAttribute="bottom" secondItem="Lz6-bG-JWB" secondAttribute="bottom" constant="1" id="Lti-cA-8HK"/>
                                         <constraint firstItem="dCO-R3-Gn8" firstAttribute="centerY" secondItem="udq-Wc-y7u" secondAttribute="centerY" id="PN1-37-vAe"/>
                                         <constraint firstItem="q4t-iC-u43" firstAttribute="centerY" secondItem="udq-Wc-y7u" secondAttribute="centerY" id="RFH-1W-bp1"/>
+                                        <constraint firstItem="feI-E0-OvX" firstAttribute="leading" secondItem="udq-Wc-y7u" secondAttribute="leading" id="S9U-Os-jat"/>
+                                        <constraint firstAttribute="bottom" secondItem="feI-E0-OvX" secondAttribute="bottom" id="kZ6-19-2z6"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="subverseNameLabel" destination="dCO-R3-Gn8" id="3s1-YA-jN2"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

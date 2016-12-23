@@ -9,6 +9,7 @@
 import UIKit
 
 class SubverseCell: UITableViewCell {
+    @IBOutlet var subverseNameLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -19,6 +20,11 @@ class SubverseCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func bind(toViewModel viewModel: SubverseCellViewModel) {
+        
+        self.subverseNameLabel.text = viewModel.subverseName
     }
 
 }
