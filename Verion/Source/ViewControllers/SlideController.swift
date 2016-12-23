@@ -9,7 +9,7 @@
 import UIKit
 import SwinjectStoryboard
 import SlideMenuControllerSwift
-
+import Bond
 
 class SlideController: SlideMenuController {
 
@@ -19,15 +19,27 @@ class SlideController: SlideMenuController {
     let SLIDER_MENU_STORYBOARD_NAME = "LeftMenu"
     let SLIDER_MENU_CONTROLLER_ID = "LeftMenuController"
     
+    
+    
     override func awakeFromNib() {
         
+        // Main Controller
         let subverseStoryboard = SwinjectStoryboard.create(name: self.SUBVERSE_STORYBOARD_NAME, bundle: nil)
-        let mainController = subverseStoryboard.instantiateViewController(withIdentifier: self.SUBVERSE_NAVIGATION_CONTROLLER_ID)
-        self.mainViewController = mainController
+        let subverseNavController = subverseStoryboard.instantiateViewController(withIdentifier: self.SUBVERSE_NAVIGATION_CONTROLLER_ID) as! UINavigationController
+        self.mainViewController = subverseNavController
         
+        // Bind Menu button to open menu
+        let subverseController = subverseNavController.viewControllers[0] as? SubverseViewController
+        _ = subverseController?.menuButton.bnd_tap.observe {_ in
+            self.openLeft()
+        }
+        
+        
+        // Menu controller
         let sliderMenuStoryboard = SwinjectStoryboard.create(name: self.SLIDER_MENU_STORYBOARD_NAME, bundle: nil)
         let leftController = sliderMenuStoryboard.instantiateViewController(withIdentifier: self.SLIDER_MENU_CONTROLLER_ID)
         self.leftViewController = leftController
+        
         
         super.awakeFromNib()
     }

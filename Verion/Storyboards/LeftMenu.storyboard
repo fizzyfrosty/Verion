@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -12,17 +13,35 @@
         <scene sceneID="P89-UU-NAR">
             <objects>
                 <tableViewController storyboardIdentifier="LeftMenuController" id="ZSt-el-yrS" customClass="LeftMenuController" customModule="Verion" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5CC-vi-Ax5">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5CC-vi-Ax5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SubverseNameCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubverseNameCell" id="s2f-fC-YWQ">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SubverseNameCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubverseCell" id="s2f-fC-YWQ" customClass="SubverseCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s2f-fC-YWQ" id="udq-Wc-y7u">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dCO-R3-Gn8">
+                                            <rect key="frame" x="15" y="11" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Disclosure Indicator" translatesAutoresizingMaskIntoConstraints="NO" id="q4t-iC-u43">
+                                            <rect key="frame" x="279" y="15" width="8" height="13"/>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="q4t-iC-u43" firstAttribute="trailing" secondItem="udq-Wc-y7u" secondAttribute="trailingMargin" constant="-80" id="00y-6P-Adj"/>
+                                        <constraint firstItem="dCO-R3-Gn8" firstAttribute="leading" secondItem="udq-Wc-y7u" secondAttribute="leading" constant="15" id="3xa-61-iCb"/>
+                                        <constraint firstItem="dCO-R3-Gn8" firstAttribute="centerY" secondItem="udq-Wc-y7u" secondAttribute="centerY" id="PN1-37-vAe"/>
+                                        <constraint firstItem="q4t-iC-u43" firstAttribute="centerY" secondItem="udq-Wc-y7u" secondAttribute="centerY" id="RFH-1W-bp1"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -34,7 +53,10 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DV4-ZB-cXA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-192" y="-112"/>
+            <point key="canvasLocation" x="-192.80000000000001" y="-112.89355322338831"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Disclosure Indicator" width="8" height="13"/>
+    </resources>
 </document>

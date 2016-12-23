@@ -63,6 +63,10 @@
 		43B056631E0D1CDA007083E8 /* SlideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056621E0D1CDA007083E8 /* SlideController.swift */; };
 		43B056691E0D21F4007083E8 /* LeftMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056681E0D21F4007083E8 /* LeftMenuController.swift */; };
 		43B0566B1E0D2296007083E8 /* LeftMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43B0566A1E0D2296007083E8 /* LeftMenu.storyboard */; };
+		43B0566E1E0D3F8C007083E8 /* SubverseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0566D1E0D3F8C007083E8 /* SubverseCell.swift */; };
+		43B056701E0D3FA0007083E8 /* SubverseCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0566F1E0D3FA0007083E8 /* SubverseCellViewModel.swift */; };
+		43B056731E0D416C007083E8 /* DataManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056721E0D416C007083E8 /* DataManagerProtocol.swift */; };
+		43B056751E0D4272007083E8 /* VerionDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056741E0D4272007083E8 /* VerionDataModel.swift */; };
 		43DF44561E089F1B00478AD9 /* VoatDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */; };
 		43DF44581E08A59200478AD9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43DF44571E08A59200478AD9 /* Alamofire.framework */; };
 		43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */; };
@@ -192,6 +196,10 @@
 		43B056621E0D1CDA007083E8 /* SlideController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideController.swift; sourceTree = "<group>"; };
 		43B056681E0D21F4007083E8 /* LeftMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuController.swift; sourceTree = "<group>"; };
 		43B0566A1E0D2296007083E8 /* LeftMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LeftMenu.storyboard; sourceTree = "<group>"; };
+		43B0566D1E0D3F8C007083E8 /* SubverseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseCell.swift; sourceTree = "<group>"; };
+		43B0566F1E0D3FA0007083E8 /* SubverseCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseCellViewModel.swift; sourceTree = "<group>"; };
+		43B056721E0D416C007083E8 /* DataManagerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManagerProtocol.swift; sourceTree = "<group>"; };
+		43B056741E0D4272007083E8 /* VerionDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerionDataModel.swift; sourceTree = "<group>"; };
 		43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoatDataProvider.swift; sourceTree = "<group>"; };
 		43DF44571E08A59200478AD9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkdownParser.swift; sourceTree = "<group>"; };
@@ -299,6 +307,7 @@
 		43433D8F1E057E620017FAB0 /* Views+ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				43B0566C1E0D3F6B007083E8 /* LeftMenuVCViews */,
 				43433D901E057E620017FAB0 /* CommentsVCViews */,
 				43433D9E1E057E620017FAB0 /* FindSubverseVCViews */,
 				43433D9F1E057E620017FAB0 /* SubverseVCViews */,
@@ -364,6 +373,23 @@
 				4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */,
 			);
 			path = CustomControls;
+			sourceTree = "<group>";
+		};
+		43B0566C1E0D3F6B007083E8 /* LeftMenuVCViews */ = {
+			isa = PBXGroup;
+			children = (
+				43B0566D1E0D3F8C007083E8 /* SubverseCell.swift */,
+				43B0566F1E0D3FA0007083E8 /* SubverseCellViewModel.swift */,
+			);
+			path = LeftMenuVCViews;
+			sourceTree = "<group>";
+		};
+		43B056711E0D4132007083E8 /* DataAccess */ = {
+			isa = PBXGroup;
+			children = (
+				43B056721E0D416C007083E8 /* DataManagerProtocol.swift */,
+			);
+			path = DataAccess;
 			sourceTree = "<group>";
 		};
 		43DF458D1E0A2BBD00478AD9 /* Libraries */ = {
@@ -463,6 +489,7 @@
 			children = (
 				43DF458D1E0A2BBD00478AD9 /* Libraries */,
 				4375BFCB1DF5D43900576CC6 /* CustomControls */,
+				43B056711E0D4132007083E8 /* DataAccess */,
 				43F675121DF20078001F83BE /* DataModels */,
 				43F675151DF20078001F83BE /* Networking */,
 				43F675181DF20078001F83BE /* SFX */,
@@ -484,6 +511,7 @@
 				43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */,
 				4375BFC51DF3737F00576CC6 /* SubmissionType.swift */,
 				4375C08B1E011F8E00576CC6 /* SortType.swift */,
+				43B056741E0D4272007083E8 /* VerionDataModel.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -769,6 +797,7 @@
 				43DF45E21E0A2BBD00478AD9 /* TransitionManager.swift in Sources */,
 				43DF45CF1E0A2BBD00478AD9 /* DesignableTabBarController.swift in Sources */,
 				4375BFCD1DF5D45400576CC6 /* SubverseRefreshControl.swift in Sources */,
+				43B056731E0D416C007083E8 /* DataManagerProtocol.swift in Sources */,
 				43F675261DF20078001F83BE /* OfflineDataProvider.swift in Sources */,
 				43433DAE1E057E620017FAB0 /* SubmissionTitleCellViewModel.swift in Sources */,
 				43433DB41E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift in Sources */,
@@ -785,7 +814,9 @@
 				43DF45DE1E0A2BBD00478AD9 /* SpringLabel.swift in Sources */,
 				43DF45D31E0A2BBD00478AD9 /* ImageLoader.swift in Sources */,
 				4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */,
+				43B056751E0D4272007083E8 /* VerionDataModel.swift in Sources */,
 				43433DAF1E057E620017FAB0 /* SubmissionCell.swift in Sources */,
+				43B0566E1E0D3F8C007083E8 /* SubverseCell.swift in Sources */,
 				43DF45C61E0A2BBD00478AD9 /* FLAnimatedImageView.m in Sources */,
 				43DF45DF1E0A2BBD00478AD9 /* SpringTextField.swift in Sources */,
 				43433D7B1E027FD00017FAB0 /* ImageDownloader.swift in Sources */,
@@ -828,6 +859,7 @@
 				43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */,
 				4375BFC61DF3737F00576CC6 /* SubmissionType.swift in Sources */,
 				43DF45DB1E0A2BBD00478AD9 /* SpringAnimation.swift in Sources */,
+				43B056701E0D3FA0007083E8 /* SubverseCellViewModel.swift in Sources */,
 				43433DAD1E057E620017FAB0 /* SubmissionTitleCell.swift in Sources */,
 				43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */,
 				43DF45CE1E0A2BBD00478AD9 /* DesignableLabel.swift in Sources */,

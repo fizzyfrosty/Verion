@@ -58,6 +58,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     
     // Navigation Bar items
+    @IBOutlet var menuButton: UIBarButtonItem!
     private var ACTIVITY_INDICATOR_LENGTH: CGFloat = 25.0
     var activityIndicator: NVActivityIndicatorView?
     

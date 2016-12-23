@@ -8,7 +8,21 @@
 
 import UIKit
 
+protocol LeftMenuControllerDelegate: class {
+    func leftMenuDidSelectSubverse(leftMenu: LeftMenuController, subverseName: String)
+}
+
 class LeftMenuController: UITableViewController {
+    
+    // Table Elements
+    private let SUBVERSE_CELL_REUSE_ID = "SubverseCell"
+    private var subverseCellViewModels = [SubverseCellViewModel]()
+    
+    weak var delegate: LeftMenuControllerDelegate?
+    
+    // Dependencies
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()

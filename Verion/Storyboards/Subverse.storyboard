@@ -320,18 +320,15 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="ErV-85-pwb">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" title="Hot" style="done" id="jU9-nf-ecW">
+                        <barButtonItem key="leftBarButtonItem" image="menu_button" id="DgL-3u-RFT">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="pressedSortBy:" destination="F8s-Mq-eeW" id="Lf5-RE-2vw"/>
-                            </connections>
                         </barButtonItem>
                         <view key="titleView" contentMode="scaleToFill" id="6pl-ni-vmX">
-                            <rect key="frame" x="58" y="5" width="299" height="35"/>
+                            <rect key="frame" x="67" y="5" width="292" height="35"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogj-YO-4Rr">
-                                    <rect key="frame" x="101.33333333333334" y="4" width="28.000000000000028" height="28"/>
+                                    <rect key="frame" x="97.666666666666671" y="4" width="28" height="28"/>
                                     <state key="normal" image="search_icon">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -340,7 +337,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gq-0f-ZE4" userLabel="CenterButton" customClass="SpringButton" customModule="Verion" customModuleProvider="target">
-                                    <rect key="frame" x="134.66666666666666" y="0.33333333333333215" width="30" height="36"/>
+                                    <rect key="frame" x="131" y="0.33333333333333215" width="30" height="36"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <size key="titleShadowOffset" width="0.0" height="1"/>
                                     <state key="normal">
@@ -361,12 +358,16 @@
                                 <constraint firstItem="8gq-0f-ZE4" firstAttribute="width" relation="lessThanOrEqual" secondItem="6pl-ni-vmX" secondAttribute="width" multiplier="0.75" id="rB0-hq-xwk"/>
                             </constraints>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" title="..." id="DgL-3u-RFT">
+                        <barButtonItem key="rightBarButtonItem" title="Hot" style="done" id="jU9-nf-ecW">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="pressedSortBy:" destination="F8s-Mq-eeW" id="Lf5-RE-2vw"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="menuButton" destination="DgL-3u-RFT" id="e46-U2-6jb"/>
                         <outlet property="navigationBarCenterButton" destination="8gq-0f-ZE4" id="8gU-C9-lkO"/>
                         <outlet property="navigationBarView" destination="6pl-ni-vmX" id="Ql5-qc-jlR"/>
                         <outlet property="searchDisplayController" destination="eOH-KZ-tDI" id="8bU-3R-tJa"/>
@@ -467,6 +468,7 @@
         <image name="arrow_up_grey" width="24" height="31"/>
         <image name="arrow_up_red" width="24" height="31"/>
         <image name="comment_bubble" width="17" height="17"/>
+        <image name="menu_button" width="30" height="19"/>
         <image name="search_icon" width="28" height="28"/>
     </resources>
 </document>
