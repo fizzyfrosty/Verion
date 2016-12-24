@@ -8,7 +8,6 @@
 
 import UIKit
 import SwinjectStoryboard
-import SlideMenuControllerSwift
 import Bond
 
 class SlideController: SlideMenuController {
@@ -22,6 +21,7 @@ class SlideController: SlideMenuController {
     var subverseController: SubverseViewController?
     var leftController: LeftMenuController?
     
+    //let LEFT_MENU_VELOCITY: CGFloat = 50.0
     
     override func awakeFromNib() {
         
@@ -47,14 +47,17 @@ class SlideController: SlideMenuController {
         
         self.leftController = leftController
         
+        self.configureSlider()
         
         super.awakeFromNib()
     }
     
+    func configureSlider() {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         
         
         // Do any additional setup after loading the view.
