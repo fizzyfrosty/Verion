@@ -10,17 +10,29 @@ import UIKit
 
 protocol LeftMenuControllerDelegate: class {
     func leftMenuDidSelectSubverse(leftMenu: LeftMenuController, subverseName: String)
+    func leftMenuDidClearHistory(leftMenu: LeftMenuController)
 }
 
 class LeftMenuController: UITableViewController {
     
     // Table Elements
     private let SUBVERSE_CELL_REUSE_ID = "SubverseCell"
-    private var subverseCellViewModels = [SubverseCellViewModel]()
+    private let CLEAR_HISTORY_CELL_REUSE_ID = "ClearHistoryCell"
+    private let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
+    fileprivate var subverseCellViewModels = [SubverseCellViewModel]()
+    
+    private let clearHistoryCellCount: Int = 1
+    
+    fileprivate let MAX_NUM_HISTORY_ENTRIES: Int = 20
+    
+    
+    private let SUBVERSE_HISTORY_SECTION_TITLE = "    Subverses Visited"
     
     let testValues = ["abc", "123", "banana"]
     
+    // Delegate
     weak var delegate: LeftMenuControllerDelegate?
+    
     
     // Dependencies
     var dataManager: DataManagerProtocol?
@@ -46,7 +58,24 @@ class LeftMenuController: UITableViewController {
         }
         
         // FIXME: temporarily populate with view models
-        self.subverseCellViewModels = self.createSubverseViewModels(withNames: self.testValues)
+        //self.subverseCellViewModels = self.createSubverseViewModels(withNames: self.testValues)
+    }
+    
+    fileprivate func saveData(completion: @escaping ()->()) {
+        DispatchQueue.global(qos: .background).async {
+            let verionDataModel = self.dataManager?.getSavedData()
+            
+            verionDataModel?.subversesVisited.removeAll()
+            for subverseCellViewModel in self.subverseCellViewModels {
+                verionDataModel?.subversesVisited.append(subverseCellViewModel.subverseName)
+            }
+            
+            self.dataManager?.saveData(dataModel: verionDataModel!)
+            
+            DispatchQueue.main.async {
+                completion()
+            }
+        }
     }
     
     private func createSubverseViewModels(withNames names: [String]) -> [SubverseCellViewModel]{
@@ -75,11 +104,31 @@ class LeftMenuController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return self.subverseCellViewModels.count
+        guard self.subverseCellViewModels.count != 0 else {
+            return 0
+        }
+        
+        let numOfCells = self.subverseCellViewModels.count + self.clearHistoryCellCount
+        
+        return numOfCells
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard self.subverseCellViewModels.count != 0 else {
+            let transparentCell = tableView.dequeueReusableCell(withIdentifier: self.TRANSPARENT_CELL_REUSE_ID)
+            
+            return transparentCell!
+        }
+        
+        // If last cell, it is the Clear History cell
+        if indexPath.row == self.subverseCellViewModels.count {
+            let clearHistoryCell = tableView.dequeueReusableCell(withIdentifier: self.CLEAR_HISTORY_CELL_REUSE_ID)
+            
+            return clearHistoryCell!
+        }
+        
+        // Subverse history cells
         let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBVERSE_CELL_REUSE_ID, for: indexPath) as! SubverseCell
         
         let viewModel = self.subverseCellViewModels[indexPath.row]
@@ -90,8 +139,68 @@ class LeftMenuController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
+        
+        // If no subverse history, do nothing
+        guard self.subverseCellViewModels.count != 0 else {
+            return
+        }
+        
+        // If selected subverse
+        if indexPath.row < self.subverseCellViewModels.count {
+            let subverseName = self.subverseCellViewModels[indexPath.row].subverseName
+            if let _ = self.delegate?.leftMenuDidSelectSubverse(leftMenu: self, subverseName: subverseName) {
+                // Success, do nothing
+            } else {
+                #if DEBUG
+                    print("Warning: Left Menu Controller's delegate may not be set.")
+                #endif
+            }
+        }
+        
+        // If selected clear, last object
+        if indexPath.row == self.subverseCellViewModels.count {
+            // Clear it
+            self.clearHistory()
+        }
     }
     
+    private func clearHistory() {
+        let range = Range.init(uncheckedBounds: (lower: 0, upper: 1))
+        let indexSet = IndexSet.init(integersIn: range)
+        self.subverseCellViewModels.removeAll()
+        
+        self.tableView.reloadData()
+        self.tableView.reloadSections(indexSet, with: .automatic)
+        
+        self.delegate?.leftMenuDidClearHistory(leftMenu: self)
+        
+        self.saveData(){
+            
+        }
+    }
+    
+    // Headers
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return self.SUBVERSE_HISTORY_SECTION_TITLE
+        }
+        
+        return nil
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 30.0
+        }
+        return 0.0
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont.systemFont(ofSize: 14.0)
+        header.textLabel?.textColor = UIColor.white
+        header.backgroundView?.backgroundColor = UIColor.black
+    }
     
 
     /*
@@ -138,5 +247,53 @@ class LeftMenuController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    fileprivate func limitSubverseHistory(byMaxCount maxCount: Int) {
+        if self.subverseCellViewModels.count > maxCount {
+            let numOfElementsToRemove = self.subverseCellViewModels.count - maxCount
+            self.subverseCellViewModels.removeLast(numOfElementsToRemove)
+        }
+    }
 
+}
+
+extension LeftMenuController {
+    
+    func addToHistory(subverseName: String) {
+        let subverseCellViewModel = SubverseCellViewModel()
+        subverseCellViewModel.subverseName = subverseName
+        
+        // If it already exists, move it to the top. Otherwise, prepend it
+        var duplicateIndex = -1
+        
+        for i in 0..<self.subverseCellViewModels.count {
+            let viewModel = self.subverseCellViewModels[i]
+            // Duplicate found
+            if viewModel.subverseName == subverseName {
+                duplicateIndex = i
+                break
+            }
+        }
+        
+        if duplicateIndex >= 0 {
+            // Duplicate exists, move to top
+            let duplicateViewModel = self.subverseCellViewModels.remove(at: duplicateIndex)
+            self.subverseCellViewModels.insert(duplicateViewModel, at: 0)
+            
+        } else {
+            // No duplicates, Prepend to history
+            self.subverseCellViewModels.insert(subverseCellViewModel, at: 0)
+        }
+        
+        // Max history
+        self.limitSubverseHistory(byMaxCount: self.MAX_NUM_HISTORY_ENTRIES)
+        
+        // Reload table
+        self.tableView.reloadData()
+        
+        // Save
+        self.saveData {
+            
+        }
+    }
 }

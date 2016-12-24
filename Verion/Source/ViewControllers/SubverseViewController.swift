@@ -9,6 +9,10 @@
 import UIKit
 import NVActivityIndicatorView
 
+protocol SubverseViewControllerDelegate: class {
+    func subverseViewController(controller: SubverseViewController, willLoadSubverse subverse: String)
+}
+
 class SubverseViewController: UITableViewController, NVActivityIndicatorViewable {
     
     // Cell configuration
@@ -83,6 +87,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
+    var dataManager: DataManagerProtocol?
+    
+    // Delegate
+    weak var delegate: SubverseViewControllerDelegate?
+    
     
     // UIOutlets and actions
     @IBAction func findSubverseButtonPress(_ sender: Any) {
@@ -154,11 +163,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
-        self.showNavBarActivityIndicator()
         
-        self.loadTableCells() {
-            self.hideNavBarActivityIndicator()
-        }
+        let savedSubverse = self.getLastSavedSubverse()
+        
+        self.loadTableCells(forSubverse: savedSubverse)
 
         
         // Uncomment the following line to preserve selection between presentations
@@ -166,6 +174,17 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func getLastSavedSubverse() -> String {
+        let verionDataModel = self.dataManager?.getSavedData()
+        
+        // If a new model, should default to frontpage
+        if verionDataModel?.subversesVisited.count == 0 {
+            return self.subverse
+        }
+        
+        return (verionDataModel?.subversesVisited[0])!
     }
     
     func loadPullToRefreshControl() {
@@ -276,6 +295,17 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
         
         self.isLoadingRequest = true
+        
+        
+        // Notify delegate
+        if let _ = self.delegate?.subverseViewController(controller: self, willLoadSubverse: self.subverse) {
+            // Success, do nothing
+        } else {
+            #if DEBUG
+                print ("Warning: SubverseViewController's delegate may not be set.")
+            #endif
+        }
+        
         
         // Make initial request with DataProvider
         self.dataProvider.requestSubverseSubmissions(subverse: self.subverse) { submissionDataModels, error in

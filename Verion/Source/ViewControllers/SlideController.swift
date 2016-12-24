@@ -19,6 +19,8 @@ class SlideController: SlideMenuController {
     let SLIDER_MENU_STORYBOARD_NAME = "LeftMenu"
     let SLIDER_MENU_CONTROLLER_ID = "LeftMenuController"
     
+    var subverseController: SubverseViewController?
+    var leftController: LeftMenuController?
     
     
     override func awakeFromNib() {
@@ -29,16 +31,21 @@ class SlideController: SlideMenuController {
         self.mainViewController = subverseNavController
         
         // Bind Menu button to open menu
-        let subverseController = subverseNavController.viewControllers[0] as? SubverseViewController
-        _ = subverseController?.menuButton.bnd_tap.observe {_ in
+        let subverseController = subverseNavController.viewControllers[0] as! SubverseViewController
+        _ = subverseController.menuButton.bnd_tap.observe {_ in
             self.openLeft()
         }
+        subverseController.delegate = self
+        self.subverseController = subverseController
         
         
         // Menu controller
         let sliderMenuStoryboard = SwinjectStoryboard.create(name: self.SLIDER_MENU_STORYBOARD_NAME, bundle: nil)
-        let leftController = sliderMenuStoryboard.instantiateViewController(withIdentifier: self.SLIDER_MENU_CONTROLLER_ID)
+        let leftController = sliderMenuStoryboard.instantiateViewController(withIdentifier: self.SLIDER_MENU_CONTROLLER_ID) as! LeftMenuController
         self.leftViewController = leftController
+        leftController.delegate = self
+        
+        self.leftController = leftController
         
         
         super.awakeFromNib()
@@ -69,4 +76,25 @@ class SlideController: SlideMenuController {
     }
     */
 
+}
+
+extension SlideController: SubverseViewControllerDelegate {
+    func subverseViewController(controller: SubverseViewController, willLoadSubverse subverse: String) {
+        // Add to the Left Menu's History
+        self.leftController?.addToHistory(subverseName: subverse)
+    }
+}
+
+extension SlideController: LeftMenuControllerDelegate {
+    func leftMenuDidSelectSubverse(leftMenu: LeftMenuController, subverseName: String) {
+        // Load the subverse
+        self.subverseController?.loadTableCells(forSubverse: subverseName)
+        
+        // Close the left menu
+        self.closeLeft()
+    }
+    
+    func leftMenuDidClearHistory(leftMenu: LeftMenuController) {
+        self.closeLeft()
+    }
 }

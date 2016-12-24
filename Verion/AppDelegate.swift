@@ -83,9 +83,14 @@ extension SwinjectStoryboard {
             VoatDataProvider(apiVersion: .legacy)
         }
         
+        defaultContainer.register(DataManagerProtocol.self) { _ in
+            VerionDataManager()
+        }
+        
         defaultContainer.storyboardInitCompleted(SubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+            C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
         })
         
         defaultContainer.storyboardInitCompleted(CommentsViewController.self, initCompleted: { (ResolverType, C) in
@@ -98,7 +103,9 @@ extension SwinjectStoryboard {
             
         })
         
-        
+        defaultContainer.storyboardInitCompleted(LeftMenuController.self) { (ResolverType, C) in
+            C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
+        }
     }
 }
 

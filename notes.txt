@@ -13,11 +13,17 @@ Immediate tasks:
 
 * Data persistence
 
-- Sidebar
-	- subverse history
-	- clear history
-	- (optional) current subverse info
-	- Favorites (optional)
+
+* When loading a subverse in SubverseController, tell the SubverseController delegate
+* When loading a subverse in LeftMenuController, tell LeftMenuController delegate
+* max number of history entries
+* Clear history refresh table
+
+* Sidebar
+	* subverse history
+	* clear history
+	x (optional) current subverse info
+	x Favorites (optional)
 		- Add subverse to favorites
 		- Favorites list, remove
 
