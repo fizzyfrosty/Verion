@@ -15,13 +15,18 @@ class VoatDataProvider: DataProviderType {
     var dataProviderHelper = DataProviderHelper()
     var apiVersion: APIVersion = .legacy // default to be overwritten by initializer
     
+    // Legacy API
     private let VOAT_GET_FRONTPAGE_100_SUBMISSIONS_URL_STRING = "https://voat.co/api/frontpage"
     private let VOAT_GET_TOP_200_SUBVERSE_NAMES_URL_STRING = "https://voat.co/api/top200subverses"
     private let VOAT_GET_SUBVERSE_SUBMISSIONS_URL_STRING = "https://voat.co/api/subversefrontpage?subverse="
     private let VOAT_GET_COMMENTS_FOR_SUBMISSION_URL_STRING = "https://voat.co/api/submissioncomments?submissionId="
     
-    private let VALIDATION_SUCCESSFUL_MESSAGE = "Validation successful"
+    // V1 API
+    private let VOAT_API_KEY_HEADER = "Voat-ApiKey"
+    private let VOAT_API_KEY_VALUE = "VO0FEEE221244B41B7B3686098AA4EA227AT"
     
+    
+    private let VALIDATION_SUCCESSFUL_MESSAGE = "Validation successful"
     private let FRONTPAGE_SUBVERSE_NAME = "frontpage"
     
     required init(apiVersion: APIVersion) {

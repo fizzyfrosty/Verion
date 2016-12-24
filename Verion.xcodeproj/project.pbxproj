@@ -109,6 +109,9 @@
 		43B056E01E0E4691007083E8 /* SwiftyMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056B31E0E4691007083E8 /* SwiftyMarkdown.swift */; };
 		43B056E11E0E4691007083E8 /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B056B61E0E4691007083E8 /* TSBaseParser.m */; };
 		43B056E21E0E4691007083E8 /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B056B91E0E4691007083E8 /* TSMarkdownParser.m */; };
+		43B057101E0E71AD007083E8 /* SubmissionDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0570F1E0E71AD007083E8 /* SubmissionDataModelV1.swift */; };
+		43B057121E0E7616007083E8 /* CommentDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B057111E0E7616007083E8 /* CommentDataModelV1.swift */; };
+		43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */; };
 		43DF44561E089F1B00478AD9 /* VoatDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */; };
 		43DF44581E08A59200478AD9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43DF44571E08A59200478AD9 /* Alamofire.framework */; };
 		43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */; };
@@ -254,6 +257,9 @@
 		43B056B71E0E4691007083E8 /* TSMarkdownParser-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TSMarkdownParser-Prefix.pch"; sourceTree = "<group>"; };
 		43B056B81E0E4691007083E8 /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
 		43B056B91E0E4691007083E8 /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
+		43B0570F1E0E71AD007083E8 /* SubmissionDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionDataModelV1.swift; sourceTree = "<group>"; };
+		43B057111E0E7616007083E8 /* CommentDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelV1.swift; sourceTree = "<group>"; };
+		43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelV1.swift; sourceTree = "<group>"; };
 		43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoatDataProvider.swift; sourceTree = "<group>"; };
 		43DF44571E08A59200478AD9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkdownParser.swift; sourceTree = "<group>"; };
@@ -541,11 +547,14 @@
 			isa = PBXGroup;
 			children = (
 				43F675131DF20078001F83BE /* SubmissionDataModelLegacy.swift */,
+				43B0570F1E0E71AD007083E8 /* SubmissionDataModelV1.swift */,
 				43F675141DF20078001F83BE /* SubmissionDataModelProtocol.swift */,
 				4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */,
 				43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */,
+				43B057111E0E7616007083E8 /* CommentDataModelV1.swift */,
 				43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */,
 				43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */,
+				43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */,
 				4375BFC51DF3737F00576CC6 /* SubmissionType.swift */,
 				4375C08B1E011F8E00576CC6 /* SortType.swift */,
 				43B056741E0D4272007083E8 /* VerionDataModel.swift */,
@@ -849,6 +858,7 @@
 				4375C0421DF7524700576CC6 /* CommentsViewController.swift in Sources */,
 				43B056D61E0E4691007083E8 /* SpringLabel.swift in Sources */,
 				43B056D31E0E4691007083E8 /* SpringAnimation.swift in Sources */,
+				43B057121E0E7616007083E8 /* CommentDataModelV1.swift in Sources */,
 				43B056D91E0E4691007083E8 /* SpringView.swift in Sources */,
 				43B056CB1E0E4691007083E8 /* ImageLoader.swift in Sources */,
 				43B056D51E0E4691007083E8 /* SpringImageView.swift in Sources */,
@@ -865,6 +875,7 @@
 				43B056D81E0E4691007083E8 /* SpringTextView.swift in Sources */,
 				43F675231DF20078001F83BE /* SubmissionDataModelLegacy.swift in Sources */,
 				43433D7F1E03C8290017FAB0 /* CellHeightCalculator.swift in Sources */,
+				43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */,
 				43B056D11E0E4691007083E8 /* SoundPlayer.swift in Sources */,
 				43B056E01E0E4691007083E8 /* SwiftyMarkdown.swift in Sources */,
 				43B056C41E0E4691007083E8 /* DesignableButton.swift in Sources */,
@@ -913,6 +924,7 @@
 				43B056D41E0E4691007083E8 /* SpringButton.swift in Sources */,
 				43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */,
 				43B056C71E0E4691007083E8 /* DesignableTabBarController.swift in Sources */,
+				43B057101E0E71AD007083E8 /* SubmissionDataModelV1.swift in Sources */,
 				43DF45311E09F04E00478AD9 /* ProgressIndicatorCell.swift in Sources */,
 				43B056C01E0E4691007083E8 /* AsyncButton.swift in Sources */,
 				4375C08C1E011F8E00576CC6 /* SortType.swift in Sources */,

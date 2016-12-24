@@ -27,6 +27,14 @@ Immediate tasks:
 		- Add subverse to favorites
 		- Favorites list, remove
 
+* Get sample data
+
+- Make the v1 data models
+- Edit all bindings from dataModels to viewModels
+
+- Try with OfflineDataProvider?
+
+
 - Program against v1 api
 	- Subverse list request
 		- DataModel
@@ -34,17 +42,32 @@ Immediate tasks:
 	- subverse submissions
 	- comments
 
-
-
 - Analytics
+
+
 
 - Ads
 - IAP
 
+
+
 - Website: new pages
 	- donate page
 	- landing page
-- Paypal
+- Paypal: 
+
+donate button code: 
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="F2528FFM6DL44">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+
+
+
 - Welcome Screen?
 
 
