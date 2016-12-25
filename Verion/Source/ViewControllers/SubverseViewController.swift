@@ -447,6 +447,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // Deselect the row
         tableView.deselectRow(at: indexPath, animated: true)
         
+        guard self.isLoadingRequest != true else {
+            return
+        }
+        
         // If the Load More Cells should->did load, then allow the touch of last cell to load more
         if self.shouldLoadLoadMoreCell(indexPath: indexPath, numOfCellsCurrentlyDisplaying: self.numOfCellsToDisplay, numOfMaxCells: self.subCellViewModels.count) {
             self.increaseAmountOfTableCellsAndReload(increaseBy: self.NUM_OF_CELLS_TO_INCREMENT_BY,
