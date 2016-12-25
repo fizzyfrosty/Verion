@@ -307,7 +307,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             return 0
         }
         
-        guard self.commentsViewModels.count-1 >= section else {
+        // We don't do an exclusion of .count (count-1) because the first section are submission cells
+        guard self.commentsViewModels.count >= section else {
             return self.CELL_SPACING
         }
         // Only separate top level comments
