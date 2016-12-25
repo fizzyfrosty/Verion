@@ -49,9 +49,9 @@ Immediate tasks:
 
 * Adjust width of textview based on child depth 
 
-- Tweak colors
+* Tweak colors
 
-
+- Analytics
 
 - Program against v1 api
 	- Subverse list request
@@ -59,10 +59,6 @@ Immediate tasks:
 		- Bind DataModel to Subverse View Model
 	- subverse submissions
 	* comments
-
-- Analytics
-
-
 
 - Ads
 - IAP
