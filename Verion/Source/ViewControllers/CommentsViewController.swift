@@ -14,7 +14,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var backgroundColor = UIColor.white
     
     // Display formatting
-    private let CELL_SPACING: CGFloat = 5.0
+    private let CELL_SPACING: CGFloat = 10.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
     private let LOADING_CELL_HEIGHT: CGFloat = 50.0
     private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
@@ -187,7 +187,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     // Load Comments from Data Provider
     func loadCommentCells(completion: @escaping ()->()) {
-        self.dataProvider?.requestComments(submissionId: (self.submissionDataModel?.id)!, completion: { (commentDataModels, error) in
+        self.dataProvider?.requestComments(subverse:self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, completion: { (commentDataModels, error) in
             
             DispatchQueue.global(qos: .background).async {
                 
@@ -210,6 +210,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 // Put all comment cells, and children, into a single array
                 self.commentsViewModels = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: topLevelComments)
                 
+                self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: topLevelComments, startingDepthIndex: 0)
+                
                 self.areCommentsLoaded = true
                 
                 DispatchQueue.main.async {
@@ -224,7 +226,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         completion()
     }
     
-    func getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels topLevelViewModels: [CommentCellViewModel]) -> [CommentCellViewModel] {
+    private func getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels topLevelViewModels: [CommentCellViewModel]) -> [CommentCellViewModel] {
         var commentCellViewModelsAll: [CommentCellViewModel] = []
         
         for viewModel in topLevelViewModels {
@@ -240,6 +242,15 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
         
         return commentCellViewModelsAll
+    }
+    
+    private func setAllCommentViewModelChildDepthIndexes(topLevelViewModels: [CommentCellViewModel], startingDepthIndex: Int) {
+        
+        for viewModel in topLevelViewModels {
+            viewModel.childDepthIndex = startingDepthIndex
+            
+            self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: viewModel.children, startingDepthIndex: startingDepthIndex + 1)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -290,12 +301,23 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
         // No header for first cell
         if section == 0 {
             return 0
         }
         
-        return self.CELL_SPACING
+        guard self.commentsViewModels.count-1 >= section else {
+            return self.CELL_SPACING
+        }
+        // Only separate top level comments
+        let commentCellIndex = section - 1
+        if self.commentsViewModels[commentCellIndex].childDepthIndex == 0 {
+            return self.CELL_SPACING
+        }
+        
+        // This should be for all cells that are not top level
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -412,7 +434,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 sortByCell.bind(toViewModel: self.commentsSortByVm!)
                 sortByCell.navigationController = self.navigationController
                 sortByCell.delegate = self
-                self.sfxManager?.applyShadow(view: sortByCell)
+                //self.sfxManager?.applyShadow(view: sortByCell)
                 
                 return sortByCell
             }
@@ -435,13 +457,12 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             // Comment cells
             
             let commentCell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath) as! CommentCell
-            
-            let commentCellViewModel = self.commentsViewModels[indexPath.section-1]
+            let commentCellViewModelIndex = indexPath.section - 1
+            let commentCellViewModel = self.commentsViewModels[commentCellViewModelIndex]
             commentCell.delegate = self
             commentCell.bind(toViewModel: commentCellViewModel)
             commentCell.textView.delegate = self
             
-            self.sfxManager?.applyShadow(view: commentCell)
             
             return commentCell
         }
@@ -451,10 +472,12 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         tableView.deselectRow(at: indexPath, animated: true)
         
         // If touched sorted By bar, trigger the segue
+        /* TODO: Disabled sortby right now
         if indexPath.section == 0 && indexPath.row == 2 {
             let sortByCell = tableView.cellForRow(at: indexPath) as! CommentsSortByCell
             sortByCell.sortByTouched(sortByCell.sortByButton)
         }
+ */
         
         // If is a content cell, launch link
         if indexPath.section == 0 && indexPath.row == 1 {
@@ -574,42 +597,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         return true
     }
     */
-    
-    // FIXME: delete
-    /*
-    private func addChild(toCell parentCell: CommentCell, parentCellViewModel: CommentCellViewModel, childViewModel: CommentCellViewModel, startingY: CGFloat) {
-        if let childCell = self.tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID) as? CommentCell {
-            childCell.bind(toViewModel: childViewModel)
-            childCell.textView.delegate = self
-            childCell.delegate = self
-            // Set Background Color
-            childCell.backgroundColor = UIColor.brown
-            
-            // Resize and position
-            childCell.frame = CGRect(origin: childCell.frame.origin, size: CGSize(width: parentCell.frame.size.width, height: childViewModel.cellHeight))
-            
-            // Height
-            // If it's the first child, do not include previous children height in calculation
-            let heightOffset: CGFloat = startingY
-            
-            childCell.center = CGPoint(x: childCell.center.x + 10, y: childCell.center.y + heightOffset)
-            
-            // Add children
-            var totalChildrenYOffset: CGFloat = 0.0 // FIXME: DELETE childViewModel.CELL_VERTICAL_MARGINS + childViewModel.textHeight
-            for i in 0..<childViewModel.children.count{
-                let grandchildViewModel = childViewModel.children[i]
-                
-                self.addChild(toCell: childCell, parentCellViewModel: childViewModel, childViewModel: grandchildViewModel, startingY: totalChildrenYOffset)
-                
-                totalChildrenYOffset += grandchildViewModel.cellHeight
-            }
-            
-            // Apply Shadow
-            self.sfxManager?.applyShadow(view: childCell)
-            
-            parentCell.childrenView.addSubview(childCell)
-        }
-    } */
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == self.WEBVIEW_SEGUE_ID {
@@ -685,6 +672,23 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.reloadTableCommentsAnimated()
     }
     
+    private func isCellLastInGroup(inViewModels viewModels: [CommentCellViewModel], index: Int) -> Bool{
+        // Check next cell
+        let nextIndex = index+1
+        
+        guard nextIndex <= viewModels.count-1 else {
+            return true
+        }
+        
+        // If next cell is a new top-level comment, this one is a last in group
+        let nextCellViewModel = viewModels[nextIndex]
+        if nextCellViewModel.childDepthIndex == 0 {
+            return true
+        }
+        
+        return false
+    }
+    
     deinit {
         self.tableView.dataSource = nil
         self.tableView.delegate = nil
@@ -697,8 +701,11 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
 
 extension CommentsViewController: CommentCellDelegate {
     func commentCellDidChange(commentCell: CommentCell) {
+        
+        
         // Get the index, reload table row
         if let indexPath = self.tableView.indexPath(for: commentCell) {
+            
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         

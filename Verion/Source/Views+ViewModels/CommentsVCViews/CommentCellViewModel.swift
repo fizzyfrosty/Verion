@@ -20,6 +20,8 @@ struct CommentCellViewModelInitData {
     var textString = ""
     var isMinimized = false
     
+    var isUserOP = false
+    
     var children: [CommentCellViewModelInitData] = []
 }
 
@@ -66,7 +68,7 @@ class CommentCellViewModel {
     
     var textHeight: CGFloat {
         get {
-            let width: CGFloat = UIScreen.main.bounds.size.width - self.CELL_HORIZONTAL_MARGINS
+            let width: CGFloat = UIScreen.main.bounds.size.width - self.CELL_HORIZONTAL_MARGINS - CGFloat(self.childDepthIndex)*self.COMMENT_CHILD_ALIGNMENTVIEWS_WIDTH
             let textSize = CellHeightCalculator.sizeForAttributedText(text: self.attributedTextString, maxSize: CGSize(width: width, height: self.CELL_MAX_HEIGHT))
             
             return textSize.height
@@ -90,10 +92,17 @@ class CommentCellViewModel {
     // Minimized/Maximized
     var isMinimized = Observable<Bool>(false)
     
+    // For left-right shifting to align with nested comments. Set externally
+    var childDepthIndex = 0
+    let COMMENT_CHILD_ALIGNMENTVIEWS_WIDTH: CGFloat = 10.0
+    
     init() {
         let initData = CommentCellViewModelInitData()
         self.loadInitData(initData: initData)
     }
+    
+    // User
+    var isUserOP = false
     
     
     func loadInitData(initData: CommentCellViewModelInitData) {
@@ -108,6 +117,7 @@ class CommentCellViewModel {
         self.separatedVoteCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
         self.dateString = self.textFormatter.createDateSubmittedString(gmtDate: self.date!) + " ago"
         self.isMinimized.value = initData.isMinimized
+        self.isUserOP = initData.isUserOP
         
         // Load children
         for childInitData in initData.children {
@@ -137,5 +147,11 @@ class CommentCellViewModel {
     
     private func getVoteCountTotal( upvoteCount: Int, downvoteCount: Int) -> Int {
         return upvoteCount - downvoteCount
+    }
+    
+    deinit {
+        #if DEBUG
+            print("Deallocated a CommentCellViewModel")
+        #endif
     }
 }

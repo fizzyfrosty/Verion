@@ -15,12 +15,26 @@ protocol CommentCellDelegate: class {
 class CommentCell: UITableViewCell {
 
     @IBOutlet var usernameLabel: UILabel!
+    
+    let USERNAME_COLOR_DEFAULT = UIColor.init(red: 86.0/255.0, green: 82.0/255.0, blue: 130.0/255.0, alpha: 1.0)
+    let USERNAME_COLOR_OP = UIColor.blue
+    
+    
     @IBOutlet var datePostedLabel: UILabel!
     @IBOutlet var voteCountLabel: UILabel!
     @IBOutlet var separatedVoteCountLabel: UILabel!
     
     @IBOutlet var textView: UITextView!
     @IBOutlet var minimizeMaximizeLabel: UILabel!
+    
+    @IBOutlet var shiftingContentView: UIView!
+    
+    @IBOutlet var shiftingViewLeadingConstraint: NSLayoutConstraint!
+    
+    let BACKGROUND_COLOR_EVEN_CHILD = UIColor.white
+    let BACKGROUND_COLOR_ODD_CHILD = UIColor.init(red: 226.0/255.0, green: 237.0/255.0, blue: 255.0/255.0, alpha: 1.0)//UIColor.init(red: 209.0/255.0, green: 229.0/255.0, blue: 241.0/255.0, alpha: 1.0)
+    
+    @IBOutlet var headerView: UIView!
     
     let MINIMIZED_LABEL_STRING = "[+]"
     let MAXIMIZED_LABEL_STRING = "[-]"
@@ -30,6 +44,8 @@ class CommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.headerView.layer.borderWidth = 1.0
+        self.headerView.layer.borderColor = UIColor.gray.cgColor
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -39,6 +55,19 @@ class CommentCell: UITableViewCell {
     }
 
     func bind(toViewModel viewModel: CommentCellViewModel) {
+        
+        self.shiftingViewLeadingConstraint.constant = CGFloat(viewModel.childDepthIndex) * viewModel.COMMENT_CHILD_ALIGNMENTVIEWS_WIDTH
+        if viewModel.childDepthIndex % 2 == 0 {
+            self.setBackgroundColors(withColor: self.BACKGROUND_COLOR_EVEN_CHILD)
+        } else {
+            self.setBackgroundColors(withColor: self.BACKGROUND_COLOR_ODD_CHILD)
+        }
+        
+        if viewModel.isUserOP == true {
+            self.usernameLabel.textColor = self.USERNAME_COLOR_OP
+        } else {
+            self.usernameLabel.textColor = self.USERNAME_COLOR_DEFAULT
+        }
         
         self.usernameLabel.text = viewModel.usernameString
         
@@ -71,6 +100,13 @@ class CommentCell: UITableViewCell {
             }
         }
     }
+    
+    private func setBackgroundColors(withColor color: UIColor) {
+        self.contentView.backgroundColor = color
+        self.shiftingContentView.backgroundColor = color
+        self.textView.backgroundColor = color
+    }
+    
     
     deinit{
         #if DEBUG

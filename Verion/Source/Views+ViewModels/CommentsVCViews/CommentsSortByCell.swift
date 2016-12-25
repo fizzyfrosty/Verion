@@ -85,6 +85,8 @@ class CommentsSortByCell: UITableViewCell {
         // Initialization code
         let titleString = self.getButtonTitleString(sortTypeString: SortTypeComments.top.rawValue)
         self.setButtonTitle(titleString: titleString)
+        
+        self.sortByButton.isEnabled = false
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

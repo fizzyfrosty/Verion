@@ -276,6 +276,7 @@ class DataProviderHelper {
         commentCellVmInitData.usernameString = dataModel.username
         commentCellVmInitData.voteCountTotal = dataModel.voteCountTotal
         commentCellVmInitData.isMinimized = dataModel.isCollapsed
+        commentCellVmInitData.isUserOP = dataModel.isSubmitter
         
         for childData in dataModel.children {
             let commentCellVmInitDataChild = self.getCommentViewModelInitDataFromV1(dataModel: childData)

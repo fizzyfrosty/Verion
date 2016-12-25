@@ -24,6 +24,7 @@ class VoatDataProvider: DataProviderType {
     // V1 API
     private let VOAT_API_KEY_HEADER = "Voat-ApiKey"
     private let VOAT_API_KEY_VALUE = "VO0FEEE221244B41B7B3686098AA4EA227AT"
+    private let VOAT_V1_DOMAIN = "https://api.voat.co"
     
     
     private let VALIDATION_SUCCESSFUL_MESSAGE = "Validation successful"
@@ -165,13 +166,17 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
-    func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?) -> Void) {
+    func requestComments(subverse: String, submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?) -> Void) {
         var commentDataModels = [CommentDataModelProtocol]()
         
-        let requestUrlString = self.VOAT_GET_COMMENTS_FOR_SUBMISSION_URL_STRING + String(submissionId)
+        let requestUrlString = self.getV1CommentsUrlString(forSubverse: subverse, submissionID: submissionId)
         var jsonData: JSON?
         
-        Alamofire.request(requestUrlString).validate().responseJSON { response in
+        let headers: HTTPHeaders = [
+            self.VOAT_API_KEY_HEADER: self.VOAT_API_KEY_VALUE
+        ]
+        
+        Alamofire.request(requestUrlString, headers: headers).validate().responseJSON { response in
             switch response.result {
             case .success:
                 #if DEBUG
@@ -247,5 +252,10 @@ class VoatDataProvider: DataProviderType {
         let mediaType = self.dataProviderHelper.getSubmissionMediaType(fromDataModel: submissionDataModel)
         
         return mediaType
+    }
+    
+    private func getV1CommentsUrlString(forSubverse subverse: String, submissionID: Int64) -> String {
+        let urlString = self.VOAT_V1_DOMAIN + "/api/v1/v/\(subverse)/\(String(submissionID))/comments"
+        return urlString
     }
 }

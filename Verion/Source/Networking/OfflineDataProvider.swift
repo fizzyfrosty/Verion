@@ -79,7 +79,7 @@ class OfflineDataProvider: DataProviderType {
         }
     }
     
-    func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void {
+    func requestComments(subverse: String, submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void {
         Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
             var commentDataModels = [CommentDataModelProtocol]()
             

@@ -41,12 +41,15 @@ Immediate tasks:
 * Start minimized
 * reload only the changed cells
 
-- Stagger child comment cells
-	- Place all objects inside a shiftingContentView?
-	- make alternating background views for staggering
-	- Record what child level each view model is in
-	- CommentCells change the leading alignment by a factor of bgViews.widths based on child level
-	- 
+* Stagger child comment cells
+	* Place all objects inside a shiftingContentView?
+	* make alternating background views for staggering
+	* Record what child level each view model is in
+	* CommentCells change the leading alignment by a factor of bgViews.widths based on child level
+
+* Adjust width of textview based on child depth 
+
+- Tweak colors
 
 
 
@@ -55,7 +58,7 @@ Immediate tasks:
 		- DataModel
 		- Bind DataModel to Subverse View Model
 	- subverse submissions
-	- comments
+	* comments
 
 - Analytics
 
