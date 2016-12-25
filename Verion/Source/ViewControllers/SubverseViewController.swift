@@ -395,7 +395,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // Create cell if viewModel exists
         let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
         cell.bind(toViewModel: viewModel)
-        //self.sfxManager?.applyShadow(view: cell)
         
         
         // Create Thumbnail in ViewModel and Attach in Background Queue

@@ -25,11 +25,13 @@ class CommentDataModelV1: CommentDataModelProtocol {
     var isDeleted = false
     var isSaved = false
     var isSubmitter = false
+    var isDistinguished = false
+    var isOwner = false
     
     var subverseName = ""
     var username = ""
     var vote = ""
-    var upoteCount = 0
+    var upvoteCount = 0
     var downvoteCount = 0
     var voteCountTotal = 0
     

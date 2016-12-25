@@ -36,10 +36,6 @@
 		43433DB01E057E620017FAB0 /* SubmissionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DA11E057E620017FAB0 /* SubmissionCellViewModel.swift */; };
 		43433DB21E0581510017FAB0 /* SubverseSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DB11E0581510017FAB0 /* SubverseSearchResultCell.swift */; };
 		43433DB41E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DB31E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift */; };
-		43433DBA1E059EB60017FAB0 /* SampleComments_legacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43433DB61E059EB60017FAB0 /* SampleComments_legacy.txt */; };
-		43433DBB1E059EB60017FAB0 /* SampleComments_v1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43433DB71E059EB60017FAB0 /* SampleComments_v1.txt */; };
-		43433DBC1E059EB60017FAB0 /* SampleJsonSubmissions_legacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43433DB81E059EB60017FAB0 /* SampleJsonSubmissions_legacy.txt */; };
-		43433DBD1E059EB60017FAB0 /* SampleSubverseList_legacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43433DB91E059EB60017FAB0 /* SampleSubverseList_legacy.txt */; };
 		43433DBF1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */; };
 		43433DC11E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */; };
 		4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */; };
@@ -112,6 +108,12 @@
 		43B057101E0E71AD007083E8 /* SubmissionDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0570F1E0E71AD007083E8 /* SubmissionDataModelV1.swift */; };
 		43B057121E0E7616007083E8 /* CommentDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B057111E0E7616007083E8 /* CommentDataModelV1.swift */; };
 		43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */; };
+		43B0571C1E0E7943007083E8 /* SampleComments_legacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B057161E0E7943007083E8 /* SampleComments_legacy.txt */; };
+		43B0571D1E0E7943007083E8 /* SampleComments_v1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B057171E0E7943007083E8 /* SampleComments_v1.txt */; };
+		43B0571E1E0E7943007083E8 /* SampleJsonSubmissions_legacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B057181E0E7943007083E8 /* SampleJsonSubmissions_legacy.txt */; };
+		43B0571F1E0E7943007083E8 /* SampleJsonSubmissions_v1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B057191E0E7943007083E8 /* SampleJsonSubmissions_v1.txt */; };
+		43B057201E0E7943007083E8 /* SampleSubverseList_legacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B0571A1E0E7943007083E8 /* SampleSubverseList_legacy.txt */; };
+		43B057211E0E7943007083E8 /* SampleSubverseList_v1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B0571B1E0E7943007083E8 /* SampleSubverseList_v1.txt */; };
 		43DF44561E089F1B00478AD9 /* VoatDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */; };
 		43DF44581E08A59200478AD9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43DF44571E08A59200478AD9 /* Alamofire.framework */; };
 		43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */; };
@@ -176,10 +178,6 @@
 		43433DA11E057E620017FAB0 /* SubmissionCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewModel.swift; sourceTree = "<group>"; };
 		43433DB11E0581510017FAB0 /* SubverseSearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultCell.swift; sourceTree = "<group>"; };
 		43433DB31E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultCellViewModel.swift; sourceTree = "<group>"; };
-		43433DB61E059EB60017FAB0 /* SampleComments_legacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleComments_legacy.txt; sourceTree = "<group>"; };
-		43433DB71E059EB60017FAB0 /* SampleComments_v1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleComments_v1.txt; sourceTree = "<group>"; };
-		43433DB81E059EB60017FAB0 /* SampleJsonSubmissions_legacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleJsonSubmissions_legacy.txt; sourceTree = "<group>"; };
-		43433DB91E059EB60017FAB0 /* SampleSubverseList_legacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleSubverseList_legacy.txt; sourceTree = "<group>"; };
 		43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelProtocol.swift; sourceTree = "<group>"; };
 		43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelLegacy.swift; sourceTree = "<group>"; };
 		4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
@@ -260,6 +258,12 @@
 		43B0570F1E0E71AD007083E8 /* SubmissionDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionDataModelV1.swift; sourceTree = "<group>"; };
 		43B057111E0E7616007083E8 /* CommentDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelV1.swift; sourceTree = "<group>"; };
 		43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelV1.swift; sourceTree = "<group>"; };
+		43B057161E0E7943007083E8 /* SampleComments_legacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleComments_legacy.txt; sourceTree = "<group>"; };
+		43B057171E0E7943007083E8 /* SampleComments_v1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleComments_v1.txt; sourceTree = "<group>"; };
+		43B057181E0E7943007083E8 /* SampleJsonSubmissions_legacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleJsonSubmissions_legacy.txt; sourceTree = "<group>"; };
+		43B057191E0E7943007083E8 /* SampleJsonSubmissions_v1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleJsonSubmissions_v1.txt; sourceTree = "<group>"; };
+		43B0571A1E0E7943007083E8 /* SampleSubverseList_legacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleSubverseList_legacy.txt; sourceTree = "<group>"; };
+		43B0571B1E0E7943007083E8 /* SampleSubverseList_v1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleSubverseList_v1.txt; sourceTree = "<group>"; };
 		43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoatDataProvider.swift; sourceTree = "<group>"; };
 		43DF44571E08A59200478AD9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkdownParser.swift; sourceTree = "<group>"; };
@@ -367,17 +371,6 @@
 				43433DA11E057E620017FAB0 /* SubmissionCellViewModel.swift */,
 			);
 			path = SubverseVCViews;
-			sourceTree = "<group>";
-		};
-		43433DB51E059EB60017FAB0 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				43433DB61E059EB60017FAB0 /* SampleComments_legacy.txt */,
-				43433DB71E059EB60017FAB0 /* SampleComments_v1.txt */,
-				43433DB81E059EB60017FAB0 /* SampleJsonSubmissions_legacy.txt */,
-				43433DB91E059EB60017FAB0 /* SampleSubverseList_legacy.txt */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		4375BFCB1DF5D43900576CC6 /* CustomControls */ = {
@@ -527,6 +520,19 @@
 			path = "UIImage+animatedGIF";
 			sourceTree = "<group>";
 		};
+		43B057151E0E7943007083E8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				43B057161E0E7943007083E8 /* SampleComments_legacy.txt */,
+				43B057171E0E7943007083E8 /* SampleComments_v1.txt */,
+				43B057181E0E7943007083E8 /* SampleJsonSubmissions_legacy.txt */,
+				43B057191E0E7943007083E8 /* SampleJsonSubmissions_v1.txt */,
+				43B0571A1E0E7943007083E8 /* SampleSubverseList_legacy.txt */,
+				43B0571B1E0E7943007083E8 /* SampleSubverseList_v1.txt */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		43F675111DF20078001F83BE /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -628,7 +634,7 @@
 			children = (
 				43F9A02C1DEA3AE0001EB1FC /* AppDelegate.swift */,
 				43433D881E03DD570017FAB0 /* Verion-Bridging-Header.h */,
-				43433DB51E059EB60017FAB0 /* Resources */,
+				43B057151E0E7943007083E8 /* Resources */,
 				43F675111DF20078001F83BE /* Source */,
 				43F9A0351DEA3AE0001EB1FC /* LaunchScreen.storyboard */,
 				4375BFC91DF5060F00576CC6 /* Assets.xcassets */,
@@ -768,21 +774,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				43B056CC1E0E4691007083E8 /* Info.plist in Resources */,
+				43B0571D1E0E7943007083E8 /* SampleComments_v1.txt in Resources */,
+				43B057211E0E7943007083E8 /* SampleSubverseList_v1.txt in Resources */,
 				4375C0401DF74B1700576CC6 /* Comments.storyboard in Resources */,
+				43B0571C1E0E7943007083E8 /* SampleComments_legacy.txt in Resources */,
 				43B056DF1E0E4691007083E8 /* Info.plist in Resources */,
 				43F9A0371DEA3AE0001EB1FC /* LaunchScreen.storyboard in Resources */,
-				43433DBA1E059EB60017FAB0 /* SampleComments_legacy.txt in Resources */,
-				43433DBB1E059EB60017FAB0 /* SampleComments_v1.txt in Resources */,
-				43433DBD1E059EB60017FAB0 /* SampleSubverseList_legacy.txt in Resources */,
+				43B057201E0E7943007083E8 /* SampleSubverseList_legacy.txt in Resources */,
+				43B0571E1E0E7943007083E8 /* SampleJsonSubmissions_legacy.txt in Resources */,
 				4381FFB11E076EA300C70F0F /* WebView.storyboard in Resources */,
 				43B056BD1E0E4691007083E8 /* Info.plist in Resources */,
-				43433DBC1E059EB60017FAB0 /* SampleJsonSubmissions_legacy.txt in Resources */,
 				43B056BE1E0E4691007083E8 /* Info.plist in Resources */,
 				43433D8C1E0575040017FAB0 /* FindSubverse.storyboard in Resources */,
 				43B056CF1E0E4691007083E8 /* LoadingView.xib in Resources */,
 				43B0565F1E0D1AA3007083E8 /* SliderController.storyboard in Resources */,
 				432564B61DEEB798001B943A /* TabController.storyboard in Resources */,
 				432564391DECAE8F001B943A /* Subverse.storyboard in Resources */,
+				43B0571F1E0E7943007083E8 /* SampleJsonSubmissions_v1.txt in Resources */,
 				43B0566B1E0D2296007083E8 /* LeftMenu.storyboard in Resources */,
 				4375BFCA1DF5060F00576CC6 /* Assets.xcassets in Resources */,
 			);

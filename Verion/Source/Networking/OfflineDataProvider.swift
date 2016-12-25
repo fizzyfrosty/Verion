@@ -19,6 +19,8 @@ class OfflineDataProvider: DataProviderType {
     private let SAMPLE_JSON_COMMENTS_FILE_LEGACY = "SampleComments_legacy"
     private let SAMPLE_FILES_EXTENSION = "txt"
     
+    private let SAMPLE_JSON_COMMENTS_FILE_V1 = "SampleComments_v1"
+    
     private let DELAY_TIME_SECONDS: Float = 1.0
     private let SEARCH_RESULTS_DELAY_TIME: Float = 0.25
     
@@ -82,16 +84,11 @@ class OfflineDataProvider: DataProviderType {
             var commentDataModels = [CommentDataModelProtocol]()
             
             // Load sample json data
-            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_COMMENTS_FILE_LEGACY,
+            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_COMMENTS_FILE_V1,
                                                                    withExtension: self.SAMPLE_FILES_EXTENSION)
             
-            // For each submission, create a datamodel
-            for i in 0..<sampleJson.count {
-                // Get data model from sample JSON
-                let commentJson = sampleJson[i]
-                let commentDataModel = self.dataProviderHelper.getCommentDataModel(fromJson: commentJson, apiVersion: self.apiVersion)
-                commentDataModels.append(commentDataModel)
-            }
+            commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: sampleJson, apiVersion: self.apiVersion)
+            
             
             // Return the data models
             completion(commentDataModels, nil)

@@ -36,7 +36,7 @@ class DataProviderHelper {
         case .legacy:
             commentViewModelInitData = self.getCommentViewModelInitDataFromLegacy(dataModel: dataModel as! CommentDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            commentViewModelInitData = self.getCommentViewModelInitDataFromV1(dataModel: dataModel as! CommentDataModelV1)
         }
         
         return commentViewModelInitData
@@ -149,17 +149,49 @@ class DataProviderHelper {
         return legacyMediaType
     }
     
-    func getCommentDataModel(fromJson json: JSON, apiVersion: APIVersion) -> CommentDataModelProtocol{
-        let commentDataModel: CommentDataModelProtocol
+    func getCommentDataModels(fromJson json: JSON, apiVersion: APIVersion) -> [CommentDataModelProtocol]{
+        var commentDataModels: [CommentDataModelProtocol] = []
         
         switch apiVersion {
         case .legacy:
-            commentDataModel = self.getCommentDataModelLegacy(fromJson: json)
+            // FIXME: Temporarily use v1 comments for legacy mode
+            let success = json["success"].boolValue
+            if success == true {
+                // Get array of comments
+                let commentDataSet = json["data"]
+                let commentsArray = commentDataSet["comments"].arrayValue
+                
+                for commentJson in commentsArray {
+                    let commentDataModelV1 = self.getCommentDataModelV1(fromCommentJson: commentJson)
+                    commentDataModels.append(commentDataModelV1)
+                }
+                
+            }
+            
+            /* // Legacy api comment json model
+            // For each submission, create a datamodel
+            for i in 0..<json.count {
+                // Get data model from sample JSON
+                let commentJson = json[i]
+                let commentDataModel = self.getCommentDataModelLegacy(fromJson: commentJson)
+                commentDataModels.append(commentDataModel)
+            }*/
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            let success = json["success"].boolValue
+            if success == true {
+                // Get array of comments
+                let commentDataSet = json["data"]
+                let commentsArray = commentDataSet["comments"].arrayValue
+                
+                for commentJson in commentsArray {
+                    let commentDataModelV1 = self.getCommentDataModelV1(fromCommentJson: commentJson)
+                    commentDataModels.append(commentDataModelV1)
+                }
+                
+            } // otherwise, an empty array will be returned
         }
         
-        return commentDataModel
+        return commentDataModels
     }
     
     func getSubverseDataModel(fromJson json:JSON, apiVersion: APIVersion) -> SubverseSearchResultDataModelProtocol {
@@ -234,6 +266,25 @@ class DataProviderHelper {
         return submissionDataModel.messageContent
     }
     
+    private func getCommentViewModelInitDataFromV1(dataModel: CommentDataModelV1) -> CommentCellViewModelInitData{
+        var commentCellVmInitData = CommentCellViewModelInitData()
+        
+        commentCellVmInitData.date = self.getDateFromString(gmtString: dataModel.creationDateString)
+        commentCellVmInitData.downvoteCount = dataModel.downvoteCount
+        commentCellVmInitData.textString = dataModel.content
+        commentCellVmInitData.upvoteCount = dataModel.upvoteCount
+        commentCellVmInitData.usernameString = dataModel.username
+        commentCellVmInitData.voteCountTotal = dataModel.voteCountTotal
+        commentCellVmInitData.isMinimized = dataModel.isCollapsed
+        
+        for childData in dataModel.children {
+            let commentCellVmInitDataChild = self.getCommentViewModelInitDataFromV1(dataModel: childData)
+            commentCellVmInitData.children.append(commentCellVmInitDataChild)
+        }
+        
+        return commentCellVmInitData
+    }
+    
     private func getCommentViewModelInitDataFromLegacy(dataModel: CommentDataModelLegacy) -> CommentCellViewModelInitData{
         var commentCellVmInitData = CommentCellViewModelInitData()
         
@@ -247,6 +298,46 @@ class DataProviderHelper {
         return commentCellVmInitData
     }
     
+    private func getCommentDataModelV1(fromCommentJson json: JSON) -> CommentDataModelV1 {
+        let commentModelV1 = CommentDataModelV1()
+        
+        commentModelV1.childCount = json["childCount"].intValue
+        commentModelV1.content = json["content"].stringValue
+        commentModelV1.creationDateString = json["creationDate"].stringValue
+        commentModelV1.formattedContent = json["formattedContent"].stringValue
+        commentModelV1.id = json["id"].int64Value
+        commentModelV1.isAnonymized = json["isAnonymized"].boolValue
+        commentModelV1.isCollapsed = json["isCollapsed"].boolValue
+        commentModelV1.isDeleted = json["isDeleted"].boolValue
+        commentModelV1.isSaved = json["isSaved"].boolValue
+        commentModelV1.isDistinguished = json["isDistinguished"].boolValue
+        commentModelV1.isOwner = json["isOwner"].boolValue
+        commentModelV1.isSubmitter = json["isSubmitter"].boolValue
+        commentModelV1.lastEditDateString = json["lastEditDate"].stringValue
+        commentModelV1.parentId = json["parentID"].int64Value
+        commentModelV1.submissionId = json["submissionID"].int64Value
+        commentModelV1.subverseName = json["subverse"].stringValue
+        commentModelV1.username = json["userName"].stringValue
+        commentModelV1.vote = json["vote"].stringValue
+        commentModelV1.voteCountTotal = json["sum"].intValue
+        commentModelV1.upvoteCount = json["upCount"].intValue
+        commentModelV1.downvoteCount = json["downCount"].intValue
+        
+        let childrenInfo = json["children"]
+        let childrenCount = childrenInfo["segmentCount"].intValue // corresponds to the 'comments' array count
+        
+        // If there are children comments
+        if childrenCount > 0 {
+            let childrenNodes = childrenInfo["comments"].arrayValue
+            for jsonCommentChild in childrenNodes {
+                let commentChildModel = self.getCommentDataModelV1(fromCommentJson: jsonCommentChild)
+                commentModelV1.children.append(commentChildModel)
+            }
+        }
+        
+        return commentModelV1
+    }
+
     private func getCommentDataModelLegacy(fromJson json: JSON) -> CommentDataModelLegacy {
         let commentDataModelLegacy = CommentDataModelLegacy()
         

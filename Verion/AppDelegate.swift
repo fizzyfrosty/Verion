@@ -79,8 +79,8 @@ extension SwinjectStoryboard {
         })
         
         defaultContainer.register(DataProviderType.self){ _ in
-            //OfflineDataProvider(apiVersion: .legacy)
-            VoatDataProvider(apiVersion: .legacy)
+            OfflineDataProvider(apiVersion: .legacy)
+            //VoatDataProvider(apiVersion: .legacy)
         }
         
         defaultContainer.register(DataManagerProtocol.self) { _ in

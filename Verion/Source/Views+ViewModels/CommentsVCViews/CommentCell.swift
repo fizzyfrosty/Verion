@@ -71,4 +71,10 @@ class CommentCell: UITableViewCell {
             }
         }
     }
+    
+    deinit{
+        #if DEBUG
+            print("Deallocated a Comment Cell")
+        #endif
+    }
 }

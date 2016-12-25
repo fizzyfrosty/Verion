@@ -13,7 +13,6 @@ Immediate tasks:
 
 * Data persistence
 
-
 * When loading a subverse in SubverseController, tell the SubverseController delegate
 * When loading a subverse in LeftMenuController, tell LeftMenuController delegate
 * max number of history entries
@@ -28,11 +27,27 @@ Immediate tasks:
 		- Favorites list, remove
 
 * Get sample data
+* Make the v1 data models
 
-- Make the v1 data models
-- Edit all bindings from dataModels to viewModels
+* Perhaps just use v1 for Comments?
+	* Bind data model to view model
 
-- Try with OfflineDataProvider?
+* Add nested children
+
+* populate all children
+
+
+* Populate children
+* Start minimized
+* reload only the changed cells
+
+- Stagger child comment cells
+	- Place all objects inside a shiftingContentView?
+	- make alternating background views for staggering
+	- Record what child level each view model is in
+	- CommentCells change the leading alignment by a factor of bgViews.widths based on child level
+	- 
+
 
 
 - Program against v1 api

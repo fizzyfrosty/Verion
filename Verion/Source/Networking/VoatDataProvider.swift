@@ -180,14 +180,7 @@ class VoatDataProvider: DataProviderType {
                 
                 jsonData = JSON.init(data: response.data!)
                 
-                // For each submission, create a data model
-                for i in 0..<jsonData!.count {
-                    
-                    // Get data model from sample JSON
-                    let commentJson = jsonData![i]
-                    let commentDataModel = self.dataProviderHelper.getCommentDataModel(fromJson: commentJson, apiVersion: self.apiVersion)
-                    commentDataModels.append(commentDataModel)
-                }
+                commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
                 
                 // TODO: Implement error
                 

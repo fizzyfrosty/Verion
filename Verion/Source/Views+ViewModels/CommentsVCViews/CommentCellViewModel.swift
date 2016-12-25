@@ -18,6 +18,9 @@ struct CommentCellViewModelInitData {
     
     var usernameString = ""
     var textString = ""
+    var isMinimized = false
+    
+    var children: [CommentCellViewModelInitData] = []
 }
 
 class CommentCellViewModel {
@@ -36,11 +39,39 @@ class CommentCellViewModel {
     var separatedVoteCountString = Observable<String>("")
     var textFormatter = SubmissionTextFormatter()
     
+    var children: [CommentCellViewModel] = []
+    
     // Cell Height
-    private let CELL_VERTICAL_MARGINS: CGFloat = 55.0
+    let CELL_VERTICAL_MARGINS: CGFloat = 55.0
     private let CELL_HORIZONTAL_MARGINS: CGFloat = 40.0
     private let CELL_MAX_HEIGHT: CGFloat = 9999.0
     private let CELL_MINIMIZED_HEIGHT: CGFloat = 30.0
+    
+    var numOfVisibleChildren: Int {
+        get {
+            // Count each child, and for each child of theirs, go into and count if visible
+            var numOfChildren = 0
+            
+            for child in self.children {
+                numOfChildren += 1
+                
+                if child.isMinimized.value == false {
+                    numOfChildren += child.numOfVisibleChildren
+                }
+            }
+            
+            return numOfChildren
+        }
+    }
+    
+    var textHeight: CGFloat {
+        get {
+            let width: CGFloat = UIScreen.main.bounds.size.width - self.CELL_HORIZONTAL_MARGINS
+            let textSize = CellHeightCalculator.sizeForAttributedText(text: self.attributedTextString, maxSize: CGSize(width: width, height: self.CELL_MAX_HEIGHT))
+            
+            return textSize.height
+        }
+    }
     var cellHeight: CGFloat{
         get {
             
@@ -48,10 +79,9 @@ class CommentCellViewModel {
                 return self.CELL_MINIMIZED_HEIGHT
             }
             
-            let width: CGFloat = UIScreen.main.bounds.size.width - self.CELL_HORIZONTAL_MARGINS
-            let textSize = CellHeightCalculator.sizeForAttributedText(text: self.attributedTextString, maxSize: CGSize(width: width, height: self.CELL_MAX_HEIGHT))
+            let textHeight = self.textHeight
             
-            let height = textSize.height + self.CELL_VERTICAL_MARGINS
+            let height = textHeight + self.CELL_VERTICAL_MARGINS
             
             return height
         }
@@ -77,6 +107,14 @@ class CommentCellViewModel {
         
         self.separatedVoteCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
         self.dateString = self.textFormatter.createDateSubmittedString(gmtDate: self.date!) + " ago"
+        self.isMinimized.value = initData.isMinimized
+        
+        // Load children
+        for childInitData in initData.children {
+            let viewModel = CommentCellViewModel()
+            viewModel.loadInitData(initData: childInitData)
+            self.children.append(viewModel)
+        }
         
         // Bindings
         _ = self.upvoteCount.observeNext() { [weak self] upvoteCount in

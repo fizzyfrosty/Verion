@@ -195,14 +195,20 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 self.commentsViewModels.removeAll()
                 self.commentDataModels = commentDataModels
                 
+                var topLevelComments: [CommentCellViewModel] = []
+                
+                // Load top level comment cell view models
                 for i in 0..<commentDataModels.count {
                     let commentViewModel = CommentCellViewModel()
-                    self.commentsViewModels.append(commentViewModel)
+                    topLevelComments.append(commentViewModel)
                     
                     let dataModel = commentDataModels[i]
                     
                     self.dataProvider?.bind(commentCellViewModel: commentViewModel, dataModel: dataModel)
                 }
+                
+                // Put all comment cells, and children, into a single array
+                self.commentsViewModels = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: topLevelComments)
                 
                 self.areCommentsLoaded = true
                 
@@ -216,6 +222,24 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         })
         
         completion()
+    }
+    
+    func getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels topLevelViewModels: [CommentCellViewModel]) -> [CommentCellViewModel] {
+        var commentCellViewModelsAll: [CommentCellViewModel] = []
+        
+        for viewModel in topLevelViewModels {
+            // Append each view model
+            commentCellViewModelsAll.append(viewModel)
+            
+            // Then append its children if this viewmodel is visible
+            if viewModel.isMinimized.value == false {
+                let childrenViewModels = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: viewModel.children)
+                
+                commentCellViewModelsAll.append(contentsOf: childrenViewModels)
+            }
+        }
+        
+        return commentCellViewModelsAll
     }
     
     override func didReceiveMemoryWarning() {
@@ -411,10 +435,12 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             // Comment cells
             
             let commentCell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath) as! CommentCell
+            
             let commentCellViewModel = self.commentsViewModels[indexPath.section-1]
             commentCell.delegate = self
             commentCell.bind(toViewModel: commentCellViewModel)
             commentCell.textView.delegate = self
+            
             self.sfxManager?.applyShadow(view: commentCell)
             
             return commentCell
@@ -445,11 +471,68 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             }
         }
         
-        // Minimize comment cell
+        // Minimize and Maximize comment cell
         if indexPath.section >= 1 {
             let commentCellVm = self.commentsViewModels[indexPath.section-1]
             commentCellVm.toggleMinimized()
+            
+            // Find out of minimized or maximized
+            // If minimized
+            if commentCellVm.isMinimized.value == true {
+                self.minimizeCommentCell(forViewModel: commentCellVm, indexPath: indexPath)
+            }
+            else {
+                self.maximizeCommentCell(forViewModel: commentCellVm, indexPath: indexPath)
+            }
         }
+    }
+    
+    private func minimizeCommentCell(forViewModel viewModel: CommentCellViewModel, indexPath: IndexPath) {
+        tableView.beginUpdates()
+        
+        // Get the total number of child cells removed
+        let numOfChildCellsToRemove = viewModel.numOfVisibleChildren
+        
+        // Remove them from the array
+        let indexOfCommentCellVm = indexPath.section - 1
+        let lowerBound = indexOfCommentCellVm + 1
+        let upperBound = lowerBound + numOfChildCellsToRemove
+        let rangeToRemove = Range.init(uncheckedBounds: (lower: lowerBound, upper: upperBound))
+        self.commentsViewModels.removeSubrange(rangeToRemove)
+        
+        // The rangetoUpdate has to account for cells start at IndexPath.section+1
+        let rangeToUpdate = Range.init(uncheckedBounds: (lower: lowerBound+1, upper: upperBound+1))
+        
+        let indexSet = IndexSet.init(integersIn: rangeToUpdate)
+        tableView.deleteSections(indexSet, with: .fade)
+        
+        tableView.endUpdates()
+    }
+    
+    private func maximizeCommentCell(forViewModel viewModel: CommentCellViewModel, indexPath: IndexPath) {
+        tableView.beginUpdates()
+        
+        // If maximized
+        // Get the total number of child cells shown
+        // Insert them into the array
+        let currentIndex = indexPath.section - 1
+        
+        var childrenVmToAdd = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: [viewModel])
+        // Remove the first child, which is the top node
+        childrenVmToAdd.remove(at: 0)
+        
+        self.commentsViewModels.insert(contentsOf: childrenVmToAdd, at: currentIndex+1)
+        
+        // Account for sections of cells start at indexPath.section + 1
+        let lowerBoundToInsert = indexPath.section + 1
+        let upperBoundToInsert = lowerBoundToInsert + childrenVmToAdd.count
+        let rangeToInsert = Range.init(uncheckedBounds: (lower: lowerBoundToInsert, upper: upperBoundToInsert))
+        let indexSet = IndexSet.init(integersIn: rangeToInsert)
+        
+        tableView.insertSections(indexSet, with: .fade)
+        
+        // Update the table for those rows
+        tableView.endUpdates()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -491,6 +574,42 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         return true
     }
     */
+    
+    // FIXME: delete
+    /*
+    private func addChild(toCell parentCell: CommentCell, parentCellViewModel: CommentCellViewModel, childViewModel: CommentCellViewModel, startingY: CGFloat) {
+        if let childCell = self.tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID) as? CommentCell {
+            childCell.bind(toViewModel: childViewModel)
+            childCell.textView.delegate = self
+            childCell.delegate = self
+            // Set Background Color
+            childCell.backgroundColor = UIColor.brown
+            
+            // Resize and position
+            childCell.frame = CGRect(origin: childCell.frame.origin, size: CGSize(width: parentCell.frame.size.width, height: childViewModel.cellHeight))
+            
+            // Height
+            // If it's the first child, do not include previous children height in calculation
+            let heightOffset: CGFloat = startingY
+            
+            childCell.center = CGPoint(x: childCell.center.x + 10, y: childCell.center.y + heightOffset)
+            
+            // Add children
+            var totalChildrenYOffset: CGFloat = 0.0 // FIXME: DELETE childViewModel.CELL_VERTICAL_MARGINS + childViewModel.textHeight
+            for i in 0..<childViewModel.children.count{
+                let grandchildViewModel = childViewModel.children[i]
+                
+                self.addChild(toCell: childCell, parentCellViewModel: childViewModel, childViewModel: grandchildViewModel, startingY: totalChildrenYOffset)
+                
+                totalChildrenYOffset += grandchildViewModel.cellHeight
+            }
+            
+            // Apply Shadow
+            self.sfxManager?.applyShadow(view: childCell)
+            
+            parentCell.childrenView.addSubview(childCell)
+        }
+    } */
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == self.WEBVIEW_SEGUE_ID {
