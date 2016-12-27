@@ -13,7 +13,7 @@ import Alamofire
 class DataProviderHelper {
     
     
-    private let VOAT_THUMBNAIL_URL = "https://cdn.voat.co/thumbs/"
+    private let VOAT_THUMBNAIL_LEGACY_URL = "https://cdn.voat.co/thumbs/"
     let API_V1_NOTSUPPORTED_ERROR_MESSAGE = "API.v1 not yet implemented"
     
     func getContentUrlString(fromSubmissionDataModel dataModel: SubmissionDataModelProtocol) -> String {
@@ -23,7 +23,7 @@ class DataProviderHelper {
         case .legacy:
             urlString = self.getContentUrlStringFromLegacy(submissionDataModel: dataModel as! SubmissionDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            urlString = self.getContentUrlStringFromV1(submissionDataModel: dataModel as! SubmissionDataModelV1)
         }
         
         return urlString
@@ -49,7 +49,7 @@ class DataProviderHelper {
         case .legacy:
             subverseSearchResultCellVmInitData = self.getSubverseSearchResultCellVmInitDataFromLegacy(dataModel: dataModel as! SubverseSearchResultDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            subverseSearchResultCellVmInitData = self.getSubverseSearchResultCellVmInitDataFromV1(dataModel: dataModel as! SubverseSearchResultDataModelV1)
         }
         
         return subverseSearchResultCellVmInitData
@@ -62,7 +62,7 @@ class DataProviderHelper {
         case .legacy:
             subTitleCellVmInitData = self.getSubmissionTitleCellViewModelInitDataFromLegacyDataModel(dataModel: dataModel as! SubmissionDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            subTitleCellVmInitData = self.getSubmissionTitleCellViewModelInitDataFromV1DataModel(dataModel: dataModel as! SubmissionDataModelV1)
         }
         
         return subTitleCellVmInitData
@@ -77,7 +77,8 @@ class DataProviderHelper {
             let legacyDataModel = dataModel as! SubmissionDataModelLegacy
             imageLink = legacyDataModel.messageContent
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            let v1DataModel = dataModel as! SubmissionDataModelV1
+            imageLink = v1DataModel.url
         }
         
         return imageLink
@@ -91,7 +92,7 @@ class DataProviderHelper {
         case .legacy:
             subLinkCellVmInitData = self.getSubLinkCellVmInitDataFromLegacyDataModel(dataModel: dataModel as! SubmissionDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            subLinkCellVmInitData = self.getSubLinkCellVmInitDataFromV1DataModel(dataModel: dataModel as! SubmissionDataModelV1)
         }
         
         return subLinkCellVmInitData
@@ -104,10 +105,21 @@ class DataProviderHelper {
         case .legacy:
             mediaType = self.getSubmissionMediaTypeFromLegacyDataModel(submissionDataModel: dataModel as! SubmissionDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            mediaType = self.getSubmissionMediaTypeFromV1DataModel(submissionDataModel: dataModel as! SubmissionDataModelV1)
         }
         
         return mediaType
+    }
+    
+    private func getSubverseSearchResultCellVmInitDataFromV1(dataModel: SubverseSearchResultDataModelV1) -> SubverseSearchResultCellViewModelInitData {
+        var subverseSearchResultCellVmInitData = SubverseSearchResultCellViewModelInitData()
+        
+        subverseSearchResultCellVmInitData.subverseString = dataModel.name
+        subverseSearchResultCellVmInitData.subscriberCount = dataModel.subscriberCount
+        subverseSearchResultCellVmInitData.subverseDescription = dataModel.description
+        
+        return subverseSearchResultCellVmInitData
+
     }
     
     private func getSubverseSearchResultCellVmInitDataFromLegacy(dataModel: SubverseSearchResultDataModelLegacy) -> SubverseSearchResultCellViewModelInitData {
@@ -118,6 +130,19 @@ class DataProviderHelper {
         subverseSearchResultCellVmInitData.subverseDescription = dataModel.subverseDescription
         
         return subverseSearchResultCellVmInitData
+    }
+    
+    private func getSubmissionTitleCellViewModelInitDataFromV1DataModel(dataModel: SubmissionDataModelV1) -> SubmissionTitleCellViewModelInitData {
+        var subTitleCellVmInitData = SubmissionTitleCellViewModelInitData()
+        subTitleCellVmInitData.date = self.getDateFromString(gmtString: dataModel.creationDateString)
+        subTitleCellVmInitData.downvoteCount = dataModel.downvoteCount
+        subTitleCellVmInitData.subverseString = dataModel.subverseName
+        subTitleCellVmInitData.titleString = dataModel.title
+        subTitleCellVmInitData.upvoteCount = dataModel.upvoteCount
+        subTitleCellVmInitData.usernameString = dataModel.username
+        subTitleCellVmInitData.voteTotalCount = dataModel.voteCountTotal
+        
+        return subTitleCellVmInitData
     }
     
     private func getSubmissionTitleCellViewModelInitDataFromLegacyDataModel(dataModel: SubmissionDataModelLegacy) -> SubmissionTitleCellViewModelInitData {
@@ -133,6 +158,20 @@ class DataProviderHelper {
         return subTitleCellVmInitData
     }
     
+    private func getSubmissionMediaTypeFromV1DataModel(submissionDataModel: SubmissionDataModelV1) -> SubmissionMediaType {
+        
+        var v1MediaType: SubmissionMediaType = .undetermined
+        
+        // If data model is text, return text.
+        if submissionDataModel.type == "text" {
+            v1MediaType = .text
+        } else {
+            v1MediaType = .undetermined
+        }
+        
+        return v1MediaType
+    }
+    
     // This should be for offline-use ONLY
     private func getSubmissionMediaTypeFromLegacyDataModel(submissionDataModel: SubmissionDataModelLegacy) -> SubmissionMediaType {
         
@@ -142,7 +181,6 @@ class DataProviderHelper {
         if submissionDataModel.type == SubmissionType.text.rawValue {
             legacyMediaType = .text
         } else {
-            
             legacyMediaType = .undetermined
         }
         
@@ -154,28 +192,13 @@ class DataProviderHelper {
         
         switch apiVersion {
         case .legacy:
-            // FIXME: Temporarily use v1 comments for legacy mode
-            let success = json["success"].boolValue
-            if success == true {
-                // Get array of comments
-                let commentDataSet = json["data"]
-                let commentsArray = commentDataSet["comments"].arrayValue
-                
-                for commentJson in commentsArray {
-                    let commentDataModelV1 = self.getCommentDataModelV1(fromCommentJson: commentJson)
-                    commentDataModels.append(commentDataModelV1)
-                }
-                
-            }
-            
-            /* // Legacy api comment json model
             // For each submission, create a datamodel
             for i in 0..<json.count {
                 // Get data model from sample JSON
                 let commentJson = json[i]
                 let commentDataModel = self.getCommentDataModelLegacy(fromJson: commentJson)
                 commentDataModels.append(commentDataModel)
-            }*/
+            }
         case .v1:
             let success = json["success"].boolValue
             if success == true {
@@ -186,21 +209,61 @@ class DataProviderHelper {
                 for commentJson in commentsArray {
                     let commentDataModelV1 = self.getCommentDataModelV1(fromCommentJson: commentJson)
                     commentDataModels.append(commentDataModelV1)
-                }
-                
-            } // otherwise, an empty array will be returned
+                }   
+            }
         }
         
         return commentDataModels
     }
     
-    func getSubverseSearchResultDataModel(fromJson json:JSON, apiVersion: APIVersion) -> SubverseSearchResultDataModelProtocol {
+    func getSubverseSearchResultDataModels(fromJson json: JSON, apiVersion: APIVersion) -> [SubverseSearchResultDataModelProtocol] {
+        var searchResultDataModels: [SubverseSearchResultDataModelProtocol]
+        
+        switch apiVersion {
+        case .legacy:
+            searchResultDataModels = self.getSubverseSearchResultDataModelsLegacy(fromJson: json)
+        case .v1:
+            searchResultDataModels = self.getSubverseSearchResultDataModelsV1(fromJson: json)
+        }
+        
+        return searchResultDataModels
+    }
+    
+    private func getSubverseSearchResultDataModelsV1(fromJson json:JSON) -> [SubverseSearchResultDataModelV1] {
+        var subverseDataModels: [SubverseSearchResultDataModelV1] = []
+        
+        let dataJson = json["data"]
+        
+        for i in 0..<dataJson.count {
+            let subverseJson = dataJson[i]
+            let subverseDataModel = self.getSubverseSearchResultDataModelV1(fromJson: subverseJson)
+            subverseDataModels.append(subverseDataModel)
+        }
+        
+        return subverseDataModels
+    }
+    
+    private func getSubverseSearchResultDataModelsLegacy(fromJson json:JSON) -> [SubverseSearchResultDataModelLegacy] {
+        var subverseDataModels: [SubverseSearchResultDataModelLegacy] = []
+        
+        // For each submission, create a data model
+        for i in 0..<json.count {
+            // Get data model from sample JSON
+            let subverseJson = json[i]
+            let subverseDataModel = self.getSubverseSearchResultDataModelLegacy(fromJson: subverseJson)
+            subverseDataModels.append(subverseDataModel)
+        }
+        
+        return subverseDataModels
+    }
+    
+    private func getSubverseSearchResultDataModel(fromJson json:JSON, apiVersion: APIVersion) -> SubverseSearchResultDataModelProtocol {
         let subverseDataModel: SubverseSearchResultDataModelProtocol
         switch apiVersion {
         case .legacy:
-            subverseDataModel = self.getSubverseDataModelLegacy(fromJson: json)
+            subverseDataModel = self.getSubverseSearchResultDataModelLegacy(fromJson: json)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            subverseDataModel = self.getSubverseSearchResultDataModelV1(fromJson: json)
         }
         
         return subverseDataModel
@@ -251,6 +314,10 @@ class DataProviderHelper {
     }
     
     // MARK: - private methods
+    
+    private func getContentUrlStringFromV1(submissionDataModel: SubmissionDataModelV1) -> String {
+        return submissionDataModel.url
+    }
     
     private func getContentUrlStringFromLegacy(submissionDataModel: SubmissionDataModelLegacy) -> String {
         return submissionDataModel.messageContent
@@ -387,7 +454,7 @@ class DataProviderHelper {
         submissionDataModelV1.subverseName = json["subverse"].stringValue
         submissionDataModelV1.thumbnailUrl = json["thumbnailUrl"].stringValue
         submissionDataModelV1.title = json["title"].stringValue
-        submissionDataModelV1.type = json["type"].stringValue
+        submissionDataModelV1.type = json["type"].stringValue.lowercased()
         submissionDataModelV1.upvoteCount = json["upCount"].intValue
         submissionDataModelV1.url = json["url"].stringValue
         submissionDataModelV1.username = json["userName"].stringValue
@@ -413,7 +480,7 @@ class DataProviderHelper {
         submissionDataModel.username = json["Name"].stringValue
         submissionDataModel.rank = json["Rank"].doubleValue
         submissionDataModel.subverseName = json["Subverse"].stringValue
-        submissionDataModel.thumbnailLink = self.getThumbnailLink(voatURL: self.VOAT_THUMBNAIL_URL, voatEndpoint: json["Thumbnail"].stringValue)
+        submissionDataModel.thumbnailLink = self.getThumbnailLink(voatURL: self.VOAT_THUMBNAIL_LEGACY_URL, voatEndpoint: json["Thumbnail"].stringValue)
         submissionDataModel.title = json["Title"].stringValue
         submissionDataModel.type = json["Type"].intValue
         submissionDataModel.dateString = json["Date"].stringValue
@@ -421,8 +488,26 @@ class DataProviderHelper {
         return submissionDataModel
     }
     
+    private func getSubverseSearchResultDataModelV1(fromJson json: JSON) -> SubverseSearchResultDataModelV1{
+        let subverseDataModelV1 = SubverseSearchResultDataModelV1()
+        
+        subverseDataModelV1.createdByUsername = json["createdBy"].stringValue
+        subverseDataModelV1.creationDateString = json["creationDate"].stringValue
+        subverseDataModelV1.name = json["name"].stringValue
+        subverseDataModelV1.description = json["description"].stringValue
+        subverseDataModelV1.formattedSidebarDescription = json["formattedSidebar"].stringValue
+        subverseDataModelV1.isAdult = json["isAdult"].boolValue
+        subverseDataModelV1.isAnonymized = json["isAnonymized"].boolValue
+        subverseDataModelV1.sidebarDescription = json["sidebar"].stringValue
+        subverseDataModelV1.title = json["title"].stringValue
+        subverseDataModelV1.type = json["type"].stringValue
+        subverseDataModelV1.subscriberCount = json["subscriberCount"].intValue
+        
+        return subverseDataModelV1
+    }
+    
     // Subverse Search Result Data Model - Legacy
-    private func getSubverseDataModelLegacy(fromJson json: JSON) -> SubverseSearchResultDataModelLegacy {
+    private func getSubverseSearchResultDataModelLegacy(fromJson json: JSON) -> SubverseSearchResultDataModelLegacy {
         let subverseDataModelLegacy = SubverseSearchResultDataModelLegacy()
         
         // Expecting a single string, eg: "Name: news,Description: A place for major news from around the world,Subscribers: 70441,Created: Apr  7 2014  4:15PM"
@@ -454,6 +539,17 @@ class DataProviderHelper {
         subverseDataModelLegacy.subverseDescription = description
         
         return subverseDataModelLegacy
+    }
+    
+    private func getSubLinkCellVmInitDataFromV1DataModel(dataModel: SubmissionDataModelV1) -> SubmissionLinkCellViewModelInitData {
+        
+        var subLinkCellVmInitData = SubmissionLinkCellViewModelInitData()
+        subLinkCellVmInitData.link = dataModel.url
+        subLinkCellVmInitData.domainString = self.getLinkShortString(fromLink: dataModel.url)
+        subLinkCellVmInitData.endpointString = self.getLinkEndpointString(fromLink: dataModel.url)
+        subLinkCellVmInitData.thumbnailLink = dataModel.thumbnailUrl
+        
+        return subLinkCellVmInitData
     }
     
     // Submission Link-Content Init Data - Legacy

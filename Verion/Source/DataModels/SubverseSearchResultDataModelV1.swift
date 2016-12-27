@@ -16,6 +16,7 @@ class SubverseSearchResultDataModelV1: SubverseSearchResultDataModelProtocol {
     var description = ""
     var name = ""
     var sidebarDescription = ""
+    var subscriberCount = 0
     var formattedSidebarDescription = ""
     var title = "" // usually has a /v/ prepended
     var type = ""

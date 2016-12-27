@@ -64,16 +64,15 @@ Immediate tasks:
 * Sort By reloads page 0 with new sort
 - Set the max number of pages to 19
 
-- V1 for Submission Title/Content/Sortby stuffs
-
-- refactor comments to work with legacy api
+* V1 for Submission Title/Content/Sortby stuffs
+* refactor comments to work with legacy api
 
 
 - Program against v1 api
-	- Subverse list request
-		- DataModel
-		- Bind DataModel to Subverse View Model
-	- subverse submissions
+	* Subverse list request
+		* DataModel
+		* Bind DataModel to Subverse View Model
+	* subverse submissions
 	* comments
 
 - Share button in comments

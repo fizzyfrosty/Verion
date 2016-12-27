@@ -241,7 +241,7 @@ class FindSubverseViewController: UITableViewController {
             
             // Get the VC
             let subverseViewController = navController.viewControllers[navController.viewControllers.count - 2] as! SubverseViewController
-            subverseViewController.loadTableCellsNew(forSubverse: subverse, clearScreen: true) {
+            subverseViewController.loadTableCellsNew(forSubverse: subverse, clearScreen: true, animateNavBar: true) {
                 
             }
             

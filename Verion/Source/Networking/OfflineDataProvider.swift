@@ -63,15 +63,15 @@ class OfflineDataProvider: DataProviderType {
             var subverseDataModels = [SubverseSearchResultDataModelProtocol]()
             
             // Load sample json data
-            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_LEGACY, withExtension: self.SAMPLE_FILES_EXTENSION)
-            
-            // For each submission, create a data model
-            for i in 0..<sampleJson.count {
-                // Get data model from sample JSON
-                let subverseJson = sampleJson[i]
-                let subverseDataModel = self.dataProviderHelper.getSubverseSearchResultDataModel(fromJson: subverseJson, apiVersion: self.apiVersion)
-                subverseDataModels.append(subverseDataModel)
+            let sampleJson: JSON
+            switch self.apiVersion {
+            case .legacy:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_LEGACY, withExtension: self.SAMPLE_FILES_EXTENSION)
+            case .v1:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_V1, withExtension: self.SAMPLE_FILES_EXTENSION)
             }
+            
+            subverseDataModels = self.dataProviderHelper.getSubverseSearchResultDataModels(fromJson: sampleJson, apiVersion: self.apiVersion)
             
             // TODO: Implement error return in a mock object?
             
@@ -85,8 +85,13 @@ class OfflineDataProvider: DataProviderType {
             var commentDataModels = [CommentDataModelProtocol]()
             
             // Load sample json data
-            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_COMMENTS_FILE_V1,
-                                                                   withExtension: self.SAMPLE_FILES_EXTENSION)
+            let sampleJson: JSON
+            switch self.apiVersion {
+            case .legacy:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_COMMENTS_FILE_LEGACY, withExtension: self.SAMPLE_FILES_EXTENSION)
+            case .v1:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_COMMENTS_FILE_V1, withExtension: self.SAMPLE_FILES_EXTENSION)
+            }
             
             commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: sampleJson, apiVersion: self.apiVersion)
             
@@ -120,7 +125,8 @@ class OfflineDataProvider: DataProviderType {
             let legacyDataModel = dataModel as! SubmissionDataModelLegacy
             subTextCellViewModel.textString = legacyDataModel.messageContent
         case .v1:
-            fatalError(self.dataProviderHelper.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            let v1DataModel = dataModel as! SubmissionDataModelV1
+            subTextCellViewModel.textString = v1DataModel.content
         }
     }
     

@@ -52,7 +52,7 @@ class LeftMenuController: UITableViewController {
     
     private func loadData() {
         if let verionDataModel = dataManager?.getSavedData() {
-            self.subverseCellViewModels = self.createSubverseViewModels(withNames: verionDataModel.subversesVisited)
+            self.subverseCellViewModels = self.createSubverseViewModels(withNames: verionDataModel.subversesVisited!)
         }
     }
     
@@ -60,9 +60,9 @@ class LeftMenuController: UITableViewController {
         DispatchQueue.global(qos: .background).async {
             let verionDataModel = self.dataManager?.getSavedData()
             
-            verionDataModel?.subversesVisited.removeAll()
+            verionDataModel?.subversesVisited?.removeAll()
             for subverseCellViewModel in self.subverseCellViewModels {
-                verionDataModel?.subversesVisited.append(subverseCellViewModel.subverseName)
+                verionDataModel?.subversesVisited?.append(subverseCellViewModel.subverseName)
             }
             
             self.dataManager?.saveData(dataModel: verionDataModel!)

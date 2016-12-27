@@ -91,7 +91,7 @@ extension SlideController: SubverseViewControllerDelegate {
 extension SlideController: LeftMenuControllerDelegate {
     func leftMenuDidSelectSubverse(leftMenu: LeftMenuController, subverseName: String) {
         // Load the subverse
-        self.subverseController?.loadTableCellsNew(forSubverse: subverseName, clearScreen: true) {
+        self.subverseController?.loadTableCellsNew(forSubverse: subverseName, clearScreen: true, animateNavBar: true) {
             
         }
         

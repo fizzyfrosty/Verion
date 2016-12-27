@@ -62,6 +62,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // Activity Indicator Cell
     private var activityIndicatorCell: ActivityIndicatorCell?
+    private let LOADMORE_CELL_INDEX_VALUE = 1
     
     
     // Navigation Bar items
@@ -70,7 +71,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     var activityIndicator: NVActivityIndicatorView?
     
     let DEFAULT_STARTING_SUBVERSE = "frontpage"
-    var subverseSubmissionParams = SubmissionsRequestParams(subverse: "frontpage", page: 0, sortType: .hot, topSortTypeTime: .week)
+    var subverseSubmissionParams = SubmissionsRequestParams(subverse: "frontpage", page: 0, sortType: .hot, topSortTypeTime: .week) {
+        didSet {
+            self.sortByButton.title = self.subverseSubmissionParams.sortType.rawValue
+        }
+    }
     
     private let NAVIGATION_BG_COLOR: UIColor = UIColor(colorLiteralRed: 95.0/255.0, green: 173.0/255.0, blue: 220.0/255.0, alpha: 1.0)
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 161.0/255.0, green: 212.0/255.0, blue: 242.0/255.0, alpha: 1.0)
@@ -106,6 +111,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     
+    // Sort By
     @IBAction func pressedSortBy(_ sender: UIBarButtonItem) {
         // Create actionsheet and show
         
@@ -119,12 +125,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 
                 // Set the view model
                 self.subverseSubmissionParams.sortType = sortByType
-                
-                // Button title
-                self.sortByButton.title = sortByType.rawValue
+                self.saveSortType(sortType: sortByType){}
                 
                 // Reload table
-                self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true) {
+                self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true, animateNavBar: true) {
                 }
                 
             })
@@ -167,8 +171,9 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
         
-        self.subverseSubmissionParams.subverseName = self.getLastSavedSubverse()
-        self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true) {
+        self.loadSavedData()
+        
+        self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true, animateNavBar: true) {
             
         }
 
@@ -180,6 +185,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    func loadSavedData() {
+        let verionDataModel = self.dataManager?.getSavedData()
+        
+        self.subverseSubmissionParams.subverseName = self.getLastSavedSubverse(fromVerionDataModel: verionDataModel!)
+        self.subverseSubmissionParams.sortType = verionDataModel!.sortType!
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -188,15 +200,28 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.tableView.contentInset = UIEdgeInsets(top: topDefaultInset, left: 0, bottom: self.BOTTOM_INSET_HEIGHT, right: 0)
     }
     
-    func getLastSavedSubverse() -> String {
-        let verionDataModel = self.dataManager?.getSavedData()
+    func getLastSavedSubverse(fromVerionDataModel dataModel: VerionDataModel) -> String {
         
         // If a new model, should default to frontpage
-        if verionDataModel?.subversesVisited.count == 0 {
+        if dataModel.subversesVisited?.count == 0 {
             return self.DEFAULT_STARTING_SUBVERSE
         }
         
-        return (verionDataModel?.subversesVisited[0])!
+        return (dataModel.subversesVisited?[0])!
+    }
+    
+    fileprivate func saveSortType(sortType: SortTypeSubmissions, completion: @escaping ()->()) {
+        DispatchQueue.global(qos: .background).async {
+            let verionDataModel = self.dataManager?.getSavedData()
+            
+            verionDataModel?.sortType = sortType
+            
+            self.dataManager?.saveData(dataModel: verionDataModel!)
+            
+            DispatchQueue.main.async {
+                completion()
+            }
+        }
     }
     
     func loadPullToRefreshControl() {
@@ -255,7 +280,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             self.customRefreshControl?.showActivityIndicator()
             //refresh logic
             
-            self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: false){
+            // Pull to refresh
+            self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: false, animateNavBar: false){
                 self.refreshControl?.endRefreshing()
                 self.customRefreshControl?.isRefreshing = false
                 self.customRefreshControl?.hideActivityIndicator()
@@ -283,7 +309,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     // public function to call loading from outside of VC
-    func loadTableCellsNew(forSubverse subverseString: String, clearScreen: Bool, completion: @escaping ()->()) {
+    func loadTableCellsNew(forSubverse subverseString: String, clearScreen: Bool, animateNavBar: Bool, completion: @escaping ()->()) {
         // Clear current submissions
         self.cleanupModels()
         
@@ -293,13 +319,21 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         // Set the subverse name
         self.subverseSubmissionParams.subverseName = subverseString
+        self.subverseSubmissionParams.page = 0
         
         // Animate the nav bar
-        self.showNavBarActivityIndicator()
+        if animateNavBar {
+            self.showNavBarActivityIndicator()
+        }
         
         // Load cells
         self.loadTableCellsAddedToCurrent(withParams: self.subverseSubmissionParams) {
-            self.hideNavBarActivityIndicator()
+            if animateNavBar {
+                self.hideNavBarActivityIndicator()
+            }
+            
+            self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: 0, endingIndexExclusive: self.subCellViewModels.count+self.LOADMORE_CELL_INDEX_VALUE, animation: .fade)
+            
             completion()
         }
     }
@@ -341,8 +375,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                     self.subCellViewModels.append(subCellViewModel)
                 }
                 
-                // FIXME: Do we need to save these? Cleanup once working
-                //self.submissionDataModels = submissionDataModels
+                // Add to data source
                 self.submissionDataModels.append(contentsOf: submissionDataModels)
                 
                 
@@ -353,14 +386,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 // Reload table, animated, back on main thread
                 DispatchQueue.main.async {
                     
-                    self.isLoadingRequest = false
-                    self.reloadTableAnimated(lastCellIndex: self.subCellViewModels.count)
-                    
                     // Set Navigation title after finished loading table
                     let subverseTitle = self.getNavigationLabelString(subverse: self.subverseSubmissionParams.subverseName)
                     self.setNavigationBarCenterButtonName(string: subverseTitle)
                     
                     completion()
+                    
+                    self.isLoadingRequest = false
                 }
             }
             
@@ -370,10 +402,15 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private func loadMoreTableCells(completion: @escaping ()->()) {
         // Increment page number and Make call to Data provider
         self.subverseSubmissionParams.page += 1
+        
+        // The starting index before the refresh is the last item
+        let startingIndex = self.subCellViewModels.count
+        
         self.loadTableCellsAddedToCurrent(withParams: self.subverseSubmissionParams) {
+            self.insertSectionsAnimated(forTableView: self.tableView, startingIndexInclusive: startingIndex, endingIndexExclusive: self.subCellViewModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE, animation: .fade)
         }
         
-        self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: self.submissionDataModels.count-1, endingIndexExclusive: self.submissionDataModels.count, animation: .fade)
+        self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: self.submissionDataModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE, endingIndexExclusive: self.submissionDataModels.count + self.LOADMORE_CELL_INDEX_VALUE, animation: .fade)
     }
 
     override func didReceiveMemoryWarning() {
@@ -384,7 +421,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return self.subCellViewModels.count
+        if self.subCellViewModels.count == 0 {
+            return 0
+        }
+        
+        return self.subCellViewModels.count + self.LOADMORE_CELL_INDEX_VALUE
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -396,7 +437,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // On first load, do not display any cells until table is finished loading
-        guard (indexPath.section > self.submissionDataModels.count-1) == false else {
+        guard (indexPath.section > self.submissionDataModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE) == false else {
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: "TransparentCell")!
             
             // Return a blank cell
@@ -559,7 +600,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private func isLastCell(forIndexPath indexPath: IndexPath, inLoadedViewModels loadedViewModels: [SubmissionCellViewModel]) -> Bool {
         var isLastCell = false
         
-        if indexPath.section == loadedViewModels.count-1 {
+        if indexPath.section == loadedViewModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE {
             isLastCell = true
         }
         
@@ -590,18 +631,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         tableView.beginUpdates()
         let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
         let indexSet = IndexSet.init(integersIn: range)
-        tableView.insertSections(indexSet, with: .automatic)
+        tableView.insertSections(indexSet, with: animation)
         tableView.endUpdates()
-        
-        
-        
-        // Refresh the cell that said "Load More Submissions"
-        tableView.beginUpdates()
-        let refreshRange = Range.init(uncheckedBounds: (lower: startingIndexInclusive-1, upper: startingIndexInclusive))
-        let refreshIndexSet = IndexSet.init(integersIn: refreshRange)
-        tableView.reloadSections(refreshIndexSet, with: .automatic)
-        tableView.endUpdates()
- 
     }
     
     private func reloadTableAnimated(lastCellIndex: Int) {
