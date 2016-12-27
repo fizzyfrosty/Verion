@@ -43,6 +43,7 @@ class FindSubverseViewController: UITableViewController {
                 self.filteredSubverseSearchResultViewModels.removeAll()
                 
                 // prepend all/frontpage subverses first
+                self.allSubverseSearchResultViewModels.append(self.getAllSubverse())
                 self.allSubverseSearchResultViewModels.append(self.getFrontpageSubverse())
                 
                 // Bind viewmodels to data models
