@@ -8,7 +8,7 @@ Immediate tasks:
 	* remember how many added?
 
 x block out NSFW
-- Share button in comments
+* Share button in comments
 
 
 
