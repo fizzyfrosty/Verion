@@ -22,6 +22,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
     private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
+    private let DEFAULT_ROW_HEIGHT: CGFloat = 50.0
     
     
     // Pull to Refresh control configuration
@@ -62,7 +63,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // Activity Indicator Cell
     private var activityIndicatorCell: ActivityIndicatorCell?
-    private let LOADMORE_CELL_INDEX_VALUE = 1
+    private var LOADMORE_CELL_INDEX_VALUE = 1
+    private let MAX_NUMBER_OF_PAGES = 19
     
     
     // Navigation Bar items
@@ -366,17 +368,34 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 
                 // Set the new starting view model index before we add new ones
                 let newStartingVmIndex = self.subCellViewModels.count
+                var dataModelsToAppend: [SubmissionDataModelProtocol] = []
                 
                 // For each data model, initialize a subCell viewModel
                 for i in 0..<submissionDataModels.count {
+                    var isDuplicate = false
+                    
                     let subCellViewModel = SubmissionCellViewModel()
                     subCellViewModel.dataModel = submissionDataModels[i]
                     
-                    self.subCellViewModels.append(subCellViewModel)
+                    // Check for duplicates
+                    for j in 0..<self.submissionDataModels.count {
+                        if submissionDataModels[i].id == self.submissionDataModels[j].id {
+                            // A duplicate is found, flag it
+                            isDuplicate = true
+                            break
+                        }
+                    }
+                    
+                    // Combine if no duplicates
+                    if isDuplicate == false {
+                        self.subCellViewModels.append(subCellViewModel)
+                        dataModelsToAppend.append(submissionDataModels[i])
+                    }
+                    
                 }
                 
                 // Add to data source
-                self.submissionDataModels.append(contentsOf: submissionDataModels)
+                self.submissionDataModels.append(contentsOf: dataModelsToAppend)
                 
                 
                 // Bind set of cells to be loaded
@@ -408,6 +427,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         self.loadTableCellsAddedToCurrent(withParams: self.subverseSubmissionParams) {
             self.insertSectionsAnimated(forTableView: self.tableView, startingIndexInclusive: startingIndex, endingIndexExclusive: self.subCellViewModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE, animation: .fade)
+            
+            // If Reached the max pages that the api will return
+            if self.subverseSubmissionParams.page == self.MAX_NUMBER_OF_PAGES {
+                // Don't show the Load More Cell
+                self.LOADMORE_CELL_INDEX_VALUE = 0
+                self.tableView.reloadData()
+            }
         }
         
         self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: self.submissionDataModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE, endingIndexExclusive: self.submissionDataModels.count + self.LOADMORE_CELL_INDEX_VALUE, animation: .fade)
@@ -444,7 +470,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             return transparentCell
         }
         
-        // FIXME:
         // If is last cell, return an Activity Indicator cell, start the animation
         if self.isLastCell(forIndexPath: indexPath, inLoadedViewModels: self.subCellViewModels) {
             
@@ -499,7 +524,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        var cellHeight: CGFloat = 0
+        var cellHeight: CGFloat = self.DEFAULT_ROW_HEIGHT
         
         // If Last element, return the LoadMore cell height
         guard self.isLastCell(forIndexPath: indexPath, inLoadedViewModels: self.subCellViewModels) == false else {
@@ -598,6 +623,12 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     private func isLastCell(forIndexPath indexPath: IndexPath, inLoadedViewModels loadedViewModels: [SubmissionCellViewModel]) -> Bool {
+        
+        // If we reached max pages, don't return true to show last page
+        guard self.LOADMORE_CELL_INDEX_VALUE != 0 else {
+            return false
+        }
+        
         var isLastCell = false
         
         if indexPath.section == loadedViewModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE {

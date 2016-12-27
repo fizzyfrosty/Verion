@@ -21,6 +21,7 @@ struct SubmissionCellViewModelInitData {
     var subverseName: String = "SampleSubverse"
     var date: Date = Date()
     var rank: Double = 3.322
+    var isNsfw = false // not yet used
 }
 
 class SubmissionCellViewModel{
@@ -52,6 +53,7 @@ class SubmissionCellViewModel{
     private(set) var submittedToSubverseString = NSMutableAttributedString()
     
     private(set) var thumbnailImage: UIImage?
+    private(set) var isNsfw = false // not yet used
     
     // Variables - additional
     var upvoteCount = Observable<Int>(0)
@@ -111,7 +113,7 @@ class SubmissionCellViewModel{
     
     // Use externally for whoever is doing the binding to separate/optimize loading
     func createThumbnailImage() {
-        self.thumbnailImage = self.createThumbnailImage(urlString: self.thumbnailLink.value)
+        self.thumbnailImage = self.createThumbnailImage(urlString: self.thumbnailLink.value, isNsfw: self.isNsfw)
     }
     
     private func setupInternalBindings() {
@@ -176,11 +178,21 @@ class SubmissionCellViewModel{
     }
     
     // Thumbnail Image
-    private func createThumbnailImage(urlString: String) -> UIImage? {
-        
-        let image = ImageDownloader.downloadImage(urlString: urlString)
+    private func createThumbnailImage(urlString: String, isNsfw: Bool) -> UIImage? {
+        let image: UIImage?
+        if isNsfw == true {
+            image = self.getNsfwImage()
+        } else {
+            image = ImageDownloader.downloadImage(urlString: urlString)
+        }
         
         return image
+    }
+    
+    private func getNsfwImage()-> UIImage {
+        let image = UIImage.init(named: "noimageavailable")
+        
+        return image!
     }
     
     deinit {

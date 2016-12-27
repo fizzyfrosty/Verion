@@ -10,6 +10,7 @@ import UIKit
 
 protocol CommentsSortByCellDelegate: class {
     func commentsSortByCell(cell: CommentsSortByCell, didSortBy sortType: SortTypeComments)
+    func commentsSortByCell(cell: CommentsSortByCell, didPressShare: Any)
 }
 
 class CommentsSortByCell: UITableViewCell {
@@ -19,7 +20,15 @@ class CommentsSortByCell: UITableViewCell {
     // These are for v1 api implementation
     @IBOutlet var upvoteButton: UIButton!
     @IBOutlet var downvoteButton: UIButton!
-    @IBOutlet var commentButton: UIButton!
+    @IBOutlet var shareButton: UIButton!
+    @IBAction func pressedShare(_ sender: Any) {
+        if let _ = self.delegate?.commentsSortByCell(cell: self, didPressShare: sender) {
+        } else {
+            #if DEBUG
+                print("Warning: CommentsSortByCell's delegate may not be set.")
+            #endif
+        }
+    }
     
     var viewModel: CommentsSortByCellViewModel?
     var navigationController: UINavigationController?

@@ -37,7 +37,6 @@ class SubmissionLinkCell: UITableViewCell {
         
         self.thumbnailImageView.image = viewModel.thumbnailImage
         
-        // TODO: use an image representing the web
         if self.thumbnailImageView.image == nil {
             self.thumbnailImageView.image = UIImage(named: "noimageavailable")
         }

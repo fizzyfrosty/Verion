@@ -470,6 +470,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
         // If touched sorted By bar, trigger the segue
@@ -564,13 +565,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.tableView.reloadData()
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
+    
 
     /*
     // Override to support editing the table view.
@@ -700,16 +695,45 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
 }
 
-extension CommentsViewController: CommentCellDelegate {
+extension CommentsViewController: CommentCellDelegate{
     func commentCellDidChange(commentCell: CommentCell) {
-        
-        
         // Get the index, reload table row
         if let indexPath = self.tableView.indexPath(for: commentCell) {
             
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
+    }
+    
+    func commentsSortByCell(cell: CommentsSortByCell, didPressShare: Any) {
+        self.shareActivities()
+    }
+    
+    private func getTextLink(dataModel: SubmissionDataModelProtocol) -> String {
+        let link = "https://voat.co/v/\(dataModel.subverseName)/\(dataModel.id)"
+        return link
+    }
+    
+    private func shareActivities() {
         
-        
+        DispatchQueue.global(qos: .background).async {
+            var activityItems: [Any] = []
+            switch self.submissionMediaType {
+            case .text:
+                activityItems.append(self.getTextLink(dataModel: self.submissionDataModel!))
+            case .image:
+                activityItems.append(self.submissionImageContentVm.imageLink)
+            case .link:
+                activityItems.append(self.submissionLinkContentVm.link)
+            default:
+                activityItems.append(self.submissionLinkContentVm.link)
+            }
+            let activityViewController = UIActivityViewController.init(activityItems: activityItems, applicationActivities: nil)
+            
+            DispatchQueue.main.async {
+                self.navigationController?.present(activityViewController, animated: true, completion: {
+                    
+                })
+            }
+        }
     }
 }
