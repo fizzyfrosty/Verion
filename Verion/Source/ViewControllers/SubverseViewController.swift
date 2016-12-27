@@ -33,13 +33,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private var SCROLLVIEW_CONTENT_OFFSET_LANDSCAPE: CGFloat = 32
     private var isLoadingRequest = false {
         didSet {
-            // FIX ME: possibly take out
-            /*
             if isLoadingRequest == false {
                 self.tableView?.isScrollEnabled = true
             } else {
                 self.tableView?.isScrollEnabled = false
-            }*/
+            }
         }
     }
     var scrollViewContentOffsetY:CGFloat {
@@ -60,8 +58,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // Sorting
     private let SORT_BY_TITLE = "Sort Submissions by"
-    private var sortType: SortTypeSubmissions = .hot
-
     @IBOutlet var sortByButton: UIBarButtonItem!
     
     // Activity Indicator Cell
@@ -73,7 +69,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private var ACTIVITY_INDICATOR_LENGTH: CGFloat = 25.0
     var activityIndicator: NVActivityIndicatorView?
     
-    var subverseSubmissionParams = SubmissionsRequestParams(subverse: "frontpage", page: 0, sortType: .hot, topSortTypeTime: .all)
+    let DEFAULT_STARTING_SUBVERSE = "frontpage"
+    var subverseSubmissionParams = SubmissionsRequestParams(subverse: "frontpage", page: 0, sortType: .hot, topSortTypeTime: .week)
     
     private let NAVIGATION_BG_COLOR: UIColor = UIColor(colorLiteralRed: 95.0/255.0, green: 173.0/255.0, blue: 220.0/255.0, alpha: 1.0)
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 161.0/255.0, green: 212.0/255.0, blue: 242.0/255.0, alpha: 1.0)
@@ -120,19 +117,16 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         for sortByType in SortTypeSubmissions.allValues {
             let sortAction = UIAlertAction.init(title: sortByType.rawValue, style: .default, handler: { alertAction in
                 
-                // FIXME: new sort action sets the sort type in subverseSubmissionParams and reloads
-                /*
                 // Set the view model
-                self.sortType = sortByType
+                self.subverseSubmissionParams.sortType = sortByType
                 
-                self.sortSubmissions(bySortType: self.sortType)
-                
-                // Send to top
-                self.tableView.setContentOffset(CGPoint(x: 0.0, y: -self.tableView.contentInset.top), animated: true)
+                // Button title
+                self.sortByButton.title = sortByType.rawValue
                 
                 // Reload table
-                self.reloadTableAnimated(lastCellIndex: self.numOfCellsToDisplay)
- */
+                self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true) {
+                }
+                
             })
             
             sortByActions.append(sortAction)
@@ -173,9 +167,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
         
-        let savedSubverse = self.getLastSavedSubverse()
-        
-        self.loadTableCells(forSubverse: savedSubverse)
+        self.subverseSubmissionParams.subverseName = self.getLastSavedSubverse()
+        self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true) {
+            
+        }
 
         
         // Uncomment the following line to preserve selection between presentations
@@ -198,7 +193,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         // If a new model, should default to frontpage
         if verionDataModel?.subversesVisited.count == 0 {
-            return self.subverseSubmissionParams.subverseName
+            return self.DEFAULT_STARTING_SUBVERSE
         }
         
         return (verionDataModel?.subversesVisited[0])!
@@ -260,8 +255,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             self.customRefreshControl?.showActivityIndicator()
             //refresh logic
             
-            
-            self.loadTableCells(withParams: self.subverseSubmissionParams) {
+            self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: false){
                 self.refreshControl?.endRefreshing()
                 self.customRefreshControl?.isRefreshing = false
                 self.customRefreshControl?.hideActivityIndicator()
@@ -289,9 +283,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     // public function to call loading from outside of VC
-    func loadTableCells(forSubverse subverseString: String) {
+    func loadTableCellsNew(forSubverse subverseString: String, clearScreen: Bool, completion: @escaping ()->()) {
         // Clear current submissions
         self.cleanupModels()
+        
+        if clearScreen {
+            self.tableView.reloadData()
+        }
         
         // Set the subverse name
         self.subverseSubmissionParams.subverseName = subverseString
@@ -300,12 +298,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.showNavBarActivityIndicator()
         
         // Load cells
-        self.loadTableCells(withParams: self.subverseSubmissionParams) {
+        self.loadTableCellsAddedToCurrent(withParams: self.subverseSubmissionParams) {
             self.hideNavBarActivityIndicator()
+            completion()
         }
     }
     
-    private func loadTableCells(withParams params: SubmissionsRequestParams, completion: @escaping ()->()) {
+    private func loadTableCellsAddedToCurrent(withParams params: SubmissionsRequestParams, completion: @escaping ()->()) {
         
         guard self.isLoadingRequest != true else {
             return
@@ -350,9 +349,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 // Bind set of cells to be loaded
                 self.bindCellsToBeDisplayed(startingIndexInclusive: newStartingVmIndex, endingIndexExclusive: self.subCellViewModels.count)
                 
-                // FIXME: No need to sort now, right?
-                //self.sortSubmissions(bySortType: self.sortType)
-                
                 
                 // Reload table, animated, back on main thread
                 DispatchQueue.main.async {
@@ -372,15 +368,12 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     private func loadMoreTableCells(completion: @escaping ()->()) {
-        // Make call to Data provider
+        // Increment page number and Make call to Data provider
+        self.subverseSubmissionParams.page += 1
+        self.loadTableCellsAddedToCurrent(withParams: self.subverseSubmissionParams) {
+        }
         
-        // Get returned data models
-        
-        // Bind to new viewmodels
-        
-        // Add to data source
-        
-        // reload table at sections
+        self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: self.submissionDataModels.count-1, endingIndexExclusive: self.submissionDataModels.count, animation: .fade)
     }
 
     override func didReceiveMemoryWarning() {
@@ -657,26 +650,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         // Forces redraw of shadows right before transition
         self.tableView.reloadData()
-    }
-    
-    private func sortSubmissions(bySortType sortType: SortTypeSubmissions) {
-        // Sort it all
-        switch sortType {
-        case .hot:
-            self.subCellViewModels.sort(by: { (viewModelA, viewModelB) -> Bool in
-                return viewModelA.rank > viewModelB.rank
-            })
-        case .new:
-            self.subCellViewModels.sort(by: { (viewModelA, viewModelB) -> Bool in
-                return viewModelA.date?.compare(viewModelB.date!) == ComparisonResult.orderedDescending
-            })
-        case .top:
-            self.subCellViewModels.sort(by: { (viewModelA, viewModelB) -> Bool in
-                return viewModelA.voteCountTotal.value > viewModelB.voteCountTotal.value
-            })
-        }
-        self.sortByButton.title = sortType.rawValue
-        
     }
     
     private func cleanupModels() {

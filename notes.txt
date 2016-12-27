@@ -55,11 +55,16 @@ Immediate tasks:
 * Add delay to the binding algorithm on "Load More" and replace with a loading graphic.
 * replace the binding algorithm on "Load More" with a call to the data provider
 
-- Implement loading subverse with v1 api
-- Ensure it works with legacy api still
-- Try with offline data provider
+* Implement loading subverse with v1 api
+* Ensure it works with legacy api still
+* Try with offline data provider
 
+
+* Load More works
+* Sort By reloads page 0 with new sort
 - Set the max number of pages to 19
+
+- V1 for Submission Title/Content/Sortby stuffs
 
 - refactor comments to work with legacy api
 

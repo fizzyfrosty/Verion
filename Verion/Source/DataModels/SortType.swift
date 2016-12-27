@@ -20,5 +20,5 @@ enum SortTypeSubmissions: String {
     case top = "Top"
     case new = "New"
     
-    static let allValues = [hot, top, new]
+    static let allValues = [new, top, hot]
 }

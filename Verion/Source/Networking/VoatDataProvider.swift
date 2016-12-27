@@ -295,7 +295,7 @@ class VoatDataProvider: DataProviderType {
     private func getHeaders(apiVersion: APIVersion) -> HTTPHeaders {
         switch apiVersion {
         case .legacy:
-            return ["":""]
+            return [:]
         case .v1:
             return [self.VOAT_API_KEY_HEADER: self.VOAT_API_KEY_VALUE]
         }
