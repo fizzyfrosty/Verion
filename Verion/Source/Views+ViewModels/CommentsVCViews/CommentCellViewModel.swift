@@ -45,7 +45,7 @@ class CommentCellViewModel {
     
     // Cell Height
     let CELL_VERTICAL_MARGINS: CGFloat = 55.0
-    private let CELL_HORIZONTAL_MARGINS: CGFloat = 40.0
+    private let CELL_HORIZONTAL_MARGINS: CGFloat = 30.0
     private let CELL_MAX_HEIGHT: CGFloat = 9999.0
     private let CELL_MINIMIZED_HEIGHT: CGFloat = 30.0
     
@@ -111,7 +111,7 @@ class CommentCellViewModel {
         self.upvoteCount.value = initData.upvoteCount
         self.downvoteCount.value = initData.downvoteCount
         self.usernameString = initData.usernameString
-        self.textString = initData.textString
+        self.textString = initData.textString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         self.attributedTextString = MarkdownParser.attributedString(fromMarkdownString: self.textString)
         
         self.separatedVoteCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)

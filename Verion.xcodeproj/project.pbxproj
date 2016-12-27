@@ -13,6 +13,8 @@
 		432564B61DEEB798001B943A /* TabController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564B51DEEB798001B943A /* TabController.storyboard */; };
 		432564BA1DEED077001B943A /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
 		432564BB1DEED077001B943A /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */; };
+		432B77771E12272A00457F2C /* ActivityIndicatorCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432B77761E12272A00457F2C /* ActivityIndicatorCellViewModel.swift */; };
+		432B777B1E12357700457F2C /* SubmissionsRequestParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432B777A1E12357700457F2C /* SubmissionsRequestParams.swift */; };
 		43433D791E0272860017FAB0 /* DataProviderHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D781E0272860017FAB0 /* DataProviderHelper.swift */; };
 		43433D7B1E027FD00017FAB0 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */; };
 		43433D7D1E02B8750017FAB0 /* SubmissionTextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433D7C1E02B8750017FAB0 /* SubmissionTextFormatter.swift */; };
@@ -154,6 +156,8 @@
 		4300A0C01DF0EF0A00497FE4 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/iOS/ReactiveKit.framework; sourceTree = "<group>"; };
 		432564381DECAE8F001B943A /* Subverse.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Subverse.storyboard; sourceTree = "<group>"; };
 		432564B51DEEB798001B943A /* TabController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabController.storyboard; sourceTree = "<group>"; };
+		432B77761E12272A00457F2C /* ActivityIndicatorCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorCellViewModel.swift; sourceTree = "<group>"; };
+		432B777A1E12357700457F2C /* SubmissionsRequestParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionsRequestParams.swift; sourceTree = "<group>"; };
 		43433D781E0272860017FAB0 /* DataProviderHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProviderHelper.swift; sourceTree = "<group>"; };
 		43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		43433D7C1E02B8750017FAB0 /* SubmissionTextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionTextFormatter.swift; sourceTree = "<group>"; };
@@ -337,6 +341,7 @@
 			isa = PBXGroup;
 			children = (
 				43433D911E057E620017FAB0 /* ActivityIndicatorCell.swift */,
+				432B77761E12272A00457F2C /* ActivityIndicatorCellViewModel.swift */,
 				43DF45301E09F04E00478AD9 /* ProgressIndicatorCell.swift */,
 				43DF45341E09F0A500478AD9 /* ProgressIndicatorCellViewModel.swift */,
 				43433D921E057E620017FAB0 /* CommentCell.swift */,
@@ -564,6 +569,7 @@
 				4375BFC51DF3737F00576CC6 /* SubmissionType.swift */,
 				4375C08B1E011F8E00576CC6 /* SortType.swift */,
 				43B056741E0D4272007083E8 /* VerionDataModel.swift */,
+				432B777A1E12357700457F2C /* SubmissionsRequestParams.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -861,6 +867,7 @@
 				43433DAA1E057E620017FAB0 /* SubmissionLinkCellViewModel.swift in Sources */,
 				43B056DB1E0E4691007083E8 /* TransitionZoom.swift in Sources */,
 				43433D791E0272860017FAB0 /* DataProviderHelper.swift in Sources */,
+				432B777B1E12357700457F2C /* SubmissionsRequestParams.swift in Sources */,
 				43433DB01E057E620017FAB0 /* SubmissionCellViewModel.swift in Sources */,
 				43433DAC1E057E620017FAB0 /* SubmissionTextCellViewModel.swift in Sources */,
 				4375C0421DF7524700576CC6 /* CommentsViewController.swift in Sources */,
@@ -885,6 +892,7 @@
 				43433D7F1E03C8290017FAB0 /* CellHeightCalculator.swift in Sources */,
 				43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */,
 				43B056D11E0E4691007083E8 /* SoundPlayer.swift in Sources */,
+				432B77771E12272A00457F2C /* ActivityIndicatorCellViewModel.swift in Sources */,
 				43B056E01E0E4691007083E8 /* SwiftyMarkdown.swift in Sources */,
 				43B056C41E0E4691007083E8 /* DesignableButton.swift in Sources */,
 				43B056631E0D1CDA007083E8 /* SlideController.swift in Sources */,

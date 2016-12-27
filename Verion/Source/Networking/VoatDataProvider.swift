@@ -84,22 +84,17 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
-    func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?) -> Void) {
+    func requestSubverseSubmissions(submissionParams: SubmissionsRequestParams, completion: @escaping ([SubmissionDataModelProtocol], Error?) -> Void) {
         var submissionDataModels = [SubmissionDataModelProtocol]()
         
         var jsonData: JSON?
         
-        var requestUrlString: String?
+        let requestUrlString = self.getSubverseSubmissionsRequestUrlString(submissionParams: submissionParams, apiVersion: self.apiVersion)
         
-        switch subverse {
-        case self.FRONTPAGE_SUBVERSE_NAME:
-            requestUrlString = self.VOAT_GET_FRONTPAGE_100_SUBMISSIONS_URL_STRING
-        default:
-            requestUrlString = self.VOAT_GET_SUBVERSE_SUBMISSIONS_URL_STRING + subverse.lowercased()
-        }
+        let headers = self.getHeaders(apiVersion: self.apiVersion)
         
         // Get data with Alamofire
-        Alamofire.request(requestUrlString!).validate().responseJSON() { response in
+        Alamofire.request(requestUrlString, headers: headers).validate().responseJSON() { response in
             switch response.result {
             case .success:
                 
@@ -109,13 +104,8 @@ class VoatDataProvider: DataProviderType {
                 
                 jsonData = JSON.init(data: response.data!)
                 
-                // For each submission, create a datamodel
-                for i in 0..<jsonData!.count {
-                    // Get data model from sample JSON
-                    let submissionJson = jsonData![i]
-                    let submissionDataModel = self.dataProviderHelper.getSubmissionDataModel(fromJson: submissionJson)
-                    submissionDataModels.append(submissionDataModel)
-                }
+                submissionDataModels = self.dataProviderHelper.getSubmissionDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
+                
                 
                 // TODO: Implement error
                 
@@ -150,7 +140,7 @@ class VoatDataProvider: DataProviderType {
                 for i in 0..<jsonData!.count {
                     // Get data model from sample JSON
                     let subverseJson = jsonData![i]
-                    let subverseDataModel = self.dataProviderHelper.getSubverseDataModel(fromJson: subverseJson, apiVersion: self.apiVersion)
+                    let subverseDataModel = self.dataProviderHelper.getSubverseSearchResultDataModel(fromJson: subverseJson, apiVersion: self.apiVersion)
                     subverseDataModels.append(subverseDataModel)
                 }
                 
@@ -169,7 +159,7 @@ class VoatDataProvider: DataProviderType {
     func requestComments(subverse: String, submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?) -> Void) {
         var commentDataModels = [CommentDataModelProtocol]()
         
-        let requestUrlString = self.getV1CommentsUrlString(forSubverse: subverse, submissionID: submissionId)
+        let requestUrlString = self.getCommentsUrlStringV1(forSubverse: subverse, submissionID: submissionId)
         var jsonData: JSON?
         
         let headers: HTTPHeaders = [
@@ -254,8 +244,60 @@ class VoatDataProvider: DataProviderType {
         return mediaType
     }
     
-    private func getV1CommentsUrlString(forSubverse subverse: String, submissionID: Int64) -> String {
+    private func getCommentsUrlStringV1(forSubverse subverse: String, submissionID: Int64) -> String {
         let urlString = self.VOAT_V1_DOMAIN + "/api/v1/v/\(subverse)/\(String(submissionID))/comments"
         return urlString
+    }
+    
+    private func getSubverseSubmissionsRequestUrlString(submissionParams: SubmissionsRequestParams, apiVersion: APIVersion) -> String {
+        var urlString = ""
+        
+        switch apiVersion {
+        case .legacy:
+            urlString = self.getSubverseSubmissionsRequestUrlStringLegacy(submissionParams: submissionParams)
+        case .v1:
+            urlString = self.getSubverseSubmissionsRequestUrlStringV1(submissionParams: submissionParams)
+        }
+        
+        return urlString
+    }
+    
+    private func getSubverseSubmissionsRequestUrlStringLegacy(submissionParams: SubmissionsRequestParams) -> String {
+        var legacyUrlString = ""
+        let subverse = submissionParams.subverseName
+        
+        switch subverse {
+        case self.FRONTPAGE_SUBVERSE_NAME:
+            legacyUrlString = self.VOAT_GET_FRONTPAGE_100_SUBMISSIONS_URL_STRING
+        default:
+            legacyUrlString = self.VOAT_GET_SUBVERSE_SUBMISSIONS_URL_STRING + subverse.lowercased()
+        }
+        
+        return legacyUrlString
+    }
+    
+    private func getSubverseSubmissionsRequestUrlStringV1(submissionParams: SubmissionsRequestParams) -> String {
+        var urlStringV1 = ""
+        
+        urlStringV1 = self.VOAT_V1_DOMAIN + "/api/v1/v/\(submissionParams.subverseName)?sort=\(submissionParams.sortType.rawValue)&page=\(submissionParams.page)"
+        
+        switch submissionParams.sortType {
+        case .top:
+            // Append a time query string if sorting by Top
+            urlStringV1 = urlStringV1 + "&time=\(submissionParams.topSortTypeTime)"
+        default:
+            break
+        }
+        
+        return urlStringV1
+    }
+    
+    private func getHeaders(apiVersion: APIVersion) -> HTTPHeaders {
+        switch apiVersion {
+        case .legacy:
+            return ["":""]
+        case .v1:
+            return [self.VOAT_API_KEY_HEADER: self.VOAT_API_KEY_VALUE]
+        }
     }
 }

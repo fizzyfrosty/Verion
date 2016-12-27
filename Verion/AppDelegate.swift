@@ -80,7 +80,7 @@ extension SwinjectStoryboard {
         
         defaultContainer.register(DataProviderType.self){ _ in
             //OfflineDataProvider(apiVersion: .legacy)
-            VoatDataProvider(apiVersion: .legacy)
+            VoatDataProvider(apiVersion: .v1)
         }
         
         defaultContainer.register(DataManagerProtocol.self) { _ in

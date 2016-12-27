@@ -28,8 +28,6 @@ class LeftMenuController: UITableViewController {
     
     private let SUBVERSE_HISTORY_SECTION_TITLE = "    Subverses Visited"
     
-    let testValues = ["abc", "123", "banana"]
-    
     // Delegate
     weak var delegate: LeftMenuControllerDelegate?
     
@@ -56,9 +54,6 @@ class LeftMenuController: UITableViewController {
         if let verionDataModel = dataManager?.getSavedData() {
             self.subverseCellViewModels = self.createSubverseViewModels(withNames: verionDataModel.subversesVisited)
         }
-        
-        // FIXME: temporarily populate with view models
-        //self.subverseCellViewModels = self.createSubverseViewModels(withNames: self.testValues)
     }
     
     fileprivate func saveData(completion: @escaping ()->()) {

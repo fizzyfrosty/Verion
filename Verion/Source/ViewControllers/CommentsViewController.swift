@@ -16,7 +16,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     // Display formatting
     private let CELL_SPACING: CGFloat = 10.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
-    private let LOADING_CELL_HEIGHT: CGFloat = 50.0
     private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
@@ -359,7 +358,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
         
         guard self.areCommentsLoaded != false else {
-            return self.LOADING_CELL_HEIGHT
+            let sampleActivityIndicatorVm = ActivityIndicatorCellViewModel()
+            return sampleActivityIndicatorVm.cellHeight
         }
         
         if self.commentsViewModels.count > 0 {

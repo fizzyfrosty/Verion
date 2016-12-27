@@ -11,7 +11,6 @@ import NVActivityIndicatorView
 
 class ActivityIndicatorCell: UITableViewCell {
     
-    @IBOutlet var mainLabel: UILabel!
     
     var activityIndicator: NVActivityIndicatorView?
     var activityIndicatorLength: CGFloat = 5.0

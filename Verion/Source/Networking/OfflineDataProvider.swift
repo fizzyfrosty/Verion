@@ -20,6 +20,8 @@ class OfflineDataProvider: DataProviderType {
     private let SAMPLE_FILES_EXTENSION = "txt"
     
     private let SAMPLE_JSON_COMMENTS_FILE_V1 = "SampleComments_v1"
+    private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_V1 = "SampleJsonSubmissions_v1"
+    private let SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_V1 = "SampleSubverseList_v1"
     
     private let DELAY_TIME_SECONDS: Float = 1.0
     private let SEARCH_RESULTS_DELAY_TIME: Float = 0.25
@@ -32,23 +34,22 @@ class OfflineDataProvider: DataProviderType {
         completion(nil, SubmissionMediaType.link, false, nil)
     }
     
-    func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void {
+    func requestSubverseSubmissions(submissionParams: SubmissionsRequestParams, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void {
         
         // HeeHeeHee let's delay execution to simulate "lag"
         Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
             var submissionDataModels = [SubmissionDataModelProtocol]()
             
             // Load sample json data
-            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY,
-                                                withExtension: self.SAMPLE_FILES_EXTENSION)
-            
-            // For each submission, create a datamodel
-            for i in 0..<sampleJson.count {
-                // Get data model from sample JSON
-                let submissionJson = sampleJson[i]
-                let submissionDataModel = self.dataProviderHelper.getSubmissionDataModel(fromJson: submissionJson)
-                submissionDataModels.append(submissionDataModel)
+            let sampleJson: JSON
+            switch self.apiVersion {
+            case .legacy:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY, withExtension: self.SAMPLE_FILES_EXTENSION)
+            case .v1:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_V1, withExtension: self.SAMPLE_FILES_EXTENSION)
             }
+            
+            submissionDataModels = self.dataProviderHelper.getSubmissionDataModels(fromJson: sampleJson, apiVersion: self.apiVersion)
             
             // TODO: Implement error return in a mock object?
             
@@ -68,7 +69,7 @@ class OfflineDataProvider: DataProviderType {
             for i in 0..<sampleJson.count {
                 // Get data model from sample JSON
                 let subverseJson = sampleJson[i]
-                let subverseDataModel = self.dataProviderHelper.getSubverseDataModel(fromJson: subverseJson, apiVersion: self.apiVersion)
+                let subverseDataModel = self.dataProviderHelper.getSubverseSearchResultDataModel(fromJson: subverseJson, apiVersion: self.apiVersion)
                 subverseDataModels.append(subverseDataModel)
             }
             

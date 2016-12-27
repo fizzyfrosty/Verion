@@ -51,7 +51,18 @@ Immediate tasks:
 
 * Tweak colors
 
-- Analytics
+
+* Add delay to the binding algorithm on "Load More" and replace with a loading graphic.
+* replace the binding algorithm on "Load More" with a call to the data provider
+
+- Implement loading subverse with v1 api
+- Ensure it works with legacy api still
+- Try with offline data provider
+
+- Set the max number of pages to 19
+
+- refactor comments to work with legacy api
+
 
 - Program against v1 api
 	- Subverse list request
@@ -60,6 +71,9 @@ Immediate tasks:
 	- subverse submissions
 	* comments
 
+- Share button in comments
+
+- Analytics
 - Ads
 - IAP
 
