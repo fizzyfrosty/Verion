@@ -34,7 +34,7 @@ class LeftMenuController: UITableViewController {
     
     // Dependencies
     var dataManager: DataManagerProtocol?
-    
+    var analyticsManager: AnalyticsManagerProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()

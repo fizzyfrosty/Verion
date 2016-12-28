@@ -11,9 +11,12 @@ import Swinject
 import SwinjectStoryboard
 
 @UIApplicationMain
+
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    let FLURRY_API_KEY = "BKGPY6BG5Y9FWCSSXWGG"
 
     /*
     var container: Container = {
@@ -31,6 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // Instantiate a window.
+        
+        #if !DEBUG
+            Flurry.startSession(self.FLURRY_API_KEY)
+        #endif
+        
         
         /*
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -87,24 +95,38 @@ extension SwinjectStoryboard {
             VerionDataManager()
         }
         
+        defaultContainer.register(AnalyticsManagerProtocol.self) { _ in
+            var analyticsType = AnalyticsType.flurry
+            
+            #if DEBUG
+            analyticsType = .none
+            #endif
+            
+            return AnalyticsManager(analyticsType: analyticsType)
+        }
+        
         defaultContainer.storyboardInitCompleted(SubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
+            C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
         })
         
         defaultContainer.storyboardInitCompleted(CommentsViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+            C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
         })
         
         defaultContainer.storyboardInitCompleted(FindSubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+            C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             
         })
         
         defaultContainer.storyboardInitCompleted(LeftMenuController.self) { (ResolverType, C) in
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
+            C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
         }
     }
 }

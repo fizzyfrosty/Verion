@@ -8,6 +8,7 @@
 
 import UIKit
 import NVActivityIndicatorView
+import SafariServices
 
 class CommentsViewController: UITableViewController, UITextViewDelegate, CommentsSortByCellDelegate {
     
@@ -64,7 +65,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType?
-    
+    var analyticsManager: AnalyticsManagerProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -486,9 +487,11 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             if self.submissionMediaType != .text {
                 switch self.submissionMediaType {
                 case .link:
-                    self.loadWebViewController(forLink: self.submissionLinkContentVm.link)
+                    self.openSafariViewController(link: self.submissionLinkContentVm.link)
+                    //self.loadWebViewController(forLink: self.submissionLinkContentVm.link)
                 case .image:
-                    self.loadWebViewController(forLink: self.submissionImageContentVm.imageLink)
+                    self.openSafariViewController(link: self.submissionImageContentVm.imageLink)
+                    //self.loadWebViewController(forLink: self.submissionImageContentVm.imageLink)
                 default:
                     break;
                 }
@@ -593,13 +596,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         return true
     }
     */
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == self.WEBVIEW_SEGUE_ID {
-            let webViewVC = segue.destination as! WebViewController
-            webViewVC.link = self.linkString
-        }
-    }
     
     // For detecting rotations beginning and finishing.
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -626,11 +622,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         })
     }
     
-    func loadWebViewController(forLink link: String) {
-        self.linkString = link
-        self.performSegue(withIdentifier: self.WEBVIEW_SEGUE_ID, sender: self)
-    }
-
     func areSubmissionViewModelsLoaded() -> Bool {
         // The commentsSortByViewModel should be the last one to be loaded
         if self.commentsSortByVm != nil {
@@ -642,7 +633,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         let linkString = URL.absoluteString
-        self.loadWebViewController(forLink: linkString)
+        self.openSafariViewController(link: linkString)
         
         return false
     }
@@ -692,6 +683,18 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         #if DEBUG
         print ("Deallocated Comments View Controller")
         #endif
+    }
+}
+
+extension CommentsViewController: SFSafariViewControllerDelegate {
+    fileprivate func openSafariViewController(link: String) {
+        let safariController = SFSafariViewController(url: URL(string: link)!)
+        safariController.delegate = self
+        self.present(safariController, animated: true, completion: nil)
+    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }
 

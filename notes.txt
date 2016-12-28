@@ -10,7 +10,46 @@ Immediate tasks:
 x block out NSFW
 * Share button in comments
 
+* Added new SFSafariViewController to replace UIWebView
+* Disabled AllowsArbitraryLoads in AppTransportSecurity
 
+* Install Flurry
+* Embed inside analytics manager protocol, extend the logging functions to allow another analytics tool in future
+
+What to log?
+Goals:
+- To help people promote communication
+- Want them to use the app daily, for long periods of time, spread pizzagate
+
+Track:
+User Activities:
+- what functions they use the most
+- Where they spend the most time
+
+App Performance:
+- Time for requests?
+
+Actions to Track:
+- Subverse Controller 
+	- Initial Loading
+		- subverse
+	- Load More Submissions
+		- page number
+		- subverse
+	- Pull to Refresh
+		- subverse
+	- Sorted By:
+		- sort type
+		- subverse
+
+- Left Menu
+	- Clear History
+		- subverses
+	- Load Subverse
+		- subverse
+
+Comments Controller
+	- 
 
 - Analytics
 - Ads
@@ -474,7 +513,8 @@ User Accounts
 - Respond to Messages
 
 
-
+Flurry App Key:
+BKGPY6BG5Y9FWCSSXWGG
 
 
 

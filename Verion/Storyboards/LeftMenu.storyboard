@@ -20,8 +20,45 @@
                         <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoatIconCell" rowHeight="163" id="JS2-gh-FCd">
+                                <rect key="frame" x="0.0" y="28" width="375" height="163"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JS2-gh-FCd" id="j63-YS-Gnk">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="163"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="trl-ss-jzy" userLabel="light_gray_separator">
+                                            <rect key="frame" x="0.0" y="161" width="375" height="1"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="vGi-bF-jhN"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Omb-8Z-Q4L" userLabel="black_separator">
+                                            <rect key="frame" x="0.0" y="161" width="375" height="2"/>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="2" id="v7W-de-2q3"/>
+                                            </constraints>
+                                        </view>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="v_icon_paint_2" translatesAutoresizingMaskIntoConstraints="NO" id="vVM-HZ-iky">
+                                            <rect key="frame" x="67" y="17" width="240" height="128"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.12549019610000001" green="0.12549019610000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="Omb-8Z-Q4L" secondAttribute="trailing" id="29A-aO-rb1"/>
+                                        <constraint firstAttribute="bottom" secondItem="Omb-8Z-Q4L" secondAttribute="bottom" id="6Z8-9o-HBs"/>
+                                        <constraint firstAttribute="bottom" secondItem="trl-ss-jzy" secondAttribute="bottom" constant="1" id="8JB-AP-B9W"/>
+                                        <constraint firstItem="trl-ss-jzy" firstAttribute="leading" secondItem="j63-YS-Gnk" secondAttribute="leading" id="Ibv-FK-z6i"/>
+                                        <constraint firstAttribute="trailing" secondItem="trl-ss-jzy" secondAttribute="trailing" id="twP-BD-lPa"/>
+                                        <constraint firstItem="Omb-8Z-Q4L" firstAttribute="leading" secondItem="j63-YS-Gnk" secondAttribute="leading" id="wSO-x0-xWT"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubverseCell" rowHeight="48" id="s2f-fC-YWQ" customClass="SubverseCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="48"/>
+                                <rect key="frame" x="0.0" y="191" width="375" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s2f-fC-YWQ" id="udq-Wc-y7u">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
@@ -70,7 +107,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ClearHistoryCell" rowHeight="48" id="hMh-ac-R6O">
-                                <rect key="frame" x="0.0" y="76" width="375" height="48"/>
+                                <rect key="frame" x="0.0" y="239" width="375" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hMh-ac-R6O" id="2yW-6g-iyy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
@@ -111,7 +148,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransparentCell" rowHeight="48" id="DnR-Po-Otf">
-                                <rect key="frame" x="0.0" y="124" width="375" height="48"/>
+                                <rect key="frame" x="0.0" y="287" width="375" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DnR-Po-Otf" id="tEP-7m-XHk">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
@@ -165,5 +202,6 @@
     </scenes>
     <resources>
         <image name="Disclosure Indicator" width="8" height="13"/>
+        <image name="v_icon_paint_2" width="250" height="250"/>
     </resources>
 </document>

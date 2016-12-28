@@ -98,6 +98,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
     var dataManager: DataManagerProtocol?
+    var analyticsManager: AnalyticsManagerProtocol?
     
     // Delegate
     weak var delegate: SubverseViewControllerDelegate?
