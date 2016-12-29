@@ -122,6 +122,7 @@ extension SwinjectStoryboard {
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
+            C.adManager = AdManager.sharedInstance
         })
         
         defaultContainer.storyboardInitCompleted(FindSubverseViewController.self, initCompleted: { (ResolverType, C) in
@@ -133,6 +134,7 @@ extension SwinjectStoryboard {
         defaultContainer.storyboardInitCompleted(LeftMenuController.self) { (ResolverType, C) in
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
+            C.inAppPurchaseManager = InAppPurchaseManager.sharedInstance
         }
     }
 }

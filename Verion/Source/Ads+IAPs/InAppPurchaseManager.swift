@@ -28,15 +28,59 @@ class InAppPurchaseManager: NSObject {
     }
     
     // Must fetch products before making purchase
-    func fetchProducts() {
-        self.fetchProducts { (products, invalidProductIds) in
-            #if DEBUG
+    func fetchProducts(productIds: [String], completion: @escaping (Error?)->()) {
+        
+        self.fetchProducts(productIds: productIds) { (products, invalidProductIds, error) in
+            if error == nil {
                 
-            #endif
+                // Success, do stuff here
+                
+                // populate products with array
+                
+                #if DEBUG
+                    print("Successfully fetched products.")
+                #endif
+            } else {
+                // Failed, do anything?
+                
+                #if DEBUG
+                    print("Failed to fetch products.")
+                #endif
+            }
+            
+            completion(error)
         }
     }
     
-    private func fetchProducts(completion: @escaping (_ products: [SKProduct], _ invalidProductIdentifiers: [String]? )->()) {
+    private func fetchProducts(productIds: [String], completion: @escaping (_ products: [Any]?, _ invalidProductIdentifiers: [Any]?, Error?)->()) {
+        
+        let productIdsSet = Set.init(productIds)
+        
+        RMStore.default().requestProducts(productIdsSet, success: { (skProducts, invalidProductIds) in
+            // Success
+            completion(skProducts, invalidProductIds, nil)
+        }, failure: { error in
+            // Failed
+            completion(nil, nil, error)
+        })
+        
+        
+    }
+    
+    func purchaseProduct(productId: String, completion: @escaping (Error?)->()) {
+        RMStore.default().addPayment(productId, success: { skPaymentTransaction in
+            
+            // Success
+            completion(nil)
+            
+        }, failure: { skPaymentTransaction, error in
+            
+            // Failure
+            completion(error)
+        })
+    }
+    
+    func restorePurchases(completion: @escaping (Error?)->()) {
         
     }
     

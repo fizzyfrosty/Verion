@@ -8,8 +8,22 @@ Immediate tasks:
 
 - IAP
 * Create in app purchase on itunes connect
-- implement IAP Manager
-- Restore purchases
+* implement IAP Manager
+
+* fetch products
+* purchase products
+* Add Remove Ad cell to left menu
+* Actually remove the ads
+* Activity Indicator for transaction
+
+
+- Add Donate cell
+	- Take to webpage
+	- Use Alert to navigate with safari
+
+- error messages for:
+	* failing to fetch
+	- failing to purchase
 
 - left menu to remove
 

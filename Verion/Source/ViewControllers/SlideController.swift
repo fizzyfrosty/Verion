@@ -102,4 +102,12 @@ extension SlideController: LeftMenuControllerDelegate {
     func leftMenuDidClearHistory(leftMenu: LeftMenuController) {
         self.closeLeft()
     }
+    
+    func leftMenuDidPurchaseProduct(leftMenu: LeftMenuController, productId: String) {
+        self.closeLeft()
+        
+        // Remove ads from Subverse Controller
+        self.subverseController?.removeBannerAd()
+        self.subverseController?.savePurchasedRemoveAds()
+    }
 }

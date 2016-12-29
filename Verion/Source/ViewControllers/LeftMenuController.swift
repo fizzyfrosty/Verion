@@ -11,22 +11,46 @@ import UIKit
 protocol LeftMenuControllerDelegate: class {
     func leftMenuDidSelectSubverse(leftMenu: LeftMenuController, subverseName: String)
     func leftMenuDidClearHistory(leftMenu: LeftMenuController)
+    func leftMenuDidPurchaseProduct(leftMenu: LeftMenuController, productId: String)
 }
 
 class LeftMenuController: UITableViewController {
+    
+    enum LeftMenuSections: Int {
+        case subverseHistory = 0
+        case supportUs = 1
+        
+        static let allValues = [subverseHistory, supportUs]
+    }
     
     // Table Elements
     private let SUBVERSE_CELL_REUSE_ID = "SubverseCell"
     private let CLEAR_HISTORY_CELL_REUSE_ID = "ClearHistoryCell"
     private let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
+    private let SECTION_HEIGHT: CGFloat = 30.0
+    private let activtyIndicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+    
+    // Subverse history section
     fileprivate var subverseCellViewModels = [SubverseCellViewModel]()
-    
     private let clearHistoryCellCount: Int = 1
-    
     fileprivate let MAX_NUM_HISTORY_ENTRIES: Int = 20
     
+    // Support us section
+    enum SupportUsRows: Int {
+        case removeAds = 0
+        case donate = 1
+        
+        static let allValues = [removeAds]
+    }
+    private let REMOVE_ADS_CELL_REUSE_ID = "RemoveAdsCell"
+    private let DONATE_CELL_REUSE_ID = "DonateCell"
     
     private let SUBVERSE_HISTORY_SECTION_TITLE = "    Subverses Visited"
+    private let SUPPORT_US_SECTION_TITLE = "    Support Us <3"
+    
+    private let PURCHASE_SUCCESS_TITLE = "Thank you"
+    private let PURCHASE_REMOVE_ADS_SUCCESS_MESSAGE = "Ads are now removed! We hope you continue enjoy using Voatify!"
+    private let PURCHASE_FAILED_MESSAGE = "Purchase was cancelled."
     
     // Delegate
     weak var delegate: LeftMenuControllerDelegate?
@@ -35,6 +59,7 @@ class LeftMenuController: UITableViewController {
     // Dependencies
     var dataManager: DataManagerProtocol?
     var analyticsManager: AnalyticsManagerProtocol?
+    var inAppPurchaseManager: InAppPurchaseManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,9 +76,67 @@ class LeftMenuController: UITableViewController {
     }
     
     private func loadData() {
+        // Load saved data
         if let verionDataModel = dataManager?.getSavedData() {
+            
+            // Load subverses
             self.subverseCellViewModels = self.createSubverseViewModels(withNames: verionDataModel.subversesVisited!)
         }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: { alertAction in
+            
+        }))
+        
+        self.present(alertController, animated: true) {
+            
+        }
+    }
+    
+    private func purchaseRemoveAds() {
+        
+        self.showActivityIndicator()
+        self.inAppPurchaseManager?.fetchProducts(productIds: [VerionProductIds.removeAds]) { error in
+            
+            self.hideActivityIndicator()
+            guard error == nil else {
+                self.showAlert(title: "Error", message: "There was a problem. Please try again later.")
+                return
+            }
+            
+            self.showActivityIndicator()
+            self.inAppPurchaseManager?.purchaseProduct(productId: VerionProductIds.removeAds) { error in
+                
+                self.hideActivityIndicator()
+                if error == nil {
+                    self.showAlert(title: self.PURCHASE_SUCCESS_TITLE, message: self.PURCHASE_REMOVE_ADS_SUCCESS_MESSAGE)
+                    if let _ = self.delegate?.leftMenuDidPurchaseProduct(leftMenu: self, productId: VerionProductIds.removeAds) {
+                        // Success, do nothing
+                    } else {
+                        #if DEBUG
+                        print("Warning: LeftMenu's delegate may not be set for purchasing IAP.")
+                        #endif
+                    }
+                } else {
+                    self.showAlert(title: "", message: self.PURCHASE_FAILED_MESSAGE)
+                }
+                
+            }
+        }
+    }
+    
+    private func showActivityIndicator() {
+        let window = UIApplication.shared.keyWindow
+        window?.addSubview(self.activtyIndicator)
+        self.activtyIndicator.center = CGPoint(x: UIScreen.main.bounds.width/2.0, y: UIScreen.main.bounds.height/2.0)
+        self.activtyIndicator.startAnimating()
+    }
+    
+    private func hideActivityIndicator() {
+        self.activtyIndicator.stopAnimating()
+        self.activtyIndicator.removeFromSuperview()
     }
     
     fileprivate func saveData(completion: @escaping ()->()) {
@@ -94,74 +177,116 @@ class LeftMenuController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return LeftMenuSections.allValues.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        guard self.subverseCellViewModels.count != 0 else {
-            return 0
+        
+        switch section {
+        case LeftMenuSections.subverseHistory.rawValue:
+            guard self.subverseCellViewModels.count != 0 else {
+                return 0
+            }
+            
+            let numOfCells = self.subverseCellViewModels.count + self.clearHistoryCellCount
+            
+            return numOfCells
+            
+        case LeftMenuSections.supportUs.rawValue:
+            return SupportUsRows.allValues.count
+            
+        default:
+            break;
         }
         
-        let numOfCells = self.subverseCellViewModels.count + self.clearHistoryCellCount
-        
-        return numOfCells
+        // This should never be reached
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard self.subverseCellViewModels.count != 0 else {
+        switch indexPath.section {
+        case LeftMenuSections.subverseHistory.rawValue:
+            
+            // If last cell, it is the Clear History cell
+            if indexPath.row == self.subverseCellViewModels.count {
+                let clearHistoryCell = tableView.dequeueReusableCell(withIdentifier: self.CLEAR_HISTORY_CELL_REUSE_ID)
+                
+                return clearHistoryCell!
+            } else {
+                // Subverse history cells
+                let historyCell = tableView.dequeueReusableCell(withIdentifier: self.SUBVERSE_CELL_REUSE_ID, for: indexPath) as! SubverseCell
+                
+                let viewModel = self.subverseCellViewModels[indexPath.row]
+                historyCell.bind(toViewModel: viewModel)
+                
+                return historyCell
+            }
+        case LeftMenuSections.supportUs.rawValue:
+            
+            // Remove ads cell
+            if indexPath.row == SupportUsRows.removeAds.rawValue {
+                let removeAdsCell = tableView.dequeueReusableCell(withIdentifier: self.REMOVE_ADS_CELL_REUSE_ID, for: indexPath)
+                return removeAdsCell
+                
+            } else if indexPath.row == SupportUsRows.donate.rawValue {
+                
+                // Donate cell
+                let donateCell = tableView.dequeueReusableCell(withIdentifier: self.DONATE_CELL_REUSE_ID, for: indexPath)
+                return donateCell
+                
+            } else {
+                // Should never be reached
+                let transparentCell = tableView.dequeueReusableCell(withIdentifier: self.TRANSPARENT_CELL_REUSE_ID)
+                return transparentCell!
+            }
+            
+        default:
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: self.TRANSPARENT_CELL_REUSE_ID)
             
             return transparentCell!
         }
-        
-        // If last cell, it is the Clear History cell
-        if indexPath.row == self.subverseCellViewModels.count {
-            let clearHistoryCell = tableView.dequeueReusableCell(withIdentifier: self.CLEAR_HISTORY_CELL_REUSE_ID)
-            
-            return clearHistoryCell!
-        }
-        
-        // Subverse history cells
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBVERSE_CELL_REUSE_ID, for: indexPath) as! SubverseCell
-        
-        let viewModel = self.subverseCellViewModels[indexPath.row]
-        cell.bind(toViewModel: viewModel)
-
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         
-        // If no subverse history, do nothing
-        guard self.subverseCellViewModels.count != 0 else {
-            return
-        }
         
-        // If selected subverse
-        if indexPath.row < self.subverseCellViewModels.count {
-            let subverseName = self.subverseCellViewModels[indexPath.row].subverseName
-            if let _ = self.delegate?.leftMenuDidSelectSubverse(leftMenu: self, subverseName: subverseName) {
-                
-                // Analytics
-                let params = AnalyticsEvents.getLeftMenuGoToSubverseFromHistoryParams(subverseName: subverseName)
-                self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuGoToSubverseFromHistory, params: params, timed: false)
-                
-                // Success, do nothing
+        switch indexPath.section {
+        case LeftMenuSections.subverseHistory.rawValue:
+            
+            // Delegate - tell to Go to Subverse
+            if indexPath.row < self.subverseCellViewModels.count {
+                let subverseName = self.subverseCellViewModels[indexPath.row].subverseName
+                self.notifyDelegateToGoToSubverse(name: subverseName)
             } else {
-                #if DEBUG
-                    print("Warning: Left Menu Controller's delegate may not be set.")
-                #endif
+                // Clear History
+                if indexPath.row == self.subverseCellViewModels.count {
+                    self.clearHistory()
+                }
             }
+            
+        case LeftMenuSections.supportUs.rawValue:
+            if indexPath.row == SupportUsRows.removeAds.rawValue {
+                self.purchaseRemoveAds()
+            }
+        default:
+            break
         }
-        
-        // Clear History
-        // If selected clear, last object
-        if indexPath.row == self.subverseCellViewModels.count {
-            // Clear it
-            self.clearHistory()
+    }
+    
+    private func notifyDelegateToGoToSubverse(name: String) {
+        if let _ = self.delegate?.leftMenuDidSelectSubverse(leftMenu: self, subverseName: name) {
+            
+            // Analytics
+            let params = AnalyticsEvents.getLeftMenuGoToSubverseFromHistoryParams(subverseName: name)
+            self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuGoToSubverseFromHistory, params: params, timed: false)
+            
+            // Success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
         }
     }
     
@@ -191,18 +316,20 @@ class LeftMenuController: UITableViewController {
     
     // Headers
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return self.SUBVERSE_HISTORY_SECTION_TITLE
-        }
         
-        return nil
+        switch section {
+        case LeftMenuSections.subverseHistory.rawValue:
+            return self.SUBVERSE_HISTORY_SECTION_TITLE
+        case LeftMenuSections.supportUs.rawValue:
+            return self.SUPPORT_US_SECTION_TITLE
+        default:
+            return nil
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 30.0
-        }
-        return 0.0
+        
+        return self.SECTION_HEIGHT
     }
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {

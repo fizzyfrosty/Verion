@@ -190,10 +190,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.loadSavedData()
         
         self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true, animateNavBar: true) {
-            
-            if self.adManager?.isRemoveAdsPurchased() == false {
-                self.loadBannerAd()
-            }
         }
 
         
@@ -204,10 +200,42 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    func loadBannerAd() {
-        // Ads
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        self.setBottomInsetsForAds()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if self.adManager?.isRemoveAdsPurchased() == false {
+            self.loadBannerAd()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.removeBannerAd()
+    }
+    
+    func removeBannerAd() {
+        self.resetBannerAd()
+    }
+    
+    func savePurchasedRemoveAds() {
+        self.adManager?.adServiceType = .none
+        let verionDataModel = self.dataManager?.getSavedData()
+        verionDataModel?.isRemoveAdsPurchased = true
+        
+        self.dataManager?.saveData(dataModel: verionDataModel!)
+    }
+    
+    private func resetBannerAd() {
         self.bannerAd?.removeFromSuperview()
         self.bannerView?.removeFromSuperview()
+    }
+    
+    private func loadBannerAd() {
+        // Ads
+        self.resetBannerAd()
         
         if let bannerAd = self.adManager?.getBannerAd(rootViewController: self.navigationController!) {
             self.bannerAd = bannerAd
@@ -219,8 +247,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             self.bannerView?.addSubview(self.bannerAd!)
             self.bannerView?.backgroundColor = UIColor.white
             
-            let currentWindow = UIApplication.shared.keyWindow
-            currentWindow?.addSubview(self.bannerView!)
+            self.navigationController?.view.addSubview(self.bannerView!)
         }
     }
     
@@ -231,9 +258,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.subverseSubmissionParams.sortType = verionDataModel!.sortType!
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
+    private func setBottomInsetsForAds() {
         // Set bottom content Inset for possible ad-placement
         let topDefaultInset = self.tableView.contentInset.top
         let bottomInsetForAds = self.getBottomInsetForAds()
@@ -760,7 +785,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             if let commentsViewController = segue.destination as? CommentsViewController {
                 commentsViewController.submissionDataModel = self.subCellViewModels[self.selectedIndex].dataModel
                 commentsViewController.backgroundColor = self.BGCOLOR
-                
             }
             
         } else if segue.identifier == self.FIND_SUBVERSE_SEGUE_IDENTIFIER {

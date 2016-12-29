@@ -66,6 +66,7 @@
 		43ABEBA41E14E42C00458E3D /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEBA31E14E42C00458E3D /* AdManager.swift */; };
 		43ABEBAC1E14E68C00458E3D /* InAppPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEBAB1E14E68C00458E3D /* InAppPurchaseManager.swift */; };
 		43ABEC1A1E14EF3000458E3D /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEC0F1E14EF3000458E3D /* RMStore.m */; };
+		43ABEC1C1E14FB8500458E3D /* VerionProductIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEC1B1E14FB8500458E3D /* VerionProductIds.swift */; };
 		43B0565F1E0D1AA3007083E8 /* SliderController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43B0565E1E0D1AA3007083E8 /* SliderController.storyboard */; };
 		43B056631E0D1CDA007083E8 /* SlideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056621E0D1CDA007083E8 /* SlideController.swift */; };
 		43B056691E0D21F4007083E8 /* LeftMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056681E0D21F4007083E8 /* LeftMenuController.swift */; };
@@ -224,6 +225,7 @@
 		43ABEBAB1E14E68C00458E3D /* InAppPurchaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppPurchaseManager.swift; sourceTree = "<group>"; };
 		43ABEC0E1E14EF3000458E3D /* RMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStore.h; sourceTree = "<group>"; };
 		43ABEC0F1E14EF3000458E3D /* RMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStore.m; sourceTree = "<group>"; };
+		43ABEC1B1E14FB8500458E3D /* VerionProductIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerionProductIds.swift; sourceTree = "<group>"; };
 		43B0565E1E0D1AA3007083E8 /* SliderController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SliderController.storyboard; sourceTree = "<group>"; };
 		43B056621E0D1CDA007083E8 /* SlideController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideController.swift; sourceTree = "<group>"; };
 		43B056681E0D21F4007083E8 /* LeftMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuController.swift; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 			children = (
 				43ABEBA31E14E42C00458E3D /* AdManager.swift */,
 				43ABEBAB1E14E68C00458E3D /* InAppPurchaseManager.swift */,
+				43ABEC1B1E14FB8500458E3D /* VerionProductIds.swift */,
 			);
 			path = "Ads+IAPs";
 			sourceTree = "<group>";
@@ -988,6 +991,7 @@
 				43B056D01E0E4691007083E8 /* Misc.swift in Sources */,
 				4375C08E1E01317F00576CC6 /* ActivityIndicatorProvider.swift in Sources */,
 				43B056DA1E0E4691007083E8 /* TransitionManager.swift in Sources */,
+				43ABEC1C1E14FB8500458E3D /* VerionProductIds.swift in Sources */,
 				43433DA31E057E620017FAB0 /* CommentCell.swift in Sources */,
 				43F6752A1DF20078001F83BE /* SubverseViewController.swift in Sources */,
 				43DF44561E089F1B00478AD9 /* VoatDataProvider.swift in Sources */,

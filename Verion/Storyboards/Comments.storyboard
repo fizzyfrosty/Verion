@@ -205,7 +205,7 @@
                                             <rect key="frame" x="71" y="23.5" width="24" height="31"/>
                                             <state key="normal" image="arrow_down_grey"/>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKf-59-R6Y">
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKf-59-R6Y">
                                             <rect key="frame" x="136" y="7" width="103" height="30"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                             <state key="normal" title="Sort by: ABCD">
@@ -217,18 +217,18 @@
                                             </connections>
                                         </button>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HaL-ct-pFh" userLabel="left_spacer">
-                                            <rect key="frame" x="239" y="22" width="42.5" height="34"/>
+                                            <rect key="frame" x="8" y="22" width="158" height="34"/>
                                             <color key="backgroundColor" red="0.0016353240705125893" green="0.091602386730236796" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="34" id="p5Z-1q-2Lw"/>
                                             </constraints>
                                         </view>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ObG-Gc-g10" userLabel="right_spacer">
-                                            <rect key="frame" x="324.5" y="22" width="42.5" height="34"/>
+                                            <rect key="frame" x="209" y="22" width="158" height="34"/>
                                             <color key="backgroundColor" red="0.001635324071" green="0.091602386729999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I4h-Dz-OH0">
-                                            <rect key="frame" x="281.5" y="24" width="43" height="30"/>
+                                            <rect key="frame" x="166" y="24" width="43" height="30"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                             <state key="normal" title="Share"/>
                                             <connections>
@@ -256,7 +256,6 @@
                                         <constraint firstItem="I4h-Dz-OH0" firstAttribute="centerY" secondItem="a9n-9A-FiF" secondAttribute="centerY" id="R3a-0p-mNV"/>
                                         <constraint firstItem="HaL-ct-pFh" firstAttribute="centerY" secondItem="a9n-9A-FiF" secondAttribute="centerY" id="VJl-hx-8id"/>
                                         <constraint firstItem="a9n-9A-FiF" firstAttribute="leading" secondItem="rET-Su-rtf" secondAttribute="leadingMargin" constant="8" id="Vwe-oc-FmS"/>
-                                        <constraint firstItem="HaL-ct-pFh" firstAttribute="leading" secondItem="dKf-59-R6Y" secondAttribute="trailing" id="aTV-Lw-TEc"/>
                                         <constraint firstItem="y32-6f-Cdd" firstAttribute="leading" secondItem="rET-Su-rtf" secondAttribute="leading" id="dao-j2-kU1"/>
                                         <constraint firstItem="dKf-59-R6Y" firstAttribute="centerX" secondItem="rET-Su-rtf" secondAttribute="centerX" id="gDq-1X-KMN"/>
                                         <constraint firstItem="zLZ-V7-LmP" firstAttribute="leading" secondItem="rET-Su-rtf" secondAttribute="leading" id="gGE-mm-Afw"/>
@@ -266,6 +265,7 @@
                                         <constraint firstItem="dKf-59-R6Y" firstAttribute="top" secondItem="zLZ-V7-LmP" secondAttribute="bottom" constant="6" id="sGE-fs-DRg"/>
                                         <constraint firstItem="zLZ-V7-LmP" firstAttribute="top" secondItem="rET-Su-rtf" secondAttribute="top" id="tWy-2c-Ilg"/>
                                         <constraint firstItem="sKj-Ti-WWD" firstAttribute="leading" secondItem="a9n-9A-FiF" secondAttribute="trailing" constant="31" id="ugu-xh-09d"/>
+                                        <constraint firstItem="HaL-ct-pFh" firstAttribute="leading" secondItem="rET-Su-rtf" secondAttribute="leadingMargin" id="znp-qa-asx"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

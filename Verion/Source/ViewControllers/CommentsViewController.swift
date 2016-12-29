@@ -66,6 +66,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType?
     var analyticsManager: AnalyticsManagerProtocol?
+    var adManager: AdManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,7 +88,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-    
     
     func reloadTableCommentsAnimated() {
         self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: 1, endingIndexExclusive: self.commentsViewModels.count+1, animation: .automatic)

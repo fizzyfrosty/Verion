@@ -153,7 +153,7 @@ class SubmissionCellViewModel{
         var cellHeight: CGFloat = 0
         
         // Width of label is screensize.width minus the imageSize and its margins
-        var imageViewHorizontalMargins: CGFloat = 35
+        var imageViewHorizontalMargins: CGFloat = 50
         var imageViewWidth: CGFloat = 75
         
         // Only change margins for computing height if there is absolutely no thumbnail
