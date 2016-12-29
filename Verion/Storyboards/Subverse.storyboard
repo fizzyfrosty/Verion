@@ -406,7 +406,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1172.4637681159422" y="-1505.7065217391305"/>
+            <point key="canvasLocation" x="1171" y="-1505"/>
         </scene>
         <!--Subverse Refresh Control-->
         <scene sceneID="btk-SB-GNb">
@@ -473,6 +473,10 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="tPl-oL-5AK">
+                        <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="F8s-Mq-eeW" kind="relationship" relationship="rootViewController" id="NGn-8E-bam"/>
                     </connections>

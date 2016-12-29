@@ -41,6 +41,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Flurry.startSession(self.FLURRY_API_KEY)
         #endif
         
+        if AdManager.sharedInstance.isRemoveAdsPurchased() == false {
+            AdManager.sharedInstance.startAdNetwork()
+        }
         
         /*
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -112,6 +115,7 @@ extension SwinjectStoryboard {
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
+            C.adManager = AdManager.sharedInstance
         })
         
         defaultContainer.storyboardInitCompleted(CommentsViewController.self, initCompleted: { (ResolverType, C) in

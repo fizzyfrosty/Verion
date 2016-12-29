@@ -3,8 +3,8 @@ Random Notes
 
 Immediate tasks:
 
-- Ads
-- banner on bottom
+* Ads
+* banner on bottom
 
 - IAP
 - left menu to remove

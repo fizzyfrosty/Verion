@@ -94,11 +94,16 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private let SUBMISSION_SEGUE_IDENTIFIER = "SubmissionSegue"
     private let FIND_SUBVERSE_SEGUE_IDENTIFIER = "FindSubverseSegue"
     
+    // Banner ads
+    private var bannerAd: UIView?
+    private var bannerView: UIView?
+    
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType!
     var dataManager: DataManagerProtocol?
     var analyticsManager: AnalyticsManagerProtocol?
+    var adManager: AdManager?
     
     // Delegate
     weak var delegate: SubverseViewControllerDelegate?
@@ -186,6 +191,9 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true, animateNavBar: true) {
             
+            if self.adManager?.isRemoveAdsPurchased() == false {
+                self.loadBannerAd()
+            }
         }
 
         
@@ -194,6 +202,26 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func loadBannerAd() {
+        // Ads
+        self.bannerAd?.removeFromSuperview()
+        self.bannerView?.removeFromSuperview()
+        
+        if let bannerAd = self.adManager?.getBannerAd(rootViewController: self.navigationController!) {
+            self.bannerAd = bannerAd
+            
+            let width = UIScreen.main.bounds.width
+            let bannerHeight = self.adManager!.getBannerAdHeight()
+            let y = UIScreen.main.bounds.height - bannerHeight
+            self.bannerView = UIView.init(frame: CGRect(x: 0, y: y, width: width, height: bannerHeight))
+            self.bannerView?.addSubview(self.bannerAd!)
+            self.bannerView?.backgroundColor = UIColor.white
+            
+            let currentWindow = UIApplication.shared.keyWindow
+            currentWindow?.addSubview(self.bannerView!)
+        }
     }
     
     func loadSavedData() {
@@ -208,7 +236,12 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         // Set bottom content Inset for possible ad-placement
         let topDefaultInset = self.tableView.contentInset.top
-        self.tableView.contentInset = UIEdgeInsets(top: topDefaultInset, left: 0, bottom: self.BOTTOM_INSET_HEIGHT, right: 0)
+        let bottomInsetForAds = self.getBottomInsetForAds()
+        self.tableView.contentInset = UIEdgeInsets(top: topDefaultInset, left: 0, bottom: bottomInsetForAds, right: 0)
+    }
+    
+    private func getBottomInsetForAds() -> CGFloat{
+        return self.adManager!.getBannerAdHeight()
     }
     
     func getLastSavedSubverse(fromVerionDataModel dataModel: VerionDataModel) -> String {
@@ -605,6 +638,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
         coordinator.animate(alongsideTransition: nil, completion: { _ in
             self.customRefreshControl?.prepareFrameForShowing()
+            
+            if self.adManager?.isRemoveAdsPurchased() == false {
+                self.loadBannerAd()
+            }
         })
     }
     

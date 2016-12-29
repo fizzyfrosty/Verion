@@ -63,7 +63,8 @@
 		43ABEB931E13924700458E3D /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEB921E13924700458E3D /* AnalyticsManager.swift */; };
 		43ABEB9B1E148FDA00458E3D /* AnalyticsEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEB9A1E148FDA00458E3D /* AnalyticsEvents.swift */; };
 		43ABEB9E1E14C57800458E3D /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43ABEB9D1E14C57800458E3D /* GoogleMobileAds.framework */; };
-		43ABEBA11E14C65300458E3D /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEBA01E14C65300458E3D /* AdManager.swift */; };
+		43ABEBA41E14E42C00458E3D /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEBA31E14E42C00458E3D /* AdManager.swift */; };
+		43ABEBAC1E14E68C00458E3D /* InAppPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEBAB1E14E68C00458E3D /* InAppPurchaseManager.swift */; };
 		43B0565F1E0D1AA3007083E8 /* SliderController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43B0565E1E0D1AA3007083E8 /* SliderController.storyboard */; };
 		43B056631E0D1CDA007083E8 /* SlideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056621E0D1CDA007083E8 /* SlideController.swift */; };
 		43B056691E0D21F4007083E8 /* LeftMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056681E0D21F4007083E8 /* LeftMenuController.swift */; };
@@ -218,7 +219,8 @@
 		43ABEB921E13924700458E3D /* AnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		43ABEB9A1E148FDA00458E3D /* AnalyticsEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsEvents.swift; sourceTree = "<group>"; };
 		43ABEB9D1E14C57800458E3D /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
-		43ABEBA01E14C65300458E3D /* AdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
+		43ABEBA31E14E42C00458E3D /* AdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
+		43ABEBAB1E14E68C00458E3D /* InAppPurchaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppPurchaseManager.swift; sourceTree = "<group>"; };
 		43B0565E1E0D1AA3007083E8 /* SliderController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SliderController.storyboard; sourceTree = "<group>"; };
 		43B056621E0D1CDA007083E8 /* SlideController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideController.swift; sourceTree = "<group>"; };
 		43B056681E0D21F4007083E8 /* LeftMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuController.swift; sourceTree = "<group>"; };
@@ -441,12 +443,13 @@
 			path = Admob;
 			sourceTree = "<group>";
 		};
-		43ABEB9F1E14C63A00458E3D /* Ads */ = {
+		43ABEBA21E14E42C00458E3D /* Ads+IAPs */ = {
 			isa = PBXGroup;
 			children = (
-				43ABEBA01E14C65300458E3D /* AdManager.swift */,
+				43ABEBA31E14E42C00458E3D /* AdManager.swift */,
+				43ABEBAB1E14E68C00458E3D /* InAppPurchaseManager.swift */,
 			);
-			path = Ads;
+			path = "Ads+IAPs";
 			sourceTree = "<group>";
 		};
 		43B0566C1E0D3F6B007083E8 /* LeftMenuVCViews */ = {
@@ -605,7 +608,7 @@
 		43F675111DF20078001F83BE /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				43ABEB9F1E14C63A00458E3D /* Ads */,
+				43ABEBA21E14E42C00458E3D /* Ads+IAPs */,
 				43ABEB8F1E13914B00458E3D /* Analytics */,
 				43B056821E0E4691007083E8 /* Libraries */,
 				4375BFCB1DF5D43900576CC6 /* CustomControls */,
@@ -979,7 +982,7 @@
 				43B056DE1E0E4691007083E8 /* SwiftWebViewProgressView.swift in Sources */,
 				43433DA71E057E620017FAB0 /* SubmissionImageCell.swift in Sources */,
 				43433DA91E057E620017FAB0 /* SubmissionLinkCell.swift in Sources */,
-				43ABEBA11E14C65300458E3D /* AdManager.swift in Sources */,
+				43ABEBA41E14E42C00458E3D /* AdManager.swift in Sources */,
 				43433DC11E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift in Sources */,
 				43F675281DF20078001F83BE /* SFXManagerDummy.swift in Sources */,
 				43B056BB1E0E4691007083E8 /* FLAnimatedImage.m in Sources */,
@@ -1008,6 +1011,7 @@
 				43B056D41E0E4691007083E8 /* SpringButton.swift in Sources */,
 				43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */,
 				43B056C71E0E4691007083E8 /* DesignableTabBarController.swift in Sources */,
+				43ABEBAC1E14E68C00458E3D /* InAppPurchaseManager.swift in Sources */,
 				43B057101E0E71AD007083E8 /* SubmissionDataModelV1.swift in Sources */,
 				43DF45311E09F04E00478AD9 /* ProgressIndicatorCell.swift in Sources */,
 				43B056C01E0E4691007083E8 /* AsyncButton.swift in Sources */,
