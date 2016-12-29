@@ -694,8 +694,12 @@ extension CommentsViewController: SFSafariViewControllerDelegate {
         let params = AnalyticsEvents.getCommentsControllerOpenContentParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType)
         self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerOpenContent, params: params, timed: false)
         
+        var formattedLink = ""
+        if link.lowercased().hasPrefix("http://")==false{
+            formattedLink = "http://" + link
+        }
         
-        let safariController = SFSafariViewController(url: URL(string: link)!)
+        let safariController = SFSafariViewController(url: URL(string: formattedLink)!)
         safariController.delegate = self
         self.present(safariController, animated: true, completion: nil)
     }
