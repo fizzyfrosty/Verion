@@ -65,6 +65,7 @@
 		43ABEB9E1E14C57800458E3D /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43ABEB9D1E14C57800458E3D /* GoogleMobileAds.framework */; };
 		43ABEBA41E14E42C00458E3D /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEBA31E14E42C00458E3D /* AdManager.swift */; };
 		43ABEBAC1E14E68C00458E3D /* InAppPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEBAB1E14E68C00458E3D /* InAppPurchaseManager.swift */; };
+		43ABEC1A1E14EF3000458E3D /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEC0F1E14EF3000458E3D /* RMStore.m */; };
 		43B0565F1E0D1AA3007083E8 /* SliderController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43B0565E1E0D1AA3007083E8 /* SliderController.storyboard */; };
 		43B056631E0D1CDA007083E8 /* SlideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056621E0D1CDA007083E8 /* SlideController.swift */; };
 		43B056691E0D21F4007083E8 /* LeftMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056681E0D21F4007083E8 /* LeftMenuController.swift */; };
@@ -221,6 +222,8 @@
 		43ABEB9D1E14C57800458E3D /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
 		43ABEBA31E14E42C00458E3D /* AdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
 		43ABEBAB1E14E68C00458E3D /* InAppPurchaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppPurchaseManager.swift; sourceTree = "<group>"; };
+		43ABEC0E1E14EF3000458E3D /* RMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStore.h; sourceTree = "<group>"; };
+		43ABEC0F1E14EF3000458E3D /* RMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStore.m; sourceTree = "<group>"; };
 		43B0565E1E0D1AA3007083E8 /* SliderController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SliderController.storyboard; sourceTree = "<group>"; };
 		43B056621E0D1CDA007083E8 /* SlideController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideController.swift; sourceTree = "<group>"; };
 		43B056681E0D21F4007083E8 /* LeftMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuController.swift; sourceTree = "<group>"; };
@@ -452,6 +455,15 @@
 			path = "Ads+IAPs";
 			sourceTree = "<group>";
 		};
+		43ABEBAD1E14EF3000458E3D /* RMStore */ = {
+			isa = PBXGroup;
+			children = (
+				43ABEC0E1E14EF3000458E3D /* RMStore.h */,
+				43ABEC0F1E14EF3000458E3D /* RMStore.m */,
+			);
+			path = RMStore;
+			sourceTree = "<group>";
+		};
 		43B0566C1E0D3F6B007083E8 /* LeftMenuVCViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -474,6 +486,7 @@
 		43B056821E0E4691007083E8 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				43ABEBAD1E14EF3000458E3D /* RMStore */,
 				43ABEB9C1E14C57800458E3D /* Admob */,
 				43ABEB7D1E137FA300458E3D /* Flurry */,
 				43B056831E0E4691007083E8 /* FLAnimatedImage */,
@@ -933,6 +946,7 @@
 				43433DA61E057E620017FAB0 /* CommentsSortByCellViewModel.swift in Sources */,
 				43ABEB871E137FA300458E3D /* FlurryWatchEmpty.m in Sources */,
 				43F675251DF20078001F83BE /* DataProviderType.swift in Sources */,
+				43ABEC1A1E14EF3000458E3D /* RMStore.m in Sources */,
 				43433DAA1E057E620017FAB0 /* SubmissionLinkCellViewModel.swift in Sources */,
 				43B056DB1E0E4691007083E8 /* TransitionZoom.swift in Sources */,
 				43433D791E0272860017FAB0 /* DataProviderHelper.swift in Sources */,
@@ -1172,6 +1186,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Verion/Source/Libraries/Flurry",
+					"$(PROJECT_DIR)/Verion/Source/Libraries/RMStore/Optional/openssl-1.0.1e/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.verion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1197,6 +1212,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Verion/Source/Libraries/Flurry",
+					"$(PROJECT_DIR)/Verion/Source/Libraries/RMStore/Optional/openssl-1.0.1e/lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.verion;
 				PRODUCT_NAME = "$(TARGET_NAME)";

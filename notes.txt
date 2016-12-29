@@ -7,11 +7,14 @@ Immediate tasks:
 * banner on bottom
 
 - IAP
+* Create in app purchase on itunes connect
+- implement IAP Manager
+- Restore purchases
+
 - left menu to remove
 
 
 - Load Logo on splash
-
 
 - Website: new pages
 	- donate page

@@ -734,11 +734,15 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive:
         Int, animation: UITableViewRowAnimation) {
         
+        guard endingIndexExclusive > startingIndexInclusive + 1 else {
             tableView.reloadData()
-            let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
-            let indexSet = IndexSet.init(integersIn: range)
-            tableView.reloadSections(indexSet, with: animation)
+            return
+        }
         
+        tableView.reloadData()
+        let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
+        let indexSet = IndexSet.init(integersIn: range)
+        tableView.reloadSections(indexSet, with: animation)
     }
     
     func getNavigationLabelString(subverse: String) -> String{
