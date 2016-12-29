@@ -13,10 +13,10 @@ enum SubmissionType: Int {
     case link = 2
 }
 
-enum SubmissionMediaType {
-    case undetermined
-    case text
-    case image
-    case video
-    case link
+enum SubmissionMediaType: String {
+    case undetermined = "undetermined"
+    case text = "text"
+    case image = "image"
+    case video = "video"
+    case link = "link"
 }

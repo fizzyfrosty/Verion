@@ -9,6 +9,7 @@
 import UIKit
 import Swinject
 import SwinjectStoryboard
+import GoogleMobileAds
 
 @UIApplicationMain
 
@@ -17,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     let FLURRY_API_KEY = "BKGPY6BG5Y9FWCSSXWGG"
+    
 
     /*
     var container: Container = {

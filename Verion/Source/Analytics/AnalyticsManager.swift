@@ -29,7 +29,7 @@ class AnalyticsManager: AnalyticsManagerProtocol {
             Flurry.logEvent(name, timed: timed)
         case .none:
             #if DEBUG
-                print("Logging (no analytics) - \(name), timed: \(timed)")
+                print("Analytics Logging (no analytics) - \(name), timed: \(timed)")
             #endif
         }
     }
@@ -40,7 +40,7 @@ class AnalyticsManager: AnalyticsManagerProtocol {
             Flurry.logEvent(name, withParameters: params, timed: timed)
         case .none:
             #if DEBUG
-                print("Logging (no analytics) - \(name), timed: \(timed)")
+                print("Analytics Logging (no analytics) - \(name), timed: \(timed), params: \(params)")
             #endif
         }
     }
@@ -51,7 +51,7 @@ class AnalyticsManager: AnalyticsManagerProtocol {
             Flurry.endTimedEvent(name, withParameters: params)
         case .none:
             #if DEBUG
-                print("Ending timed event (no analytics) - \(name)")
+                print("Analytics Logging - Ending timed event (no analytics) - \(name)")
             #endif
         }
     }

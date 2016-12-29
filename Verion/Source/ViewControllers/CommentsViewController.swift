@@ -72,9 +72,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         
         self.tableView.backgroundColor = self.backgroundColor
         self.navigationController?.navigationBar.tintColor = UIColor.white
-
+        
         
         self.loadSubmissionInfo {
+            
             self.loadCommentCells {
                 
             }
@@ -105,6 +106,11 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         DispatchQueue.global(qos: .background).async {
             self.loadSubmissionTitle(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
             self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider) {
+                
+                // Analytics - place this here because media type isn't finished loading until content is retrieved
+                let params = AnalyticsEvents.getCommentsControllerViewingParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType)
+                self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerViewing, params: params, timed: false)
+                
             }
             
             // This is required to complete table cell generation
@@ -482,16 +488,15 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
  */
         
+        // Open Content
         // If is a content cell, launch link
         if indexPath.section == 0 && indexPath.row == 1 {
             if self.submissionMediaType != .text {
                 switch self.submissionMediaType {
                 case .link:
                     self.openSafariViewController(link: self.submissionLinkContentVm.link)
-                    //self.loadWebViewController(forLink: self.submissionLinkContentVm.link)
                 case .image:
                     self.openSafariViewController(link: self.submissionImageContentVm.imageLink)
-                    //self.loadWebViewController(forLink: self.submissionImageContentVm.imageLink)
                 default:
                     break;
                 }
@@ -688,6 +693,12 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
 
 extension CommentsViewController: SFSafariViewControllerDelegate {
     fileprivate func openSafariViewController(link: String) {
+        
+        // Analytics
+        let params = AnalyticsEvents.getCommentsControllerOpenContentParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType)
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerOpenContent, params: params, timed: false)
+        
+        
         let safariController = SFSafariViewController(url: URL(string: link)!)
         safariController.delegate = self
         self.present(safariController, animated: true, completion: nil)
@@ -707,7 +718,13 @@ extension CommentsViewController: CommentCellDelegate{
         }
     }
     
+    // Share
     func commentsSortByCell(cell: CommentsSortByCell, didPressShare: Any) {
+        
+        // Analytics
+        let params = AnalyticsEvents.getCommentsControllerShareParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType)
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerShare, params: params, timed: false)
+        
         self.shareActivities()
     }
     

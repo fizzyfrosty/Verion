@@ -306,6 +306,8 @@ class VoatDataProvider: DataProviderType {
         var urlStringV1 = ""
         
         var subverseName = ""
+        var sortTypeParam = ""
+        var timeParam = "" // for the Top sort type
         
         switch submissionParams.subverseName {
         case self.FRONTPAGE_SUBVERSE_NAME:
@@ -316,15 +318,20 @@ class VoatDataProvider: DataProviderType {
             subverseName = submissionParams.subverseName
         }
         
+        
+        sortTypeParam = "&sort=\(submissionParams.sortType.rawValue)"
+        
         switch submissionParams.sortType {
         case .top:
             // Append a time query string if sorting by Top
-            urlStringV1 = urlStringV1 + "&time=\(submissionParams.topSortTypeTime)"
+            timeParam = "&span=\(submissionParams.topSortTypeTime.rawValue)"
+        case .hot:
+            sortTypeParam = "&sort=Rank"
         default:
             break
         }
         
-        urlStringV1 = self.VOAT_V1_DOMAIN + "/api/v1/v/\(subverseName)?sort=\(submissionParams.sortType.rawValue)&page=\(submissionParams.page)"
+        urlStringV1 = self.VOAT_V1_DOMAIN + "/api/v1/v/\(subverseName)?page=\(submissionParams.page)" + sortTypeParam + timeParam
         
         return urlStringV1
     }

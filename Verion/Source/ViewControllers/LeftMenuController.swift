@@ -144,6 +144,11 @@ class LeftMenuController: UITableViewController {
         if indexPath.row < self.subverseCellViewModels.count {
             let subverseName = self.subverseCellViewModels[indexPath.row].subverseName
             if let _ = self.delegate?.leftMenuDidSelectSubverse(leftMenu: self, subverseName: subverseName) {
+                
+                // Analytics
+                let params = AnalyticsEvents.getLeftMenuGoToSubverseFromHistoryParams(subverseName: subverseName)
+                self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuGoToSubverseFromHistory, params: params, timed: false)
+                
                 // Success, do nothing
             } else {
                 #if DEBUG
@@ -152,6 +157,7 @@ class LeftMenuController: UITableViewController {
             }
         }
         
+        // Clear History
         // If selected clear, last object
         if indexPath.row == self.subverseCellViewModels.count {
             // Clear it
@@ -160,6 +166,15 @@ class LeftMenuController: UITableViewController {
     }
     
     private func clearHistory() {
+        // Analytics
+        var subverseNames: [String] = []
+        for viewModel in self.subverseCellViewModels {
+            subverseNames.append(viewModel.subverseName)
+        }
+        let params = AnalyticsEvents.getLeftMenuClearHistoryParams(subverseNames: subverseNames)
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuClearHistory, params: params, timed: false)
+        
+        
         let range = Range.init(uncheckedBounds: (lower: 0, upper: 1))
         let indexSet = IndexSet.init(integersIn: range)
         self.subverseCellViewModels.removeAll()

@@ -130,10 +130,14 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 self.subverseSubmissionParams.sortType = sortByType
                 self.saveSortType(sortType: sortByType){}
                 
+                // Analytics
+                let params = AnalyticsEvents.getSubverseControllerSortByParams(subverseName: self.subverseSubmissionParams.subverseName, sortType: self.subverseSubmissionParams.sortType)
+                self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerSortedBy, params: params, timed: false)
+                
+                
                 // Reload table
                 self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true, animateNavBar: true) {
                 }
-                
             })
             
             sortByActions.append(sortAction)
@@ -171,9 +175,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.navigationController?.navigationBar.barTintColor = self.NAVIGATION_BG_COLOR
         self.tableView.backgroundColor = self.BGCOLOR
         
+        // Analytics
+        let params = AnalyticsEvents.getSubverseControllerLoadedParams(subverseName: self.subverseSubmissionParams.subverseName)
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerLoaded, params: params, timed: false)
+        
+        
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
-        
         self.loadSavedData()
         
         self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true, animateNavBar: true) {
@@ -282,6 +290,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             self.customRefreshControl?.isRefreshing = true
             self.customRefreshControl?.showActivityIndicator()
             //refresh logic
+            
+            // Analytics
+            let params = AnalyticsEvents.getSubverseControllerPullToRefreshParams(subverseName: self.subverseSubmissionParams.subverseName, sortType: self.subverseSubmissionParams.sortType)
+            self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerPullToRefresh, params: params, timed: false)
             
             // Pull to refresh
             self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: false, animateNavBar: false){
@@ -426,6 +438,14 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // The starting index before the refresh is the last item
         let startingIndex = self.subCellViewModels.count
         
+        
+        // Analytics
+        let params = AnalyticsEvents.getSubverseControllerMoreSubmissionParams(subverseName: self.subverseSubmissionParams.subverseName,
+                                                                               pageNumber: self.subverseSubmissionParams.page,
+                                                                               sortType: self.subverseSubmissionParams.sortType)
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerMoreSubmissions, params: params, timed: false)
+        
+        // Perform loading
         self.loadTableCellsAddedToCurrent(withParams: self.subverseSubmissionParams) {
             self.insertSectionsAnimated(forTableView: self.tableView, startingIndexInclusive: startingIndex, endingIndexExclusive: self.subCellViewModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE, animation: .fade)
             
@@ -553,8 +573,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // If the Load More Cells should->did load, then allow the touch of last cell to load more
         if self.isLastCell(forIndexPath: indexPath, inLoadedViewModels: self.subCellViewModels) {
             
+            // Load more Table cells
             self.loadMoreTableCells() {
-                
             }
             
         }

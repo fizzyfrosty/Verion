@@ -8,12 +8,12 @@
 
 import UIKit
 
-enum TopSortTypeTime {
-    case day
-    case week
-    case month
-    case year
-    case all
+enum TopSortTypeTime: Int {
+    case day = 2
+    case week = 3
+    case month = 4
+    case year = 6
+    case all = 0
 }
 
 struct SubmissionsRequestParams{

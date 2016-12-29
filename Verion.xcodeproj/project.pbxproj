@@ -61,6 +61,9 @@
 		43ABEB8E1E13803300458E3D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43ABEB8D1E13803300458E3D /* SystemConfiguration.framework */; };
 		43ABEB911E1391B000458E3D /* AnalyticsManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEB901E1391B000458E3D /* AnalyticsManagerProtocol.swift */; };
 		43ABEB931E13924700458E3D /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEB921E13924700458E3D /* AnalyticsManager.swift */; };
+		43ABEB9B1E148FDA00458E3D /* AnalyticsEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEB9A1E148FDA00458E3D /* AnalyticsEvents.swift */; };
+		43ABEB9E1E14C57800458E3D /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43ABEB9D1E14C57800458E3D /* GoogleMobileAds.framework */; };
+		43ABEBA11E14C65300458E3D /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEBA01E14C65300458E3D /* AdManager.swift */; };
 		43B0565F1E0D1AA3007083E8 /* SliderController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43B0565E1E0D1AA3007083E8 /* SliderController.storyboard */; };
 		43B056631E0D1CDA007083E8 /* SlideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056621E0D1CDA007083E8 /* SlideController.swift */; };
 		43B056691E0D21F4007083E8 /* LeftMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056681E0D21F4007083E8 /* LeftMenuController.swift */; };
@@ -213,6 +216,9 @@
 		43ABEB8D1E13803300458E3D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		43ABEB901E1391B000458E3D /* AnalyticsManagerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsManagerProtocol.swift; sourceTree = "<group>"; };
 		43ABEB921E13924700458E3D /* AnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
+		43ABEB9A1E148FDA00458E3D /* AnalyticsEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsEvents.swift; sourceTree = "<group>"; };
+		43ABEB9D1E14C57800458E3D /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
+		43ABEBA01E14C65300458E3D /* AdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
 		43B0565E1E0D1AA3007083E8 /* SliderController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SliderController.storyboard; sourceTree = "<group>"; };
 		43B056621E0D1CDA007083E8 /* SlideController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideController.swift; sourceTree = "<group>"; };
 		43B056681E0D21F4007083E8 /* LeftMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuController.swift; sourceTree = "<group>"; };
@@ -318,6 +324,7 @@
 				43ABEB8E1E13803300458E3D /* SystemConfiguration.framework in Frameworks */,
 				43ABEB8C1E13802B00458E3D /* Security.framework in Frameworks */,
 				43DF44581E08A59200478AD9 /* Alamofire.framework in Frameworks */,
+				43ABEB9E1E14C57800458E3D /* GoogleMobileAds.framework in Frameworks */,
 				4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */,
 				43F9A04F1DEA3C26001EB1FC /* Swinject.framework in Frameworks */,
 				43F9A0501DEA3C26001EB1FC /* SwinjectStoryboard.framework in Frameworks */,
@@ -421,8 +428,25 @@
 			children = (
 				43ABEB901E1391B000458E3D /* AnalyticsManagerProtocol.swift */,
 				43ABEB921E13924700458E3D /* AnalyticsManager.swift */,
+				43ABEB9A1E148FDA00458E3D /* AnalyticsEvents.swift */,
 			);
 			path = Analytics;
+			sourceTree = "<group>";
+		};
+		43ABEB9C1E14C57800458E3D /* Admob */ = {
+			isa = PBXGroup;
+			children = (
+				43ABEB9D1E14C57800458E3D /* GoogleMobileAds.framework */,
+			);
+			path = Admob;
+			sourceTree = "<group>";
+		};
+		43ABEB9F1E14C63A00458E3D /* Ads */ = {
+			isa = PBXGroup;
+			children = (
+				43ABEBA01E14C65300458E3D /* AdManager.swift */,
+			);
+			path = Ads;
 			sourceTree = "<group>";
 		};
 		43B0566C1E0D3F6B007083E8 /* LeftMenuVCViews */ = {
@@ -447,6 +471,7 @@
 		43B056821E0E4691007083E8 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				43ABEB9C1E14C57800458E3D /* Admob */,
 				43ABEB7D1E137FA300458E3D /* Flurry */,
 				43B056831E0E4691007083E8 /* FLAnimatedImage */,
 				43B056891E0E4691007083E8 /* SlideMenuControllerSwift */,
@@ -580,6 +605,7 @@
 		43F675111DF20078001F83BE /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				43ABEB9F1E14C63A00458E3D /* Ads */,
 				43ABEB8F1E13914B00458E3D /* Analytics */,
 				43B056821E0E4691007083E8 /* Libraries */,
 				4375BFCB1DF5D43900576CC6 /* CustomControls */,
@@ -953,6 +979,7 @@
 				43B056DE1E0E4691007083E8 /* SwiftWebViewProgressView.swift in Sources */,
 				43433DA71E057E620017FAB0 /* SubmissionImageCell.swift in Sources */,
 				43433DA91E057E620017FAB0 /* SubmissionLinkCell.swift in Sources */,
+				43ABEBA11E14C65300458E3D /* AdManager.swift in Sources */,
 				43433DC11E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift in Sources */,
 				43F675281DF20078001F83BE /* SFXManagerDummy.swift in Sources */,
 				43B056BB1E0E4691007083E8 /* FLAnimatedImage.m in Sources */,
@@ -985,6 +1012,7 @@
 				43DF45311E09F04E00478AD9 /* ProgressIndicatorCell.swift in Sources */,
 				43B056C01E0E4691007083E8 /* AsyncButton.swift in Sources */,
 				4375C08C1E011F8E00576CC6 /* SortType.swift in Sources */,
+				43ABEB9B1E148FDA00458E3D /* AnalyticsEvents.swift in Sources */,
 				43ABEB931E13924700458E3D /* AnalyticsManager.swift in Sources */,
 				43F675241DF20078001F83BE /* SubmissionDataModelProtocol.swift in Sources */,
 				43B056CA1E0E4691007083E8 /* DesignableView.swift in Sources */,
@@ -1132,6 +1160,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Verion/Source/Libraries/Admob",
 				);
 				INFOPLIST_FILE = Verion/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1156,6 +1185,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Verion/Source/Libraries/Admob",
 				);
 				INFOPLIST_FILE = Verion/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
