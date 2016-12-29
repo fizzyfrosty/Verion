@@ -114,6 +114,9 @@ class LeftMenuController: UITableViewController {
                     self.showAlert(title: self.PURCHASE_SUCCESS_TITLE, message: self.PURCHASE_REMOVE_ADS_SUCCESS_MESSAGE)
                     if let _ = self.delegate?.leftMenuDidPurchaseProduct(leftMenu: self, productId: VerionProductIds.removeAds) {
                         // Success, do nothing
+                        
+                        // Analytics
+                        self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuPurchasedRemoveAds, timed: false)
                     } else {
                         #if DEBUG
                         print("Warning: LeftMenu's delegate may not be set for purchasing IAP.")

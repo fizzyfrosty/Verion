@@ -97,4 +97,5 @@ class AnalyticsEvents {
         return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName))
     }
     
+    static let leftMenuPurchasedRemoveAds = "Left Menu - Purchased Remove Ads"
 }

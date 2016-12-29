@@ -18,20 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     let FLURRY_API_KEY = "BKGPY6BG5Y9FWCSSXWGG"
-    
-
-    /*
-    var container: Container = {
-        let container = Container()
-        container.registerForStoryboard(ViewController.self, initCompleted: { (r, c) in
-            c.dataSource = r.resolve(DataSourceType.self)
-        })
-        container.register(DataSourceType.self) { _ in DataSourceA() }
-        
-        return container
-    }()
- */
-    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

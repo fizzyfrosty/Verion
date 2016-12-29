@@ -39,11 +39,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var submissionDataModel: SubmissionDataModelProtocol?
     
     // View Models
-    var submissionMediaType: SubmissionMediaType = .undetermined {
-        didSet {
-            print("Set: \(self.submissionMediaType)")
-        }
-    }
+    var submissionMediaType: SubmissionMediaType = .undetermined
     var submissionTitleVm: SubmissionTitleCellViewModel?
     var submissionImageContentVm: SubmissionImageCellViewModel = SubmissionImageCellViewModel()
     var submissionTextContentVm: SubmissionTextCellViewModel = SubmissionTextCellViewModel()
