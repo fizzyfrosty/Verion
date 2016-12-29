@@ -6,7 +6,7 @@ Immediate tasks:
 * Ads
 * banner on bottom
 
-- IAP
+* IAP
 * Create in app purchase on itunes connect
 * implement IAP Manager
 
@@ -16,17 +16,15 @@ Immediate tasks:
 * Actually remove the ads
 * Activity Indicator for transaction
 
+* error messages for:
+	* failing to fetch
+	* failing to purchase
+
+
 
 - Add Donate cell
 	- Take to webpage
 	- Use Alert to navigate with safari
-
-- error messages for:
-	* failing to fetch
-	- failing to purchase
-
-- left menu to remove
-
 
 - Load Logo on splash
 

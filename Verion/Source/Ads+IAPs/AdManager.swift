@@ -28,7 +28,13 @@ class AdManager: NSObject {
     
     
     init(adServiceType: AdServiceType) {
+        super.init()
+        
         self.adServiceType = adServiceType
+        
+        if self.isRemoveAdsPurchased() {
+            self.adServiceType = .none
+        }
     }
     
     func startAdNetwork() {

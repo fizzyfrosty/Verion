@@ -207,9 +207,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if self.adManager?.isRemoveAdsPurchased() == false {
-            self.loadBannerAd()
-        }
+        self.loadBannerAd()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -664,9 +662,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         coordinator.animate(alongsideTransition: nil, completion: { _ in
             self.customRefreshControl?.prepareFrameForShowing()
             
-            if self.adManager?.isRemoveAdsPurchased() == false {
-                self.loadBannerAd()
-            }
+            self.loadBannerAd()
         })
     }
     
