@@ -3,24 +3,7 @@ Random Notes
 
 Immediate tasks:
 
-* Ads
-* banner on bottom
-
-* IAP
-* Create in app purchase on itunes connect
-* implement IAP Manager
-
-* fetch products
-* purchase products
-* Add Remove Ad cell to left menu
-* Actually remove the ads
-* Activity Indicator for transaction
-
-* error messages for:
-	* failing to fetch
-	* failing to purchase
-
-
+- Add NSFW image to nsfw links
 
 - Add Donate cell
 	- Take to webpage
@@ -47,6 +30,24 @@ donate button code:
 
 - Welcome Screen?
 
+
+
+* Ads
+* banner on bottom
+
+* IAP
+* Create in app purchase on itunes connect
+* implement IAP Manager
+
+* fetch products
+* purchase products
+* Add Remove Ad cell to left menu
+* Actually remove the ads
+* Activity Indicator for transaction
+
+* error messages for:
+	* failing to fetch
+	* failing to purchase
 
 * remove or dont add duplicates loaded
 	* When submission data models are returned, compare before adding

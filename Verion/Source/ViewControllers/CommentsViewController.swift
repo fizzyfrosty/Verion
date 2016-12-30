@@ -695,7 +695,7 @@ extension CommentsViewController: SFSafariViewControllerDelegate {
         self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerOpenContent, params: params, timed: false)
         
         var formattedLink = link
-        if link.lowercased().hasPrefix("http://")==false{
+        if link.lowercased().hasPrefix("http://")==false && link.lowercased().hasPrefix("https://") == false {
             formattedLink = "http://" + link
         }
         

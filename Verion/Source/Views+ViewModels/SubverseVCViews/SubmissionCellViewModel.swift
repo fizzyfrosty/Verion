@@ -190,7 +190,7 @@ class SubmissionCellViewModel{
     }
     
     private func getNsfwImage()-> UIImage {
-        let image = UIImage.init(named: "noimageavailable")
+        let image = UIImage.init(named: "nsfw_icon")
         
         return image!
     }
