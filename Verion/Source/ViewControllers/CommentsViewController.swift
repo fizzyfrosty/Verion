@@ -694,7 +694,7 @@ extension CommentsViewController: SFSafariViewControllerDelegate {
         let params = AnalyticsEvents.getCommentsControllerOpenContentParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType)
         self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerOpenContent, params: params, timed: false)
         
-        var formattedLink = ""
+        var formattedLink = link
         if link.lowercased().hasPrefix("http://")==false{
             formattedLink = "http://" + link
         }
