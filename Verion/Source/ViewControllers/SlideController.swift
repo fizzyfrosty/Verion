@@ -100,7 +100,7 @@ extension SlideController: LeftMenuControllerDelegate {
     }
     
     func leftMenuDidClearHistory(leftMenu: LeftMenuController) {
-        self.closeLeft()
+        
     }
     
     func leftMenuDidPurchaseProduct(leftMenu: LeftMenuController, productId: String) {
