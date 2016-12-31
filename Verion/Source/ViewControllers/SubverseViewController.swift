@@ -63,7 +63,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // Activity Indicator Cell
     private var activityIndicatorCell: ActivityIndicatorCell?
-    private var LOADMORE_CELL_INDEX_VALUE = 1
+    private var loadMoreCellIndexValue = 1 // either 1 or 0 for enabled or disabled
     private let MAX_NUMBER_OF_PAGES = 19
     
     
@@ -180,11 +180,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.navigationController?.navigationBar.barTintColor = self.NAVIGATION_BG_COLOR
         self.tableView.backgroundColor = self.BGCOLOR
         
-        // Analytics
-        let params = AnalyticsEvents.getSubverseControllerLoadedParams(subverseName: self.subverseSubmissionParams.subverseName)
-        self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerLoaded, params: params, timed: false)
-        
-        
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
         self.loadSavedData()
@@ -249,11 +244,15 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
     }
     
-    func loadSavedData() {
+    private func loadSavedData() {
         let verionDataModel = self.dataManager?.getSavedData()
         
         self.subverseSubmissionParams.subverseName = self.getLastSavedSubverse(fromVerionDataModel: verionDataModel!)
         self.subverseSubmissionParams.sortType = verionDataModel!.sortType!
+        
+        // Analytics
+        let params = AnalyticsEvents.getSubverseControllerLoadedParams(subverseName: self.subverseSubmissionParams.subverseName)
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerLoaded, params: params, timed: false)
     }
     
     private func setBottomInsetsForAds() {
@@ -388,6 +387,9 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             self.tableView.reloadData()
         }
         
+        // Allow load more cells to be enabled
+        self.loadMoreCellIndexValue = 1
+        
         // Set the subverse name
         self.subverseSubmissionParams.subverseName = subverseString
         self.subverseSubmissionParams.page = 0
@@ -403,7 +405,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 self.hideNavBarActivityIndicator()
             }
             
-            self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: 0, endingIndexExclusive: self.subCellViewModels.count+self.LOADMORE_CELL_INDEX_VALUE, animation: .fade)
+            self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: 0, endingIndexExclusive: self.subCellViewModels.count+self.loadMoreCellIndexValue, animation: .fade)
             
             completion()
         }
@@ -503,17 +505,36 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         // Perform loading
         self.loadTableCellsAddedToCurrent(withParams: self.subverseSubmissionParams) {
-            self.insertSectionsAnimated(forTableView: self.tableView, startingIndexInclusive: startingIndex, endingIndexExclusive: self.subCellViewModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE, animation: .fade)
+            
+            let endingIndexExclusive = self.subCellViewModels.count-1 + self.loadMoreCellIndexValue
+            
+            // Ensure that it is not the last data returned in subverse
+            guard endingIndexExclusive > startingIndex else {
+                self.disableLoadMoreCell()
+                return
+            }
+            
+            // Normal loading
+            self.insertSectionsAnimated(forTableView: self.tableView, startingIndexInclusive: startingIndex, endingIndexExclusive: endingIndexExclusive, animation: .fade)
             
             // If Reached the max pages that the api will return
             if self.subverseSubmissionParams.page == self.MAX_NUMBER_OF_PAGES {
                 // Don't show the Load More Cell
-                self.LOADMORE_CELL_INDEX_VALUE = 0
-                self.tableView.reloadData()
+                self.disableLoadMoreCell()
             }
         }
         
-        self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: self.submissionDataModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE, endingIndexExclusive: self.submissionDataModels.count + self.LOADMORE_CELL_INDEX_VALUE, animation: .fade)
+        self.refreshLoadMoreCellAfterPressing(atIndex: self.submissionDataModels.count)
+    }
+    
+    private func disableLoadMoreCell() {
+        //self.tableView.beginUpdates()
+        self.loadMoreCellIndexValue = 0
+        self.reloadTableAnimated(lastCellIndex: self.submissionDataModels.count)
+        //let lastIndexPath = IndexPath.init(row: 0, section: self.submissionDataModels.count)
+        //self.tableView.reloadRows(at: [lastIndexPath], with: .fade)
+        //self.tableView.deleteRows(at: [lastIndexPath], with: .fade)
+        //self.tableView.endUpdates()
     }
 
     override func didReceiveMemoryWarning() {
@@ -528,7 +549,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             return 0
         }
         
-        return self.subCellViewModels.count + self.LOADMORE_CELL_INDEX_VALUE
+        return self.subCellViewModels.count + self.loadMoreCellIndexValue
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -540,7 +561,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // On first load, do not display any cells until table is finished loading
-        guard (indexPath.section > self.submissionDataModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE) == false else {
+        guard (indexPath.section > self.submissionDataModels.count-1 + self.loadMoreCellIndexValue) == false else {
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: "TransparentCell")!
             
             // Return a blank cell
@@ -704,13 +725,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private func isLastCell(forIndexPath indexPath: IndexPath, inLoadedViewModels loadedViewModels: [SubmissionCellViewModel]) -> Bool {
         
         // If we reached max pages, don't return true to show last page
-        guard self.LOADMORE_CELL_INDEX_VALUE != 0 else {
+        guard self.loadMoreCellIndexValue != 0 else {
             return false
         }
         
         var isLastCell = false
         
-        if indexPath.section == loadedViewModels.count-1 + self.LOADMORE_CELL_INDEX_VALUE {
+        if indexPath.section == loadedViewModels.count-1 + self.loadMoreCellIndexValue {
             isLastCell = true
         }
         
@@ -751,17 +772,24 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                                  endingIndexExclusive: lastCellIndex,
                                  animation: UITableViewRowAnimation.automatic)
     }
+    
+    private func refreshLoadMoreCellAfterPressing(atIndex index: Int) {
+        // Refresh only the last cell
+        // Ensure that there is data
+        guard self.subCellViewModels.count > 0 else {
+            return
+        }
+        
+        let lastElementIndexPath = IndexPath.init(row: 0, section: index)
+        tableView.reloadRows(at: [lastElementIndexPath], with: .fade)
+        return
+    }
  
     private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive:
         Int, animation: UITableViewRowAnimation) {
         
         // If reached last cell
         guard endingIndexExclusive > startingIndexInclusive + 1 else {
-            
-            // Refresh only the last cell
-            //tableView.reloadData()
-            let lastElementIndexPath = IndexPath.init(row: 0, section: startingIndexInclusive)
-            tableView.reloadRows(at: [lastElementIndexPath], with: .fade)
             return
         }
         
