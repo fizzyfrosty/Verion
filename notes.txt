@@ -3,7 +3,13 @@ Random Notes
 
 Immediate tasks:
 
+
+
+
 - Add NSFW image to nsfw links
+	* checking flag
+	* adding image
+	- read the nsfw flag from json
 
 - Add Donate cell
 	- Take to webpage

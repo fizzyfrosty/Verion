@@ -755,8 +755,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive:
         Int, animation: UITableViewRowAnimation) {
         
+        // If reached last cell
         guard endingIndexExclusive > startingIndexInclusive + 1 else {
-            tableView.reloadData()
+            
+            // Refresh only the last cell
+            //tableView.reloadData()
+            let lastElementIndexPath = IndexPath.init(row: 0, section: startingIndexInclusive)
+            tableView.reloadRows(at: [lastElementIndexPath], with: .fade)
             return
         }
         

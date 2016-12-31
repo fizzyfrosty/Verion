@@ -699,7 +699,7 @@ extension CommentsViewController: SFSafariViewControllerDelegate {
             formattedLink = "http://" + link
         }
         
-        let safariController = SFSafariViewController(url: URL(string: formattedLink)!)
+        let safariController = SFSafariViewController(url: URL(string: formattedLink)!, entersReaderIfAvailable: false)
         safariController.delegate = self
         self.present(safariController, animated: true, completion: nil)
     }

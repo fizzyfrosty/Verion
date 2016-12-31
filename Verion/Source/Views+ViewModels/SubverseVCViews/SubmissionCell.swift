@@ -69,6 +69,9 @@ class SubmissionCell: UITableViewCell {
         // Thumbnail Label
         self.thumbnailLabel.text = viewModel.linkShortString
         
+        // Clear thumbnail until downloaded
+        self.thumbnailImageView.image = nil
+        
         // Vote Count Label
         self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
         _ = viewModel.voteCountTotal.observeNext() { [weak self] count in
