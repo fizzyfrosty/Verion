@@ -667,6 +667,9 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     // For detecting rotations beginning and finishing.
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         
+        // Hide banner before transitioning
+        self.removeBannerAd()
+        
         if UIDevice.current.orientation.isLandscape {
             
             #if DEBUG

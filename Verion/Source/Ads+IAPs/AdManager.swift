@@ -51,7 +51,7 @@ class AdManager: NSObject {
         didPurchase = verionDataModel.isRemoveAdsPurchased
         
         // FIXME: Remove before publication
-        didPurchase = true
+        //didPurchase = true
         
         return didPurchase
     }

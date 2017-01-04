@@ -22,9 +22,27 @@
                         <color key="backgroundColor" red="0.63137254901960782" green="0.83137254901960778" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="Vn4-N6-C8u">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="menu_button" id="T4S-oh-hJN">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </barButtonItem>
+                        <view key="titleView" contentMode="scaleToFill" id="BGg-xm-OoQ">
+                            <rect key="frame" x="113" y="6" width="150" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0T-q8-JoU">
+                                    <rect key="frame" x="35.5" y="6" width="79.5" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="I0T-q8-JoU" firstAttribute="centerY" secondItem="BGg-xm-OoQ" secondAttribute="centerY" id="1dd-cU-CvA"/>
+                                <constraint firstItem="I0T-q8-JoU" firstAttribute="centerX" secondItem="BGg-xm-OoQ" secondAttribute="centerX" id="S3o-rB-nYU"/>
+                            </constraints>
+                        </view>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AcN-Hr-N9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -36,7 +54,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="g85-ZM-SZ3" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="E35-AG-U8t">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="E35-AG-U8t">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.37254901960784315" green="0.67843137254901964" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>

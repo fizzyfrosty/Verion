@@ -85,6 +85,12 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        UIApplication.shared.statusBarStyle = .lightContent
+    }
+    
     func reloadTableCommentsAnimated() {
         self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: 1, endingIndexExclusive: self.commentsViewModels.count+1, animation: .automatic)
     }
@@ -701,7 +707,10 @@ extension CommentsViewController: SFSafariViewControllerDelegate {
         
         let safariController = SFSafariViewController(url: URL(string: formattedLink)!, entersReaderIfAvailable: false)
         safariController.delegate = self
-        self.present(safariController, animated: true, completion: nil)
+        self.present(safariController, animated: true, completion: {
+            
+            UIApplication.shared.statusBarStyle = .default
+        })
     }
     
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
