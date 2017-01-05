@@ -29,7 +29,7 @@ class SubmissionCell: UITableViewCell {
     
     weak var viewModel: SubmissionCellViewModel?
     
-    let BORDER_WIDTH: CGFloat = 0.5
+    let BORDER_WIDTH: CGFloat = 1.0
     let BORDER_COLOR: CGColor = UIColor(colorLiteralRed: 0.9, green: 0.9, blue: 0.9, alpha: 1.0).cgColor
     
     override func awakeFromNib() {
@@ -48,13 +48,20 @@ class SubmissionCell: UITableViewCell {
     
     func bindThumbnailImage() {
         // Thumbnail Image
-        if viewModel?.thumbnailImage == nil {
+        if self.viewModel?.thumbnailImage == nil {
             self.thumbnailWidthConstraint.constant = 0
         } else {
             self.thumbnailWidthConstraint.constant = 75
-            self.thumbnailImageView.image = viewModel?.thumbnailImage
+            self.thumbnailImageView.image = self.viewModel?.thumbnailImage
             self.thumbnailImageView.contentMode = .scaleAspectFit
-            self.thumbnailImageView.layer.borderWidth = 1.0
+            
+            // Set border width only for non-NSFW images. Because it looks better that way
+            if self.viewModel?.isNsfw == false {
+                self.thumbnailImageView.layer.borderWidth = self.BORDER_WIDTH
+            } else {
+                self.thumbnailImageView.layer.borderWidth = 0
+            }
+            
             self.thumbnailImageView.layer.borderColor = UIColor.black.cgColor
         }
     }

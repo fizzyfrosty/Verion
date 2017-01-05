@@ -47,7 +47,7 @@ class LeftMenuController: UITableViewController {
     // Subverse history section
     fileprivate var subverseCellViewModels = [SubverseCellViewModel]()
     private let clearHistoryCellCount: Int = 1
-    fileprivate let MAX_NUM_HISTORY_ENTRIES: Int = 20
+    fileprivate let MAX_NUM_HISTORY_ENTRIES: Int = 5
     
     // Support us section
     enum SupportUsRows: Int {
@@ -562,7 +562,7 @@ extension LeftMenuController: MFMailComposeViewControllerDelegate {
         let mailComposerVc = MFMailComposeViewController()
         mailComposerVc.setToRecipients([EMAIL_ADDRESS])
         mailComposerVc.setSubject("Voatify Feedback")
-        mailComposerVc.setMessageBody("Here is some feedback for Voatify:\n\n", isHTML: false)
+        mailComposerVc.setMessageBody("Here is some feedback for Voatify:\n\n(touch here to add message)", isHTML: false)
         mailComposerVc.mailComposeDelegate = self
         
         return mailComposerVc

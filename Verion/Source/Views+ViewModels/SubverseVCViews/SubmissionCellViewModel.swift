@@ -105,6 +105,7 @@ class SubmissionCellViewModel{
         self.subverseName = subCellVmInitData.subverseName
         self.date = subCellVmInitData.date
         self.rank = subCellVmInitData.rank
+        self.isNsfw = subCellVmInitData.isNsfw
         self.dateSubmittedString = self.textFormatter.createDateSubmittedString(gmtDate: subCellVmInitData.date)
         self.submittedByString = self.textFormatter.createSubmittedByUsernameString(username: subCellVmInitData.username, fontSize: self.USERNAME_LABEL_FONT_SIZE)
         
@@ -180,7 +181,7 @@ class SubmissionCellViewModel{
     // Thumbnail Image
     private func createThumbnailImage(urlString: String, isNsfw: Bool) -> UIImage? {
         let image: UIImage?
-        if isNsfw == true {
+        if isNsfw == true && urlString != ""{
             image = self.getNsfwImage()
         } else {
             image = ImageDownloader.downloadImage(urlString: urlString)

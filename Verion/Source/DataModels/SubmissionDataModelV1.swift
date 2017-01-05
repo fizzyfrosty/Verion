@@ -28,6 +28,7 @@ class SubmissionDataModelV1: SubmissionDataModelProtocol {
     
     var isAnonymized = false
     var isDeleted = false
+    var isAdult = false
     
     var views: UInt = 0
     var vote = ""

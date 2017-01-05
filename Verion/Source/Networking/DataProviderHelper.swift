@@ -450,6 +450,7 @@ class DataProviderHelper {
         submissionDataModelV1.id = json["id"].int64Value
         submissionDataModelV1.isAnonymized = json["isAnonymized"].boolValue
         submissionDataModelV1.isDeleted = json["isDeleted"].boolValue
+        submissionDataModelV1.isAdult = json["isAdult"].boolValue
         submissionDataModelV1.lastEditDateString = json["lastEditDate"].stringValue
         submissionDataModelV1.subverseName = json["subverse"].stringValue
         submissionDataModelV1.thumbnailUrl = json["thumbnailUrl"].stringValue
@@ -593,6 +594,7 @@ class DataProviderHelper {
         subCellVmInitData.thumbnailLink = dataModel.thumbnailUrl
         subCellVmInitData.username = dataModel.username
         subCellVmInitData.subverseName = dataModel.subverseName
+        subCellVmInitData.isNsfw = dataModel.isAdult
         
         
         return subCellVmInitData
