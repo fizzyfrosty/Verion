@@ -54,6 +54,7 @@ class SubmissionCellViewModel{
     
     private(set) var thumbnailImage: UIImage?
     private(set) var isNsfw = false // not yet used
+    private let NSFW_IMAGE_NAME = "nsfw_icon"
     
     // Variables - additional
     var upvoteCount = Observable<Int>(0)
@@ -181,7 +182,7 @@ class SubmissionCellViewModel{
     // Thumbnail Image
     private func createThumbnailImage(urlString: String, isNsfw: Bool) -> UIImage? {
         let image: UIImage?
-        if isNsfw == true && urlString != ""{
+        if self.shouldShowNSFW(isNsfw: isNsfw, urlString: urlString){
             image = self.getNsfwImage()
         } else {
             image = ImageDownloader.downloadImage(urlString: urlString)
@@ -191,9 +192,17 @@ class SubmissionCellViewModel{
     }
     
     private func getNsfwImage()-> UIImage {
-        let image = UIImage.init(named: "nsfw_icon")
+        let image = UIImage.init(named: self.NSFW_IMAGE_NAME)
         
         return image!
+    }
+    
+    private func shouldShowNSFW(isNsfw: Bool, urlString: String) -> Bool {
+        if isNsfw == true && urlString != "" {
+            return true
+        }
+        
+        return false
     }
     
     deinit {
