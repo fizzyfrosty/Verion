@@ -830,7 +830,7 @@
 					43F9A0281DEA3ADF001EB1FC = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = EZ3EL33ZBM;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					43F9A03C1DEA3AE0001EB1FC = {
 						CreatedOnToolsVersion = 8.1;
@@ -1179,7 +1179,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = EZ3EL33ZBM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -1195,8 +1195,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.verion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "f7321550-4cf4-4c26-b905-7c8ab641418b";
+				PROVISIONING_PROFILE_SPECIFIER = "Verion Development Profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "Verion/Verion-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1209,7 +1209,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = EZ3EL33ZBM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -1225,8 +1225,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.workhorsebytes.verion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "b5ac1be2-e88b-4942-82e8-a0a4d4842e6f";
+				PROVISIONING_PROFILE_SPECIFIER = "Verion Distribution Profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "Verion/Verion-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

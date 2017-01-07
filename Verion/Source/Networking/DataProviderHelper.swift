@@ -334,6 +334,11 @@ class DataProviderHelper {
         commentCellVmInitData.voteCountTotal = dataModel.voteCountTotal
         commentCellVmInitData.isMinimized = dataModel.isCollapsed
         commentCellVmInitData.isUserOP = dataModel.isSubmitter
+        commentCellVmInitData.hasMoreUnloadedChildren = dataModel.hasMore
+        commentCellVmInitData.latestChildIndex = dataModel.endingIndex
+        commentCellVmInitData.remainingChildrenCount = dataModel.remainingChildrenCount
+        commentCellVmInitData.id = dataModel.id
+        commentCellVmInitData.parentId = dataModel.parentId
         
         for childData in dataModel.children {
             let commentCellVmInitDataChild = self.getCommentViewModelInitDataFromV1(dataModel: childData)
@@ -380,9 +385,14 @@ class DataProviderHelper {
         commentModelV1.voteCountTotal = json["sum"].intValue
         commentModelV1.upvoteCount = json["upCount"].intValue
         commentModelV1.downvoteCount = json["downCount"].intValue
+        commentModelV1.parentId = json["parentID"].int64Value
         
         let childrenInfo = json["children"]
         let childrenCount = childrenInfo["segmentCount"].intValue // corresponds to the 'comments' array count
+        
+        commentModelV1.hasMore = childrenInfo["hasMore"].boolValue
+        commentModelV1.endingIndex = childrenInfo["endingIndex"].intValue
+        commentModelV1.remainingChildrenCount = childrenInfo["remainingCount"].intValue
         
         // If there are children comments
         if childrenCount > 0 {

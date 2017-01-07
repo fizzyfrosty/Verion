@@ -35,6 +35,10 @@ class CommentDataModelV1: CommentDataModelProtocol {
     var downvoteCount = 0
     var voteCountTotal = 0
     
+    var hasMore = false
+    var endingIndex = 0
+    var remainingChildrenCount = 0
+    
     var children: [CommentDataModelV1] = []
     
 }

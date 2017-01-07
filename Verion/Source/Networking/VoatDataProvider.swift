@@ -186,6 +186,37 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
+    func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentDataModelProtocol], Error?) -> ()) {
+        var commentDataModels = [CommentDataModelProtocol]()
+        // FIXME: make proper request
+        let requestUrlString = self.getChildCommentsRequestUrlString(forSubverse: subverse, submissionId: submissionId, parentId: parentId, startingIndex: startingIndex, apiVersion: self.apiVersion)
+        var jsonData: JSON?
+        
+        let headers = self.getHeaders(apiVersion: self.apiVersion)
+        
+        Alamofire.request(requestUrlString, headers: headers).validate().responseJSON { response in
+            switch response.result {
+            case .success:
+                #if DEBUG
+                    print(self.VALIDATION_SUCCESSFUL_MESSAGE)
+                #endif
+                
+                jsonData = JSON.init(data: response.data!)
+                
+                commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
+                
+                // TODO: Implement error
+                
+                // Return the data models
+                completion(commentDataModels, nil)
+            case .failure(let error):
+                print(error)
+                
+                completion(commentDataModels, error)
+            }
+        }
+    }
+    
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {
         
         // TODO: UPVOTE/DOWNVOTE feature isn't supported by legacy api. Will do later when I get new API key
@@ -334,6 +365,19 @@ class VoatDataProvider: DataProviderType {
         urlStringV1 = self.VOAT_V1_DOMAIN + "/api/v1/v/\(subverseName)?page=\(submissionParams.page)" + sortTypeParam + timeParam
         
         return urlStringV1
+    }
+    
+    private func getChildCommentsRequestUrlString(forSubverse subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, apiVersion: APIVersion) -> String {
+        var urlString = ""
+        
+        switch apiVersion {
+        case .legacy:
+            urlString = ""
+        case .v1:
+            urlString = self.getCommentsUrlStringV1(forSubverse: subverse, submissionID: submissionId) + "/\(parentId)/\(startingIndex)"
+        }
+        
+        return urlString
     }
     
     private func getCommentsRequestUrlString(forSubverse subverse: String, submissionId: Int64, apiVersion: APIVersion) -> String {

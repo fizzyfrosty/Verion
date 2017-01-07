@@ -102,6 +102,13 @@ class OfflineDataProvider: DataProviderType {
         }
     }
     
+    func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentDataModelProtocol], Error?) -> ()) {
+        
+        let commentDataModels: [CommentDataModelProtocol] = []
+        
+        completion(commentDataModels, nil)
+    }
+    
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {
         
         // TODO: UPVOTE/DOWNVOTE feature isn't supported by legacy api. Will do later when I get new API key

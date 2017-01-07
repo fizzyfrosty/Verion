@@ -11,6 +11,8 @@ import Bond
 
 struct CommentCellViewModelInitData {
     var date: Date = Date()
+    var id: Int64 = 0
+    var parentId: Int64 = 0
     
     var voteCountTotal = 0
     var upvoteCount = 0
@@ -22,6 +24,10 @@ struct CommentCellViewModelInitData {
     
     var isUserOP = false
     
+    var hasMoreUnloadedChildren = false
+    var remainingChildrenCount = 0
+    var latestChildIndex = 0
+    
     var children: [CommentCellViewModelInitData] = []
 }
 
@@ -29,6 +35,8 @@ class CommentCellViewModel {
 
     private(set) var dateString = ""
     private(set) var date: Date?
+    private(set) var id: Int64 = 0
+    private(set) var parentId: Int64 = 0
     
     private(set) var voteCountTotal = Observable<Int>(0)
     private(set) var upvoteCount = Observable<Int>(0)
@@ -104,9 +112,16 @@ class CommentCellViewModel {
     // User
     var isUserOP = false
     
+    // Loading children
+    var hasMoreUnloadedChildren = false
+    var isLoadMoreCell = false // for external setting
+    var remainingChildrenCount = 0 // hidden children, unloaded
+    var latestChildIndex = 0
+    
     
     func loadInitData(initData: CommentCellViewModelInitData) {
         self.date = initData.date
+        self.id = initData.id
         self.voteCountTotal.value = initData.voteCountTotal
         self.upvoteCount.value = initData.upvoteCount
         self.downvoteCount.value = initData.downvoteCount
@@ -118,6 +133,10 @@ class CommentCellViewModel {
         self.dateString = self.textFormatter.createDateSubmittedString(gmtDate: self.date!) + " ago"
         self.isMinimized.value = initData.isMinimized
         self.isUserOP = initData.isUserOP
+        self.hasMoreUnloadedChildren = initData.hasMoreUnloadedChildren
+        self.remainingChildrenCount = initData.remainingChildrenCount
+        self.latestChildIndex = initData.latestChildIndex
+        self.parentId = initData.parentId
         
         // Load children
         for childInitData in initData.children {
