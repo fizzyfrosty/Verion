@@ -48,8 +48,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var progressCellVm: ProgressIndicatorCellViewModel = ProgressIndicatorCellViewModel()
     
     var commentsViewModels: [CommentCellViewModel] = []
-    var commentDataModels: [CommentDataModelProtocol] = []
     var areCommentsLoaded = false
+    var loadMoreParentCommentsIndex = 0
     
     // Navigation Bar items
     private var ACTIVITY_INDICATOR_LENGTH: CGFloat = 25.0
@@ -195,11 +195,21 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     private func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentCellViewModel])->()) {
         
-        self.dataProvider?.requestChildComments(subverse: subverse, submissionId: submissionId, parentId: parentId, startingIndex: startingIndex) { commentDataModels, error in
+        self.dataProvider?.requestChildComments(subverse: subverse, submissionId: submissionId, parentId: parentId, startingIndex: startingIndex) { commentDataModels, commentDataSegment, error in
             
             DispatchQueue.global(qos: .background).async {
+                
                 // Turn dataModels into cell view models
-                let topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
+                var topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
+                
+                // Load More cell
+                if commentDataSegment != nil {
+                    if commentDataSegment!.hasMore {
+                        // Add to toplevel comments
+                        let loadMoreCommentsViewModel = self.getLoadMoreCellViewModel(numOfComments: commentDataSegment!.remainingCount, lastCommentIndex: commentDataSegment!.endingIndex)
+                        topLevelCommentVms.append(loadMoreCommentsViewModel)
+                    }
+                }
                 
                 DispatchQueue.main.async {
                     completion(topLevelCommentVms)
@@ -210,23 +220,30 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     // Load Comments from Data Provider
     private func loadCommentCells(completion: @escaping ()->()) {
-        self.dataProvider?.requestComments(subverse:self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, completion: { (commentDataModels, error) in
-            
+        self.dataProvider?.requestComments(subverse:self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, completion: { (commentDataModels, commentDataSegment, error) in
             
             DispatchQueue.global(qos: .background).async {
                 
-                // Clear all current data
-                self.commentsViewModels.removeAll()
-                self.commentDataModels = commentDataModels // TODO: This may not have been necessary
+                var topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
                 
-                let topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
+                // Load More cell
+                if commentDataSegment != nil {
+                    if commentDataSegment!.hasMore {
+                        // Add to toplevel comments
+                        let loadMoreCommentsViewModel = self.getLoadMoreCellViewModel(numOfComments: commentDataSegment!.remainingCount, lastCommentIndex: commentDataSegment!.endingIndex)
+                        topLevelCommentVms.append(loadMoreCommentsViewModel)
+                    }
+                }
+                
                 
                 // Put all comment cells, and children, into a single array
-                self.commentsViewModels = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: topLevelCommentVms)
+                let allCommentViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: topLevelCommentVms)
+                self.commentsViewModels.append(contentsOf: allCommentViewModelsLinearArray)
                 
                 self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: topLevelCommentVms, startingDepthIndex: 0)
                 
                 self.areCommentsLoaded = true
+                
                 
                 DispatchQueue.main.async {
                     self.reloadTableCommentsAnimated()
@@ -269,17 +286,13 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 // Load More Comments
                 // If hasMore children that were not yet fetched by latest request, create a model for "load more"
                 if viewModel.hasMoreUnloadedChildren == true {
-                    let loadMoreCommentCellViewModel = CommentCellViewModel()
-                    let loadMoreCommentCellVmInitData = self.getLoadMoreCommentCellVmInitData(fromParentViewModel: viewModel)
-                    loadMoreCommentCellViewModel.loadInitData(initData: loadMoreCommentCellVmInitData)
-                    loadMoreCommentCellViewModel.isLoadMoreCell = true
-                    loadMoreCommentCellViewModel.childDepthIndex = viewModel.childDepthIndex+1
-                    
-                    // Add it as a child of current view model
-                    viewModel.children.append(loadMoreCommentCellViewModel)
-                    
-                    // Turn off once appended
-                    viewModel.hasMoreUnloadedChildren = false
+                    if let loadMoreCommentCellViewModel = self.getLoadMoreCellViewModel(withParentViewModel: viewModel) {
+                        // Add it as a child of current view model
+                        viewModel.addChild(viewModel: loadMoreCommentCellViewModel)
+                        
+                        // Turn off once appended
+                        viewModel.hasMoreUnloadedChildren = false
+                    }
                 }
                 
                 
@@ -293,14 +306,56 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         return commentCellViewModelsAll
     }
     
-    private func getLoadMoreCommentCellVmInitData(fromParentViewModel parentViewModel: CommentCellViewModel) -> CommentCellViewModelInitData {
+    private func getLoadMoreCellViewModel(numOfComments: Int, lastCommentIndex: Int) -> CommentCellViewModel {
+        let loadMoreCommentCellViewModel = CommentCellViewModel()
+        let loadMoreCommentCellVmInitData = self.getLoadMoreCommentCellVmInitData(numOfComments: numOfComments, lastCommentIndex: lastCommentIndex)
+        
+        loadMoreCommentCellViewModel.loadInitData(initData: loadMoreCommentCellVmInitData)
+        loadMoreCommentCellViewModel.isLoadMoreCell = true
+        loadMoreCommentCellViewModel.childDepthIndex = 0 // top level comment
+        
+        return loadMoreCommentCellViewModel
+    }
+    
+    private func getLoadMoreCellViewModel(withParentViewModel parentViewModel: CommentCellViewModel?) -> CommentCellViewModel? {
+        
+        // If no parent view model
+        guard parentViewModel != nil else {
+            return nil
+        }
+        
+        let loadMoreCommentCellViewModel = CommentCellViewModel()
+        let loadMoreCommentCellVmInitData = self.getLoadMoreCommentCellVmInitData(fromParentViewModel: parentViewModel!)
+        loadMoreCommentCellViewModel.loadInitData(initData: loadMoreCommentCellVmInitData!)
+        loadMoreCommentCellViewModel.isLoadMoreCell = true
+        loadMoreCommentCellViewModel.childDepthIndex = parentViewModel!.childDepthIndex+1
+        
+        return loadMoreCommentCellViewModel
+    }
+    
+    private func getLoadMoreCommentCellVmInitData(fromParentViewModel parentViewModel: CommentCellViewModel?) -> CommentCellViewModelInitData? {
+        
+        guard parentViewModel != nil else {
+            return nil
+        }
+        
         var loadMoreCommentCellVmInitData = CommentCellViewModelInitData()
         loadMoreCommentCellVmInitData.isMinimized = true
-        loadMoreCommentCellVmInitData.usernameString = "Load More Comments (\(parentViewModel.remainingChildrenCount) more)"
-        loadMoreCommentCellVmInitData.parentId = parentViewModel.id
-        loadMoreCommentCellVmInitData.latestChildIndex = parentViewModel.latestChildIndex
+        loadMoreCommentCellVmInitData.usernameString = "Load More Comments (\(parentViewModel!.remainingChildrenCount) more)"
+        loadMoreCommentCellVmInitData.parentId = parentViewModel!.id
+        loadMoreCommentCellVmInitData.latestChildIndex = parentViewModel!.latestChildIndex
         
         return loadMoreCommentCellVmInitData
+    }
+    
+    private func getLoadMoreCommentCellVmInitData(numOfComments: Int, lastCommentIndex: Int) -> CommentCellViewModelInitData {
+        var loadMoreCommentCellVmInitData = CommentCellViewModelInitData()
+        loadMoreCommentCellVmInitData.isMinimized = true
+        loadMoreCommentCellVmInitData.usernameString = "Load More Comments (\(numOfComments) more)"
+        loadMoreCommentCellVmInitData.latestChildIndex = lastCommentIndex // top level comment
+        loadMoreCommentCellVmInitData.parentId = -1 // This is required for top level comment retrieval
+        return loadMoreCommentCellVmInitData
+
     }
     
     private func setAllCommentViewModelChildDepthIndexes(topLevelViewModels: [CommentCellViewModel], startingDepthIndex: Int) {
@@ -572,39 +627,51 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 // If cell is a "load more"
                 if commentCellVm.isLoadMoreCell {
+                    
                     self.requestChildComments(subverse: self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, parentId: commentCellVm.parentId, startingIndex: commentCellVm.latestChildIndex+1) { commentCellViewModels in
                         
-                        // Remove child from parent, add new cells to parent
-                        let parentIndex = viewModelIndex-1
-                        let parentCommentCellViewModel = self.commentsViewModels[parentIndex]
+                        self.insertCommentsIntoLoadMore(loadMoreCellViewModel:commentCellVm, atIndex: viewModelIndex, commentCellViewModels: commentCellViewModels)
                         
-                        if parentCommentCellViewModel.children.count > 0 {
-                            parentCommentCellViewModel.children.removeLast()
-                        }
-                        
-                        parentCommentCellViewModel.children.append(contentsOf: commentCellViewModels)
-                        
-                        // Set the child depth indexes
-                        self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: commentCellViewModels, startingDepthIndex: commentCellVm.childDepthIndex)
-                        
-                        // Get uncollapsed tree from children
-                        let commentCellViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: commentCellViewModels)
-                        
-                        // Replace LoadMoreCell with contents of first view model
-                        self.commentsViewModels.remove(at: viewModelIndex)
-                        self.commentsViewModels.insert(contentsOf: commentCellViewModelsLinearArray, at: viewModelIndex)
-                        
-                        
-                        // reload table
-                        let startingIndex = indexPath.section
-                        let endingIndexExclusive = startingIndex + commentCellViewModelsLinearArray.count
-                        self.reloadTableAnimated(startingIndexInclusive: startingIndex, endingIndexExclusive: endingIndexExclusive, animation: .fade)
                     }
                 } else {
                     self.maximizeCommentCell(forViewModel: commentCellVm, indexPath: indexPath)
                 }
             }
         }
+    }
+    
+    private func insertCommentsIntoLoadMore(loadMoreCellViewModel: CommentCellViewModel, atIndex viewModelIndex: Int, commentCellViewModels: [CommentCellViewModel]) {
+        
+        // Guard against the parent not existing if the loadMoreCell is a top level comment
+        if loadMoreCellViewModel.childDepthIndex != 0 {
+            
+            // Remove child from parent, add new cells to parent
+            if let parentCommentCellViewModel = loadMoreCellViewModel.parent {
+                if parentCommentCellViewModel.children.count > 0 {
+                    parentCommentCellViewModel.removeLastChild()
+                }
+                
+                for viewModel in commentCellViewModels {
+                    parentCommentCellViewModel.addChild(viewModel: viewModel)
+                }
+            }
+        }
+        
+        // Set the child depth indexes
+        self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: commentCellViewModels, startingDepthIndex: loadMoreCellViewModel.childDepthIndex)
+        
+        // Get uncollapsed tree from children
+        let commentCellViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: commentCellViewModels)
+        
+        // Replace LoadMoreCell with contents of first view model
+        self.commentsViewModels.remove(at: viewModelIndex)
+        self.commentsViewModels.insert(contentsOf: commentCellViewModelsLinearArray, at: viewModelIndex)
+        
+        // reload table
+        // The viewModelIndex is always indexPath.section-1, so we have to add 1 to animate the location of section
+        let startingIndex = viewModelIndex + 1
+        let endingIndexExclusive = startingIndex + commentCellViewModelsLinearArray.count
+        self.reloadTableAnimated(startingIndexInclusive: startingIndex, endingIndexExclusive: endingIndexExclusive, animation: .fade)
     }
     
     private func minimizeCommentCell(forViewModel viewModel: CommentCellViewModel, indexPath: IndexPath) {

@@ -52,6 +52,8 @@
 		4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */; };
 		4375C08C1E011F8E00576CC6 /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C08B1E011F8E00576CC6 /* SortType.swift */; };
 		4375C08E1E01317F00576CC6 /* ActivityIndicatorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */; };
+		437644351E22511000EE64A7 /* CommentDataSegmentV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437644341E22511000EE64A7 /* CommentDataSegmentV1.swift */; };
+		437644371E22519800EE64A7 /* CommentDataSegmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437644361E22519800EE64A7 /* CommentDataSegmentProtocol.swift */; };
 		43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */; };
 		43ABEB7C1E137F2300458E3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43ABEB7B1E137F2300458E3D /* Assets.xcassets */; };
 		43ABEB861E137FA300458E3D /* FlurryEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEB7F1E137FA300458E3D /* FlurryEmpty.m */; };
@@ -207,6 +209,8 @@
 		4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelProtocol.swift; sourceTree = "<group>"; };
 		4375C08B1E011F8E00576CC6 /* SortType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
 		4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorProvider.swift; sourceTree = "<group>"; };
+		437644341E22511000EE64A7 /* CommentDataSegmentV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataSegmentV1.swift; sourceTree = "<group>"; };
+		437644361E22519800EE64A7 /* CommentDataSegmentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataSegmentProtocol.swift; sourceTree = "<group>"; };
 		43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelLegacy.swift; sourceTree = "<group>"; };
 		43ABEB7B1E137F2300458E3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43ABEB7E1E137FA300458E3D /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
@@ -648,6 +652,8 @@
 				4375C0751DF8A3B700576CC6 /* CommentDataModelProtocol.swift */,
 				43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */,
 				43B057111E0E7616007083E8 /* CommentDataModelV1.swift */,
+				437644361E22519800EE64A7 /* CommentDataSegmentProtocol.swift */,
+				437644341E22511000EE64A7 /* CommentDataSegmentV1.swift */,
 				43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */,
 				43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */,
 				43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */,
@@ -962,6 +968,7 @@
 				43B057121E0E7616007083E8 /* CommentDataModelV1.swift in Sources */,
 				43B056D91E0E4691007083E8 /* SpringView.swift in Sources */,
 				43B056CB1E0E4691007083E8 /* ImageLoader.swift in Sources */,
+				437644371E22519800EE64A7 /* CommentDataSegmentProtocol.swift in Sources */,
 				43B056D51E0E4691007083E8 /* SpringImageView.swift in Sources */,
 				43B0567F1E0D5FD3007083E8 /* DataManagerHelper.swift in Sources */,
 				4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */,
@@ -978,6 +985,7 @@
 				43433D7F1E03C8290017FAB0 /* CellHeightCalculator.swift in Sources */,
 				43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */,
 				43B056D11E0E4691007083E8 /* SoundPlayer.swift in Sources */,
+				437644351E22511000EE64A7 /* CommentDataSegmentV1.swift in Sources */,
 				432B77771E12272A00457F2C /* ActivityIndicatorCellViewModel.swift in Sources */,
 				43B056E01E0E4691007083E8 /* SwiftyMarkdown.swift in Sources */,
 				43B056C41E0E4691007083E8 /* DesignableButton.swift in Sources */,

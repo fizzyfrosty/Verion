@@ -155,7 +155,7 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
-    func requestComments(subverse: String, submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?) -> Void) {
+    func requestComments(subverse: String, submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], CommentDataSegmentProtocol?, Error?) -> Void) {
         var commentDataModels = [CommentDataModelProtocol]()
         
         let requestUrlString = self.getCommentsRequestUrlString(forSubverse: subverse, submissionId: submissionId, apiVersion: self.apiVersion)
@@ -174,21 +174,23 @@ class VoatDataProvider: DataProviderType {
                 
                 commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
                 
+                let commentDataSegment = self.dataProviderHelper.getCommentDataSegment(fromJson: jsonData!, apiVersion: self.apiVersion)
+                
                 // TODO: Implement error
                 
                 // Return the data models
-                completion(commentDataModels, nil)
+                completion(commentDataModels, commentDataSegment, nil)
             case .failure(let error):
                 print(error)
                 
-                completion(commentDataModels, error)
+                completion(commentDataModels, nil, error)
             }
         }
     }
     
-    func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentDataModelProtocol], Error?) -> ()) {
+    func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentDataModelProtocol], CommentDataSegmentProtocol?, Error?) -> ()) {
         var commentDataModels = [CommentDataModelProtocol]()
-        // FIXME: make proper request
+        
         let requestUrlString = self.getChildCommentsRequestUrlString(forSubverse: subverse, submissionId: submissionId, parentId: parentId, startingIndex: startingIndex, apiVersion: self.apiVersion)
         var jsonData: JSON?
         
@@ -205,14 +207,16 @@ class VoatDataProvider: DataProviderType {
                 
                 commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
                 
+                let commentDataSegment = self.dataProviderHelper.getCommentDataSegment(fromJson: jsonData!, apiVersion: self.apiVersion)
+                
                 // TODO: Implement error
                 
                 // Return the data models
-                completion(commentDataModels, nil)
+                completion(commentDataModels, commentDataSegment, nil)
             case .failure(let error):
                 print(error)
                 
-                completion(commentDataModels, error)
+                completion(commentDataModels, nil, error)
             }
         }
     }

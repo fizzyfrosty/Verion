@@ -49,7 +49,8 @@ class CommentCellViewModel {
     var separatedVoteCountString = Observable<String>("")
     var textFormatter = SubmissionTextFormatter()
     
-    var children: [CommentCellViewModel] = []
+    private(set) var children: [CommentCellViewModel] = []
+    weak var parent: CommentCellViewModel?
     
     // Cell Height
     let CELL_VERTICAL_MARGINS: CGFloat = 55.0
@@ -158,6 +159,15 @@ class CommentCellViewModel {
             
             self?.voteCountTotal.value = (self?.getVoteCountTotal(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
         }
+    }
+    
+    func addChild(viewModel: CommentCellViewModel) {
+        self.children.append(viewModel)
+        viewModel.parent = self
+    }
+    
+    func removeLastChild() {
+        self.children.removeLast()
     }
     
     func toggleMinimized() {

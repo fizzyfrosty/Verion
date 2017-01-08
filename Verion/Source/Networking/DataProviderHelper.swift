@@ -16,6 +16,20 @@ class DataProviderHelper {
     private let VOAT_THUMBNAIL_LEGACY_URL = "https://cdn.voat.co/thumbs/"
     let API_V1_NOTSUPPORTED_ERROR_MESSAGE = "API.v1 not yet implemented"
     
+    func getCommentDataSegment(fromJson jsonData: JSON, apiVersion: APIVersion) -> CommentDataSegmentProtocol? {
+        var commentDataSegment: CommentDataSegmentProtocol? = nil
+        
+        switch apiVersion {
+        case .legacy:
+            // do nothing
+            break
+        case .v1:
+            commentDataSegment = self.getCommentDataSegmentV1(fromJson: jsonData)
+        }
+        
+        return commentDataSegment
+    }
+    
     func getContentUrlString(fromSubmissionDataModel dataModel: SubmissionDataModelProtocol) -> String {
         var urlString: String = ""
         
@@ -109,6 +123,22 @@ class DataProviderHelper {
         }
         
         return mediaType
+    }
+    
+    private func getCommentDataSegmentV1(fromJson jsonData: JSON) -> CommentDataSegmentV1 {
+        let commentDataSegment = CommentDataSegmentV1()
+        
+        let dataInfo = jsonData["data"]
+        
+        commentDataSegment.endingIndex = dataInfo["endingIndex"].intValue
+        commentDataSegment.hasMore = dataInfo["hasMore"].boolValue
+        commentDataSegment.remainingCount = dataInfo["remainingCount"].intValue
+        commentDataSegment.segmentCount = dataInfo["segmentCount"].intValue
+        commentDataSegment.sort = dataInfo["sort"].stringValue
+        commentDataSegment.startingIndex = dataInfo["startingIndex"].intValue
+        commentDataSegment.totalCount = dataInfo["totalCount"].intValue
+        
+        return commentDataSegment
     }
     
     private func getSubverseSearchResultCellVmInitDataFromV1(dataModel: SubverseSearchResultDataModelV1) -> SubverseSearchResultCellViewModelInitData {

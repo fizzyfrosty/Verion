@@ -80,9 +80,10 @@ class OfflineDataProvider: DataProviderType {
         }
     }
     
-    func requestComments(subverse: String, submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void {
+    func requestComments(subverse: String, submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], CommentDataSegmentProtocol?, Error?)->Void) -> Void {
         Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
             var commentDataModels = [CommentDataModelProtocol]()
+            let _: CommentDataSegmentProtocol
             
             // Load sample json data
             let sampleJson: JSON
@@ -97,16 +98,17 @@ class OfflineDataProvider: DataProviderType {
             
             
             // Return the data models
-            completion(commentDataModels, nil)
+            completion(commentDataModels, nil, nil)
             
         }
     }
     
-    func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentDataModelProtocol], Error?) -> ()) {
+    func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentDataModelProtocol], CommentDataSegmentProtocol?, Error?) -> ()) {
         
         let commentDataModels: [CommentDataModelProtocol] = []
+        let commentDataSegment: CommentDataSegmentProtocol? = nil
         
-        completion(commentDataModels, nil)
+        completion(commentDataModels, commentDataSegment, nil)
     }
     
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {
