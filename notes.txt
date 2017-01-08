@@ -11,10 +11,10 @@ Load children comments that are hidden
 	* When tapped, make a request for the comments
 	* Restructure all comments accordingly
 
-- Load parent comments that are not returned
-	- Add a LoadMore collapsed comment
-	- When tapped, request comments
-	- Restructure
+* Load parent comments that are not returned
+	* Add a LoadMore collapsed comment
+	* When tapped, request comments
+	* Restructure
 
 
 

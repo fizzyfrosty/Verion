@@ -20,6 +20,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
+    private let BOTTOM_INSET: CGFloat = 50.0
     
     // Cell configuration
     let COMMENT_CELL_REUSE_ID = "CommentCell"
@@ -69,7 +70,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         
         self.tableView.backgroundColor = self.backgroundColor
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        
+        self.setBottomInset()
         
         self.loadSubmissionInfo {
             
@@ -83,6 +84,13 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    private func setBottomInset() {
+        // Set bottom content Inset for possible ad-placement
+        let topDefaultInset = self.tableView.contentInset.top
+        let bottomInset = self.BOTTOM_INSET
+        self.tableView.contentInset = UIEdgeInsets(top: topDefaultInset, left: 0, bottom: bottomInset, right: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
