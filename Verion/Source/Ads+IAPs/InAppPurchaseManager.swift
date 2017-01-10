@@ -63,8 +63,6 @@ class InAppPurchaseManager: NSObject {
             // Failed
             completion(nil, nil, error)
         })
-        
-        
     }
     
     func purchaseProduct(productId: String, completion: @escaping (Error?)->()) {
@@ -80,8 +78,26 @@ class InAppPurchaseManager: NSObject {
         })
     }
     
-    func restorePurchases(completion: @escaping (Error?)->()) {
+    func restorePurchases(completion: @escaping (_ productIds: [String], Error?)->()) {
         
+        var productIds: [String] = []
+        
+        RMStore.default().restoreTransactions(onSuccess: { transactions in
+            // Success
+            
+            // Retrieve product id from sk transactions
+            for transaction in transactions! {
+                let skTransaction = transaction as? SKPaymentTransaction
+                productIds.append(skTransaction!.payment.productIdentifier)
+            }
+            
+            // Return
+            completion(productIds, nil)
+            
+        }) { (error) in
+            // Failed
+            completion(productIds, error)
+        }
     }
     
 }

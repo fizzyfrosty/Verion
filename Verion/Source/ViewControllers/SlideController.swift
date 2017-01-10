@@ -99,8 +99,12 @@ extension SlideController: LeftMenuControllerDelegate {
         self.closeLeft()
     }
     
+    func leftMenuDidPressClose(leftMenu: LeftMenuController) {
+        self.closeLeft()
+    }
+    
     func leftMenuDidClearHistory(leftMenu: LeftMenuController) {
-        
+        // Do nothing
     }
     
     func leftMenuDidPurchaseProduct(leftMenu: LeftMenuController, productId: String) {

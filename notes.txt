@@ -4,6 +4,19 @@ Random Notes
 Immediate tasks:
 
 
+Apple Requirements:
+* Restore Purchases
+
+- Filter NSFW posts
+- Filter Language
+
+- Block Users in comments
+	- Flag Comments/Remove/hidden
+- Flag submission posts, remove
+
+
+
+
 Load children comments that are hidden
 
 * For a set of comments that exist in children but not returned

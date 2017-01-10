@@ -98,4 +98,6 @@ class AnalyticsEvents {
     }
     
     static let leftMenuPurchasedRemoveAds = "Left Menu - Purchased Remove Ads"
+    
+    static let leftMenuRestorePurchases = "Left Menu - Restore Purchases"
 }

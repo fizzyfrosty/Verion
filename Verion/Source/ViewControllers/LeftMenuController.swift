@@ -13,6 +13,7 @@ protocol LeftMenuControllerDelegate: class {
     func leftMenuDidSelectSubverse(leftMenu: LeftMenuController, subverseName: String)
     func leftMenuDidClearHistory(leftMenu: LeftMenuController)
     func leftMenuDidPurchaseProduct(leftMenu: LeftMenuController, productId: String)
+    func leftMenuDidPressClose(leftMenu: LeftMenuController)
 }
 
 class LeftMenuController: UITableViewController {
@@ -52,11 +53,13 @@ class LeftMenuController: UITableViewController {
     // Support us section
     enum SupportUsRows: Int {
         case removeAds = 0
-        case donate = 1
+        case restorePurchases = 1
+        case donate = 2
         
-        static let allValues = [removeAds, donate]
+        static let allValues = [removeAds, restorePurchases,donate]
     }
     private let REMOVE_ADS_CELL_REUSE_ID = "RemoveAdsCell"
+    private let RESTORE_PURCHASES_REUSE_ID = "RestorePurchasesCell"
     private let DONATE_CELL_REUSE_ID = "DonateCell"
     
     // Contact us section
@@ -72,6 +75,11 @@ class LeftMenuController: UITableViewController {
     private let PURCHASE_SUCCESS_TITLE = "Ads Removed"
     private let PURCHASE_REMOVE_ADS_SUCCESS_MESSAGE = "Thank you for your support! We hope you continue enjoy using Voatify!"
     private let PURCHASE_FAILED_MESSAGE = "Purchase was cancelled."
+    
+    
+    private let ERROR_TITLE = "Error"
+    private let ERROR_MESSAGE = "There was a problem. Please try again later."
+    private let SUCCESS_TITLE = "Success"
     
     // Delegate
     weak var delegate: LeftMenuControllerDelegate?
@@ -136,7 +144,7 @@ class LeftMenuController: UITableViewController {
             
             self.hideActivityIndicator()
             guard error == nil else {
-                self.showAlert(title: "Error", message: "There was a problem. Please try again later.")
+                self.showAlert(title: self.ERROR_TITLE, message: self.ERROR_MESSAGE)
                 return
             }
             
@@ -145,22 +153,68 @@ class LeftMenuController: UITableViewController {
                 
                 self.hideActivityIndicator()
                 if error == nil {
+                    
+                    // Purchased remove ads
                     self.showAlert(title: self.PURCHASE_SUCCESS_TITLE, message: self.PURCHASE_REMOVE_ADS_SUCCESS_MESSAGE)
-                    if let _ = self.delegate?.leftMenuDidPurchaseProduct(leftMenu: self, productId: VerionProductIds.removeAds) {
-                        // Success, do nothing
-                        
-                        // Analytics
-                        self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuPurchasedRemoveAds, timed: false)
-                    } else {
-                        #if DEBUG
-                        print("Warning: LeftMenu's delegate may not be set for purchasing IAP.")
-                        #endif
-                    }
+                    
+                    // notify delegate
+                    self.notifyDelegateDidPurchaseRemoveAds()
                 } else {
                     self.showAlert(title: "", message: self.PURCHASE_FAILED_MESSAGE)
                 }
                 
             }
+        }
+    }
+    
+    private func restorePurchases() {
+        // Analytics
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuRestorePurchases, timed: false)
+        
+        self.showActivityIndicator()
+        
+        self.inAppPurchaseManager?.restorePurchases(completion: { (productIds, error) in
+            
+            self.hideActivityIndicator()
+            
+            guard error == nil else {
+                self.showAlert(title: self.ERROR_TITLE, message: self.ERROR_MESSAGE)
+                return
+            }
+            
+            var productIdsString = ""
+            
+            for productId in productIds {
+                productIdsString += productId + "\n"
+                
+                switch productId {
+                case VerionProductIds.removeAds:
+                    self.notifyDelegateDidPurchaseRemoveAds()
+                default:
+                    // Should not happen
+                    #if DEBUG
+                    print("Warning: Invalid Product ID Returned - " + productId)
+                    #endif
+                    break
+                }
+            }
+            
+            // Success
+            self.showAlert(title: self.SUCCESS_TITLE, message: "Restored purchases: \(productIdsString)")
+            
+        })
+    }
+    
+    private func notifyDelegateDidPurchaseRemoveAds() {
+        if let _ = self.delegate?.leftMenuDidPurchaseProduct(leftMenu: self, productId: VerionProductIds.removeAds) {
+            // Success, do nothing
+            
+            // Analytics
+            self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuPurchasedRemoveAds, timed: false)
+        } else {
+            #if DEBUG
+                print("Warning: LeftMenu's delegate may not be set for purchasing IAP.")
+            #endif
         }
     }
     
@@ -276,6 +330,10 @@ class LeftMenuController: UITableViewController {
                 let removeAdsCell = tableView.dequeueReusableCell(withIdentifier: self.REMOVE_ADS_CELL_REUSE_ID, for: indexPath)
                 return removeAdsCell
                 
+            } else if indexPath.row == SupportUsRows.restorePurchases.rawValue {
+                let restorePurchasesCell = tableView.dequeueReusableCell(withIdentifier: self.RESTORE_PURCHASES_REUSE_ID, for: indexPath)
+                return restorePurchasesCell
+                
             } else if indexPath.row == SupportUsRows.donate.rawValue {
                 
                 // Donate cell
@@ -310,6 +368,9 @@ class LeftMenuController: UITableViewController {
         
         
         switch indexPath.section {
+        case LeftMenuSections.icon.rawValue:
+            self.notifyDelegateDidPressClose()
+            
         case LeftMenuSections.subverseHistory.rawValue:
             
             // Delegate - tell to Go to Subverse
@@ -326,7 +387,9 @@ class LeftMenuController: UITableViewController {
         case LeftMenuSections.supportUs.rawValue:
             if indexPath.row == SupportUsRows.removeAds.rawValue {
                 self.purchaseRemoveAds()
-            } else if indexPath.row == SupportUsRows.donate.rawValue {
+            } else if indexPath.row == SupportUsRows.restorePurchases.rawValue {
+                self.restorePurchases()
+            }else if indexPath.row == SupportUsRows.donate.rawValue {
                 self.openDonate()
             }
             
@@ -473,6 +536,16 @@ extension LeftMenuController {
         // Save
         self.saveData {
             
+        }
+    }
+    
+    fileprivate func notifyDelegateDidPressClose() {
+        if let _ = self.delegate?.leftMenuDidPressClose(leftMenu: self) {
+            // success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
         }
     }
     
