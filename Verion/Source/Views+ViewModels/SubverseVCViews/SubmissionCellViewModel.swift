@@ -114,8 +114,14 @@ class SubmissionCellViewModel{
     }
     
     // Use externally for whoever is doing the binding to separate/optimize loading
-    func createThumbnailImage() {
-        self.thumbnailImage = self.createThumbnailImage(urlString: self.thumbnailLink.value, isNsfw: self.isNsfw)
+    func createThumbnailImage(shouldUseNsfwThumbnailIfApplicable: Bool) {
+        
+        if shouldUseNsfwThumbnailIfApplicable == true {
+            self.thumbnailImage = self.createThumbnailImage(urlString: self.thumbnailLink.value, isNsfw: self.isNsfw)
+        } else {
+            self.thumbnailImage = self.createThumbnailImage(urlString: self.thumbnailLink.value, isNsfw: false)
+        }
+        
     }
     
     private func setupInternalBindings() {

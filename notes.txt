@@ -12,9 +12,24 @@ Menu bar
 - Filter Language
 
 Filters
+Left Menu:
  * Show NSFW posts
  * Use NSFW thumbnails
  * Filter language
+
+Hide NSFW Posts
+ * SubverseViewController after returned view models, filter out nsfw posts
+
+Use NSFW Thumbnails
+ - SubverseViewController disable/enable thumbnails
+
+Filter Language
+ - Create language filter set
+ - apply to words in
+	- Submission Title
+	- User Comments
+	- Submission Text
+
 
 
 - Flag submission posts, remove

@@ -88,6 +88,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     // Data Models and View Models
     private var subCellViewModels: [SubmissionCellViewModel] = []
     private var submissionDataModels: [SubmissionDataModelProtocol] = []
+    private var verionDataModel: VerionDataModel?
     
     // Segue
     private var selectedIndex: Int = 0
@@ -428,6 +429,9 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             #endif
         }
         
+        // NSFW Filter
+        // Refresh the data model every time we're making a request
+        self.verionDataModel = self.dataManager?.getSavedData()
         
         // Make initial request with DataProvider
         let submissionParams = self.subverseSubmissionParams
@@ -447,6 +451,15 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                     
                     let subCellViewModel = SubmissionCellViewModel()
                     subCellViewModel.dataModel = submissionDataModels[i]
+                    
+                    // Hide if NSFW filter is on
+                    if self.verionDataModel?.shouldHideNsfw == true {
+                        if subCellViewModel.dataModel?.isAdult == true {
+                            // Don't add, skip to next data model
+                            break
+                        }
+                    }
+                    
                     
                     // Check for duplicates
                     for j in 0..<self.submissionDataModels.count {
@@ -594,7 +607,18 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         // Create Thumbnail in ViewModel and Attach in Background Queue
         DispatchQueue.global(qos: .background).async {
-            viewModel.createThumbnailImage()
+            
+            // Thumbnail
+            if viewModel.isNsfw {
+                if self.verionDataModel?.shouldUseNsfwThumbnail == true {
+                    viewModel.createThumbnailImage(shouldUseNsfwThumbnailIfApplicable: true)
+                } else {
+                    viewModel.createThumbnailImage(shouldUseNsfwThumbnailIfApplicable: false)
+                }
+            } else {
+                // safe for work
+                viewModel.createThumbnailImage(shouldUseNsfwThumbnailIfApplicable: false)
+            }
             
             DispatchQueue.main.async {
                 cell.bindThumbnailImage()
@@ -791,12 +815,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive:
         Int, animation: UITableViewRowAnimation) {
         
+        tableView.reloadData()
+        
         // If reached last cell
         guard endingIndexExclusive > startingIndexInclusive + 1 else {
             return
         }
         
-        tableView.reloadData()
         let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
         let indexSet = IndexSet.init(integersIn: range)
         tableView.reloadSections(indexSet, with: animation)
