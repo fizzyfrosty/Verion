@@ -129,6 +129,12 @@
 		43B0571F1E0E7943007083E8 /* SampleJsonSubmissions_v1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B057191E0E7943007083E8 /* SampleJsonSubmissions_v1.txt */; };
 		43B057201E0E7943007083E8 /* SampleSubverseList_legacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B0571A1E0E7943007083E8 /* SampleSubverseList_legacy.txt */; };
 		43B057211E0E7943007083E8 /* SampleSubverseList_v1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B0571B1E0E7943007083E8 /* SampleSubverseList_v1.txt */; };
+		43C8FE031E253D41007FB231 /* UseNsfwThumbnailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C8FE021E253D41007FB231 /* UseNsfwThumbnailsCell.swift */; };
+		43C8FE051E253D50007FB231 /* FilterLanguageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C8FE041E253D50007FB231 /* FilterLanguageCell.swift */; };
+		43C8FE071E253D67007FB231 /* UseNsfwThumbnailsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C8FE061E253D67007FB231 /* UseNsfwThumbnailsCellViewModel.swift */; };
+		43C8FE091E253D71007FB231 /* FilterLanguageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C8FE081E253D71007FB231 /* FilterLanguageCellViewModel.swift */; };
+		43C8FE0B1E254B36007FB231 /* HideNsfwCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C8FE0A1E254B36007FB231 /* HideNsfwCell.swift */; };
+		43C8FE0D1E254B49007FB231 /* HideNsfwCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C8FE0C1E254B49007FB231 /* HideNsfwCellViewModel.swift */; };
 		43DF44561E089F1B00478AD9 /* VoatDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */; };
 		43DF44581E08A59200478AD9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43DF44571E08A59200478AD9 /* Alamofire.framework */; };
 		43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */; };
@@ -298,6 +304,12 @@
 		43B057191E0E7943007083E8 /* SampleJsonSubmissions_v1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleJsonSubmissions_v1.txt; sourceTree = "<group>"; };
 		43B0571A1E0E7943007083E8 /* SampleSubverseList_legacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleSubverseList_legacy.txt; sourceTree = "<group>"; };
 		43B0571B1E0E7943007083E8 /* SampleSubverseList_v1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleSubverseList_v1.txt; sourceTree = "<group>"; };
+		43C8FE021E253D41007FB231 /* UseNsfwThumbnailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UseNsfwThumbnailsCell.swift; sourceTree = "<group>"; };
+		43C8FE041E253D50007FB231 /* FilterLanguageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterLanguageCell.swift; sourceTree = "<group>"; };
+		43C8FE061E253D67007FB231 /* UseNsfwThumbnailsCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UseNsfwThumbnailsCellViewModel.swift; sourceTree = "<group>"; };
+		43C8FE081E253D71007FB231 /* FilterLanguageCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterLanguageCellViewModel.swift; sourceTree = "<group>"; };
+		43C8FE0A1E254B36007FB231 /* HideNsfwCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HideNsfwCell.swift; sourceTree = "<group>"; };
+		43C8FE0C1E254B49007FB231 /* HideNsfwCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HideNsfwCellViewModel.swift; sourceTree = "<group>"; };
 		43DF44551E089F1B00478AD9 /* VoatDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoatDataProvider.swift; sourceTree = "<group>"; };
 		43DF44571E08A59200478AD9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkdownParser.swift; sourceTree = "<group>"; };
@@ -476,6 +488,12 @@
 			children = (
 				43B0566D1E0D3F8C007083E8 /* SubverseCell.swift */,
 				43B0566F1E0D3FA0007083E8 /* SubverseCellViewModel.swift */,
+				43C8FE0A1E254B36007FB231 /* HideNsfwCell.swift */,
+				43C8FE0C1E254B49007FB231 /* HideNsfwCellViewModel.swift */,
+				43C8FE021E253D41007FB231 /* UseNsfwThumbnailsCell.swift */,
+				43C8FE061E253D67007FB231 /* UseNsfwThumbnailsCellViewModel.swift */,
+				43C8FE041E253D50007FB231 /* FilterLanguageCell.swift */,
+				43C8FE081E253D71007FB231 /* FilterLanguageCellViewModel.swift */,
 			);
 			path = LeftMenuVCViews;
 			sourceTree = "<group>";
@@ -965,15 +983,19 @@
 				4375C0421DF7524700576CC6 /* CommentsViewController.swift in Sources */,
 				43B056D61E0E4691007083E8 /* SpringLabel.swift in Sources */,
 				43B056D31E0E4691007083E8 /* SpringAnimation.swift in Sources */,
+				43C8FE0B1E254B36007FB231 /* HideNsfwCell.swift in Sources */,
 				43B057121E0E7616007083E8 /* CommentDataModelV1.swift in Sources */,
 				43B056D91E0E4691007083E8 /* SpringView.swift in Sources */,
 				43B056CB1E0E4691007083E8 /* ImageLoader.swift in Sources */,
 				437644371E22519800EE64A7 /* CommentDataSegmentProtocol.swift in Sources */,
+				43C8FE051E253D50007FB231 /* FilterLanguageCell.swift in Sources */,
 				43B056D51E0E4691007083E8 /* SpringImageView.swift in Sources */,
 				43B0567F1E0D5FD3007083E8 /* DataManagerHelper.swift in Sources */,
 				4375C0761DF8A3B700576CC6 /* CommentDataModelProtocol.swift in Sources */,
+				43C8FE071E253D67007FB231 /* UseNsfwThumbnailsCellViewModel.swift in Sources */,
 				43B056751E0D4272007083E8 /* VerionDataModel.swift in Sources */,
 				43B056DC1E0E4691007083E8 /* UnwindSegue.swift in Sources */,
+				43C8FE0D1E254B49007FB231 /* HideNsfwCellViewModel.swift in Sources */,
 				43B056C91E0E4691007083E8 /* DesignableTextView.swift in Sources */,
 				43433DAF1E057E620017FAB0 /* SubmissionCell.swift in Sources */,
 				43B0566E1E0D3F8C007083E8 /* SubverseCell.swift in Sources */,
@@ -983,6 +1005,7 @@
 				43B056D81E0E4691007083E8 /* SpringTextView.swift in Sources */,
 				43F675231DF20078001F83BE /* SubmissionDataModelLegacy.swift in Sources */,
 				43433D7F1E03C8290017FAB0 /* CellHeightCalculator.swift in Sources */,
+				43C8FE091E253D71007FB231 /* FilterLanguageCellViewModel.swift in Sources */,
 				43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */,
 				43B056D11E0E4691007083E8 /* SoundPlayer.swift in Sources */,
 				437644351E22511000EE64A7 /* CommentDataSegmentV1.swift in Sources */,
@@ -1035,6 +1058,7 @@
 				43B056701E0D3FA0007083E8 /* SubverseCellViewModel.swift in Sources */,
 				43433DAD1E057E620017FAB0 /* SubmissionTitleCell.swift in Sources */,
 				43B056D41E0E4691007083E8 /* SpringButton.swift in Sources */,
+				43C8FE031E253D41007FB231 /* UseNsfwThumbnailsCell.swift in Sources */,
 				43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */,
 				43B056C71E0E4691007083E8 /* DesignableTabBarController.swift in Sources */,
 				43ABEBAC1E14E68C00458E3D /* InAppPurchaseManager.swift in Sources */,

@@ -21,16 +21,18 @@ class LeftMenuController: UITableViewController {
     enum LeftMenuSections: Int {
         case icon = 0
         case subverseHistory = 1
-        case supportUs = 2
-        case contactUs = 3
+        case filters = 2
+        case supportUs = 3
+        case contactUs = 4
         
-        static let allValues = [icon, subverseHistory, supportUs, contactUs]
+        static let allValues = [icon, subverseHistory, filters, supportUs, contactUs]
     }
     
     // Section Titles
     private let SUBVERSE_HISTORY_SECTION_TITLE = "    Subverses Visited"
     private let SUPPORT_US_SECTION_TITLE = "    Support Us <3"
     private let CONTACT_SECTION_TITLE = "    Contact"
+    private let FILTERS_SECTION_TITLE = "    Filters"
     private let SECTION_HEADER_FONT_SIZE: CGFloat = 14.0
     
     // Table Elements
@@ -49,6 +51,23 @@ class LeftMenuController: UITableViewController {
     fileprivate var subverseCellViewModels = [SubverseCellViewModel]()
     private let clearHistoryCellCount: Int = 1
     fileprivate let MAX_NUM_HISTORY_ENTRIES: Int = 5
+    
+    // Filters section
+    enum FilterRows: Int {
+        case hideNsfw = 0
+        case useNsfwThumbnails = 1
+        case filterLanguage = 2
+        
+        static let allValues = [hideNsfw, useNsfwThumbnails, filterLanguage]
+    }
+    
+    private let HIDE_NSFW_CELL_REUSE_ID = "HideNsfwCell"
+    private let USE_NSFW_THUMBS_CELL_REUSE_ID = "UseNsfwThumbnailsCell"
+    private let FILTER_LANGUAGE_CELL_REUSE_ID = "FilterLanguageCell"
+    
+    fileprivate var hideNsfwCellVm: HideNsfwCellViewModel?
+    fileprivate var useNsfwThumbnailCellVm: UseNsfwThumbnailsCellViewModel?
+    fileprivate var filterLanguageCellVm: FilterLanguageCellViewModel?
     
     // Support us section
     enum SupportUsRows: Int {
@@ -118,11 +137,27 @@ class LeftMenuController: UITableViewController {
     }
     
     private func loadData() {
-        // Load saved data
+        // Load saved datam should always happen
         if let verionDataModel = dataManager?.getSavedData() {
             
             // Load subverses
             self.subverseCellViewModels = self.createSubverseViewModels(withNames: verionDataModel.subversesVisited!)
+            
+            // Filter data
+            self.hideNsfwCellVm = HideNsfwCellViewModel()
+            self.useNsfwThumbnailCellVm = UseNsfwThumbnailsCellViewModel()
+            self.filterLanguageCellVm = FilterLanguageCellViewModel()
+            
+            // Bind Filters
+            self.bind(hideNsfwCellViewModel: self.hideNsfwCellVm!)
+            self.bind(useNsfwThumbnailCellViewModel: self.useNsfwThumbnailCellVm!)
+            self.bind(filterLanguageCellViewModel: self.filterLanguageCellVm!)
+            
+            // Set Filters
+            self.hideNsfwCellVm?.shouldHideNsfwContent.value = verionDataModel.shouldHideNsfw
+            self.useNsfwThumbnailCellVm?.shouldUseNsfwThumbnails.value = verionDataModel.shouldUseNsfwThumbnail
+            self.useNsfwThumbnailCellVm?.isSwitchEnabled.value = !verionDataModel.shouldHideNsfw
+            self.filterLanguageCellVm?.shouldFilterLanguage.value = verionDataModel.shouldFilterLanguage
         }
     }
     
@@ -234,10 +269,16 @@ class LeftMenuController: UITableViewController {
         DispatchQueue.global(qos: .background).async {
             let verionDataModel = self.dataManager?.getSavedData()
             
+            // History
             verionDataModel?.subversesVisited?.removeAll()
             for subverseCellViewModel in self.subverseCellViewModels {
                 verionDataModel?.subversesVisited?.append(subverseCellViewModel.subverseName)
             }
+            
+            // Filters
+            verionDataModel?.shouldHideNsfw = self.hideNsfwCellVm!.shouldHideNsfwContent.value
+            verionDataModel?.shouldUseNsfwThumbnail = self.useNsfwThumbnailCellVm!.shouldUseNsfwThumbnails.value
+            verionDataModel?.shouldFilterLanguage = self.filterLanguageCellVm!.shouldFilterLanguage.value
             
             self.dataManager?.saveData(dataModel: verionDataModel!)
             
@@ -286,6 +327,9 @@ class LeftMenuController: UITableViewController {
             
             return numOfCells
             
+        case LeftMenuSections.filters.rawValue:
+            return FilterRows.allValues.count
+            
         case LeftMenuSections.supportUs.rawValue:
             return SupportUsRows.allValues.count
             
@@ -323,6 +367,30 @@ class LeftMenuController: UITableViewController {
                 
                 return historyCell
             }
+        case LeftMenuSections.filters.rawValue:
+            // FIXME: implement
+            if indexPath.row == FilterRows.hideNsfw.rawValue {
+                let hideNsfwCell = tableView.dequeueReusableCell(withIdentifier: self.HIDE_NSFW_CELL_REUSE_ID, for: indexPath) as! HideNsfwCell
+                
+                // Bind cell to the viewModel
+                hideNsfwCell.bind(hideNsfwCellViewModel: self.hideNsfwCellVm!)
+                
+                return hideNsfwCell
+                
+            } else if indexPath.row == FilterRows.useNsfwThumbnails.rawValue {
+                let useNsfwThumbnailsCell = tableView.dequeueReusableCell(withIdentifier: self.USE_NSFW_THUMBS_CELL_REUSE_ID, for: indexPath) as! UseNsfwThumbnailsCell
+                useNsfwThumbnailsCell.bind(useNsfwThumbnailCellViewModel: self.useNsfwThumbnailCellVm!)
+                
+                return useNsfwThumbnailsCell
+                
+            } else if indexPath.row == FilterRows.filterLanguage.rawValue {
+                let filterLanguageCell = tableView.dequeueReusableCell(withIdentifier: self.FILTER_LANGUAGE_CELL_REUSE_ID, for: indexPath) as! FilterLanguageCell
+                filterLanguageCell.bind(filterLanguageCellViewModel: self.filterLanguageCellVm!)
+                
+                return filterLanguageCell
+                
+            }
+            
         case LeftMenuSections.supportUs.rawValue:
             
             // Remove ads cell
@@ -415,6 +483,8 @@ class LeftMenuController: UITableViewController {
         switch section {
         case LeftMenuSections.subverseHistory.rawValue:
             return self.SUBVERSE_HISTORY_SECTION_TITLE
+        case LeftMenuSections.filters.rawValue:
+            return self.FILTERS_SECTION_TITLE
         case LeftMenuSections.supportUs.rawValue:
             return self.SUPPORT_US_SECTION_TITLE
         case LeftMenuSections.contactUs.rawValue:
@@ -499,6 +569,7 @@ class LeftMenuController: UITableViewController {
 
 }
 
+// MARK: - History
 extension LeftMenuController {
     
     func addToHistory(subverseName: String) {
@@ -596,10 +667,104 @@ extension LeftMenuController {
     }
 }
 
+// MARK: - Filters
+extension LeftMenuController {
+    
+    // Bindings
+    fileprivate func bind(hideNsfwCellViewModel: HideNsfwCellViewModel) {
+        _ = hideNsfwCellViewModel.shouldHideNsfwContent.observeNext { [weak self] shouldHide in
+            if shouldHide {
+                self?.hideNsfwContent()
+            } else {
+                self?.showNsfwContent()
+            }
+            
+            // Bind to enable/disable of UseNsfwThumbnailCell's switch
+            self?.useNsfwThumbnailCellVm?.isSwitchEnabled.value = !shouldHide
+            self?.saveData {
+            }
+        }
+    }
+    
+    fileprivate func bind(useNsfwThumbnailCellViewModel: UseNsfwThumbnailsCellViewModel) {
+        _ = useNsfwThumbnailCellViewModel.shouldUseNsfwThumbnails.observeNext{ [weak self] shouldUseNsfwThumb in
+            if shouldUseNsfwThumb {
+                self?.enableNsfwThumbnail()
+            } else {
+                self?.disableNsfwThumbnail()
+            }
+            
+            self?.saveData {
+            }
+        }
+    }
+    
+    fileprivate func bind(filterLanguageCellViewModel: FilterLanguageCellViewModel) {
+        _ = filterLanguageCellViewModel.shouldFilterLanguage.observeNext { [weak self] shouldFilterLanguage in
+            if shouldFilterLanguage {
+                self?.enableFilterLanguage()
+            } else {
+                self?.disableFilterLanguage()
+            }
+            
+            self?.saveData {
+            }
+        }
+    }
+    
+    
+    // FIXME: implement
+    // Hide nsfw content
+    private func hideNsfwContent() {
+        
+        #if DEBUG
+            print("NSFW Content is hidden.")
+        #endif
+    }
+    
+    private func showNsfwContent() {
+        
+        #if DEBUG
+            print("NSFW Content is shown.")
+        #endif
+    }
+    
+    // Use nsfw thumbnail
+    private func enableNsfwThumbnail() {
+        
+        #if DEBUG
+            print("NSFW Thumbnails are enabled.")
+        #endif
+    }
+    
+    private func disableNsfwThumbnail() {
+        
+        #if DEBUG
+            print("NSFW Thumbnails are disabled.")
+        #endif
+    }
+    
+    // Filter language
+    private func enableFilterLanguage() {
+        
+        #if DEBUG
+            print("Language Filter is enabled.")
+        #endif
+    }
+    
+    private func disableFilterLanguage() {
+        
+        #if DEBUG
+            print("Language Filter is disabled.")
+        #endif
+    }
+    
+}
+
 
 let EMAIL_ADDRESS = "contact@workhorsebytes.com"
 let EMAIL_SUBJECT = "Voatify Feedback"
-
+// MARK: - Contact
 extension LeftMenuController: MFMailComposeViewControllerDelegate {
     
     // Email
@@ -642,7 +807,7 @@ extension LeftMenuController: MFMailComposeViewControllerDelegate {
     }
 }
 
-// Donate page
+// MARK: - Donate
 
 let DONATE_URL = URL.init(string: "https://voatify.com/donate")
 
