@@ -31,19 +31,17 @@ Filter Language
 
 
 
-- Flag submission posts, remove
-	- Add button to flag+remove post
-		- Add id to block list
-	- Remove it
-	- Show message for reviewing post
+* Flag submission posts, remove
+	* Add button to flag+remove post
+		x Add id to block list
+	x Remove it
+	* Show message for reviewing post
 
-- Block Users in comments
-	- Add button to block user
-		- Remove all comments by that user
-		- Add user to block list
-	- Add button to report user
+* Block Users in comments
+	* Add button to block user
+		* Remove all comments by that user
+		* Add user to block list
 
-- EULA
 
 Load children comments that are hidden
 

@@ -10,6 +10,7 @@ import UIKit
 
 protocol CommentCellDelegate: class {
     func commentCellDidChange(commentCell: CommentCell)
+    func commentCellDidPressBlockUser(commentCell: CommentCell, username: String)
 }
 
 class CommentCell: UITableViewCell {
@@ -40,6 +41,13 @@ class CommentCell: UITableViewCell {
     let MAXIMIZED_LABEL_STRING = "[-]"
     
     weak var delegate: CommentCellDelegate?
+    weak var viewModel: CommentCellViewModel?
+    
+    @IBOutlet var blockUserButton: UIButton!
+    @IBAction func pressedBlockUser(_ sender: Any) {
+        self.notifyDelegateDidPressBlockUser(sender: sender)
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -55,6 +63,8 @@ class CommentCell: UITableViewCell {
     }
 
     func bind(toViewModel viewModel: CommentCellViewModel, shouldFilterLanguage: Bool) {
+        
+        self.viewModel = viewModel
         
         // Background
         self.shiftingViewLeadingConstraint.constant = CGFloat(viewModel.childDepthIndex) * viewModel.COMMENT_CHILD_ALIGNMENTVIEWS_WIDTH
@@ -108,14 +118,29 @@ class CommentCell: UITableViewCell {
                 if isMinimized == true {
                     self?.textView.isHidden = true
                     self?.minimizeMaximizeLabel.text = self?.MINIMIZED_LABEL_STRING
+                    self?.blockUserButton.isHidden = true
                 }
                 else {
                     self?.textView.isHidden = false
                     self?.minimizeMaximizeLabel.text = self?.MAXIMIZED_LABEL_STRING
+                    self?.blockUserButton.isHidden = false
                 }
             } else {
                 print("Warning: Delegate for Comment Cell may not be set.")
             }
+        }
+        
+        // Blocked user
+        if viewModel.isBlocked {
+            let UNBLOCK_USER_TITLE = "Unblock User"
+            self.blockUserButton.setTitle(UNBLOCK_USER_TITLE, for: .normal)
+            self.blockUserButton.setTitle(UNBLOCK_USER_TITLE, for: .selected)
+            self.blockUserButton.setTitle(UNBLOCK_USER_TITLE, for: .focused)
+        } else {
+            let BLOCK_USER_TITLE = "Block User"
+            self.blockUserButton.setTitle(BLOCK_USER_TITLE, for: .normal)
+            self.blockUserButton.setTitle(BLOCK_USER_TITLE, for: .selected)
+            self.blockUserButton.setTitle(BLOCK_USER_TITLE, for: .focused)
         }
     }
     
@@ -125,6 +150,15 @@ class CommentCell: UITableViewCell {
         self.textView.backgroundColor = color
     }
     
+    private func notifyDelegateDidPressBlockUser(sender: Any) {
+        if let _ = self.delegate?.commentCellDidPressBlockUser(commentCell: self, username: self.usernameLabel.text!) {
+            
+        } else {
+            #if DEBUG
+            print("Warning: CommentCell's delegate may not be set.")
+            #endif
+        }
+    }
     
     deinit{
         #if DEBUG

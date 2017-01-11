@@ -37,14 +37,15 @@ class CommentCellViewModel {
     private(set) var date: Date?
     private(set) var id: Int64 = 0
     private(set) var parentId: Int64 = 0
+    var parentIndex = 0 // for setting externally
     
     private(set) var voteCountTotal = Observable<Int>(0)
     private(set) var upvoteCount = Observable<Int>(0)
     private(set) var downvoteCount = Observable<Int>(0)
     
     private(set) var usernameString = ""
-    private(set) var textString = ""
-    private(set) var attributedTextString = NSAttributedString()
+    var textString = ""
+    var attributedTextString = NSAttributedString()
     
     var separatedVoteCountString = Observable<String>("")
     var textFormatter = SubmissionTextFormatter()
@@ -57,6 +58,7 @@ class CommentCellViewModel {
     private let CELL_HORIZONTAL_MARGINS: CGFloat = 30.0
     private let CELL_MAX_HEIGHT: CGFloat = 9999.0
     private let CELL_MINIMIZED_HEIGHT: CGFloat = 30.0
+    private let BOTTOM_BUTTONS_HEIGHT: CGFloat = 35.0
     
     var numOfVisibleChildren: Int {
         get {
@@ -92,7 +94,7 @@ class CommentCellViewModel {
             
             let textHeight = self.textHeight
             
-            let height = textHeight + self.CELL_VERTICAL_MARGINS
+            let height = textHeight + self.CELL_VERTICAL_MARGINS + self.BOTTOM_BUTTONS_HEIGHT
             
             return height
         }
@@ -100,6 +102,9 @@ class CommentCellViewModel {
     
     // Minimized/Maximized
     var isMinimized = Observable<Bool>(false)
+    
+    // Block
+    var isBlocked = false
     
     // For left-right shifting to align with nested comments. Set externally
     var childDepthIndex = 0
@@ -161,13 +166,18 @@ class CommentCellViewModel {
         }
     }
     
-    func addChild(viewModel: CommentCellViewModel) {
+    func addChild(viewModel: CommentCellViewModel, parentIndex: Int) {
+        self.parentIndex = parentIndex
         self.children.append(viewModel)
         viewModel.parent = self
     }
     
     func removeLastChild() {
         self.children.removeLast()
+    }
+    
+    func removeFromParent() {
+        self.parent?.children.remove(at: self.parentIndex)
     }
     
     func toggleMinimized() {

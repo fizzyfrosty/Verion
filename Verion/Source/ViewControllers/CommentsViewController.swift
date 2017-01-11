@@ -53,6 +53,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var areCommentsLoaded = false
     var loadMoreParentCommentsIndex = 0
     
+    let BLOCKED_USER_TEXT = "(This user is blocked)"
+    
     // Navigation Bar items
     private var ACTIVITY_INDICATOR_LENGTH: CGFloat = 25.0
     private var activityIndicatorCell: ActivityIndicatorCell?
@@ -90,6 +92,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     private func loadData() {
         self.verionDataModel = self.dataManager?.getSavedData()
+    }
+    
+    fileprivate func saveData() {
+        self.dataManager?.saveData(dataModel: self.verionDataModel!)
     }
     
     private func setBottomInset() {
@@ -233,10 +239,13 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
     
     // Load Comments from Data Provider
-    private func loadCommentCells(completion: @escaping ()->()) {
+    fileprivate func loadCommentCells(completion: @escaping ()->()) {
         self.dataProvider?.requestComments(subverse:self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, completion: { (commentDataModels, commentDataSegment, error) in
             
             DispatchQueue.global(qos: .background).async {
+                
+                // Reset comment cells
+                self.commentsViewModels.removeAll()
                 
                 var topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
                 
@@ -252,6 +261,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 // Put all comment cells, and children, into a single array
                 let allCommentViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: topLevelCommentVms)
+                
+                self.blockUsersFromList(commentCellViewModels: allCommentViewModelsLinearArray)
+                
                 self.commentsViewModels.append(contentsOf: allCommentViewModelsLinearArray)
                 
                 self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: topLevelCommentVms, startingDepthIndex: 0)
@@ -269,6 +281,21 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         })
         
         completion()
+    }
+    
+    private func blockUsersFromList(commentCellViewModels: [CommentCellViewModel]) {
+        
+        for viewModel in commentCellViewModels {
+            if self.verionDataModel!.blockedUsers.contains(viewModel.usernameString) {
+                self.setUserAsBlocked(forViewModel: viewModel)
+            }
+        }
+    }
+    
+    
+    private func setUserAsBlocked(forViewModel viewModel: CommentCellViewModel){
+        viewModel.attributedTextString = NSAttributedString.init(string: self.BLOCKED_USER_TEXT)
+        viewModel.isBlocked = true
     }
     
     private func getTopLevelCommentViewModels(fromDataModels dataModels: [CommentDataModelProtocol]) -> [CommentCellViewModel] {
@@ -290,7 +317,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     private func getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels topLevelViewModels: [CommentCellViewModel]) -> [CommentCellViewModel] {
         var commentCellViewModelsAll: [CommentCellViewModel] = []
         
-        for viewModel in topLevelViewModels {
+        for i in 0..<topLevelViewModels.count {
+            let viewModel = topLevelViewModels[i]
+            
             // Append each view model, reguardless if collapsed or not
             commentCellViewModelsAll.append(viewModel)
             
@@ -302,7 +331,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 if viewModel.hasMoreUnloadedChildren == true {
                     if let loadMoreCommentCellViewModel = self.getLoadMoreCellViewModel(withParentViewModel: viewModel) {
                         // Add it as a child of current view model
-                        viewModel.addChild(viewModel: loadMoreCommentCellViewModel)
+                        viewModel.addChild(viewModel: loadMoreCommentCellViewModel, parentIndex: i)
                         
                         // Turn off once appended
                         viewModel.hasMoreUnloadedChildren = false
@@ -318,6 +347,14 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
         
         return commentCellViewModelsAll
+    }
+    
+    private func isUserBlocked(forViewModel viewModel: CommentCellViewModel) -> Bool {
+        if self.verionDataModel!.blockedUsers.contains(viewModel.usernameString) {
+            return true
+        }
+        
+        return false
     }
     
     private func getLoadMoreCellViewModel(numOfComments: Int, lastCommentIndex: Int) -> CommentCellViewModel {
@@ -564,7 +601,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 sortByCell.bind(toViewModel: self.commentsSortByVm!)
                 sortByCell.navigationController = self.navigationController
                 sortByCell.delegate = self
-                //self.sfxManager?.applyShadow(view: sortByCell)
                 
                 return sortByCell
             }
@@ -665,8 +701,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                     parentCommentCellViewModel.removeLastChild()
                 }
                 
-                for viewModel in commentCellViewModels {
-                    parentCommentCellViewModel.addChild(viewModel: viewModel)
+                for i in 0..<commentCellViewModels.count {
+                    let viewModel = commentCellViewModels[i]
+                    parentCommentCellViewModel.addChild(viewModel: viewModel, parentIndex: i)
                 }
             }
         }
@@ -676,6 +713,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         
         // Get uncollapsed tree from children
         let commentCellViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: commentCellViewModels)
+        
+        self.blockUsersFromList(commentCellViewModels: commentCellViewModelsLinearArray)
         
         // Replace LoadMoreCell with contents of first view model
         self.commentsViewModels.remove(at: viewModelIndex)
@@ -736,7 +775,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         let rangeToInsert = Range.init(uncheckedBounds: (lower: lowerBoundToInsert, upper: upperBoundToInsert))
         let indexSet = IndexSet.init(integersIn: rangeToInsert)
         
-        tableView.insertSections(indexSet, with: .fade)
+        tableView.insertSections(indexSet, with: .bottom)
         
         // Update the table for those rows
         tableView.endUpdates()
@@ -855,6 +894,17 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         return false
     }
     
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: { alertAction in
+            
+        }))
+        
+        self.present(alertController, animated: true) {
+            
+        }
+    }
+    
     deinit {
         self.tableView.dataSource = nil
         self.tableView.delegate = nil
@@ -864,6 +914,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         #endif
     }
 }
+
 
 extension CommentsViewController: SFSafariViewControllerDelegate {
     fileprivate func openSafariViewController(link: String) {
@@ -899,6 +950,62 @@ extension CommentsViewController: CommentCellDelegate{
         }
     }
     
+    // Block user
+    func commentCellDidPressBlockUser(commentCell: CommentCell, username: String) {
+        
+        if commentCell.viewModel?.isBlocked == false {
+            
+            // Block prompt
+            let blockAlert = UIAlertController.init(title: "Block User", message: "Block all comments by this user?", preferredStyle: .alert)
+            
+            let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
+                // Add user to block list
+                self.verionDataModel?.blockedUsers.insert(username)
+                self.saveData()
+                
+                // Refresh comments
+                self.loadCommentCells {
+                }
+            })
+            
+            let cancelAction = UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                // do nothing
+            })
+            
+            blockAlert.addAction(cancelAction)
+            blockAlert.addAction(yesAction)
+            
+            self.present(blockAlert, animated: true, completion: nil)
+            
+        } else {
+            
+            // Unblock prompot
+            let unblockAlert = UIAlertController.init(title: "", message: "Unblock this user?", preferredStyle: .alert)
+            
+            let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
+                
+                // unblock user
+                _ = self.verionDataModel?.blockedUsers.remove(username)
+                self.saveData()
+                
+                // Refresh comments
+                self.loadCommentCells {
+                }
+            })
+            
+            let cancelAction = UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                // do nothing
+            })
+            
+            unblockAlert.addAction(cancelAction)
+            unblockAlert.addAction(yesAction)
+            
+            self.present(unblockAlert, animated: true, completion: nil)
+        }
+        
+        
+    }
+    
     // Share
     func commentsSortByCell(cell: CommentsSortByCell, didPressShare: Any) {
         
@@ -907,6 +1014,24 @@ extension CommentsViewController: CommentCellDelegate{
         self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerShare, params: params, timed: false)
         
         self.shareActivities()
+    }
+    
+    func commentsSortByCell(cell: CommentsSortByCell, didPressReport: Any) {
+        
+        let reportAlert = UIAlertController.init(title: "Report Content", message: "Report Submission as Inappropriate Content?", preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
+            self.showAlert(title: "Report Submitted", message: "The submission has been reported to Voat and will be reviewed for necessary actions.")
+        })
+        
+        let cancelAction = UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+            // do nothing
+        })
+        
+        reportAlert.addAction(cancelAction)
+        reportAlert.addAction(yesAction)
+        
+        self.present(reportAlert, animated: true, completion: nil)
     }
     
     private func getTextLink(dataModel: SubmissionDataModelProtocol) -> String {

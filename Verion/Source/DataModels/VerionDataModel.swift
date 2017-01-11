@@ -18,6 +18,7 @@ class VerionDataModel: NSObject, NSCoding {
         static let shouldUseNsfwThumbnails = "should_use_nsfw_thumbs"
         static let shouldFilterLanguage = "should_filter_language"
         static let versionNumber = "version_number"
+        static let blockedUsers = "blocked_users"
     }
     
     var subversesVisited: [String]?
@@ -27,6 +28,7 @@ class VerionDataModel: NSObject, NSCoding {
     var shouldUseNsfwThumbnail = true
     var shouldFilterLanguage = true
     var versionNumber: Float = 1.0
+    var blockedUsers: Set<String> = []
     
     override init() {
         self.subversesVisited = []
@@ -64,6 +66,8 @@ class VerionDataModel: NSObject, NSCoding {
         self.shouldUseNsfwThumbnail = aDecoder.decodeBool(forKey: Keys.shouldUseNsfwThumbnails)
         self.shouldFilterLanguage = aDecoder.decodeBool(forKey: Keys.shouldFilterLanguage)
         
+        self.blockedUsers = aDecoder.decodeObject(forKey: Keys.blockedUsers) as! Set<String>
+        
         // Version 1.01
     }
     
@@ -76,6 +80,8 @@ class VerionDataModel: NSObject, NSCoding {
         aCoder.encode(self.shouldHideNsfw, forKey: Keys.shouldHideNsfw)
         aCoder.encode(self.shouldUseNsfwThumbnail, forKey: Keys.shouldUseNsfwThumbnails)
         aCoder.encode(self.shouldFilterLanguage, forKey: Keys.shouldFilterLanguage)
+        
+        aCoder.encode(self.blockedUsers, forKey: Keys.blockedUsers)
     }
     
     
