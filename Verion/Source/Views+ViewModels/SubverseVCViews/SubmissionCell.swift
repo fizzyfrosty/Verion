@@ -66,12 +66,18 @@ class SubmissionCell: UITableViewCell {
         }
     }
     
-    func bind(toViewModel viewModel: SubmissionCellViewModel) {
+    func bind(toViewModel viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool) {
         self.viewModel = viewModel
         
         // Bind to UI elements
+        
         // Title
-        self.titleLabel.text = viewModel.titleString
+        if shouldFilterLanguage == true {
+            self.titleLabel.text = viewModel.titleString.censored()
+        } else {
+            self.titleLabel.text = viewModel.titleString
+        }
+        
         
         // Thumbnail Label
         self.thumbnailLabel.text = viewModel.linkShortString

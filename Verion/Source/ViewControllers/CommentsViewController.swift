@@ -38,6 +38,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     let WEBVIEW_SEGUE_ID = "WebViewSegue"
     
     var submissionDataModel: SubmissionDataModelProtocol?
+    var verionDataModel: VerionDataModel?
     
     // View Models
     var submissionMediaType: SubmissionMediaType = .undetermined
@@ -64,6 +65,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var dataProvider: DataProviderType?
     var analyticsManager: AnalyticsManagerProtocol?
     var adManager: AdManager?
+    var dataManager: DataManagerProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +73,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.tableView.backgroundColor = self.backgroundColor
         self.navigationController?.navigationBar.tintColor = UIColor.white
         self.setBottomInset()
-        
+        self.loadData()
         self.loadSubmissionInfo {
             
             self.loadCommentCells {
@@ -84,6 +86,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    private func loadData() {
+        self.verionDataModel = self.dataManager?.getSavedData()
     }
     
     private func setBottomInset() {
@@ -507,7 +513,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             if indexPath.row == 0 {
                 
                 let titleCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath) as! SubmissionTitleCell
-                titleCell.bind(toViewModel: self.submissionTitleVm!)
+                titleCell.bind(toViewModel: self.submissionTitleVm!, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
                 
                 return titleCell
                 
@@ -517,7 +523,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 switch self.submissionMediaType {
                 case .text:
                     let textCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TEXT_CELL_REUSE_ID, for: indexPath) as! SubmissionTextCell
-                    textCell.bind(toViewModel: self.submissionTextContentVm)
+                    textCell.bind(toViewModel: self.submissionTextContentVm, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
                     textCell.textView.delegate = self
                     return textCell
                     
@@ -584,7 +590,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             let commentCellViewModelIndex = indexPath.section - 1
             let commentCellViewModel = self.commentsViewModels[commentCellViewModelIndex]
             commentCell.delegate = self
-            commentCell.bind(toViewModel: commentCellViewModel)
+            commentCell.bind(toViewModel: commentCellViewModel, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
             commentCell.textView.delegate = self
             
             

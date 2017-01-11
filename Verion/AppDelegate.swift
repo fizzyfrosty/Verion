@@ -108,6 +108,7 @@ extension SwinjectStoryboard {
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
+            C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
             C.adManager = AdManager.sharedInstance
         })
         

@@ -21,14 +21,13 @@ Hide NSFW Posts
  * SubverseViewController after returned view models, filter out nsfw posts
 
 Use NSFW Thumbnails
- - SubverseViewController disable/enable thumbnails
+ * SubverseViewController disable/enable thumbnails
 
 Filter Language
- - Create language filter set
- - apply to words in
-	- Submission Title
-	- User Comments
-	- Submission Text
+ * apply to words in
+	* Submission Title
+	* User Comments
+	* Submission Text
 
 
 

@@ -602,7 +602,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         // Create cell if viewModel exists
         let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
-        cell.bind(toViewModel: viewModel)
+        cell.bind(toViewModel: viewModel, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
         
         
         // Create Thumbnail in ViewModel and Attach in Background Queue

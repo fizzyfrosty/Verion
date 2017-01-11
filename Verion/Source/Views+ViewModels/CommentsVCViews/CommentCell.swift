@@ -54,7 +54,7 @@ class CommentCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func bind(toViewModel viewModel: CommentCellViewModel) {
+    func bind(toViewModel viewModel: CommentCellViewModel, shouldFilterLanguage: Bool) {
         
         // Background
         self.shiftingViewLeadingConstraint.constant = CGFloat(viewModel.childDepthIndex) * viewModel.COMMENT_CHILD_ALIGNMENTVIEWS_WIDTH
@@ -95,8 +95,13 @@ class CommentCell: UITableViewCell {
             }
         }
         
+        // Text Content
+        if shouldFilterLanguage == true {
+            self.textView.attributedText = viewModel.attributedTextString.censored()
+        } else {
+            self.textView.attributedText = viewModel.attributedTextString
+        }
         
-        self.textView.attributedText = viewModel.attributedTextString
         
         _ = viewModel.isMinimized.observeNext() { [weak self] isMinimized in
             if let _ = self?.delegate?.commentCellDidChange(commentCell: self!) {
