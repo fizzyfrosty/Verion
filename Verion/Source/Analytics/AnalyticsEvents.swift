@@ -13,6 +13,7 @@ class AnalyticsEvents {
     private static let PAGE_NUMBER_PARAM_KEY = "page_number"
     private static let SORT_TYPE_PARAM_KEY = "sort_type"
     private static let SUBMISSION_MEDIA_TYPE_PARAM_KEY = "media_type"
+    private static let SWITCH_ENABLED_KEY = "switch_enabled"
     
     // MARK: - Subverse controller
     static let subverseControllerLoaded = "Subverse Controller - Initially Loaded"
@@ -100,4 +101,19 @@ class AnalyticsEvents {
     static let leftMenuPurchasedRemoveAds = "Left Menu - Purchased Remove Ads"
     
     static let leftMenuRestorePurchases = "Left Menu - Restore Purchases"
+    
+    static let leftMenuHideNsfw = "Left Menu - Toggle Hide NSFW"
+    static func getLeftMenuHideNsfwParams(isEnabled: Bool) -> Dictionary<AnyHashable, Any> {
+        return Dictionary(dictionaryLiteral: (self.SWITCH_ENABLED_KEY, isEnabled))
+    }
+    
+    static let leftMenuUseNsfwThumbnails = "Left Menu - Toggle NSFW Thumbnails"
+    static func getLeftMenuUseNsfwThumbnailsParams(isEnabled: Bool) -> Dictionary<AnyHashable, Any> {
+        return Dictionary(dictionaryLiteral: (self.SWITCH_ENABLED_KEY, isEnabled))
+    }
+    
+    static let leftMenuFilterLanguage = "Left Menu - Toggle Filter Language"
+    static func getLeftMenuFilterLanguageParams(isEnabled: Bool) -> Dictionary<AnyHashable, Any>{
+        return Dictionary(dictionaryLiteral: (self.SWITCH_ENABLED_KEY, isEnabled))
+    }
 }

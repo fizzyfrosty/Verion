@@ -28,7 +28,7 @@ class VerionDataModel: NSObject, NSCoding {
     var shouldUseNsfwThumbnail = true
     var shouldFilterLanguage = true
     var versionNumber: Float = 1.0
-    var blockedUsers: Set<String> = []
+    var blockedUsers: Set<String>? = []
     
     override init() {
         self.subversesVisited = []
@@ -66,7 +66,10 @@ class VerionDataModel: NSObject, NSCoding {
         self.shouldUseNsfwThumbnail = aDecoder.decodeBool(forKey: Keys.shouldUseNsfwThumbnails)
         self.shouldFilterLanguage = aDecoder.decodeBool(forKey: Keys.shouldFilterLanguage)
         
-        self.blockedUsers = aDecoder.decodeObject(forKey: Keys.blockedUsers) as! Set<String>
+        self.blockedUsers = aDecoder.decodeObject(forKey: Keys.blockedUsers) as? Set<String>
+        if self.blockedUsers == nil {
+            self.blockedUsers = []
+        }
         
         // Version 1.01
     }

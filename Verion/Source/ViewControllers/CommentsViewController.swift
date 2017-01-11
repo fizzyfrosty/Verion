@@ -286,7 +286,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     private func blockUsersFromList(commentCellViewModels: [CommentCellViewModel]) {
         
         for viewModel in commentCellViewModels {
-            if self.verionDataModel!.blockedUsers.contains(viewModel.usernameString) {
+            if self.verionDataModel!.blockedUsers!.contains(viewModel.usernameString) {
                 self.setUserAsBlocked(forViewModel: viewModel)
             }
         }
@@ -350,7 +350,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
     
     private func isUserBlocked(forViewModel viewModel: CommentCellViewModel) -> Bool {
-        if self.verionDataModel!.blockedUsers.contains(viewModel.usernameString) {
+        if self.verionDataModel!.blockedUsers!.contains(viewModel.usernameString) {
             return true
         }
         
@@ -960,7 +960,7 @@ extension CommentsViewController: CommentCellDelegate{
             
             let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
                 // Add user to block list
-                self.verionDataModel?.blockedUsers.insert(username)
+                self.verionDataModel?.blockedUsers!.insert(username)
                 self.saveData()
                 
                 // Refresh comments
@@ -985,7 +985,7 @@ extension CommentsViewController: CommentCellDelegate{
             let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
                 
                 // unblock user
-                _ = self.verionDataModel?.blockedUsers.remove(username)
+                _ = self.verionDataModel?.blockedUsers!.remove(username)
                 self.saveData()
                 
                 // Refresh comments
