@@ -13,6 +13,14 @@ import SafariServices
 class CommentsViewController: UITableViewController, UITextViewDelegate, CommentsSortByCellDelegate {
     
     var backgroundColor = UIColor.white
+    // Sections
+    
+    var numOfSectionsBeforeComments: Int = 0
+    let DISABLED_SECTION_NUMBER = -1
+    
+    var submissionSectionNumber = 0
+    var adSectionNumber = 1
+    var commentsSectionNumber = 2
     
     // Display formatting
     private let CELL_SPACING: CGFloat = 10.0
@@ -29,6 +37,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     let SUBMISSION_LINK_CELL_REUSE_ID = "SubmissionLinkCell"
     let SUBMISSION_IMAGE_CELL_REUSE_ID = "SubmissionImageCell"
     let PROGRESS_INDICATOR_CELL_REUSE_ID = "ProgressIndicatorCell"
+    let AD_CELL_REUSE_ID = "AdCell"
     
     let ACTIVITY_INDICATOR_CELL_REUSE_ID = "ActivityIndicatorCell"
     let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
@@ -92,6 +101,21 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     private func loadData() {
         self.verionDataModel = self.dataManager?.getSavedData()
+        
+        // Configure sections based on whether or not ads were removed
+        self.submissionSectionNumber = 0 // Always 0
+        
+        if self.adManager?.isRemoveAdsPurchased() == true {
+            // Ads are removed
+            self.adSectionNumber = self.DISABLED_SECTION_NUMBER
+            self.commentsSectionNumber = self.submissionSectionNumber + 1
+            self.numOfSectionsBeforeComments = 1
+        } else {
+            // Ads are not removed, will be put in
+            self.adSectionNumber = 1
+            self.commentsSectionNumber = self.adSectionNumber + 1
+            self.numOfSectionsBeforeComments = 2
+        }
     }
     
     fileprivate func saveData() {
@@ -429,10 +453,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         let numOfSections: Int
         
         if self.areCommentsLoaded == false {
-            numOfSections = 2
+            numOfSections = 3
         }
         else {
-            numOfSections = self.commentsViewModels.count + 1 // 1 extra section for submission cells
+            numOfSections = self.commentsViewModels.count + self.numOfSectionsBeforeComments // 1 extra section for submission cells
         }
         
         return numOfSections
@@ -441,7 +465,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         // Submission Cells
-        if section == 0 {
+        if section == self.submissionSectionNumber {
             // View Models must be initialized
             if self.areSubmissionViewModelsLoaded() == true {
                 return 3
@@ -451,7 +475,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             }
         } else {
             
-            // Always 1 row per comments
+            // Always 1 row per comments/ads
             return 1
         }
         
@@ -468,22 +492,26 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         // No header for first cell
-        if section == 0 {
+        if section == self.submissionSectionNumber {
+            return 0
+        } else if section == self.adSectionNumber {
+            return self.CELL_SPACING
+        } else {
+            guard section <= self.commentsViewModels.count-1 + self.numOfSectionsBeforeComments else {
+                // Perhaps this should never be reached
+                return self.CELL_SPACING
+            }
+            
+            
+            // Only separate top level comments
+            let commentCellIndex = section - self.numOfSectionsBeforeComments
+            if self.commentsViewModels[commentCellIndex].childDepthIndex == 0 {
+                return self.CELL_SPACING
+            }
+            
+            // This should be for all cells that are not top level
             return 0
         }
-        
-        // We don't do an exclusion of .count (count-1) because the first section are submission cells
-        guard self.commentsViewModels.count >= section else {
-            return self.CELL_SPACING
-        }
-        // Only separate top level comments
-        let commentCellIndex = section - 1
-        if self.commentsViewModels[commentCellIndex].childDepthIndex == 0 {
-            return self.CELL_SPACING
-        }
-        
-        // This should be for all cells that are not top level
-        return 0
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -491,7 +519,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             return 0
         }
         
-        if indexPath.section == 0 {
+        if indexPath.section == self.submissionSectionNumber {
             // Title row
             if indexPath.row == 0 {
                 let submissionTitleCellVm = self.submissionTitleVm!
@@ -521,30 +549,39 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 let sortByCellVm = self.commentsSortByVm!
                 return sortByCellVm.cellHeight
             }
-        }
-        
-        guard self.areCommentsLoaded != false else {
-            let sampleActivityIndicatorVm = ActivityIndicatorCellViewModel()
-            return sampleActivityIndicatorVm.cellHeight
-        }
-        
-        if self.commentsViewModels.count > 0 {
-            // Comment Cell Height
-            let commentCellVm = self.commentsViewModels[indexPath.section-1]
-            let cellHeight = commentCellVm.cellHeight
+        } else if indexPath.section == self.adSectionNumber {
             
-            return cellHeight
+            let advertisementTitleHeight: CGFloat = 20.0
+            let adCellHeight = advertisementTitleHeight + self.adManager!.getBannerAdHeight()
+            
+            return adCellHeight
+            
+        } else {
+            guard self.areCommentsLoaded != false else {
+                let sampleActivityIndicatorVm = ActivityIndicatorCellViewModel()
+                return sampleActivityIndicatorVm.cellHeight
+            }
+            
+            if self.commentsViewModels.count > 0 {
+                // Comment Cell Height
+                let commentCellVm = self.commentsViewModels[indexPath.section-self.numOfSectionsBeforeComments]
+                let cellHeight = commentCellVm.cellHeight
+                
+                return cellHeight
+            }
+            
+            // This should never be reached
+            let defaultHeight: CGFloat = 50.0
+            
+            return defaultHeight
         }
         
-        // This should never be reached
-        let defaultHeight: CGFloat = 50.0
-        
-        return defaultHeight
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section == 0 {
+        if indexPath.section == self.submissionSectionNumber {
             
             // If first row, Title Cell
             if indexPath.row == 0 {
@@ -604,33 +641,43 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 return sortByCell
             }
-        }
-        
-        // Loading Comment Cell
-        if self.areCommentsLoaded == false {
+        } else if indexPath.section == self.adSectionNumber {
+            let adCell = tableView.dequeueReusableCell(withIdentifier: self.AD_CELL_REUSE_ID, for: indexPath) as! AdCell
             
-            // Activity Indicator for a 'Loading' cell
-            if self.activityIndicatorCell != nil {
-                self.activityIndicatorCell?.removeActivityIndicator()
+            // Set the ad cell's banner view
+            adCell.adView.addSubview(self.adManager!.getBannerAd(rootViewController: self)!)
+            
+            return adCell
+            
+        } else {
+            
+            
+            // Loading Comment Cell
+            if self.areCommentsLoaded == false {
+                
+                // Activity Indicator for a 'Loading' cell
+                if self.activityIndicatorCell != nil {
+                    self.activityIndicatorCell?.removeActivityIndicator()
+                }
+                
+                self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID, for: indexPath) as? ActivityIndicatorCell
+                self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH, color: (self.navigationController?.navigationBar.barTintColor)!)
+                self.activityIndicatorCell?.showActivityIndicator()
+                return self.activityIndicatorCell!
             }
-            
-            self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID, for: indexPath) as? ActivityIndicatorCell
-            self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH)
-            self.activityIndicatorCell?.showActivityIndicator()
-            return self.activityIndicatorCell!
-        }
-        else {
-            // Comment cells
-            
-            let commentCell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath) as! CommentCell
-            let commentCellViewModelIndex = indexPath.section - 1
-            let commentCellViewModel = self.commentsViewModels[commentCellViewModelIndex]
-            commentCell.delegate = self
-            commentCell.bind(toViewModel: commentCellViewModel, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
-            commentCell.textView.delegate = self
-            
-            
-            return commentCell
+            else {
+                // Comment cells
+                
+                let commentCell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath) as! CommentCell
+                let commentCellViewModelIndex = indexPath.section - self.numOfSectionsBeforeComments
+                let commentCellViewModel = self.commentsViewModels[commentCellViewModelIndex]
+                commentCell.delegate = self
+                commentCell.bind(toViewModel: commentCellViewModel, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
+                commentCell.textView.delegate = self
+                
+                
+                return commentCell
+            }
         }
     }
     
@@ -663,8 +710,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
         
         // Minimize and Maximize comment cell
-        if indexPath.section >= 1 {
-            let viewModelIndex = indexPath.section-1
+        if indexPath.section >= self.numOfSectionsBeforeComments {
+            let viewModelIndex = indexPath.section - self.numOfSectionsBeforeComments
             let commentCellVm = self.commentsViewModels[viewModelIndex]
             commentCellVm.toggleMinimized()
             
@@ -722,7 +769,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         
         // reload table
         // The viewModelIndex is always indexPath.section-1, so we have to add 1 to animate the location of section
-        let startingIndex = viewModelIndex + 1
+        let startingIndex = viewModelIndex + self.numOfSectionsBeforeComments
         let endingIndexExclusive = startingIndex + commentCellViewModelsLinearArray.count
         self.reloadTableAnimated(startingIndexInclusive: startingIndex, endingIndexExclusive: endingIndexExclusive, animation: .fade)
     }
@@ -734,14 +781,14 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         let numOfChildCellsToRemove = viewModel.numOfVisibleChildren
         
         // Remove them from the array
-        let indexOfCommentCellVm = indexPath.section - 1
+        let indexOfCommentCellVm = indexPath.section - self.numOfSectionsBeforeComments
         let lowerBound = indexOfCommentCellVm + 1
         let upperBound = lowerBound + numOfChildCellsToRemove
         let rangeToRemove = Range.init(uncheckedBounds: (lower: lowerBound, upper: upperBound))
         self.commentsViewModels.removeSubrange(rangeToRemove)
         
         // The rangetoUpdate has to account for cells start at IndexPath.section+1
-        let rangeToUpdate = Range.init(uncheckedBounds: (lower: lowerBound+1, upper: upperBound+1))
+        let rangeToUpdate = Range.init(uncheckedBounds: (lower: lowerBound + self.numOfSectionsBeforeComments, upper: upperBound + self.numOfSectionsBeforeComments))
         
         let indexSet = IndexSet.init(integersIn: rangeToUpdate)
         tableView.deleteSections(indexSet, with: .fade)
@@ -751,11 +798,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     private func maximizeCommentCell(forViewModel viewModel: CommentCellViewModel, indexPath: IndexPath) {
         
-        
         // If maximized
         // Get the total number of child cells shown
         // Insert them into the array
-        let currentIndex = indexPath.section - 1
+        let currentIndex = indexPath.section - self.numOfSectionsBeforeComments
         
         var childrenVmToAdd = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: [viewModel])
         // Remove the first child, which is the top node
@@ -763,8 +809,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         
         self.commentsViewModels.insert(contentsOf: childrenVmToAdd, at: currentIndex+1)
         
-        // Account for sections of cells start at indexPath.section + 1
-        self.animateInsertComments(startingIndex: indexPath.section+1, numOfObjects: childrenVmToAdd.count)
+        self.animateInsertComments(startingIndex: indexPath.section + 1, numOfObjects: childrenVmToAdd.count)
     }
     
     private func animateInsertComments(startingIndex: Int, numOfObjects: Int) {

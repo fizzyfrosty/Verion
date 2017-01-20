@@ -40,6 +40,7 @@
 		43433DB41E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DB31E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift */; };
 		43433DBF1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */; };
 		43433DC11E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */; };
+		435FEADF1E31789600BB3867 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435FEADE1E31789600BB3867 /* AdCell.swift */; };
 		4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */; };
 		4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */; };
 		4375BFC41DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */; };
@@ -205,6 +206,7 @@
 		43433DB31E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultCellViewModel.swift; sourceTree = "<group>"; };
 		43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelProtocol.swift; sourceTree = "<group>"; };
 		43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelLegacy.swift; sourceTree = "<group>"; };
+		435FEADE1E31789600BB3867 /* AdCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
 		4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
 		4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Bold.swift"; sourceTree = "<group>"; };
@@ -392,6 +394,7 @@
 			children = (
 				43433D911E057E620017FAB0 /* ActivityIndicatorCell.swift */,
 				432B77761E12272A00457F2C /* ActivityIndicatorCellViewModel.swift */,
+				435FEADE1E31789600BB3867 /* AdCell.swift */,
 				43DF45301E09F04E00478AD9 /* ProgressIndicatorCell.swift */,
 				43DF45341E09F0A500478AD9 /* ProgressIndicatorCellViewModel.swift */,
 				43433D921E057E620017FAB0 /* CommentCell.swift */,
@@ -1057,6 +1060,7 @@
 				43433DA31E057E620017FAB0 /* CommentCell.swift in Sources */,
 				43F6752A1DF20078001F83BE /* SubverseViewController.swift in Sources */,
 				43DF44561E089F1B00478AD9 /* VoatDataProvider.swift in Sources */,
+				435FEADF1E31789600BB3867 /* AdCell.swift in Sources */,
 				43B056DD1E0E4691007083E8 /* SwiftWebViewProgress.swift in Sources */,
 				43B056C51E0E4691007083E8 /* DesignableImageView.swift in Sources */,
 				43B056DE1E0E4691007083E8 /* SwiftWebViewProgressView.swift in Sources */,

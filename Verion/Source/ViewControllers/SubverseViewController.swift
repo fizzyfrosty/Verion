@@ -80,7 +80,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     private let NAVIGATION_BG_COLOR: UIColor = UIColor(colorLiteralRed: 95.0/255.0, green: 173.0/255.0, blue: 220.0/255.0, alpha: 1.0)
-    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 161.0/255.0, green: 212.0/255.0, blue: 242.0/255.0, alpha: 1.0)
+    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 221.0/255.0, green: 242.0/255.0, blue: 255.0/255.0, alpha: 1.0)
     @IBOutlet var navigationBarCenterButton: SpringButton!
     @IBOutlet var navigationBarView: UIView!
     
@@ -203,11 +203,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.loadBannerAd()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.removeBannerAd()
+        
     }
     
     func removeBannerAd() {
@@ -691,9 +691,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     // For detecting rotations beginning and finishing.
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         
-        // Hide banner before transitioning
-        self.removeBannerAd()
-        
         if UIDevice.current.orientation.isLandscape {
             
             #if DEBUG
@@ -710,7 +707,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         coordinator.animate(alongsideTransition: nil, completion: { _ in
             self.customRefreshControl?.prepareFrameForShowing()
             
-            self.loadBannerAd()
         })
     }
     
@@ -773,8 +769,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
         
         self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID, for: indexPath) as? ActivityIndicatorCell
-        self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH)
-        self.activityIndicatorCell?.activityIndicator?.color = self.NAVIGATION_BG_COLOR
+        self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH, color: self.NAVIGATION_BG_COLOR)
         
         if startAnimation {
             self.activityIndicatorCell?.showActivityIndicator()

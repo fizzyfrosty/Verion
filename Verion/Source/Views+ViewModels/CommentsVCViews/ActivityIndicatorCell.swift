@@ -26,10 +26,11 @@ class ActivityIndicatorCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func loadActivityIndicator(length: CGFloat) {
+    func loadActivityIndicator(length: CGFloat, color: UIColor) {
         self.activityIndicatorLength = length
         
         self.activityIndicator = ActivityIndicatorProvider.getActivityIndicator(type: .ballSpinFadeLoader, length: self.activityIndicatorLength)
+        self.activityIndicator?.color = color
         
         self.reloadPosition()
         

@@ -33,7 +33,7 @@ class CommentCell: UITableViewCell {
     @IBOutlet var shiftingViewLeadingConstraint: NSLayoutConstraint!
     
     let BACKGROUND_COLOR_EVEN_CHILD = UIColor.white
-    let BACKGROUND_COLOR_ODD_CHILD = UIColor.init(red: 226.0/255.0, green: 237.0/255.0, blue: 255.0/255.0, alpha: 1.0)//UIColor.init(red: 209.0/255.0, green: 229.0/255.0, blue: 241.0/255.0, alpha: 1.0)
+    let BACKGROUND_COLOR_ODD_CHILD = UIColor.init(red: 209.0/255.0, green: 229.0/255.0, blue: 241.0/255.0, alpha: 1.0)//UIColor.init(red: 209.0/255.0, green: 229.0/255.0, blue: 241.0/255.0, alpha: 1.0)
     
     @IBOutlet var headerView: UIView!
     
@@ -53,7 +53,7 @@ class CommentCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         self.headerView.layer.borderWidth = 1.0
-        self.headerView.layer.borderColor = UIColor.gray.cgColor
+        self.headerView.layer.borderColor = UIColor.lightGray.cgColor
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -111,6 +111,8 @@ class CommentCell: UITableViewCell {
         } else {
             self.textView.attributedText = viewModel.attributedTextString
         }
+        
+        
         
         
         _ = viewModel.isMinimized.observeNext() { [weak self] isMinimized in

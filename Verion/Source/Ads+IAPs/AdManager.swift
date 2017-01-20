@@ -20,6 +20,9 @@ class AdManager: NSObject {
     private let GOOGLE_AD_UNIT_KEY = "ca-app-pub-4428866879213280/1218252257"
     var adServiceType: AdServiceType = .none
     
+    private var currentBannerAd: UIView?
+    private var lastRefreshTime: Date?
+    private let REFRESH_TIME_INTERVAL: TimeInterval = 60.0
     
     static let sharedInstance: AdManager = {
         let instance = AdManager(adServiceType: .admob)
@@ -61,24 +64,60 @@ class AdManager: NSObject {
         
         switch self.adServiceType {
         case .admob:
-            let adSize: GADAdSize
-            if (UIDevice.current.orientation == UIDeviceOrientation.portrait) {
-                adSize = kGADAdSizeSmartBannerPortrait
+            
+            // Check if current time is past the refresh interval for last request time
+            if self.isCurrentTimePastRefreshInterval() {
+                // If it is, get a new ad
+                self.currentBannerAd = self.getGoogleBannerAd(rootViewController: rootViewController)
+                bannerAd = self.currentBannerAd
             } else {
-                adSize = kGADAdSizeSmartBannerLandscape
+                // If it isn't, return the old ad
+                bannerAd = self.currentBannerAd
             }
             
-            bannerAd = GADBannerView.init(adSize: adSize)
-            
-            let googleBannerAd = bannerAd as! GADBannerView
-            googleBannerAd.adUnitID = self.GOOGLE_AD_UNIT_KEY
-            googleBannerAd.rootViewController = rootViewController
-            googleBannerAd.load(GADRequest())
         default:
             break
         }
         
         return bannerAd
+    }
+    
+    private func getGoogleBannerAd(rootViewController: UIViewController) -> UIView? {
+        let adSize: GADAdSize
+        if (UIDevice.current.orientation == UIDeviceOrientation.portrait) {
+            adSize = kGADAdSizeSmartBannerPortrait
+        } else {
+            adSize = kGADAdSizeSmartBannerLandscape
+        }
+        
+        let googleBannerAd = GADBannerView.init(adSize: adSize)
+        googleBannerAd.adUnitID = self.GOOGLE_AD_UNIT_KEY
+        googleBannerAd.rootViewController = rootViewController
+        googleBannerAd.load(GADRequest())
+        
+        return googleBannerAd
+    }
+    
+    private func isCurrentTimePastRefreshInterval() -> Bool {
+        var shouldRefresh = false
+        
+        let currentTime = Date()
+        
+        guard self.lastRefreshTime != nil else {
+            shouldRefresh = true
+            self.lastRefreshTime = currentTime
+            
+            return shouldRefresh
+        }
+        
+        let timeInterval = currentTime.timeIntervalSince(self.lastRefreshTime!)
+        
+        if timeInterval > self.REFRESH_TIME_INTERVAL {
+            shouldRefresh = true
+            self.lastRefreshTime = currentTime
+        }
+        
+        return shouldRefresh
     }
     
     func getBannerAdHeight() -> CGFloat {

@@ -3,13 +3,34 @@ Random Notes
 
 Immediate tasks:
 
+Login
+Upvote/Downvote
+Reply to comments
+Make Posts
+Read messages
+Write Messages
+View Users
+
+
+Login:
+
+UI
+- 
+
+Backend
+
+
+
+
+
+
 
 Apple Requirements:
 * Restore Purchases
 
 Menu bar
-- Filter NSFW posts
-- Filter Language
+* Filter NSFW posts
+* Filter Language
 
 Filters
 Left Menu:
