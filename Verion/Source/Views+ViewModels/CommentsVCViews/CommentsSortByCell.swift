@@ -10,6 +10,8 @@ import UIKit
 
 protocol CommentsSortByCellDelegate: class {
     func commentsSortByCell(cell: CommentsSortByCell, didSortBy sortType: SortTypeComments)
+    func commentsSortByCell(cell: CommentsSortByCell, didPressShare: Any)
+    func commentsSortByCell(cell: CommentsSortByCell, didPressReport: Any)
 }
 
 class CommentsSortByCell: UITableViewCell {
@@ -19,7 +21,21 @@ class CommentsSortByCell: UITableViewCell {
     // These are for v1 api implementation
     @IBOutlet var upvoteButton: UIButton!
     @IBOutlet var downvoteButton: UIButton!
-    @IBOutlet var commentButton: UIButton!
+    @IBOutlet var shareButton: UIButton!
+    @IBAction func pressedShare(_ sender: Any) {
+        if let _ = self.delegate?.commentsSortByCell(cell: self, didPressShare: sender) {
+        } else {
+            #if DEBUG
+                print("Warning: CommentsSortByCell's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    @IBOutlet var reportButton: UIButton!
+    @IBAction func pressedReport(_ sender: Any) {
+        self.notifyDelegateDidPressReport(sender: sender)
+    }
+    
     
     var viewModel: CommentsSortByCellViewModel?
     var navigationController: UINavigationController?
@@ -80,11 +96,15 @@ class CommentsSortByCell: UITableViewCell {
         })
     }
     
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         let titleString = self.getButtonTitleString(sortTypeString: SortTypeComments.top.rawValue)
         self.setButtonTitle(titleString: titleString)
+        
+        self.sortByButton.isEnabled = false
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -117,3 +137,19 @@ class CommentsSortByCell: UITableViewCell {
     }
 
 }
+
+// MARK - Delegate notifications
+extension CommentsSortByCell {
+    fileprivate func notifyDelegateDidPressReport(sender: Any) {
+        if let _ = self.delegate?.commentsSortByCell(cell: self, didPressReport: sender) {
+            
+        } else {
+            #if DEBUG
+            print("Warning: CommentsSortByCell's delegate may not be set.")
+            #endif
+        }
+    }
+}
+
+
+

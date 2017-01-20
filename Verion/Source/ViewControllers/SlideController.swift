@@ -91,13 +91,30 @@ extension SlideController: SubverseViewControllerDelegate {
 extension SlideController: LeftMenuControllerDelegate {
     func leftMenuDidSelectSubverse(leftMenu: LeftMenuController, subverseName: String) {
         // Load the subverse
-        self.subverseController?.loadTableCells(forSubverse: subverseName)
+        self.subverseController?.loadTableCellsNew(forSubverse: subverseName, clearScreen: true, animateNavBar: true) {
+            
+        }
         
         // Close the left menu
         self.closeLeft()
     }
     
-    func leftMenuDidClearHistory(leftMenu: LeftMenuController) {
+    func leftMenuDidPressClose(leftMenu: LeftMenuController) {
         self.closeLeft()
+    }
+    
+    func leftMenuDidClearHistory(leftMenu: LeftMenuController) {
+        // Do nothing
+    }
+    
+    func leftMenuDidPurchaseProduct(leftMenu: LeftMenuController, productId: String) {
+        self.closeLeft()
+        
+        self.subverseController?.savePurchasedRemoveAds()
+    }
+    
+    func leftMenuDidPressFindSubverse(leftMenu: LeftMenuController) {
+        self.closeLeft()
+        self.subverseController?.showFindSubverse()
     }
 }

@@ -19,6 +19,10 @@ class OfflineDataProvider: DataProviderType {
     private let SAMPLE_JSON_COMMENTS_FILE_LEGACY = "SampleComments_legacy"
     private let SAMPLE_FILES_EXTENSION = "txt"
     
+    private let SAMPLE_JSON_COMMENTS_FILE_V1 = "SampleComments_v1"
+    private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_V1 = "SampleJsonSubmissions_v1"
+    private let SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_V1 = "SampleSubverseList_v1"
+    
     private let DELAY_TIME_SECONDS: Float = 1.0
     private let SEARCH_RESULTS_DELAY_TIME: Float = 0.25
     
@@ -30,23 +34,22 @@ class OfflineDataProvider: DataProviderType {
         completion(nil, SubmissionMediaType.link, false, nil)
     }
     
-    func requestSubverseSubmissions(subverse: String, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void {
+    func requestSubverseSubmissions(submissionParams: SubmissionsRequestParams, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void) -> Void {
         
         // HeeHeeHee let's delay execution to simulate "lag"
         Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
             var submissionDataModels = [SubmissionDataModelProtocol]()
             
             // Load sample json data
-            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY,
-                                                withExtension: self.SAMPLE_FILES_EXTENSION)
-            
-            // For each submission, create a datamodel
-            for i in 0..<sampleJson.count {
-                // Get data model from sample JSON
-                let submissionJson = sampleJson[i]
-                let submissionDataModel = self.dataProviderHelper.getSubmissionDataModel(fromJson: submissionJson)
-                submissionDataModels.append(submissionDataModel)
+            let sampleJson: JSON
+            switch self.apiVersion {
+            case .legacy:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY, withExtension: self.SAMPLE_FILES_EXTENSION)
+            case .v1:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_V1, withExtension: self.SAMPLE_FILES_EXTENSION)
             }
+            
+            submissionDataModels = self.dataProviderHelper.getSubmissionDataModels(fromJson: sampleJson, apiVersion: self.apiVersion)
             
             // TODO: Implement error return in a mock object?
             
@@ -60,15 +63,15 @@ class OfflineDataProvider: DataProviderType {
             var subverseDataModels = [SubverseSearchResultDataModelProtocol]()
             
             // Load sample json data
-            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_LEGACY, withExtension: self.SAMPLE_FILES_EXTENSION)
-            
-            // For each submission, create a data model
-            for i in 0..<sampleJson.count {
-                // Get data model from sample JSON
-                let subverseJson = sampleJson[i]
-                let subverseDataModel = self.dataProviderHelper.getSubverseDataModel(fromJson: subverseJson, apiVersion: self.apiVersion)
-                subverseDataModels.append(subverseDataModel)
+            let sampleJson: JSON
+            switch self.apiVersion {
+            case .legacy:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_LEGACY, withExtension: self.SAMPLE_FILES_EXTENSION)
+            case .v1:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_V1, withExtension: self.SAMPLE_FILES_EXTENSION)
             }
+            
+            subverseDataModels = self.dataProviderHelper.getSubverseSearchResultDataModels(fromJson: sampleJson, apiVersion: self.apiVersion)
             
             // TODO: Implement error return in a mock object?
             
@@ -77,26 +80,35 @@ class OfflineDataProvider: DataProviderType {
         }
     }
     
-    func requestComments(submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], Error?)->Void) -> Void {
+    func requestComments(subverse: String, submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], CommentDataSegmentProtocol?, Error?)->Void) -> Void {
         Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
             var commentDataModels = [CommentDataModelProtocol]()
+            let _: CommentDataSegmentProtocol
             
             // Load sample json data
-            let sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_COMMENTS_FILE_LEGACY,
-                                                                   withExtension: self.SAMPLE_FILES_EXTENSION)
-            
-            // For each submission, create a datamodel
-            for i in 0..<sampleJson.count {
-                // Get data model from sample JSON
-                let commentJson = sampleJson[i]
-                let commentDataModel = self.dataProviderHelper.getCommentDataModel(fromJson: commentJson, apiVersion: self.apiVersion)
-                commentDataModels.append(commentDataModel)
+            let sampleJson: JSON
+            switch self.apiVersion {
+            case .legacy:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_COMMENTS_FILE_LEGACY, withExtension: self.SAMPLE_FILES_EXTENSION)
+            case .v1:
+                sampleJson = self.dataProviderHelper.getSampleJson(filename: self.SAMPLE_JSON_COMMENTS_FILE_V1, withExtension: self.SAMPLE_FILES_EXTENSION)
             }
             
+            commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: sampleJson, apiVersion: self.apiVersion)
+            
+            
             // Return the data models
-            completion(commentDataModels, nil)
+            completion(commentDataModels, nil, nil)
             
         }
+    }
+    
+    func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentDataModelProtocol], CommentDataSegmentProtocol?, Error?) -> ()) {
+        
+        let commentDataModels: [CommentDataModelProtocol] = []
+        let commentDataSegment: CommentDataSegmentProtocol? = nil
+        
+        completion(commentDataModels, commentDataSegment, nil)
     }
     
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {
@@ -122,7 +134,8 @@ class OfflineDataProvider: DataProviderType {
             let legacyDataModel = dataModel as! SubmissionDataModelLegacy
             subTextCellViewModel.textString = legacyDataModel.messageContent
         case .v1:
-            fatalError(self.dataProviderHelper.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            let v1DataModel = dataModel as! SubmissionDataModelV1
+            subTextCellViewModel.textString = v1DataModel.content
         }
     }
     

@@ -23,8 +23,12 @@ class SubmissionTextCell: UITableViewCell {
         self.textView.isScrollEnabled = false
     }
     
-    func bind(toViewModel viewModel: SubmissionTextCellViewModel) {
-        self.textView.attributedText = viewModel.attributedTextString
+    func bind(toViewModel viewModel: SubmissionTextCellViewModel, shouldFilterLanguage: Bool) {
+        if shouldFilterLanguage == true {
+            self.textView.attributedText = viewModel.attributedTextString?.censored()
+        } else {
+            self.textView.attributedText = viewModel.attributedTextString
+        }
     }
 
 }

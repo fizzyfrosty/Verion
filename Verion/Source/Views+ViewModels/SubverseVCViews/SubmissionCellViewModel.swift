@@ -21,6 +21,7 @@ struct SubmissionCellViewModelInitData {
     var subverseName: String = "SampleSubverse"
     var date: Date = Date()
     var rank: Double = 3.322
+    var isNsfw = false // not yet used
 }
 
 class SubmissionCellViewModel{
@@ -52,6 +53,8 @@ class SubmissionCellViewModel{
     private(set) var submittedToSubverseString = NSMutableAttributedString()
     
     private(set) var thumbnailImage: UIImage?
+    private(set) var isNsfw = false // not yet used
+    private let NSFW_IMAGE_NAME = "nsfw_icon"
     
     // Variables - additional
     var upvoteCount = Observable<Int>(0)
@@ -103,6 +106,7 @@ class SubmissionCellViewModel{
         self.subverseName = subCellVmInitData.subverseName
         self.date = subCellVmInitData.date
         self.rank = subCellVmInitData.rank
+        self.isNsfw = subCellVmInitData.isNsfw
         self.dateSubmittedString = self.textFormatter.createDateSubmittedString(gmtDate: subCellVmInitData.date)
         self.submittedByString = self.textFormatter.createSubmittedByUsernameString(username: subCellVmInitData.username, fontSize: self.USERNAME_LABEL_FONT_SIZE)
         
@@ -110,8 +114,14 @@ class SubmissionCellViewModel{
     }
     
     // Use externally for whoever is doing the binding to separate/optimize loading
-    func createThumbnailImage() {
-        self.thumbnailImage = self.createThumbnailImage(urlString: self.thumbnailLink.value)
+    func createThumbnailImage(shouldUseNsfwThumbnailIfApplicable: Bool) {
+        
+        if shouldUseNsfwThumbnailIfApplicable == true {
+            self.thumbnailImage = self.createThumbnailImage(urlString: self.thumbnailLink.value, isNsfw: self.isNsfw)
+        } else {
+            self.thumbnailImage = self.createThumbnailImage(urlString: self.thumbnailLink.value, isNsfw: false)
+        }
+        
     }
     
     private func setupInternalBindings() {
@@ -151,7 +161,7 @@ class SubmissionCellViewModel{
         var cellHeight: CGFloat = 0
         
         // Width of label is screensize.width minus the imageSize and its margins
-        var imageViewHorizontalMargins: CGFloat = 30
+        var imageViewHorizontalMargins: CGFloat = 50
         var imageViewWidth: CGFloat = 75
         
         // Only change margins for computing height if there is absolutely no thumbnail
@@ -176,11 +186,29 @@ class SubmissionCellViewModel{
     }
     
     // Thumbnail Image
-    private func createThumbnailImage(urlString: String) -> UIImage? {
-        
-        let image = ImageDownloader.downloadImage(urlString: urlString)
+    private func createThumbnailImage(urlString: String, isNsfw: Bool) -> UIImage? {
+        let image: UIImage?
+        if self.shouldShowNSFW(isNsfw: isNsfw, urlString: urlString){
+            image = self.getNsfwImage()
+        } else {
+            image = ImageDownloader.downloadImage(urlString: urlString)
+        }
         
         return image
+    }
+    
+    private func getNsfwImage()-> UIImage {
+        let image = UIImage.init(named: self.NSFW_IMAGE_NAME)
+        
+        return image!
+    }
+    
+    private func shouldShowNSFW(isNsfw: Bool, urlString: String) -> Bool {
+        if isNsfw == true && urlString != "" {
+            return true
+        }
+        
+        return false
     }
     
     deinit {

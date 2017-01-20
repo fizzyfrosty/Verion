@@ -27,9 +27,14 @@ class SubmissionTitleCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func bind(toViewModel viewModel: SubmissionTitleCellViewModel) {
+    func bind(toViewModel viewModel: SubmissionTitleCellViewModel, shouldFilterLanguage: Bool) {
         // Title
-        self.titleLabel.text = viewModel.titleString
+        if shouldFilterLanguage == true {
+            self.titleLabel.text = viewModel.titleString.censored()
+        } else {
+            self.titleLabel.text = viewModel.titleString
+        }
+        
         
         // Total Vote count
         _ = viewModel.voteCountTotal.observeNext { [weak self] (int) in

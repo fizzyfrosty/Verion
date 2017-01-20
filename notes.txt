@@ -3,6 +3,201 @@ Random Notes
 
 Immediate tasks:
 
+Login
+Upvote/Downvote
+Reply to comments
+Make Posts
+Read messages
+Write Messages
+View Users
+
+
+Login:
+
+UI
+- 
+
+Backend
+
+
+
+
+
+
+
+Apple Requirements:
+* Restore Purchases
+
+Menu bar
+* Filter NSFW posts
+* Filter Language
+
+Filters
+Left Menu:
+ * Show NSFW posts
+ * Use NSFW thumbnails
+ * Filter language
+
+Hide NSFW Posts
+ * SubverseViewController after returned view models, filter out nsfw posts
+
+Use NSFW Thumbnails
+ * SubverseViewController disable/enable thumbnails
+
+Filter Language
+ * apply to words in
+	* Submission Title
+	* User Comments
+	* Submission Text
+
+
+
+* Flag submission posts, remove
+	* Add button to flag+remove post
+		x Add id to block list
+	x Remove it
+	* Show message for reviewing post
+
+* Block Users in comments
+	* Add button to block user
+		* Remove all comments by that user
+		* Add user to block list
+
+
+Load children comments that are hidden
+
+* For a set of comments that exist in children but not returned
+	* Create a LoadMore collapsed comment, modifying viewModel values
+	* When tapped, make a request for the comments
+	* Restructure all comments accordingly
+
+* Load parent comments that are not returned
+	* Add a LoadMore collapsed comment
+	* When tapped, request comments
+	* Restructure
+
+
+
+
+
+
+* Add NSFW image to nsfw links
+	* checking flag
+	* adding image
+	* read the nsfw flag from json
+
+* Add Donate cell
+	* Take to webpage
+	* Use Alert to navigate with safari
+
+x Load Logo on splash
+
+* Website: new pages
+	* donate page
+	* landing page
+* Paypal: 
+
+donate button code: 
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="F2528FFM6DL44">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+
+
+
+- Welcome Screen?
+
+
+
+* Ads
+* banner on bottom
+
+* IAP
+* Create in app purchase on itunes connect
+* implement IAP Manager
+
+* fetch products
+* purchase products
+* Add Remove Ad cell to left menu
+* Actually remove the ads
+* Activity Indicator for transaction
+
+* error messages for:
+	* failing to fetch
+	* failing to purchase
+
+* remove or dont add duplicates loaded
+	* When submission data models are returned, compare before adding
+	* remember how many added?
+
+x block out NSFW
+* Share button in comments
+
+* Added new SFSafariViewController to replace UIWebView
+* Disabled AllowsArbitraryLoads in AppTransportSecurity
+
+* Install Flurry
+* Embed inside analytics manager protocol, extend the logging functions to allow another analytics tool in future
+
+
+* Analytics
+What to log?
+Goals:
+- To help people promote communication
+- Want them to use the app daily, for long periods of time, spread pizzagate
+
+Track:
+User Activities:
+- what functions they use the most
+- Where they spend the most time
+
+App Performance:
+- Time for requests?
+
+Actions to Track:
+* Subverse Controller 
+	* Initial Loading
+		* subverse
+	* Load More Submissions
+		* page number
+		* subverse
+		* sort type
+	* Pull to Refresh
+		* subverse
+		* sort type
+	* Sorted By:
+		* sort type
+		* subverse
+
+* Left Menu
+	* Viewing
+	* Clear History
+		* subverses
+	* Load Subverse
+		* subverse
+
+Comments Controller
+	* Viewing
+		* subverse
+		* type: image/link/text
+	* Share
+		* subverse
+		* type: image/link/text
+
+	* Content Link, open safari browser
+		* subverse
+		* type: image/link
+
+
+* fix Sorted By Top date filter
+x SFSafariController's nav bar color
+
+
+
 * Research side menu
 * Sketch template
 
@@ -12,7 +207,6 @@ Immediate tasks:
 * Hook up data
 
 * Data persistence
-
 
 * When loading a subverse in SubverseController, tell the SubverseController delegate
 * When loading a subverse in LeftMenuController, tell LeftMenuController delegate
@@ -27,31 +221,54 @@ Immediate tasks:
 		- Add subverse to favorites
 		- Favorites list, remove
 
-- Program against v1 api
-	- Subverse list request
-		- DataModel
-		- Bind DataModel to Subverse View Model
-	- subverse submissions
-	- comments
+* Get sample data
+* Make the v1 data models
+
+* Perhaps just use v1 for Comments?
+	* Bind data model to view model
+
+* Add nested children
+
+* populate all children
 
 
+* Populate children
+* Start minimized
+* reload only the changed cells
 
-- Analytics
+* Stagger child comment cells
+	* Place all objects inside a shiftingContentView?
+	* make alternating background views for staggering
+	* Record what child level each view model is in
+	* CommentCells change the leading alignment by a factor of bgViews.widths based on child level
 
-- Ads
-- IAP
+* Adjust width of textview based on child depth 
 
-- Website: new pages
-	- donate page
-	- landing page
-- Paypal
-- Welcome Screen?
-
+* Tweak colors
 
 
-- Set up website for donations
-- paypal
+* Add delay to the binding algorithm on "Load More" and replace with a loading graphic.
+* replace the binding algorithm on "Load More" with a call to the data provider
 
+* Implement loading subverse with v1 api
+* Ensure it works with legacy api still
+* Try with offline data provider
+
+
+* Load More works
+* Sort By reloads page 0 with new sort
+* Set the max number of pages to 19
+
+* V1 for Submission Title/Content/Sortby stuffs
+* refactor comments to work with legacy api
+
+
+* Program against v1 api
+	* Subverse list request
+		* DataModel
+		* Bind DataModel to Subverse View Model
+	* subverse submissions
+	* comments
 
 
 
@@ -416,7 +633,8 @@ User Accounts
 - Respond to Messages
 
 
-
+Flurry App Key:
+BKGPY6BG5Y9FWCSSXWGG
 
 
 

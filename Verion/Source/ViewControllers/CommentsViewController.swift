@@ -8,18 +8,27 @@
 
 import UIKit
 import NVActivityIndicatorView
+import SafariServices
 
 class CommentsViewController: UITableViewController, UITextViewDelegate, CommentsSortByCellDelegate {
     
     var backgroundColor = UIColor.white
+    // Sections
+    
+    var numOfSectionsBeforeComments: Int = 0
+    let DISABLED_SECTION_NUMBER = -1
+    
+    var submissionSectionNumber = 0
+    var adSectionNumber = 1
+    var commentsSectionNumber = 2
     
     // Display formatting
-    private let CELL_SPACING: CGFloat = 5.0
+    private let CELL_SPACING: CGFloat = 10.0
     private let LOAD_MORE_CELL_HEIGHT: CGFloat = 50.0
-    private let LOADING_CELL_HEIGHT: CGFloat = 50.0
     private let NUM_OF_STARTING_CELLS_TO_DISPLAY = 20
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
+    private let BOTTOM_INSET: CGFloat = 50.0
     
     // Cell configuration
     let COMMENT_CELL_REUSE_ID = "CommentCell"
@@ -28,6 +37,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     let SUBMISSION_LINK_CELL_REUSE_ID = "SubmissionLinkCell"
     let SUBMISSION_IMAGE_CELL_REUSE_ID = "SubmissionImageCell"
     let PROGRESS_INDICATOR_CELL_REUSE_ID = "ProgressIndicatorCell"
+    let AD_CELL_REUSE_ID = "AdCell"
     
     let ACTIVITY_INDICATOR_CELL_REUSE_ID = "ActivityIndicatorCell"
     let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
@@ -37,13 +47,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     let WEBVIEW_SEGUE_ID = "WebViewSegue"
     
     var submissionDataModel: SubmissionDataModelProtocol?
+    var verionDataModel: VerionDataModel?
     
     // View Models
-    var submissionMediaType: SubmissionMediaType = .undetermined {
-        didSet {
-            print("Set: \(self.submissionMediaType)")
-        }
-    }
+    var submissionMediaType: SubmissionMediaType = .undetermined
     var submissionTitleVm: SubmissionTitleCellViewModel?
     var submissionImageContentVm: SubmissionImageCellViewModel = SubmissionImageCellViewModel()
     var submissionTextContentVm: SubmissionTextCellViewModel = SubmissionTextCellViewModel()
@@ -52,8 +59,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var progressCellVm: ProgressIndicatorCellViewModel = ProgressIndicatorCellViewModel()
     
     var commentsViewModels: [CommentCellViewModel] = []
-    var commentDataModels: [CommentDataModelProtocol] = []
     var areCommentsLoaded = false
+    var loadMoreParentCommentsIndex = 0
+    
+    let BLOCKED_USER_TEXT = "(This user is blocked)"
     
     // Navigation Bar items
     private var ACTIVITY_INDICATOR_LENGTH: CGFloat = 25.0
@@ -65,16 +74,19 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     // Dependencies
     var sfxManager: SFXManagerType?
     var dataProvider: DataProviderType?
-    
+    var analyticsManager: AnalyticsManagerProtocol?
+    var adManager: AdManager?
+    var dataManager: DataManagerProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.backgroundColor = self.backgroundColor
         self.navigationController?.navigationBar.tintColor = UIColor.white
-
-        
+        self.setBottomInset()
+        self.loadData()
         self.loadSubmissionInfo {
+            
             self.loadCommentCells {
                 
             }
@@ -87,24 +99,64 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    private func loadData() {
+        self.verionDataModel = self.dataManager?.getSavedData()
+        
+        // Configure sections based on whether or not ads were removed
+        self.submissionSectionNumber = 0 // Always 0
+        
+        if self.adManager?.isRemoveAdsPurchased() == true {
+            // Ads are removed
+            self.adSectionNumber = self.DISABLED_SECTION_NUMBER
+            self.commentsSectionNumber = self.submissionSectionNumber + 1
+            self.numOfSectionsBeforeComments = 1
+        } else {
+            // Ads are not removed, will be put in
+            self.adSectionNumber = 1
+            self.commentsSectionNumber = self.adSectionNumber + 1
+            self.numOfSectionsBeforeComments = 2
+        }
+    }
+    
+    fileprivate func saveData() {
+        self.dataManager?.saveData(dataModel: self.verionDataModel!)
+    }
+    
+    private func setBottomInset() {
+        // Set bottom content Inset for possible ad-placement
+        let topDefaultInset = self.tableView.contentInset.top
+        let bottomInset = self.BOTTOM_INSET
+        self.tableView.contentInset = UIEdgeInsets(top: topDefaultInset, left: 0, bottom: bottomInset, right: 0)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        UIApplication.shared.statusBarStyle = .lightContent
+    }
     
     func reloadTableCommentsAnimated() {
-        self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: 1, endingIndexExclusive: self.commentsViewModels.count+1, animation: .automatic)
+        self.reloadTableAnimated(startingIndexInclusive: 1, endingIndexExclusive: self.commentsViewModels.count+1, animation: .automatic)
     }
     
-    private func reloadTableAnimated(forTableView tableView: UITableView, startingIndexInclusive: Int, endingIndexExclusive:
+    private func reloadTableAnimated(startingIndexInclusive: Int, endingIndexExclusive:
         Int, animation: UITableViewRowAnimation) {
         
-        tableView.reloadData()
+        self.tableView.reloadData()
         let range = Range.init(uncheckedBounds: (lower: startingIndexInclusive, upper: endingIndexExclusive))
         let indexSet = IndexSet.init(integersIn: range)
-        tableView.reloadSections(indexSet, with: animation)
+        self.tableView.reloadSections(indexSet, with: animation)
     }
     
-    func loadSubmissionInfo(completion: @escaping ()->()) {
+    private func loadSubmissionInfo(completion: @escaping ()->()) {
         DispatchQueue.global(qos: .background).async {
             self.loadSubmissionTitle(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
             self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider) {
+                
+                // Analytics - place this here because media type isn't finished loading until content is retrieved
+                let params = AnalyticsEvents.getCommentsControllerViewingParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType)
+                self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerViewing, params: params, timed: false)
+                
             }
             
             // This is required to complete table cell generation
@@ -122,7 +174,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
     }
     
-    func loadSubmissionTitle(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?) {
+    private func loadSubmissionTitle(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?) {
         // Bind the submission data model to a new submission title cell view model
         let submissionTitleCellViewModel = SubmissionTitleCellViewModel()
         dataProvider?.bind(subTitleViewModel: submissionTitleCellViewModel, dataModel: submissionDataModel)
@@ -131,7 +183,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
     
     // This loads the middle cell, the Content Cell of the first section
-    func loadContent(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?, completion: @escaping ()->()) {
+    private func loadContent(submissionDataModel: SubmissionDataModelProtocol, dataProvider: DataProviderType?, completion: @escaping ()->()) {
         // Determine the content type
         self.submissionMediaType = (dataProvider?.getSubmissionMediaType(submissionDataModel: submissionDataModel))!
         
@@ -181,30 +233,67 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
     
     
-    func loadSortedByBar() {
+    private func loadSortedByBar() {
         self.commentsSortByVm = CommentsSortByCellViewModel()
     }
     
-    // Load Comments from Data Provider
-    func loadCommentCells(completion: @escaping ()->()) {
-        self.dataProvider?.requestComments(submissionId: (self.submissionDataModel?.id)!, completion: { (commentDataModels, error) in
+    private func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentCellViewModel])->()) {
+        
+        self.dataProvider?.requestChildComments(subverse: subverse, submissionId: submissionId, parentId: parentId, startingIndex: startingIndex) { commentDataModels, commentDataSegment, error in
             
             DispatchQueue.global(qos: .background).async {
                 
-                // Clear all current data
-                self.commentsViewModels.removeAll()
-                self.commentDataModels = commentDataModels
+                // Turn dataModels into cell view models
+                var topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
                 
-                for i in 0..<commentDataModels.count {
-                    let commentViewModel = CommentCellViewModel()
-                    self.commentsViewModels.append(commentViewModel)
-                    
-                    let dataModel = commentDataModels[i]
-                    
-                    self.dataProvider?.bind(commentCellViewModel: commentViewModel, dataModel: dataModel)
+                // Load More cell
+                if commentDataSegment != nil {
+                    if commentDataSegment!.hasMore {
+                        // Add to toplevel comments
+                        let loadMoreCommentsViewModel = self.getLoadMoreCellViewModel(numOfComments: commentDataSegment!.remainingCount, lastCommentIndex: commentDataSegment!.endingIndex)
+                        topLevelCommentVms.append(loadMoreCommentsViewModel)
+                    }
                 }
                 
+                DispatchQueue.main.async {
+                    completion(topLevelCommentVms)
+                }
+            }
+        }
+    }
+    
+    // Load Comments from Data Provider
+    fileprivate func loadCommentCells(completion: @escaping ()->()) {
+        self.dataProvider?.requestComments(subverse:self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, completion: { (commentDataModels, commentDataSegment, error) in
+            
+            DispatchQueue.global(qos: .background).async {
+                
+                // Reset comment cells
+                self.commentsViewModels.removeAll()
+                
+                var topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
+                
+                // Load More cell
+                if commentDataSegment != nil {
+                    if commentDataSegment!.hasMore {
+                        // Add to toplevel comments
+                        let loadMoreCommentsViewModel = self.getLoadMoreCellViewModel(numOfComments: commentDataSegment!.remainingCount, lastCommentIndex: commentDataSegment!.endingIndex)
+                        topLevelCommentVms.append(loadMoreCommentsViewModel)
+                    }
+                }
+                
+                
+                // Put all comment cells, and children, into a single array
+                let allCommentViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: topLevelCommentVms)
+                
+                self.blockUsersFromList(commentCellViewModels: allCommentViewModelsLinearArray)
+                
+                self.commentsViewModels.append(contentsOf: allCommentViewModelsLinearArray)
+                
+                self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: topLevelCommentVms, startingDepthIndex: 0)
+                
                 self.areCommentsLoaded = true
+                
                 
                 DispatchQueue.main.async {
                     self.reloadTableCommentsAnimated()
@@ -218,6 +307,141 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         completion()
     }
     
+    private func blockUsersFromList(commentCellViewModels: [CommentCellViewModel]) {
+        
+        for viewModel in commentCellViewModels {
+            if self.verionDataModel!.blockedUsers!.contains(viewModel.usernameString) {
+                self.setUserAsBlocked(forViewModel: viewModel)
+            }
+        }
+    }
+    
+    
+    private func setUserAsBlocked(forViewModel viewModel: CommentCellViewModel){
+        viewModel.attributedTextString = NSAttributedString.init(string: self.BLOCKED_USER_TEXT)
+        viewModel.isBlocked = true
+    }
+    
+    private func getTopLevelCommentViewModels(fromDataModels dataModels: [CommentDataModelProtocol]) -> [CommentCellViewModel] {
+        
+        var topLevelComments: [CommentCellViewModel] = []
+        
+        // Load top level comment cell view models
+        for i in 0..<dataModels.count {
+            let commentViewModel = CommentCellViewModel()
+            topLevelComments.append(commentViewModel)
+            
+            let dataModel = dataModels[i]
+            self.dataProvider?.bind(commentCellViewModel: commentViewModel, dataModel: dataModel)
+        }
+        
+        return topLevelComments
+    }
+    
+    private func getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels topLevelViewModels: [CommentCellViewModel]) -> [CommentCellViewModel] {
+        var commentCellViewModelsAll: [CommentCellViewModel] = []
+        
+        for i in 0..<topLevelViewModels.count {
+            let viewModel = topLevelViewModels[i]
+            
+            // Append each view model, reguardless if collapsed or not
+            commentCellViewModelsAll.append(viewModel)
+            
+            // Then append its children only if THIS viewmodel is visible
+            if viewModel.isMinimized.value == false {
+                
+                // Load More Comments
+                // If hasMore children that were not yet fetched by latest request, create a model for "load more"
+                if viewModel.hasMoreUnloadedChildren == true {
+                    if let loadMoreCommentCellViewModel = self.getLoadMoreCellViewModel(withParentViewModel: viewModel) {
+                        // Add it as a child of current view model
+                        viewModel.addChild(viewModel: loadMoreCommentCellViewModel, parentIndex: i)
+                        
+                        // Turn off once appended
+                        viewModel.hasMoreUnloadedChildren = false
+                    }
+                }
+                
+                
+                let childrenViewModels = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: viewModel.children)
+                
+                
+                commentCellViewModelsAll.append(contentsOf: childrenViewModels)
+            }
+        }
+        
+        return commentCellViewModelsAll
+    }
+    
+    private func isUserBlocked(forViewModel viewModel: CommentCellViewModel) -> Bool {
+        if self.verionDataModel!.blockedUsers!.contains(viewModel.usernameString) {
+            return true
+        }
+        
+        return false
+    }
+    
+    private func getLoadMoreCellViewModel(numOfComments: Int, lastCommentIndex: Int) -> CommentCellViewModel {
+        let loadMoreCommentCellViewModel = CommentCellViewModel()
+        let loadMoreCommentCellVmInitData = self.getLoadMoreCommentCellVmInitData(numOfComments: numOfComments, lastCommentIndex: lastCommentIndex)
+        
+        loadMoreCommentCellViewModel.loadInitData(initData: loadMoreCommentCellVmInitData)
+        loadMoreCommentCellViewModel.isLoadMoreCell = true
+        loadMoreCommentCellViewModel.childDepthIndex = 0 // top level comment
+        
+        return loadMoreCommentCellViewModel
+    }
+    
+    private func getLoadMoreCellViewModel(withParentViewModel parentViewModel: CommentCellViewModel?) -> CommentCellViewModel? {
+        
+        // If no parent view model
+        guard parentViewModel != nil else {
+            return nil
+        }
+        
+        let loadMoreCommentCellViewModel = CommentCellViewModel()
+        let loadMoreCommentCellVmInitData = self.getLoadMoreCommentCellVmInitData(fromParentViewModel: parentViewModel!)
+        loadMoreCommentCellViewModel.loadInitData(initData: loadMoreCommentCellVmInitData!)
+        loadMoreCommentCellViewModel.isLoadMoreCell = true
+        loadMoreCommentCellViewModel.childDepthIndex = parentViewModel!.childDepthIndex+1
+        
+        return loadMoreCommentCellViewModel
+    }
+    
+    private func getLoadMoreCommentCellVmInitData(fromParentViewModel parentViewModel: CommentCellViewModel?) -> CommentCellViewModelInitData? {
+        
+        guard parentViewModel != nil else {
+            return nil
+        }
+        
+        var loadMoreCommentCellVmInitData = CommentCellViewModelInitData()
+        loadMoreCommentCellVmInitData.isMinimized = true
+        loadMoreCommentCellVmInitData.usernameString = "Load More Comments (\(parentViewModel!.remainingChildrenCount) more)"
+        loadMoreCommentCellVmInitData.parentId = parentViewModel!.id
+        loadMoreCommentCellVmInitData.latestChildIndex = parentViewModel!.latestChildIndex
+        
+        return loadMoreCommentCellVmInitData
+    }
+    
+    private func getLoadMoreCommentCellVmInitData(numOfComments: Int, lastCommentIndex: Int) -> CommentCellViewModelInitData {
+        var loadMoreCommentCellVmInitData = CommentCellViewModelInitData()
+        loadMoreCommentCellVmInitData.isMinimized = true
+        loadMoreCommentCellVmInitData.usernameString = "Load More Comments (\(numOfComments) more)"
+        loadMoreCommentCellVmInitData.latestChildIndex = lastCommentIndex // top level comment
+        loadMoreCommentCellVmInitData.parentId = -1 // This is required for top level comment retrieval
+        return loadMoreCommentCellVmInitData
+
+    }
+    
+    private func setAllCommentViewModelChildDepthIndexes(topLevelViewModels: [CommentCellViewModel], startingDepthIndex: Int) {
+        
+        for viewModel in topLevelViewModels {
+            viewModel.childDepthIndex = startingDepthIndex
+            
+            self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: viewModel.children, startingDepthIndex: startingDepthIndex + 1)
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -229,10 +453,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         let numOfSections: Int
         
         if self.areCommentsLoaded == false {
-            numOfSections = 2
+            numOfSections = 3
         }
         else {
-            numOfSections = self.commentsViewModels.count + 1 // 1 extra section for submission cells
+            numOfSections = self.commentsViewModels.count + self.numOfSectionsBeforeComments // 1 extra section for submission cells
         }
         
         return numOfSections
@@ -241,7 +465,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         // Submission Cells
-        if section == 0 {
+        if section == self.submissionSectionNumber {
             // View Models must be initialized
             if self.areSubmissionViewModelsLoaded() == true {
                 return 3
@@ -251,7 +475,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             }
         } else {
             
-            // Always 1 row per comments
+            // Always 1 row per comments/ads
             return 1
         }
         
@@ -266,12 +490,28 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
         // No header for first cell
-        if section == 0 {
+        if section == self.submissionSectionNumber {
+            return 0
+        } else if section == self.adSectionNumber {
+            return self.CELL_SPACING
+        } else {
+            guard section <= self.commentsViewModels.count-1 + self.numOfSectionsBeforeComments else {
+                // Perhaps this should never be reached
+                return self.CELL_SPACING
+            }
+            
+            
+            // Only separate top level comments
+            let commentCellIndex = section - self.numOfSectionsBeforeComments
+            if self.commentsViewModels[commentCellIndex].childDepthIndex == 0 {
+                return self.CELL_SPACING
+            }
+            
+            // This should be for all cells that are not top level
             return 0
         }
-        
-        return self.CELL_SPACING
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -279,7 +519,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             return 0
         }
         
-        if indexPath.section == 0 {
+        if indexPath.section == self.submissionSectionNumber {
             // Title row
             if indexPath.row == 0 {
                 let submissionTitleCellVm = self.submissionTitleVm!
@@ -309,35 +549,45 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 let sortByCellVm = self.commentsSortByVm!
                 return sortByCellVm.cellHeight
             }
-        }
-        
-        guard self.areCommentsLoaded != false else {
-            return self.LOADING_CELL_HEIGHT
-        }
-        
-        if self.commentsViewModels.count > 0 {
-            // Comment Cell Height
-            let commentCellVm = self.commentsViewModels[indexPath.section-1]
-            let cellHeight = commentCellVm.cellHeight
+        } else if indexPath.section == self.adSectionNumber {
             
-            return cellHeight
+            let advertisementTitleHeight: CGFloat = 20.0
+            let adCellHeight = advertisementTitleHeight + self.adManager!.getBannerAdHeight()
+            
+            return adCellHeight
+            
+        } else {
+            guard self.areCommentsLoaded != false else {
+                let sampleActivityIndicatorVm = ActivityIndicatorCellViewModel()
+                return sampleActivityIndicatorVm.cellHeight
+            }
+            
+            if self.commentsViewModels.count > 0 {
+                // Comment Cell Height
+                let commentCellVm = self.commentsViewModels[indexPath.section-self.numOfSectionsBeforeComments]
+                let cellHeight = commentCellVm.cellHeight
+                
+                return cellHeight
+            }
+            
+            // This should never be reached
+            let defaultHeight: CGFloat = 50.0
+            
+            return defaultHeight
         }
         
-        // This should never be reached
-        let defaultHeight: CGFloat = 50.0
-        
-        return defaultHeight
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section == 0 {
+        if indexPath.section == self.submissionSectionNumber {
             
             // If first row, Title Cell
             if indexPath.row == 0 {
                 
                 let titleCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath) as! SubmissionTitleCell
-                titleCell.bind(toViewModel: self.submissionTitleVm!)
+                titleCell.bind(toViewModel: self.submissionTitleVm!, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
                 
                 return titleCell
                 
@@ -347,7 +597,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 switch self.submissionMediaType {
                 case .text:
                     let textCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TEXT_CELL_REUSE_ID, for: indexPath) as! SubmissionTextCell
-                    textCell.bind(toViewModel: self.submissionTextContentVm)
+                    textCell.bind(toViewModel: self.submissionTextContentVm, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
                     textCell.textView.delegate = self
                     return textCell
                     
@@ -388,56 +638,70 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 sortByCell.bind(toViewModel: self.commentsSortByVm!)
                 sortByCell.navigationController = self.navigationController
                 sortByCell.delegate = self
-                self.sfxManager?.applyShadow(view: sortByCell)
                 
                 return sortByCell
             }
-        }
-        
-        // Loading Comment Cell
-        if self.areCommentsLoaded == false {
+        } else if indexPath.section == self.adSectionNumber {
+            let adCell = tableView.dequeueReusableCell(withIdentifier: self.AD_CELL_REUSE_ID, for: indexPath) as! AdCell
             
-            // Activity Indicator for a 'Loading' cell
-            if self.activityIndicatorCell != nil {
-                self.activityIndicatorCell?.removeActivityIndicator()
+            // Set the ad cell's banner view
+            adCell.adView.addSubview(self.adManager!.getBannerAd(rootViewController: self)!)
+            
+            return adCell
+            
+        } else {
+            
+            
+            // Loading Comment Cell
+            if self.areCommentsLoaded == false {
+                
+                // Activity Indicator for a 'Loading' cell
+                if self.activityIndicatorCell != nil {
+                    self.activityIndicatorCell?.removeActivityIndicator()
+                }
+                
+                self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID, for: indexPath) as? ActivityIndicatorCell
+                self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH, color: (self.navigationController?.navigationBar.barTintColor)!)
+                self.activityIndicatorCell?.showActivityIndicator()
+                return self.activityIndicatorCell!
             }
-            
-            self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID, for: indexPath) as? ActivityIndicatorCell
-            self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH)
-            self.activityIndicatorCell?.showActivityIndicator()
-            return self.activityIndicatorCell!
-        }
-        else {
-            // Comment cells
-            
-            let commentCell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath) as! CommentCell
-            let commentCellViewModel = self.commentsViewModels[indexPath.section-1]
-            commentCell.delegate = self
-            commentCell.bind(toViewModel: commentCellViewModel)
-            commentCell.textView.delegate = self
-            self.sfxManager?.applyShadow(view: commentCell)
-            
-            return commentCell
+            else {
+                // Comment cells
+                
+                let commentCell = tableView.dequeueReusableCell(withIdentifier: self.COMMENT_CELL_REUSE_ID, for: indexPath) as! CommentCell
+                let commentCellViewModelIndex = indexPath.section - self.numOfSectionsBeforeComments
+                let commentCellViewModel = self.commentsViewModels[commentCellViewModelIndex]
+                commentCell.delegate = self
+                commentCell.bind(toViewModel: commentCellViewModel, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
+                commentCell.textView.delegate = self
+                
+                
+                return commentCell
+            }
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
         // If touched sorted By bar, trigger the segue
+        /* TODO: Disabled sortby right now
         if indexPath.section == 0 && indexPath.row == 2 {
             let sortByCell = tableView.cellForRow(at: indexPath) as! CommentsSortByCell
             sortByCell.sortByTouched(sortByCell.sortByButton)
         }
+ */
         
+        // Open Content
         // If is a content cell, launch link
         if indexPath.section == 0 && indexPath.row == 1 {
             if self.submissionMediaType != .text {
                 switch self.submissionMediaType {
                 case .link:
-                    self.loadWebViewController(forLink: self.submissionLinkContentVm.link)
+                    self.openSafariViewController(link: self.submissionLinkContentVm.link)
                 case .image:
-                    self.loadWebViewController(forLink: self.submissionImageContentVm.imageLink)
+                    self.openSafariViewController(link: self.submissionImageContentVm.imageLink)
                 default:
                     break;
                 }
@@ -445,11 +709,121 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             }
         }
         
-        // Minimize comment cell
-        if indexPath.section >= 1 {
-            let commentCellVm = self.commentsViewModels[indexPath.section-1]
+        // Minimize and Maximize comment cell
+        if indexPath.section >= self.numOfSectionsBeforeComments {
+            let viewModelIndex = indexPath.section - self.numOfSectionsBeforeComments
+            let commentCellVm = self.commentsViewModels[viewModelIndex]
             commentCellVm.toggleMinimized()
+            
+            // Find out of minimized or maximized
+            // If minimized
+            if commentCellVm.isMinimized.value == true {
+                self.minimizeCommentCell(forViewModel: commentCellVm, indexPath: indexPath)
+            }
+            else {
+                
+                // If cell is a "load more"
+                if commentCellVm.isLoadMoreCell {
+                    
+                    self.requestChildComments(subverse: self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, parentId: commentCellVm.parentId, startingIndex: commentCellVm.latestChildIndex+1) { commentCellViewModels in
+                        
+                        self.insertCommentsIntoLoadMore(loadMoreCellViewModel:commentCellVm, atIndex: viewModelIndex, commentCellViewModels: commentCellViewModels)
+                        
+                    }
+                } else {
+                    self.maximizeCommentCell(forViewModel: commentCellVm, indexPath: indexPath)
+                }
+            }
         }
+    }
+    
+    private func insertCommentsIntoLoadMore(loadMoreCellViewModel: CommentCellViewModel, atIndex viewModelIndex: Int, commentCellViewModels: [CommentCellViewModel]) {
+        
+        // Guard against the parent not existing if the loadMoreCell is a top level comment
+        if loadMoreCellViewModel.childDepthIndex != 0 {
+            
+            // Remove child from parent, add new cells to parent
+            if let parentCommentCellViewModel = loadMoreCellViewModel.parent {
+                if parentCommentCellViewModel.children.count > 0 {
+                    parentCommentCellViewModel.removeLastChild()
+                }
+                
+                for i in 0..<commentCellViewModels.count {
+                    let viewModel = commentCellViewModels[i]
+                    parentCommentCellViewModel.addChild(viewModel: viewModel, parentIndex: i)
+                }
+            }
+        }
+        
+        // Set the child depth indexes
+        self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: commentCellViewModels, startingDepthIndex: loadMoreCellViewModel.childDepthIndex)
+        
+        // Get uncollapsed tree from children
+        let commentCellViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: commentCellViewModels)
+        
+        self.blockUsersFromList(commentCellViewModels: commentCellViewModelsLinearArray)
+        
+        // Replace LoadMoreCell with contents of first view model
+        self.commentsViewModels.remove(at: viewModelIndex)
+        self.commentsViewModels.insert(contentsOf: commentCellViewModelsLinearArray, at: viewModelIndex)
+        
+        // reload table
+        // The viewModelIndex is always indexPath.section-1, so we have to add 1 to animate the location of section
+        let startingIndex = viewModelIndex + self.numOfSectionsBeforeComments
+        let endingIndexExclusive = startingIndex + commentCellViewModelsLinearArray.count
+        self.reloadTableAnimated(startingIndexInclusive: startingIndex, endingIndexExclusive: endingIndexExclusive, animation: .fade)
+    }
+    
+    private func minimizeCommentCell(forViewModel viewModel: CommentCellViewModel, indexPath: IndexPath) {
+        tableView.beginUpdates()
+        
+        // Get the total number of child cells removed
+        let numOfChildCellsToRemove = viewModel.numOfVisibleChildren
+        
+        // Remove them from the array
+        let indexOfCommentCellVm = indexPath.section - self.numOfSectionsBeforeComments
+        let lowerBound = indexOfCommentCellVm + 1
+        let upperBound = lowerBound + numOfChildCellsToRemove
+        let rangeToRemove = Range.init(uncheckedBounds: (lower: lowerBound, upper: upperBound))
+        self.commentsViewModels.removeSubrange(rangeToRemove)
+        
+        // The rangetoUpdate has to account for cells start at IndexPath.section+1
+        let rangeToUpdate = Range.init(uncheckedBounds: (lower: lowerBound + self.numOfSectionsBeforeComments, upper: upperBound + self.numOfSectionsBeforeComments))
+        
+        let indexSet = IndexSet.init(integersIn: rangeToUpdate)
+        tableView.deleteSections(indexSet, with: .fade)
+        
+        tableView.endUpdates()
+    }
+    
+    private func maximizeCommentCell(forViewModel viewModel: CommentCellViewModel, indexPath: IndexPath) {
+        
+        // If maximized
+        // Get the total number of child cells shown
+        // Insert them into the array
+        let currentIndex = indexPath.section - self.numOfSectionsBeforeComments
+        
+        var childrenVmToAdd = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: [viewModel])
+        // Remove the first child, which is the top node
+        childrenVmToAdd.remove(at: 0)
+        
+        self.commentsViewModels.insert(contentsOf: childrenVmToAdd, at: currentIndex+1)
+        
+        self.animateInsertComments(startingIndex: indexPath.section + 1, numOfObjects: childrenVmToAdd.count)
+    }
+    
+    private func animateInsertComments(startingIndex: Int, numOfObjects: Int) {
+        tableView.beginUpdates()
+        
+        let lowerBoundToInsert = startingIndex
+        let upperBoundToInsert = lowerBoundToInsert + numOfObjects
+        let rangeToInsert = Range.init(uncheckedBounds: (lower: lowerBoundToInsert, upper: upperBoundToInsert))
+        let indexSet = IndexSet.init(integersIn: rangeToInsert)
+        
+        tableView.insertSections(indexSet, with: .bottom)
+        
+        // Update the table for those rows
+        tableView.endUpdates()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -457,13 +831,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.tableView.reloadData()
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
+    
 
     /*
     // Override to support editing the table view.
@@ -491,13 +859,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         return true
     }
     */
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == self.WEBVIEW_SEGUE_ID {
-            let webViewVC = segue.destination as! WebViewController
-            webViewVC.link = self.linkString
-        }
-    }
     
     // For detecting rotations beginning and finishing.
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -524,11 +885,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         })
     }
     
-    func loadWebViewController(forLink link: String) {
-        self.linkString = link
-        self.performSegue(withIdentifier: self.WEBVIEW_SEGUE_ID, sender: self)
-    }
-
     func areSubmissionViewModelsLoaded() -> Bool {
         // The commentsSortByViewModel should be the last one to be loaded
         if self.commentsSortByVm != nil {
@@ -540,7 +896,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         let linkString = URL.absoluteString
-        self.loadWebViewController(forLink: linkString)
+        self.openSafariViewController(link: linkString)
         
         return false
     }
@@ -566,6 +922,34 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.reloadTableCommentsAnimated()
     }
     
+    private func isCellLastInGroup(inViewModels viewModels: [CommentCellViewModel], index: Int) -> Bool{
+        // Check next cell
+        let nextIndex = index+1
+        
+        guard nextIndex <= viewModels.count-1 else {
+            return true
+        }
+        
+        // If next cell is a new top-level comment, this one is a last in group
+        let nextCellViewModel = viewModels[nextIndex]
+        if nextCellViewModel.childDepthIndex == 0 {
+            return true
+        }
+        
+        return false
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: { alertAction in
+            
+        }))
+        
+        self.present(alertController, animated: true) {
+            
+        }
+    }
+    
     deinit {
         self.tableView.dataSource = nil
         self.tableView.delegate = nil
@@ -576,13 +960,151 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
 }
 
-extension CommentsViewController: CommentCellDelegate {
+
+extension CommentsViewController: SFSafariViewControllerDelegate {
+    fileprivate func openSafariViewController(link: String) {
+        
+        // Analytics
+        let params = AnalyticsEvents.getCommentsControllerOpenContentParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType)
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerOpenContent, params: params, timed: false)
+        
+        var formattedLink = link
+        if link.lowercased().hasPrefix("http://")==false && link.lowercased().hasPrefix("https://") == false {
+            formattedLink = "http://" + link
+        }
+        
+        let safariController = SFSafariViewController(url: URL(string: formattedLink)!, entersReaderIfAvailable: false)
+        safariController.delegate = self
+        self.present(safariController, animated: true, completion: {
+            
+            UIApplication.shared.statusBarStyle = .default
+        })
+    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension CommentsViewController: CommentCellDelegate{
     func commentCellDidChange(commentCell: CommentCell) {
         // Get the index, reload table row
         if let indexPath = self.tableView.indexPath(for: commentCell) {
+            
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
+    // Block user
+    func commentCellDidPressBlockUser(commentCell: CommentCell, username: String) {
+        
+        if commentCell.viewModel?.isBlocked == false {
+            
+            // Block prompt
+            let blockAlert = UIAlertController.init(title: "Block User", message: "Block all comments by this user?", preferredStyle: .alert)
+            
+            let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
+                // Add user to block list
+                self.verionDataModel?.blockedUsers!.insert(username)
+                self.saveData()
+                
+                // Refresh comments
+                self.loadCommentCells {
+                }
+            })
+            
+            let cancelAction = UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                // do nothing
+            })
+            
+            blockAlert.addAction(cancelAction)
+            blockAlert.addAction(yesAction)
+            
+            self.present(blockAlert, animated: true, completion: nil)
+            
+        } else {
+            
+            // Unblock prompot
+            let unblockAlert = UIAlertController.init(title: "", message: "Unblock this user?", preferredStyle: .alert)
+            
+            let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
+                
+                // unblock user
+                _ = self.verionDataModel?.blockedUsers!.remove(username)
+                self.saveData()
+                
+                // Refresh comments
+                self.loadCommentCells {
+                }
+            })
+            
+            let cancelAction = UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                // do nothing
+            })
+            
+            unblockAlert.addAction(cancelAction)
+            unblockAlert.addAction(yesAction)
+            
+            self.present(unblockAlert, animated: true, completion: nil)
         }
         
         
+    }
+    
+    // Share
+    func commentsSortByCell(cell: CommentsSortByCell, didPressShare: Any) {
+        
+        // Analytics
+        let params = AnalyticsEvents.getCommentsControllerShareParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType)
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerShare, params: params, timed: false)
+        
+        self.shareActivities()
+    }
+    
+    func commentsSortByCell(cell: CommentsSortByCell, didPressReport: Any) {
+        
+        let reportAlert = UIAlertController.init(title: "Report Content", message: "Report Submission as Inappropriate Content?", preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
+            self.showAlert(title: "Report Submitted", message: "The submission has been reported to Voat and will be reviewed for necessary actions.")
+        })
+        
+        let cancelAction = UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+            // do nothing
+        })
+        
+        reportAlert.addAction(cancelAction)
+        reportAlert.addAction(yesAction)
+        
+        self.present(reportAlert, animated: true, completion: nil)
+    }
+    
+    private func getTextLink(dataModel: SubmissionDataModelProtocol) -> String {
+        let link = "https://voat.co/v/\(dataModel.subverseName)/\(dataModel.id)"
+        return link
+    }
+    
+    private func shareActivities() {
+        
+        DispatchQueue.global(qos: .background).async {
+            var activityItems: [Any] = []
+            switch self.submissionMediaType {
+            case .text:
+                activityItems.append(self.getTextLink(dataModel: self.submissionDataModel!))
+            case .image:
+                activityItems.append(self.submissionImageContentVm.imageLink)
+            case .link:
+                activityItems.append(self.submissionLinkContentVm.link)
+            default:
+                activityItems.append(self.submissionLinkContentVm.link)
+            }
+            let activityViewController = UIActivityViewController.init(activityItems: activityItems, applicationActivities: nil)
+            
+            DispatchQueue.main.async {
+                self.navigationController?.present(activityViewController, animated: true, completion: {
+                    
+                })
+            }
+        }
     }
 }

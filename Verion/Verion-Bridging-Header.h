@@ -13,6 +13,7 @@
 #import "TSMarkdownParser.h"
 
 #import "FLAnimatedImage.h"
-
+#import "Flurry.h"
+#import "RMStore.h"
 
 #endif /* Verion_Bridging_Header_h */

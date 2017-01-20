@@ -7,28 +7,107 @@
 //
 
 import UIKit
+import MessageUI
 
 protocol LeftMenuControllerDelegate: class {
     func leftMenuDidSelectSubverse(leftMenu: LeftMenuController, subverseName: String)
     func leftMenuDidClearHistory(leftMenu: LeftMenuController)
+    func leftMenuDidPurchaseProduct(leftMenu: LeftMenuController, productId: String)
+    func leftMenuDidPressClose(leftMenu: LeftMenuController)
+    func leftMenuDidPressFindSubverse(leftMenu: LeftMenuController)
 }
 
 class LeftMenuController: UITableViewController {
+    
+    enum LeftMenuSections: Int {
+        case icon = 0
+        case subverseHistory = 1
+        case filters = 2
+        case supportUs = 3
+        case contactUs = 4
+        
+        static let allValues = [icon, subverseHistory, filters, supportUs, contactUs]
+    }
+    
+    // Section Titles
+    private let SUBVERSE_HISTORY_SECTION_TITLE = "    Subverses Visited"
+    private let SUPPORT_US_SECTION_TITLE = "    Support Us <3"
+    private let CONTACT_SECTION_TITLE = "    Contact"
+    private let FILTERS_SECTION_TITLE = "    Filters"
+    private let SECTION_HEADER_FONT_SIZE: CGFloat = 14.0
     
     // Table Elements
     private let SUBVERSE_CELL_REUSE_ID = "SubverseCell"
     private let CLEAR_HISTORY_CELL_REUSE_ID = "ClearHistoryCell"
     private let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
+    private let SECTION_HEIGHT: CGFloat = 40.0
+    private let activtyIndicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+    private let DEFAULT_CELL_HEIGHT: CGFloat = 50.0
+    
+    // Title Icon section
+    private let ICON_CELL_REUSE_ID = "VoatIconCell"
+    private let ICON_CELL_HEIGHT: CGFloat = 150.0
+    private let FIND_SUBVERSE_CELL_REUSE_ID = "FindSubverseCell"
+    
+    enum IconRows: Int {
+        case icon = 0
+        case findSubverse = 1
+        
+        static let allValues = [icon, findSubverse]
+    }
+    
+    // Subverse history section
     fileprivate var subverseCellViewModels = [SubverseCellViewModel]()
-    
     private let clearHistoryCellCount: Int = 1
+    fileprivate let MAX_NUM_HISTORY_ENTRIES: Int = 5
     
-    fileprivate let MAX_NUM_HISTORY_ENTRIES: Int = 20
+    // Filters section
+    enum FilterRows: Int {
+        case hideNsfw = 0
+        case useNsfwThumbnails = 1
+        case filterLanguage = 2
+        
+        static let allValues = [hideNsfw, useNsfwThumbnails, filterLanguage]
+    }
+    
+    private let HIDE_NSFW_CELL_REUSE_ID = "HideNsfwCell"
+    private let USE_NSFW_THUMBS_CELL_REUSE_ID = "UseNsfwThumbnailsCell"
+    private let FILTER_LANGUAGE_CELL_REUSE_ID = "FilterLanguageCell"
+    
+    fileprivate var hideNsfwCellVm: HideNsfwCellViewModel?
+    fileprivate var useNsfwThumbnailCellVm: UseNsfwThumbnailsCellViewModel?
+    fileprivate var filterLanguageCellVm: FilterLanguageCellViewModel?
+    
+    // Support us section
+    enum SupportUsRows: Int {
+        case removeAds = 0
+        case restorePurchases = 1
+        case donate = 2
+        
+        static let allValues = [removeAds, restorePurchases,donate]
+    }
+    private let REMOVE_ADS_CELL_REUSE_ID = "RemoveAdsCell"
+    private let RESTORE_PURCHASES_REUSE_ID = "RestorePurchasesCell"
+    private let DONATE_CELL_REUSE_ID = "DonateCell"
+    
+    // Contact us section
+    enum ContactUsRows: Int {
+        case email = 0
+        case voatify = 1
+        
+        static let allValues = [email, voatify]
+    }
+    private let EMAIL_CELL_REUSE_ID = "EmailUsCell"
+    private let VOATIFY_SUB_REUSE_ID = "VoatifySubCell"
+    
+    private let PURCHASE_SUCCESS_TITLE = "Ads Removed"
+    private let PURCHASE_REMOVE_ADS_SUCCESS_MESSAGE = "Thank you for your support! We hope you continue enjoy using Voatify!"
+    private let PURCHASE_FAILED_MESSAGE = "Purchase was cancelled."
     
     
-    private let SUBVERSE_HISTORY_SECTION_TITLE = "    Subverses Visited"
-    
-    let testValues = ["abc", "123", "banana"]
+    private let ERROR_TITLE = "Error"
+    private let ERROR_MESSAGE = "There was a problem. Please try again later."
+    private let SUCCESS_TITLE = "Success"
     
     // Delegate
     weak var delegate: LeftMenuControllerDelegate?
@@ -36,12 +115,14 @@ class LeftMenuController: UITableViewController {
     
     // Dependencies
     var dataManager: DataManagerProtocol?
-    
+    var analyticsManager: AnalyticsManagerProtocol?
+    var inAppPurchaseManager: InAppPurchaseManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Load data from data manager
+        self.setContentInsets()
         self.loadData()
         self.tableView.reloadData()
 
@@ -52,23 +133,161 @@ class LeftMenuController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    private func loadData() {
-        if let verionDataModel = dataManager?.getSavedData() {
-            self.subverseCellViewModels = self.createSubverseViewModels(withNames: verionDataModel.subversesVisited)
-        }
+    private func setContentInsets() {
+        let bottomInset: CGFloat = 200.0
+        let originalContentInset = self.tableView.contentInset
         
-        // FIXME: temporarily populate with view models
-        //self.subverseCellViewModels = self.createSubverseViewModels(withNames: self.testValues)
+        let newContentInset = UIEdgeInsets.init(top: originalContentInset.top,
+                                                left: originalContentInset.left,
+                                                bottom: bottomInset,
+                                                right: originalContentInset.right)
+        
+        self.tableView.contentInset = newContentInset
+    }
+    
+    private func loadData() {
+        // Load saved datam should always happen
+        if let verionDataModel = dataManager?.getSavedData() {
+            
+            // Load subverses
+            self.subverseCellViewModels = self.createSubverseViewModels(withNames: verionDataModel.subversesVisited!)
+            
+            // Filter data
+            self.hideNsfwCellVm = HideNsfwCellViewModel()
+            self.useNsfwThumbnailCellVm = UseNsfwThumbnailsCellViewModel()
+            self.filterLanguageCellVm = FilterLanguageCellViewModel()
+            
+            // Bind Filters
+            self.bind(hideNsfwCellViewModel: self.hideNsfwCellVm!)
+            self.bind(useNsfwThumbnailCellViewModel: self.useNsfwThumbnailCellVm!)
+            self.bind(filterLanguageCellViewModel: self.filterLanguageCellVm!)
+            
+            // Set Filters
+            self.hideNsfwCellVm?.shouldHideNsfwContent.value = verionDataModel.shouldHideNsfw
+            self.useNsfwThumbnailCellVm?.shouldUseNsfwThumbnails.value = verionDataModel.shouldUseNsfwThumbnail
+            self.useNsfwThumbnailCellVm?.isSwitchEnabled.value = !verionDataModel.shouldHideNsfw
+            self.filterLanguageCellVm?.shouldFilterLanguage.value = verionDataModel.shouldFilterLanguage
+        }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "OK", style: .default, handler: { alertAction in
+            
+        }))
+        
+        self.present(alertController, animated: true) {
+            
+        }
+    }
+    
+    private func purchaseRemoveAds() {
+        
+        self.showActivityIndicator()
+        self.inAppPurchaseManager?.fetchProducts(productIds: [VerionProductIds.removeAds]) { error in
+            
+            self.hideActivityIndicator()
+            guard error == nil else {
+                self.showAlert(title: self.ERROR_TITLE, message: self.ERROR_MESSAGE)
+                return
+            }
+            
+            self.showActivityIndicator()
+            self.inAppPurchaseManager?.purchaseProduct(productId: VerionProductIds.removeAds) { error in
+                
+                self.hideActivityIndicator()
+                if error == nil {
+                    
+                    // Purchased remove ads
+                    self.showAlert(title: self.PURCHASE_SUCCESS_TITLE, message: self.PURCHASE_REMOVE_ADS_SUCCESS_MESSAGE)
+                    
+                    // notify delegate
+                    self.notifyDelegateDidPurchaseRemoveAds()
+                } else {
+                    self.showAlert(title: "", message: self.PURCHASE_FAILED_MESSAGE)
+                }
+                
+            }
+        }
+    }
+    
+    private func restorePurchases() {
+        // Analytics
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuRestorePurchases, timed: false)
+        
+        self.showActivityIndicator()
+        
+        self.inAppPurchaseManager?.restorePurchases(completion: { (productIds, error) in
+            
+            self.hideActivityIndicator()
+            
+            guard error == nil else {
+                self.showAlert(title: self.ERROR_TITLE, message: self.ERROR_MESSAGE)
+                return
+            }
+            
+            var productIdsString = ""
+            
+            for productId in productIds {
+                productIdsString += productId + "\n"
+                
+                switch productId {
+                case VerionProductIds.removeAds:
+                    self.notifyDelegateDidPurchaseRemoveAds()
+                default:
+                    // Should not happen
+                    #if DEBUG
+                    print("Warning: Invalid Product ID Returned - " + productId)
+                    #endif
+                    break
+                }
+            }
+            
+            // Success
+            self.showAlert(title: self.SUCCESS_TITLE, message: "Restored purchases: \(productIdsString)")
+            
+        })
+    }
+    
+    private func notifyDelegateDidPurchaseRemoveAds() {
+        if let _ = self.delegate?.leftMenuDidPurchaseProduct(leftMenu: self, productId: VerionProductIds.removeAds) {
+            // Success, do nothing
+            
+            // Analytics
+            self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuPurchasedRemoveAds, timed: false)
+        } else {
+            #if DEBUG
+                print("Warning: LeftMenu's delegate may not be set for purchasing IAP.")
+            #endif
+        }
+    }
+    
+    private func showActivityIndicator() {
+        let window = UIApplication.shared.keyWindow
+        window?.addSubview(self.activtyIndicator)
+        self.activtyIndicator.center = CGPoint(x: UIScreen.main.bounds.width/2.0, y: UIScreen.main.bounds.height/2.0)
+        self.activtyIndicator.startAnimating()
+    }
+    
+    private func hideActivityIndicator() {
+        self.activtyIndicator.stopAnimating()
+        self.activtyIndicator.removeFromSuperview()
     }
     
     fileprivate func saveData(completion: @escaping ()->()) {
         DispatchQueue.global(qos: .background).async {
             let verionDataModel = self.dataManager?.getSavedData()
             
-            verionDataModel?.subversesVisited.removeAll()
+            // History
+            verionDataModel?.subversesVisited?.removeAll()
             for subverseCellViewModel in self.subverseCellViewModels {
-                verionDataModel?.subversesVisited.append(subverseCellViewModel.subverseName)
+                verionDataModel?.subversesVisited?.append(subverseCellViewModel.subverseName)
             }
+            
+            // Filters
+            verionDataModel?.shouldHideNsfw = self.hideNsfwCellVm!.shouldHideNsfwContent.value
+            verionDataModel?.shouldUseNsfwThumbnail = self.useNsfwThumbnailCellVm!.shouldUseNsfwThumbnails.value
+            verionDataModel?.shouldFilterLanguage = self.filterLanguageCellVm!.shouldFilterLanguage.value
             
             self.dataManager?.saveData(dataModel: verionDataModel!)
             
@@ -99,107 +318,230 @@ class LeftMenuController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return LeftMenuSections.allValues.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        guard self.subverseCellViewModels.count != 0 else {
-            return 0
+        
+        switch section {
+        case LeftMenuSections.icon.rawValue:
+            return IconRows.allValues.count
+            
+        case LeftMenuSections.subverseHistory.rawValue:
+            guard self.subverseCellViewModels.count != 0 else {
+                return 0
+            }
+            
+            let numOfCells = self.subverseCellViewModels.count + self.clearHistoryCellCount
+            
+            return numOfCells
+            
+        case LeftMenuSections.filters.rawValue:
+            return FilterRows.allValues.count
+            
+        case LeftMenuSections.supportUs.rawValue:
+            return SupportUsRows.allValues.count
+            
+        case LeftMenuSections.contactUs.rawValue:
+            return ContactUsRows.allValues.count
+            
+        default:
+            break;
         }
         
-        let numOfCells = self.subverseCellViewModels.count + self.clearHistoryCellCount
-        
-        return numOfCells
+        // This should never be reached
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard self.subverseCellViewModels.count != 0 else {
+        switch indexPath.section {
+        case LeftMenuSections.icon.rawValue:
+            if indexPath.row == IconRows.icon.rawValue {
+                let iconCell = tableView.dequeueReusableCell(withIdentifier: self.ICON_CELL_REUSE_ID, for: indexPath)
+                return iconCell
+            } else {
+                let findSubverseCell = tableView.dequeueReusableCell(withIdentifier: self.FIND_SUBVERSE_CELL_REUSE_ID, for: indexPath)
+                return findSubverseCell
+            }
+            
+        case LeftMenuSections.subverseHistory.rawValue:
+            
+            // If last cell, it is the Clear History cell
+            if indexPath.row == self.subverseCellViewModels.count {
+                let clearHistoryCell = tableView.dequeueReusableCell(withIdentifier: self.CLEAR_HISTORY_CELL_REUSE_ID)
+                
+                return clearHistoryCell!
+            } else {
+                // Subverse history cells
+                let historyCell = tableView.dequeueReusableCell(withIdentifier: self.SUBVERSE_CELL_REUSE_ID, for: indexPath) as! SubverseCell
+                
+                let viewModel = self.subverseCellViewModels[indexPath.row]
+                historyCell.bind(toViewModel: viewModel)
+                
+                return historyCell
+            }
+        case LeftMenuSections.filters.rawValue:
+            // FIXME: implement
+            if indexPath.row == FilterRows.hideNsfw.rawValue {
+                let hideNsfwCell = tableView.dequeueReusableCell(withIdentifier: self.HIDE_NSFW_CELL_REUSE_ID, for: indexPath) as! HideNsfwCell
+                
+                // Bind cell to the viewModel
+                hideNsfwCell.bind(hideNsfwCellViewModel: self.hideNsfwCellVm!)
+                
+                return hideNsfwCell
+                
+            } else if indexPath.row == FilterRows.useNsfwThumbnails.rawValue {
+                let useNsfwThumbnailsCell = tableView.dequeueReusableCell(withIdentifier: self.USE_NSFW_THUMBS_CELL_REUSE_ID, for: indexPath) as! UseNsfwThumbnailsCell
+                useNsfwThumbnailsCell.bind(useNsfwThumbnailCellViewModel: self.useNsfwThumbnailCellVm!)
+                
+                return useNsfwThumbnailsCell
+                
+            } else if indexPath.row == FilterRows.filterLanguage.rawValue {
+                let filterLanguageCell = tableView.dequeueReusableCell(withIdentifier: self.FILTER_LANGUAGE_CELL_REUSE_ID, for: indexPath) as! FilterLanguageCell
+                filterLanguageCell.bind(filterLanguageCellViewModel: self.filterLanguageCellVm!)
+                
+                return filterLanguageCell
+                
+            }
+            
+        case LeftMenuSections.supportUs.rawValue:
+            
+            // Remove ads cell
+            if indexPath.row == SupportUsRows.removeAds.rawValue {
+                let removeAdsCell = tableView.dequeueReusableCell(withIdentifier: self.REMOVE_ADS_CELL_REUSE_ID, for: indexPath)
+                return removeAdsCell
+                
+            } else if indexPath.row == SupportUsRows.restorePurchases.rawValue {
+                let restorePurchasesCell = tableView.dequeueReusableCell(withIdentifier: self.RESTORE_PURCHASES_REUSE_ID, for: indexPath)
+                return restorePurchasesCell
+                
+            } else if indexPath.row == SupportUsRows.donate.rawValue {
+                
+                // Donate cell
+                let donateCell = tableView.dequeueReusableCell(withIdentifier: self.DONATE_CELL_REUSE_ID, for: indexPath)
+                return donateCell
+                
+            }
+            
+        case LeftMenuSections.contactUs.rawValue:
+            if indexPath.row == ContactUsRows.email.rawValue {
+                let emailCell = tableView.dequeueReusableCell(withIdentifier: self.EMAIL_CELL_REUSE_ID, for: indexPath)
+                return emailCell
+                
+            } else if indexPath.row == ContactUsRows.voatify.rawValue {
+                let voatifySubverseCell = tableView.dequeueReusableCell(withIdentifier: self.VOATIFY_SUB_REUSE_ID, for: indexPath)
+                return voatifySubverseCell
+            }
+            
+        default:
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: self.TRANSPARENT_CELL_REUSE_ID)
             
             return transparentCell!
         }
         
-        // If last cell, it is the Clear History cell
-        if indexPath.row == self.subverseCellViewModels.count {
-            let clearHistoryCell = tableView.dequeueReusableCell(withIdentifier: self.CLEAR_HISTORY_CELL_REUSE_ID)
-            
-            return clearHistoryCell!
-        }
-        
-        // Subverse history cells
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.SUBVERSE_CELL_REUSE_ID, for: indexPath) as! SubverseCell
-        
-        let viewModel = self.subverseCellViewModels[indexPath.row]
-        cell.bind(toViewModel: viewModel)
-
-        return cell
+        // Should never be reached
+        let transparentCell = tableView.dequeueReusableCell(withIdentifier: self.TRANSPARENT_CELL_REUSE_ID)
+        return transparentCell!
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         
-        // If no subverse history, do nothing
-        guard self.subverseCellViewModels.count != 0 else {
-            return
-        }
         
-        // If selected subverse
-        if indexPath.row < self.subverseCellViewModels.count {
-            let subverseName = self.subverseCellViewModels[indexPath.row].subverseName
-            if let _ = self.delegate?.leftMenuDidSelectSubverse(leftMenu: self, subverseName: subverseName) {
-                // Success, do nothing
+        switch indexPath.section {
+        case LeftMenuSections.icon.rawValue:
+            if indexPath.row == IconRows.icon.rawValue {
+                self.notifyDelegateDidPressClose()
             } else {
-                #if DEBUG
-                    print("Warning: Left Menu Controller's delegate may not be set.")
-                #endif
+                // Find Subverse
+                self.notifyDelegateDidPressFindSubverse()
             }
-        }
-        
-        // If selected clear, last object
-        if indexPath.row == self.subverseCellViewModels.count {
-            // Clear it
-            self.clearHistory()
-        }
-    }
-    
-    private func clearHistory() {
-        let range = Range.init(uncheckedBounds: (lower: 0, upper: 1))
-        let indexSet = IndexSet.init(integersIn: range)
-        self.subverseCellViewModels.removeAll()
-        
-        self.tableView.reloadData()
-        self.tableView.reloadSections(indexSet, with: .automatic)
-        
-        self.delegate?.leftMenuDidClearHistory(leftMenu: self)
-        
-        self.saveData(){
             
+            
+        case LeftMenuSections.subverseHistory.rawValue:
+            
+            // Delegate - tell to Go to Subverse
+            if indexPath.row < self.subverseCellViewModels.count {
+                let subverseName = self.subverseCellViewModels[indexPath.row].subverseName
+                self.notifyDelegateToGoToSubverse(name: subverseName)
+            } else {
+                // Clear History
+                if indexPath.row == self.subverseCellViewModels.count {
+                    self.clearHistory()
+                }
+            }
+            
+        case LeftMenuSections.supportUs.rawValue:
+            if indexPath.row == SupportUsRows.removeAds.rawValue {
+                self.purchaseRemoveAds()
+            } else if indexPath.row == SupportUsRows.restorePurchases.rawValue {
+                self.restorePurchases()
+            }else if indexPath.row == SupportUsRows.donate.rawValue {
+                self.openDonate()
+            }
+            
+        case LeftMenuSections.contactUs.rawValue:
+            if indexPath.row == ContactUsRows.email.rawValue {
+                
+                // Email
+                self.showFeedbackEmail()
+                
+            } else if indexPath.row == ContactUsRows.voatify.rawValue {
+                
+                // Go to voatify subverse
+                self.notifyDelegateToGoToSubverse(name: "voatify")
+            }
+        default:
+            break
         }
     }
     
     // Headers
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return self.SUBVERSE_HISTORY_SECTION_TITLE
-        }
         
-        return nil
+        switch section {
+        case LeftMenuSections.subverseHistory.rawValue:
+            return self.SUBVERSE_HISTORY_SECTION_TITLE
+        case LeftMenuSections.filters.rawValue:
+            return self.FILTERS_SECTION_TITLE
+        case LeftMenuSections.supportUs.rawValue:
+            return self.SUPPORT_US_SECTION_TITLE
+        case LeftMenuSections.contactUs.rawValue:
+            return self.CONTACT_SECTION_TITLE
+        default:
+            return nil
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 30.0
+        switch section {
+        case LeftMenuSections.icon.rawValue:
+            return 0
+        default:
+            return self.SECTION_HEIGHT
         }
-        return 0.0
     }
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont.systemFont(ofSize: 14.0)
+        header.textLabel?.font = UIFont.systemFont(ofSize: self.SECTION_HEADER_FONT_SIZE)
         header.textLabel?.textColor = UIColor.white
         header.backgroundView?.backgroundColor = UIColor.black
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case LeftMenuSections.icon.rawValue:
+            if indexPath.row == IconRows.icon.rawValue {
+                return self.ICON_CELL_HEIGHT
+            } else {
+                return self.DEFAULT_CELL_HEIGHT
+            }
+            
+        default:
+            return self.DEFAULT_CELL_HEIGHT
+        }
     }
     
 
@@ -248,15 +590,11 @@ class LeftMenuController: UITableViewController {
     }
     */
     
-    fileprivate func limitSubverseHistory(byMaxCount maxCount: Int) {
-        if self.subverseCellViewModels.count > maxCount {
-            let numOfElementsToRemove = self.subverseCellViewModels.count - maxCount
-            self.subverseCellViewModels.removeLast(numOfElementsToRemove)
-        }
-    }
+    
 
 }
 
+// MARK: - History
 extension LeftMenuController {
     
     func addToHistory(subverseName: String) {
@@ -295,5 +633,237 @@ extension LeftMenuController {
         self.saveData {
             
         }
+    }
+    
+    fileprivate func notifyDelegateDidPressClose() {
+        if let _ = self.delegate?.leftMenuDidPressClose(leftMenu: self) {
+            // success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    fileprivate func notifyDelegateDidPressFindSubverse() {
+        if let _ = self.delegate?.leftMenuDidPressFindSubverse(leftMenu: self) {
+            // success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    fileprivate func notifyDelegateToGoToSubverse(name: String) {
+        if let _ = self.delegate?.leftMenuDidSelectSubverse(leftMenu: self, subverseName: name) {
+            
+            // Analytics
+            let params = AnalyticsEvents.getLeftMenuGoToSubverseFromHistoryParams(subverseName: name)
+            self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuGoToSubverseFromHistory, params: params, timed: false)
+            
+            // Success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    fileprivate func clearHistory() {
+        // Analytics
+        var subverseNames: [String] = []
+        for viewModel in self.subverseCellViewModels {
+            subverseNames.append(viewModel.subverseName)
+        }
+        let params = AnalyticsEvents.getLeftMenuClearHistoryParams(subverseNames: subverseNames)
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuClearHistory, params: params, timed: false)
+        
+        
+        let range = Range.init(uncheckedBounds: (lower: 0, upper: 1))
+        let indexSet = IndexSet.init(integersIn: range)
+        self.subverseCellViewModels.removeAll()
+        
+        self.tableView.reloadData()
+        self.tableView.reloadSections(indexSet, with: .automatic)
+        
+        self.delegate?.leftMenuDidClearHistory(leftMenu: self)
+        
+        self.saveData(){
+            
+        }
+    }
+    
+    fileprivate func limitSubverseHistory(byMaxCount maxCount: Int) {
+        if self.subverseCellViewModels.count > maxCount {
+            let numOfElementsToRemove = self.subverseCellViewModels.count - maxCount
+            self.subverseCellViewModels.removeLast(numOfElementsToRemove)
+        }
+    }
+}
+
+// MARK: - Filters
+extension LeftMenuController {
+    
+    // Bindings
+    fileprivate func bind(hideNsfwCellViewModel: HideNsfwCellViewModel) {
+        _ = hideNsfwCellViewModel.shouldHideNsfwContent.observeNext { [weak self] shouldHide in
+            if shouldHide {
+                self?.hideNsfwContent()
+            } else {
+                self?.showNsfwContent()
+            }
+            
+            // Bind to enable/disable of UseNsfwThumbnailCell's switch
+            self?.useNsfwThumbnailCellVm?.isSwitchEnabled.value = !shouldHide
+            self?.saveData {
+            }
+        }
+    }
+    
+    fileprivate func bind(useNsfwThumbnailCellViewModel: UseNsfwThumbnailsCellViewModel) {
+        _ = useNsfwThumbnailCellViewModel.shouldUseNsfwThumbnails.observeNext{ [weak self] shouldUseNsfwThumb in
+            if shouldUseNsfwThumb {
+                self?.enableNsfwThumbnail()
+            } else {
+                self?.disableNsfwThumbnail()
+            }
+            
+            self?.saveData {
+            }
+        }
+    }
+    
+    fileprivate func bind(filterLanguageCellViewModel: FilterLanguageCellViewModel) {
+        _ = filterLanguageCellViewModel.shouldFilterLanguage.observeNext { [weak self] shouldFilterLanguage in
+            if shouldFilterLanguage {
+                self?.enableFilterLanguage()
+            } else {
+                self?.disableFilterLanguage()
+            }
+            
+            self?.saveData {
+            }
+        }
+    }
+    
+    
+    // FIXME: implement
+    // Hide nsfw content
+    private func hideNsfwContent() {
+        
+        #if DEBUG
+            print("NSFW Content is hidden.")
+        #endif
+    }
+    
+    private func showNsfwContent() {
+        
+        #if DEBUG
+            print("NSFW Content is shown.")
+        #endif
+    }
+    
+    // Use nsfw thumbnail
+    private func enableNsfwThumbnail() {
+        
+        #if DEBUG
+            print("NSFW Thumbnails are enabled.")
+        #endif
+    }
+    
+    private func disableNsfwThumbnail() {
+        
+        #if DEBUG
+            print("NSFW Thumbnails are disabled.")
+        #endif
+    }
+    
+    // Filter language
+    private func enableFilterLanguage() {
+        
+        #if DEBUG
+            print("Language Filter is enabled.")
+        #endif
+    }
+    
+    private func disableFilterLanguage() {
+        
+        #if DEBUG
+            print("Language Filter is disabled.")
+        #endif
+    }
+    
+}
+
+
+let EMAIL_ADDRESS = "contact@workhorsebytes.com"
+let EMAIL_SUBJECT = "Voatify Feedback"
+// MARK: - Contact
+extension LeftMenuController: MFMailComposeViewControllerDelegate {
+    
+    // Email
+    fileprivate func showFeedbackEmail() {
+        if MFMailComposeViewController.canSendMail() {
+            // Send mail
+            let mailComposerVc = self.getMailComposerVc()
+            self.present(mailComposerVc, animated: true, completion: nil)
+            
+        } else {
+            // Show error message
+            self.showAlert(title: "Error", message: "Email not supported.")
+        }
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        // Close before showing alerts
+        controller.dismiss(animated: true, completion: nil)
+        
+        // Finished sending email callback
+        switch result {
+        case .sent:
+            self.showAlert(title: "Email Sent", message: "Thank you for your feedback!")
+        case .failed:
+            self.showAlert(title: "Failed to Send", message: "Please try again later.")
+        default:
+            break
+        }
+    }
+    
+    private func getMailComposerVc() -> MFMailComposeViewController {
+        let mailComposerVc = MFMailComposeViewController()
+        mailComposerVc.setToRecipients([EMAIL_ADDRESS])
+        mailComposerVc.setSubject("Voatify Feedback")
+        mailComposerVc.setMessageBody("Here is some feedback for Voatify:\n\n(touch here to add message)", isHTML: false)
+        mailComposerVc.mailComposeDelegate = self
+        
+        return mailComposerVc
+    }
+}
+
+// MARK: - Donate
+
+let DONATE_URL = URL.init(string: "https://voatify.com/donate")
+
+extension LeftMenuController {
+    fileprivate func openDonate() {
+        // Create alert view to ask if they want to open in safari
+        let donateAlert = UIAlertController.init(title: "", message: "Open Voatify Donation page in Safari?", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction.init(title: "Ok", style: .default) { alertAction in
+            // Open link in safari
+            UIApplication.shared.openURL(DONATE_URL!)
+        }
+        
+        let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel) { alertAction in
+            // Close alert view
+            donateAlert.removeFromParentViewController()
+        }
+        
+        donateAlert.addAction(okAction)
+        donateAlert.addAction(cancelAction)
+        
+        self.present(donateAlert, animated: true, completion: nil)
     }
 }

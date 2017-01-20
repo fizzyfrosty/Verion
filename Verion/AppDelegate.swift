@@ -9,28 +9,27 @@
 import UIKit
 import Swinject
 import SwinjectStoryboard
+import GoogleMobileAds
 
 @UIApplicationMain
+
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    /*
-    var container: Container = {
-        let container = Container()
-        container.registerForStoryboard(ViewController.self, initCompleted: { (r, c) in
-            c.dataSource = r.resolve(DataSourceType.self)
-        })
-        container.register(DataSourceType.self) { _ in DataSourceA() }
-        
-        return container
-    }()
- */
     
+    let FLURRY_API_KEY = "BKGPY6BG5Y9FWCSSXWGG"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // Instantiate a window.
+        
+        #if !DEBUG
+            Flurry.startSession(self.FLURRY_API_KEY)
+        #endif
+        
+        if AdManager.sharedInstance.isRemoveAdsPurchased() == false {
+            AdManager.sharedInstance.startAdNetwork()
+        }
         
         /*
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -79,32 +78,50 @@ extension SwinjectStoryboard {
         })
         
         defaultContainer.register(DataProviderType.self){ _ in
-            //OfflineDataProvider(apiVersion: .legacy)
-            VoatDataProvider(apiVersion: .legacy)
+            //OfflineDataProvider(apiVersion: .v1)
+            VoatDataProvider(apiVersion: .v1)
         }
         
         defaultContainer.register(DataManagerProtocol.self) { _ in
             VerionDataManager()
         }
         
+        defaultContainer.register(AnalyticsManagerProtocol.self) { _ in
+            var analyticsType = AnalyticsType.flurry
+            
+            #if DEBUG
+            analyticsType = .none
+            #endif
+            
+            return AnalyticsManager(analyticsType: analyticsType)
+        }
+        
         defaultContainer.storyboardInitCompleted(SubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
+            C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
+            C.adManager = AdManager.sharedInstance
         })
         
         defaultContainer.storyboardInitCompleted(CommentsViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+            C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
+            C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
+            C.adManager = AdManager.sharedInstance
         })
         
         defaultContainer.storyboardInitCompleted(FindSubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+            C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             
         })
         
         defaultContainer.storyboardInitCompleted(LeftMenuController.self) { (ResolverType, C) in
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
+            C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
+            C.inAppPurchaseManager = InAppPurchaseManager.sharedInstance
         }
     }
 }

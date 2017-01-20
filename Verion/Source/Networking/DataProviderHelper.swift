@@ -13,8 +13,22 @@ import Alamofire
 class DataProviderHelper {
     
     
-    private let VOAT_THUMBNAIL_URL = "https://cdn.voat.co/thumbs/"
+    private let VOAT_THUMBNAIL_LEGACY_URL = "https://cdn.voat.co/thumbs/"
     let API_V1_NOTSUPPORTED_ERROR_MESSAGE = "API.v1 not yet implemented"
+    
+    func getCommentDataSegment(fromJson jsonData: JSON, apiVersion: APIVersion) -> CommentDataSegmentProtocol? {
+        var commentDataSegment: CommentDataSegmentProtocol? = nil
+        
+        switch apiVersion {
+        case .legacy:
+            // do nothing
+            break
+        case .v1:
+            commentDataSegment = self.getCommentDataSegmentV1(fromJson: jsonData)
+        }
+        
+        return commentDataSegment
+    }
     
     func getContentUrlString(fromSubmissionDataModel dataModel: SubmissionDataModelProtocol) -> String {
         var urlString: String = ""
@@ -23,7 +37,7 @@ class DataProviderHelper {
         case .legacy:
             urlString = self.getContentUrlStringFromLegacy(submissionDataModel: dataModel as! SubmissionDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            urlString = self.getContentUrlStringFromV1(submissionDataModel: dataModel as! SubmissionDataModelV1)
         }
         
         return urlString
@@ -36,7 +50,7 @@ class DataProviderHelper {
         case .legacy:
             commentViewModelInitData = self.getCommentViewModelInitDataFromLegacy(dataModel: dataModel as! CommentDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            commentViewModelInitData = self.getCommentViewModelInitDataFromV1(dataModel: dataModel as! CommentDataModelV1)
         }
         
         return commentViewModelInitData
@@ -49,7 +63,7 @@ class DataProviderHelper {
         case .legacy:
             subverseSearchResultCellVmInitData = self.getSubverseSearchResultCellVmInitDataFromLegacy(dataModel: dataModel as! SubverseSearchResultDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            subverseSearchResultCellVmInitData = self.getSubverseSearchResultCellVmInitDataFromV1(dataModel: dataModel as! SubverseSearchResultDataModelV1)
         }
         
         return subverseSearchResultCellVmInitData
@@ -62,7 +76,7 @@ class DataProviderHelper {
         case .legacy:
             subTitleCellVmInitData = self.getSubmissionTitleCellViewModelInitDataFromLegacyDataModel(dataModel: dataModel as! SubmissionDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            subTitleCellVmInitData = self.getSubmissionTitleCellViewModelInitDataFromV1DataModel(dataModel: dataModel as! SubmissionDataModelV1)
         }
         
         return subTitleCellVmInitData
@@ -77,7 +91,8 @@ class DataProviderHelper {
             let legacyDataModel = dataModel as! SubmissionDataModelLegacy
             imageLink = legacyDataModel.messageContent
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            let v1DataModel = dataModel as! SubmissionDataModelV1
+            imageLink = v1DataModel.url
         }
         
         return imageLink
@@ -91,7 +106,7 @@ class DataProviderHelper {
         case .legacy:
             subLinkCellVmInitData = self.getSubLinkCellVmInitDataFromLegacyDataModel(dataModel: dataModel as! SubmissionDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            subLinkCellVmInitData = self.getSubLinkCellVmInitDataFromV1DataModel(dataModel: dataModel as! SubmissionDataModelV1)
         }
         
         return subLinkCellVmInitData
@@ -104,10 +119,37 @@ class DataProviderHelper {
         case .legacy:
             mediaType = self.getSubmissionMediaTypeFromLegacyDataModel(submissionDataModel: dataModel as! SubmissionDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            mediaType = self.getSubmissionMediaTypeFromV1DataModel(submissionDataModel: dataModel as! SubmissionDataModelV1)
         }
         
         return mediaType
+    }
+    
+    private func getCommentDataSegmentV1(fromJson jsonData: JSON) -> CommentDataSegmentV1 {
+        let commentDataSegment = CommentDataSegmentV1()
+        
+        let dataInfo = jsonData["data"]
+        
+        commentDataSegment.endingIndex = dataInfo["endingIndex"].intValue
+        commentDataSegment.hasMore = dataInfo["hasMore"].boolValue
+        commentDataSegment.remainingCount = dataInfo["remainingCount"].intValue
+        commentDataSegment.segmentCount = dataInfo["segmentCount"].intValue
+        commentDataSegment.sort = dataInfo["sort"].stringValue
+        commentDataSegment.startingIndex = dataInfo["startingIndex"].intValue
+        commentDataSegment.totalCount = dataInfo["totalCount"].intValue
+        
+        return commentDataSegment
+    }
+    
+    private func getSubverseSearchResultCellVmInitDataFromV1(dataModel: SubverseSearchResultDataModelV1) -> SubverseSearchResultCellViewModelInitData {
+        var subverseSearchResultCellVmInitData = SubverseSearchResultCellViewModelInitData()
+        
+        subverseSearchResultCellVmInitData.subverseString = dataModel.name
+        subverseSearchResultCellVmInitData.subscriberCount = dataModel.subscriberCount
+        subverseSearchResultCellVmInitData.subverseDescription = dataModel.description
+        
+        return subverseSearchResultCellVmInitData
+
     }
     
     private func getSubverseSearchResultCellVmInitDataFromLegacy(dataModel: SubverseSearchResultDataModelLegacy) -> SubverseSearchResultCellViewModelInitData {
@@ -118,6 +160,19 @@ class DataProviderHelper {
         subverseSearchResultCellVmInitData.subverseDescription = dataModel.subverseDescription
         
         return subverseSearchResultCellVmInitData
+    }
+    
+    private func getSubmissionTitleCellViewModelInitDataFromV1DataModel(dataModel: SubmissionDataModelV1) -> SubmissionTitleCellViewModelInitData {
+        var subTitleCellVmInitData = SubmissionTitleCellViewModelInitData()
+        subTitleCellVmInitData.date = self.getDateFromString(gmtString: dataModel.creationDateString)
+        subTitleCellVmInitData.downvoteCount = dataModel.downvoteCount
+        subTitleCellVmInitData.subverseString = dataModel.subverseName
+        subTitleCellVmInitData.titleString = dataModel.title
+        subTitleCellVmInitData.upvoteCount = dataModel.upvoteCount
+        subTitleCellVmInitData.usernameString = dataModel.username
+        subTitleCellVmInitData.voteTotalCount = dataModel.voteCountTotal
+        
+        return subTitleCellVmInitData
     }
     
     private func getSubmissionTitleCellViewModelInitDataFromLegacyDataModel(dataModel: SubmissionDataModelLegacy) -> SubmissionTitleCellViewModelInitData {
@@ -133,6 +188,20 @@ class DataProviderHelper {
         return subTitleCellVmInitData
     }
     
+    private func getSubmissionMediaTypeFromV1DataModel(submissionDataModel: SubmissionDataModelV1) -> SubmissionMediaType {
+        
+        var v1MediaType: SubmissionMediaType = .undetermined
+        
+        // If data model is text, return text.
+        if submissionDataModel.type == "text" {
+            v1MediaType = .text
+        } else {
+            v1MediaType = .undetermined
+        }
+        
+        return v1MediaType
+    }
+    
     // This should be for offline-use ONLY
     private func getSubmissionMediaTypeFromLegacyDataModel(submissionDataModel: SubmissionDataModelLegacy) -> SubmissionMediaType {
         
@@ -142,59 +211,105 @@ class DataProviderHelper {
         if submissionDataModel.type == SubmissionType.text.rawValue {
             legacyMediaType = .text
         } else {
-            
             legacyMediaType = .undetermined
         }
         
         return legacyMediaType
     }
     
-    func getCommentDataModel(fromJson json: JSON, apiVersion: APIVersion) -> CommentDataModelProtocol{
-        let commentDataModel: CommentDataModelProtocol
+    func getCommentDataModels(fromJson json: JSON, apiVersion: APIVersion) -> [CommentDataModelProtocol]{
+        var commentDataModels: [CommentDataModelProtocol] = []
         
         switch apiVersion {
         case .legacy:
-            commentDataModel = self.getCommentDataModelLegacy(fromJson: json)
+            // For each submission, create a datamodel
+            for i in 0..<json.count {
+                // Get data model from sample JSON
+                let commentJson = json[i]
+                let commentDataModel = self.getCommentDataModelLegacy(fromJson: commentJson)
+                commentDataModels.append(commentDataModel)
+            }
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            let success = json["success"].boolValue
+            if success == true {
+                // Get array of comments
+                let commentDataSet = json["data"]
+                let commentsArray = commentDataSet["comments"].arrayValue
+                
+                for commentJson in commentsArray {
+                    let commentDataModelV1 = self.getCommentDataModelV1(fromCommentJson: commentJson)
+                    commentDataModels.append(commentDataModelV1)
+                }   
+            }
         }
         
-        return commentDataModel
+        return commentDataModels
     }
     
-    func getSubverseDataModel(fromJson json:JSON, apiVersion: APIVersion) -> SubverseSearchResultDataModelProtocol {
+    func getSubverseSearchResultDataModels(fromJson json: JSON, apiVersion: APIVersion) -> [SubverseSearchResultDataModelProtocol] {
+        var searchResultDataModels: [SubverseSearchResultDataModelProtocol]
+        
+        switch apiVersion {
+        case .legacy:
+            searchResultDataModels = self.getSubverseSearchResultDataModelsLegacy(fromJson: json)
+        case .v1:
+            searchResultDataModels = self.getSubverseSearchResultDataModelsV1(fromJson: json)
+        }
+        
+        return searchResultDataModels
+    }
+    
+    private func getSubverseSearchResultDataModelsV1(fromJson json:JSON) -> [SubverseSearchResultDataModelV1] {
+        var subverseDataModels: [SubverseSearchResultDataModelV1] = []
+        
+        let dataJson = json["data"]
+        
+        for i in 0..<dataJson.count {
+            let subverseJson = dataJson[i]
+            let subverseDataModel = self.getSubverseSearchResultDataModelV1(fromJson: subverseJson)
+            subverseDataModels.append(subverseDataModel)
+        }
+        
+        return subverseDataModels
+    }
+    
+    private func getSubverseSearchResultDataModelsLegacy(fromJson json:JSON) -> [SubverseSearchResultDataModelLegacy] {
+        var subverseDataModels: [SubverseSearchResultDataModelLegacy] = []
+        
+        // For each submission, create a data model
+        for i in 0..<json.count {
+            // Get data model from sample JSON
+            let subverseJson = json[i]
+            let subverseDataModel = self.getSubverseSearchResultDataModelLegacy(fromJson: subverseJson)
+            subverseDataModels.append(subverseDataModel)
+        }
+        
+        return subverseDataModels
+    }
+    
+    private func getSubverseSearchResultDataModel(fromJson json:JSON, apiVersion: APIVersion) -> SubverseSearchResultDataModelProtocol {
         let subverseDataModel: SubverseSearchResultDataModelProtocol
         switch apiVersion {
         case .legacy:
-            subverseDataModel = self.getSubverseDataModelLegacy(fromJson: json)
+            subverseDataModel = self.getSubverseSearchResultDataModelLegacy(fromJson: json)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            subverseDataModel = self.getSubverseSearchResultDataModelV1(fromJson: json)
         }
         
         return subverseDataModel
     }
     
-    func getSubmissionDataModel(fromJson json: JSON) -> SubmissionDataModelProtocol {
-        let submissionDataModel = SubmissionDataModelLegacy()
+    func getSubmissionDataModels(fromJson json:JSON, apiVersion: APIVersion) -> [SubmissionDataModelProtocol] {
+        let submissionDataModels: [SubmissionDataModelProtocol]
         
-        submissionDataModel.commentCount = json["CommentCount"].intValue
-        submissionDataModel.dateString = json["Date"].stringValue
-        submissionDataModel.downvoteCount = json["Dislikes"].intValue
-        submissionDataModel.upvoteCount = json["Likes"].intValue
-        submissionDataModel.voteCount = json["Likes"].intValue - json["Dislikes"].intValue
-        submissionDataModel.id = json["Id"].int64Value
-        submissionDataModel.lastEditDateString = json["LastEditDate"].stringValue
-        submissionDataModel.linkDescription = json["Linkdescription"].stringValue
-        submissionDataModel.messageContent = json["MessageContent"].stringValue
-        submissionDataModel.username = json["Name"].stringValue
-        submissionDataModel.rank = json["Rank"].doubleValue
-        submissionDataModel.subverseName = json["Subverse"].stringValue
-        submissionDataModel.thumbnailLink = self.getThumbnailLink(voatURL: self.VOAT_THUMBNAIL_URL, voatEndpoint: json["Thumbnail"].stringValue)
-        submissionDataModel.title = json["Title"].stringValue
-        submissionDataModel.type = json["Type"].intValue
-        submissionDataModel.dateString = json["Date"].stringValue
+        switch apiVersion {
+        case .legacy:
+            submissionDataModels = self.getSubmissionDataModelsLegacy(fromJson: json)
+        case .v1:
+            submissionDataModels = self.getSubmissionDataModelsV1(fromJson: json)
+        }
         
-        return submissionDataModel
+        return submissionDataModels
     }
     
     func getSampleJson(filename: String, withExtension ext: String) -> JSON {
@@ -222,7 +337,7 @@ class DataProviderHelper {
         case .legacy:
             subCellVmInitData = self.getSubCellVmInitDataFromLegacyDataModel(dataModel: dataModel as! SubmissionDataModelLegacy)
         case .v1:
-            fatalError(self.API_V1_NOTSUPPORTED_ERROR_MESSAGE)
+            subCellVmInitData = self.getSubCellVmInitDataFromV1DataModel(dataModel: dataModel as! SubmissionDataModelV1)
         }
         
         return subCellVmInitData
@@ -230,8 +345,37 @@ class DataProviderHelper {
     
     // MARK: - private methods
     
+    private func getContentUrlStringFromV1(submissionDataModel: SubmissionDataModelV1) -> String {
+        return submissionDataModel.url
+    }
+    
     private func getContentUrlStringFromLegacy(submissionDataModel: SubmissionDataModelLegacy) -> String {
         return submissionDataModel.messageContent
+    }
+    
+    private func getCommentViewModelInitDataFromV1(dataModel: CommentDataModelV1) -> CommentCellViewModelInitData{
+        var commentCellVmInitData = CommentCellViewModelInitData()
+        
+        commentCellVmInitData.date = self.getDateFromString(gmtString: dataModel.creationDateString)
+        commentCellVmInitData.downvoteCount = dataModel.downvoteCount
+        commentCellVmInitData.textString = dataModel.content
+        commentCellVmInitData.upvoteCount = dataModel.upvoteCount
+        commentCellVmInitData.usernameString = dataModel.username
+        commentCellVmInitData.voteCountTotal = dataModel.voteCountTotal
+        commentCellVmInitData.isMinimized = dataModel.isCollapsed
+        commentCellVmInitData.isUserOP = dataModel.isSubmitter
+        commentCellVmInitData.hasMoreUnloadedChildren = dataModel.hasMore
+        commentCellVmInitData.latestChildIndex = dataModel.endingIndex
+        commentCellVmInitData.remainingChildrenCount = dataModel.remainingChildrenCount
+        commentCellVmInitData.id = dataModel.id
+        commentCellVmInitData.parentId = dataModel.parentId
+        
+        for childData in dataModel.children {
+            let commentCellVmInitDataChild = self.getCommentViewModelInitDataFromV1(dataModel: childData)
+            commentCellVmInitData.children.append(commentCellVmInitDataChild)
+        }
+        
+        return commentCellVmInitData
     }
     
     private func getCommentViewModelInitDataFromLegacy(dataModel: CommentDataModelLegacy) -> CommentCellViewModelInitData{
@@ -247,6 +391,51 @@ class DataProviderHelper {
         return commentCellVmInitData
     }
     
+    private func getCommentDataModelV1(fromCommentJson json: JSON) -> CommentDataModelV1 {
+        let commentModelV1 = CommentDataModelV1()
+        
+        commentModelV1.childCount = json["childCount"].intValue
+        commentModelV1.content = json["content"].stringValue
+        commentModelV1.creationDateString = json["creationDate"].stringValue
+        commentModelV1.formattedContent = json["formattedContent"].stringValue
+        commentModelV1.id = json["id"].int64Value
+        commentModelV1.isAnonymized = json["isAnonymized"].boolValue
+        commentModelV1.isCollapsed = json["isCollapsed"].boolValue
+        commentModelV1.isDeleted = json["isDeleted"].boolValue
+        commentModelV1.isSaved = json["isSaved"].boolValue
+        commentModelV1.isDistinguished = json["isDistinguished"].boolValue
+        commentModelV1.isOwner = json["isOwner"].boolValue
+        commentModelV1.isSubmitter = json["isSubmitter"].boolValue
+        commentModelV1.lastEditDateString = json["lastEditDate"].stringValue
+        commentModelV1.parentId = json["parentID"].int64Value
+        commentModelV1.submissionId = json["submissionID"].int64Value
+        commentModelV1.subverseName = json["subverse"].stringValue
+        commentModelV1.username = json["userName"].stringValue
+        commentModelV1.vote = json["vote"].stringValue
+        commentModelV1.voteCountTotal = json["sum"].intValue
+        commentModelV1.upvoteCount = json["upCount"].intValue
+        commentModelV1.downvoteCount = json["downCount"].intValue
+        commentModelV1.parentId = json["parentID"].int64Value
+        
+        let childrenInfo = json["children"]
+        let childrenCount = childrenInfo["segmentCount"].intValue // corresponds to the 'comments' array count
+        
+        commentModelV1.hasMore = childrenInfo["hasMore"].boolValue
+        commentModelV1.endingIndex = childrenInfo["endingIndex"].intValue
+        commentModelV1.remainingChildrenCount = childrenInfo["remainingCount"].intValue
+        
+        // If there are children comments
+        if childrenCount > 0 {
+            let childrenNodes = childrenInfo["comments"].arrayValue
+            for jsonCommentChild in childrenNodes {
+                let commentChildModel = self.getCommentDataModelV1(fromCommentJson: jsonCommentChild)
+                commentModelV1.children.append(commentChildModel)
+            }
+        }
+        
+        return commentModelV1
+    }
+
     private func getCommentDataModelLegacy(fromJson json: JSON) -> CommentDataModelLegacy {
         let commentDataModelLegacy = CommentDataModelLegacy()
         
@@ -262,8 +451,104 @@ class DataProviderHelper {
         return commentDataModelLegacy
     }
     
+    private func getSubmissionDataModelsV1(fromJson json: JSON) -> [SubmissionDataModelV1] {
+        var submissionDataModelsV1: [SubmissionDataModelV1] = []
+        
+        let dataSegmentJson = json["data"]
+        
+        for i in 0..<dataSegmentJson.count {
+            let submissionJson = dataSegmentJson[i]
+            let submissionDataModelV1 = self.getSubmissionDataModelV1(fromJson: submissionJson)
+            submissionDataModelsV1.append(submissionDataModelV1)
+        }
+        
+        return submissionDataModelsV1
+    }
+    
+    private func getSubmissionDataModelsLegacy(fromJson jsonData: JSON) -> [SubmissionDataModelLegacy]{
+        var submissionDataModelsLegacy: [SubmissionDataModelLegacy] = []
+        
+        // For each submission, create a datamodel
+        for i in 0..<jsonData.count {
+            // Get data model from sample JSON
+            let submissionJson = jsonData[i]
+            let submissionDataModel = self.getSubmissionDataModelLegacy(fromJson: submissionJson)
+            submissionDataModelsLegacy.append(submissionDataModel)
+        }
+        
+        return submissionDataModelsLegacy
+    }
+    
+    private func getSubmissionDataModelV1(fromJson json: JSON) -> SubmissionDataModelV1 {
+        let submissionDataModelV1 = SubmissionDataModelV1()
+        
+        submissionDataModelV1.commentCount = json["commentCount"].intValue
+        submissionDataModelV1.content = json["content"].stringValue
+        submissionDataModelV1.creationDateString = json["creationDate"].stringValue
+        submissionDataModelV1.downvoteCount = json["downCount"].intValue
+        submissionDataModelV1.formattedContent = json["formattedContent"].stringValue
+        submissionDataModelV1.id = json["id"].int64Value
+        submissionDataModelV1.isAnonymized = json["isAnonymized"].boolValue
+        submissionDataModelV1.isDeleted = json["isDeleted"].boolValue
+        submissionDataModelV1.isAdult = json["isAdult"].boolValue
+        submissionDataModelV1.lastEditDateString = json["lastEditDate"].stringValue
+        submissionDataModelV1.subverseName = json["subverse"].stringValue
+        submissionDataModelV1.thumbnailUrl = json["thumbnailUrl"].stringValue
+        submissionDataModelV1.title = json["title"].stringValue
+        submissionDataModelV1.type = json["type"].stringValue.lowercased()
+        submissionDataModelV1.upvoteCount = json["upCount"].intValue
+        submissionDataModelV1.url = json["url"].stringValue
+        submissionDataModelV1.username = json["userName"].stringValue
+        submissionDataModelV1.views = json["views"].uIntValue
+        submissionDataModelV1.vote = json["vote"].stringValue
+        submissionDataModelV1.voteCountTotal = json["sum"].intValue
+        
+        return submissionDataModelV1
+    }
+    
+    private func getSubmissionDataModelLegacy(fromJson json: JSON) -> SubmissionDataModelLegacy {
+        let submissionDataModel = SubmissionDataModelLegacy()
+        
+        submissionDataModel.commentCount = json["CommentCount"].intValue
+        submissionDataModel.dateString = json["Date"].stringValue
+        submissionDataModel.downvoteCount = json["Dislikes"].intValue
+        submissionDataModel.upvoteCount = json["Likes"].intValue
+        submissionDataModel.voteCount = json["Likes"].intValue - json["Dislikes"].intValue
+        submissionDataModel.id = json["Id"].int64Value
+        submissionDataModel.lastEditDateString = json["LastEditDate"].stringValue
+        submissionDataModel.linkDescription = json["Linkdescription"].stringValue
+        submissionDataModel.messageContent = json["MessageContent"].stringValue
+        submissionDataModel.username = json["Name"].stringValue
+        submissionDataModel.rank = json["Rank"].doubleValue
+        submissionDataModel.subverseName = json["Subverse"].stringValue
+        submissionDataModel.thumbnailLink = self.getThumbnailLink(voatURL: self.VOAT_THUMBNAIL_LEGACY_URL, voatEndpoint: json["Thumbnail"].stringValue)
+        submissionDataModel.title = json["Title"].stringValue
+        submissionDataModel.type = json["Type"].intValue
+        submissionDataModel.dateString = json["Date"].stringValue
+        
+        return submissionDataModel
+    }
+    
+    private func getSubverseSearchResultDataModelV1(fromJson json: JSON) -> SubverseSearchResultDataModelV1{
+        let subverseDataModelV1 = SubverseSearchResultDataModelV1()
+        
+        subverseDataModelV1.createdByUsername = json["createdBy"].stringValue
+        subverseDataModelV1.creationDateString = json["creationDate"].stringValue
+        subverseDataModelV1.name = json["name"].stringValue
+        subverseDataModelV1.description = json["description"].stringValue
+        subverseDataModelV1.formattedSidebarDescription = json["formattedSidebar"].stringValue
+        subverseDataModelV1.isAdult = json["isAdult"].boolValue
+        subverseDataModelV1.isAnonymized = json["isAnonymized"].boolValue
+        subverseDataModelV1.sidebarDescription = json["sidebar"].stringValue
+        subverseDataModelV1.title = json["title"].stringValue
+        subverseDataModelV1.type = json["type"].stringValue
+        subverseDataModelV1.subscriberCount = json["subscriberCount"].intValue
+        
+        return subverseDataModelV1
+    }
+    
     // Subverse Search Result Data Model - Legacy
-    private func getSubverseDataModelLegacy(fromJson json: JSON) -> SubverseSearchResultDataModelLegacy {
+    private func getSubverseSearchResultDataModelLegacy(fromJson json: JSON) -> SubverseSearchResultDataModelLegacy {
         let subverseDataModelLegacy = SubverseSearchResultDataModelLegacy()
         
         // Expecting a single string, eg: "Name: news,Description: A place for major news from around the world,Subscribers: 70441,Created: Apr  7 2014  4:15PM"
@@ -297,6 +582,17 @@ class DataProviderHelper {
         return subverseDataModelLegacy
     }
     
+    private func getSubLinkCellVmInitDataFromV1DataModel(dataModel: SubmissionDataModelV1) -> SubmissionLinkCellViewModelInitData {
+        
+        var subLinkCellVmInitData = SubmissionLinkCellViewModelInitData()
+        subLinkCellVmInitData.link = dataModel.url
+        subLinkCellVmInitData.domainString = self.getLinkShortString(fromLink: dataModel.url)
+        subLinkCellVmInitData.endpointString = self.getLinkEndpointString(fromLink: dataModel.url)
+        subLinkCellVmInitData.thumbnailLink = dataModel.thumbnailUrl
+        
+        return subLinkCellVmInitData
+    }
+    
     // Submission Link-Content Init Data - Legacy
     private func getSubLinkCellVmInitDataFromLegacyDataModel(dataModel: SubmissionDataModelLegacy) -> SubmissionLinkCellViewModelInitData {
         
@@ -307,6 +603,41 @@ class DataProviderHelper {
         subLinkCellVmInitData.thumbnailLink = dataModel.thumbnailLink
         
         return subLinkCellVmInitData
+    }
+    
+    private func getSubCellVmInitDataFromV1DataModel(dataModel: SubmissionDataModelV1) -> SubmissionCellViewModelInitData {
+        var subCellVmInitData = SubmissionCellViewModelInitData()
+        
+        subCellVmInitData.voteCountTotal = dataModel.voteCountTotal
+        subCellVmInitData.upvoteCount = dataModel.upvoteCount
+        subCellVmInitData.downvoteCount = dataModel.downvoteCount
+        subCellVmInitData.commentCount = dataModel.commentCount
+        subCellVmInitData.titleString = dataModel.title
+        
+        // Get link short string description, based on Text/Link submission type
+        switch dataModel.type.lowercased() {
+        case "link":
+            // get linkShortString "(abc.com)"
+            subCellVmInitData.linkShortString = self.getLinkShortString(fromLink: dataModel.url)
+            
+        case "text":
+            // get subverse "(/v/subverse)"
+            subCellVmInitData.linkShortString = self.getSubverseShortString(subverse: dataModel.subverseName)
+        default:
+            // This should never be reached
+            subCellVmInitData.linkShortString = ""
+            break
+        }
+        
+        // Get the date, expecting (eg): "2016-12-02T06:34:50.3834343" - note the T
+        subCellVmInitData.date = self.getDateFromString(gmtString: dataModel.creationDateString)
+        subCellVmInitData.thumbnailLink = dataModel.thumbnailUrl
+        subCellVmInitData.username = dataModel.username
+        subCellVmInitData.subverseName = dataModel.subverseName
+        subCellVmInitData.isNsfw = dataModel.isAdult
+        
+        
+        return subCellVmInitData
     }
     
     // Submission Cell Init Data - Legacy

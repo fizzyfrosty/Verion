@@ -22,6 +22,7 @@ class FindSubverseViewController: UITableViewController {
     
     // Dependencies
     var dataProvider: DataProviderType?
+    var analyticsManager: AnalyticsManagerProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,7 @@ class FindSubverseViewController: UITableViewController {
                 self.filteredSubverseSearchResultViewModels.removeAll()
                 
                 // prepend all/frontpage subverses first
+                self.allSubverseSearchResultViewModels.append(self.getAllSubverse())
                 self.allSubverseSearchResultViewModels.append(self.getFrontpageSubverse())
                 
                 // Bind viewmodels to data models
@@ -241,7 +243,9 @@ class FindSubverseViewController: UITableViewController {
             
             // Get the VC
             let subverseViewController = navController.viewControllers[navController.viewControllers.count - 2] as! SubverseViewController
-            subverseViewController.loadTableCells(forSubverse: subverse)
+            subverseViewController.loadTableCellsNew(forSubverse: subverse, clearScreen: true, animateNavBar: true) {
+                
+            }
             
             _ = self.navigationController?.popViewController(animated: true)
         }

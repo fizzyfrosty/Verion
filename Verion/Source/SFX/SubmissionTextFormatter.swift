@@ -35,9 +35,9 @@ class SubmissionTextFormatter {
         let dateUnitString: String
         if differenceComponents.year != 0 {
             if differenceComponents.year! > 1 {
-                dateUnitString = "years"
+                dateUnitString = "yrs"
             } else {
-                dateUnitString = "year"
+                dateUnitString = "yr"
             }
             // eg: 1 yr or 2 years
             dateSubmittedString = "\(differenceComponents.year!) \(dateUnitString)"
@@ -53,7 +53,7 @@ class SubmissionTextFormatter {
             
         } else if differenceComponents.day != 0 {
             if differenceComponents.day! > 1 {
-                dateUnitString = "days"
+                dateUnitString = "day"
             } else {
                 dateUnitString = "day"
             }
@@ -62,9 +62,9 @@ class SubmissionTextFormatter {
             
         } else if differenceComponents.hour != 0 {
             if differenceComponents.hour! > 1 {
-                dateUnitString = "hours"
+                dateUnitString = "hrs"
             } else {
-                dateUnitString = "hour"
+                dateUnitString = "hr"
             }
             // eg: 1 hour, 2 hours
             dateSubmittedString = "\(differenceComponents.hour!) \(dateUnitString)"

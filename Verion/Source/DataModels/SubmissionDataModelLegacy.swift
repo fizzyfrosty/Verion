@@ -9,6 +9,8 @@
 import UIKit
 
 class SubmissionDataModelLegacy: SubmissionDataModelProtocol {
+    var isAdult = false
+
     
     var apiVersion: APIVersion = APIVersion.legacy
     var id: Int64 = 0

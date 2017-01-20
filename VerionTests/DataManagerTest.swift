@@ -30,7 +30,7 @@ class DataManagerTest: QuickSpec {
                     dataManager.saveData(dataModel: file!)
                     let loadedFile = dataManager.getSavedData()
                     
-                    expect(loadedFile.subversesVisited[0]).to(equal(file?.subversesVisited[0]))
+                    expect(loadedFile.subversesVisited?[0]).to(equal(file?.subversesVisited?[0]))
                 }
             }
         }
