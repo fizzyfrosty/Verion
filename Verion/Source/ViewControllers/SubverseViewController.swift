@@ -95,9 +95,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     private let SUBMISSION_SEGUE_IDENTIFIER = "SubmissionSegue"
     private let FIND_SUBVERSE_SEGUE_IDENTIFIER = "FindSubverseSegue"
     
-    // Banner ads
-    private var bannerAd: UIView?
-    private var bannerView: UIView?
     
     // Dependencies
     var sfxManager: SFXManagerType?
@@ -112,11 +109,15 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     // UIOutlets and actions
     @IBAction func findSubverseButtonPress(_ sender: Any) {
-        self.performSegue(withIdentifier: self.FIND_SUBVERSE_SEGUE_IDENTIFIER, sender: sender)
+        self.showFindSubverse()
     }
     
     @IBAction func findSubverseNameButtonPress(_ sender: Any) {
-        self.performSegue(withIdentifier: self.FIND_SUBVERSE_SEGUE_IDENTIFIER, sender: sender)
+        self.showFindSubverse()
+    }
+    
+    func showFindSubverse() {
+        self.performSegue(withIdentifier: self.FIND_SUBVERSE_SEGUE_IDENTIFIER, sender: self)
     }
     
     
@@ -198,8 +199,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        self.setBottomInsetsForAds()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -210,39 +209,12 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
     }
     
-    func removeBannerAd() {
-        self.resetBannerAd()
-    }
-    
     func savePurchasedRemoveAds() {
         self.adManager?.adServiceType = .none
         let verionDataModel = self.dataManager?.getSavedData()
         verionDataModel?.isRemoveAdsPurchased = true
         
         self.dataManager?.saveData(dataModel: verionDataModel!)
-    }
-    
-    private func resetBannerAd() {
-        self.bannerAd?.removeFromSuperview()
-        self.bannerView?.removeFromSuperview()
-    }
-    
-    private func loadBannerAd() {
-        // Ads
-        self.resetBannerAd()
-        
-        if let bannerAd = self.adManager?.getBannerAd(rootViewController: self.navigationController!) {
-            self.bannerAd = bannerAd
-            
-            let width = UIScreen.main.bounds.width
-            let bannerHeight = self.adManager!.getBannerAdHeight()
-            let y = UIScreen.main.bounds.height - bannerHeight
-            self.bannerView = UIView.init(frame: CGRect(x: 0, y: y, width: width, height: bannerHeight))
-            self.bannerView?.addSubview(self.bannerAd!)
-            self.bannerView?.backgroundColor = UIColor.white
-            
-            self.navigationController?.view.addSubview(self.bannerView!)
-        }
     }
     
     private func loadSavedData() {
@@ -254,17 +226,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // Analytics
         let params = AnalyticsEvents.getSubverseControllerLoadedParams(subverseName: self.subverseSubmissionParams.subverseName)
         self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerLoaded, params: params, timed: false)
-    }
-    
-    private func setBottomInsetsForAds() {
-        // Set bottom content Inset for possible ad-placement
-        let topDefaultInset = self.tableView.contentInset.top
-        let bottomInsetForAds = self.getBottomInsetForAds()
-        self.tableView.contentInset = UIEdgeInsets(top: topDefaultInset, left: 0, bottom: bottomInsetForAds, right: 0)
-    }
-    
-    private func getBottomInsetForAds() -> CGFloat{
-        return self.adManager!.getBannerAdHeight()
     }
     
     func getLastSavedSubverse(fromVerionDataModel dataModel: VerionDataModel) -> String {

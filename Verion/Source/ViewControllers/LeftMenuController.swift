@@ -14,6 +14,7 @@ protocol LeftMenuControllerDelegate: class {
     func leftMenuDidClearHistory(leftMenu: LeftMenuController)
     func leftMenuDidPurchaseProduct(leftMenu: LeftMenuController, productId: String)
     func leftMenuDidPressClose(leftMenu: LeftMenuController)
+    func leftMenuDidPressFindSubverse(leftMenu: LeftMenuController)
 }
 
 class LeftMenuController: UITableViewController {
@@ -46,6 +47,14 @@ class LeftMenuController: UITableViewController {
     // Title Icon section
     private let ICON_CELL_REUSE_ID = "VoatIconCell"
     private let ICON_CELL_HEIGHT: CGFloat = 150.0
+    private let FIND_SUBVERSE_CELL_REUSE_ID = "FindSubverseCell"
+    
+    enum IconRows: Int {
+        case icon = 0
+        case findSubverse = 1
+        
+        static let allValues = [icon, findSubverse]
+    }
     
     // Subverse history section
     fileprivate var subverseCellViewModels = [SubverseCellViewModel]()
@@ -316,7 +325,7 @@ class LeftMenuController: UITableViewController {
         
         switch section {
         case LeftMenuSections.icon.rawValue:
-            return 1
+            return IconRows.allValues.count
             
         case LeftMenuSections.subverseHistory.rawValue:
             guard self.subverseCellViewModels.count != 0 else {
@@ -348,8 +357,13 @@ class LeftMenuController: UITableViewController {
         
         switch indexPath.section {
         case LeftMenuSections.icon.rawValue:
-            let iconCell = tableView.dequeueReusableCell(withIdentifier: self.ICON_CELL_REUSE_ID, for: indexPath)
-            return iconCell
+            if indexPath.row == IconRows.icon.rawValue {
+                let iconCell = tableView.dequeueReusableCell(withIdentifier: self.ICON_CELL_REUSE_ID, for: indexPath)
+                return iconCell
+            } else {
+                let findSubverseCell = tableView.dequeueReusableCell(withIdentifier: self.FIND_SUBVERSE_CELL_REUSE_ID, for: indexPath)
+                return findSubverseCell
+            }
             
         case LeftMenuSections.subverseHistory.rawValue:
             
@@ -437,7 +451,13 @@ class LeftMenuController: UITableViewController {
         
         switch indexPath.section {
         case LeftMenuSections.icon.rawValue:
-            self.notifyDelegateDidPressClose()
+            if indexPath.row == IconRows.icon.rawValue {
+                self.notifyDelegateDidPressClose()
+            } else {
+                // Find Subverse
+                self.notifyDelegateDidPressFindSubverse()
+            }
+            
             
         case LeftMenuSections.subverseHistory.rawValue:
             
@@ -513,7 +533,12 @@ class LeftMenuController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case LeftMenuSections.icon.rawValue:
-            return self.ICON_CELL_HEIGHT
+            if indexPath.row == IconRows.icon.rawValue {
+                return self.ICON_CELL_HEIGHT
+            } else {
+                return self.DEFAULT_CELL_HEIGHT
+            }
+            
         default:
             return self.DEFAULT_CELL_HEIGHT
         }
@@ -612,6 +637,16 @@ extension LeftMenuController {
     
     fileprivate func notifyDelegateDidPressClose() {
         if let _ = self.delegate?.leftMenuDidPressClose(leftMenu: self) {
+            // success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    fileprivate func notifyDelegateDidPressFindSubverse() {
+        if let _ = self.delegate?.leftMenuDidPressFindSubverse(leftMenu: self) {
             // success, do nothing
         } else {
             #if DEBUG
