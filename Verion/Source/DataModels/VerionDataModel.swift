@@ -19,6 +19,8 @@ class VerionDataModel: NSObject, NSCoding {
         static let shouldFilterLanguage = "should_filter_language"
         static let versionNumber = "version_number"
         static let blockedUsers = "blocked_users"
+        static let username = "username"
+        static let isLoggedIn = "is_logged_in"
     }
     
     var subversesVisited: [String]?
@@ -29,6 +31,8 @@ class VerionDataModel: NSObject, NSCoding {
     var shouldFilterLanguage = true
     var versionNumber: Float = 1.0
     var blockedUsers: Set<String>? = []
+    var username: String?
+    var isLoggedIn: Bool = false
     
     override init() {
         self.subversesVisited = []
@@ -72,6 +76,14 @@ class VerionDataModel: NSObject, NSCoding {
         }
         
         // Version 1.01
+        
+        // Version 1.02
+        self.username = aDecoder.decodeObject(forKey: Keys.username) as? String
+        if self.username == "" {
+            self.username = ""
+        }
+        
+        self.isLoggedIn = aDecoder.decodeBool(forKey: Keys.isLoggedIn)
     }
     
     func encode(with aCoder: NSCoder) {
@@ -85,6 +97,9 @@ class VerionDataModel: NSObject, NSCoding {
         aCoder.encode(self.shouldFilterLanguage, forKey: Keys.shouldFilterLanguage)
         
         aCoder.encode(self.blockedUsers, forKey: Keys.blockedUsers)
+        
+        aCoder.encode(self.username, forKey: Keys.username)
+        aCoder.encode(self.isLoggedIn, forKey: Keys.isLoggedIn)
     }
     
     

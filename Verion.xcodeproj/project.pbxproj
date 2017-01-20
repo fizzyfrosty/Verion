@@ -58,6 +58,8 @@
 		43829EFA1E25B09500754AF3 /* ProfanityFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43829EF71E25B09500754AF3 /* ProfanityFilter.swift */; };
 		43829EFB1E25B09500754AF3 /* Profanity.json in Resources */ = {isa = PBXBuildFile; fileRef = 43829EF91E25B09500754AF3 /* Profanity.json */; };
 		43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */; };
+		43A92D471E3295C7007D6B4F /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A92D461E3295C7007D6B4F /* LoginCell.swift */; };
+		43A92D491E3295D5007D6B4F /* LoginCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */; };
 		43ABEB7C1E137F2300458E3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43ABEB7B1E137F2300458E3D /* Assets.xcassets */; };
 		43ABEB861E137FA300458E3D /* FlurryEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEB7F1E137FA300458E3D /* FlurryEmpty.m */; };
 		43ABEB871E137FA300458E3D /* FlurryWatchEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = 43ABEB821E137FA300458E3D /* FlurryWatchEmpty.m */; };
@@ -224,6 +226,8 @@
 		43829EF71E25B09500754AF3 /* ProfanityFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfanityFilter.swift; sourceTree = "<group>"; };
 		43829EF91E25B09500754AF3 /* Profanity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Profanity.json; sourceTree = "<group>"; };
 		43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelLegacy.swift; sourceTree = "<group>"; };
+		43A92D461E3295C7007D6B4F /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
+		43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCellViewModel.swift; sourceTree = "<group>"; };
 		43ABEB7B1E137F2300458E3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43ABEB7E1E137FA300458E3D /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		43ABEB7F1E137FA300458E3D /* FlurryEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlurryEmpty.m; sourceTree = "<group>"; };
@@ -526,6 +530,8 @@
 				43C8FE061E253D67007FB231 /* UseNsfwThumbnailsCellViewModel.swift */,
 				43C8FE041E253D50007FB231 /* FilterLanguageCell.swift */,
 				43C8FE081E253D71007FB231 /* FilterLanguageCellViewModel.swift */,
+				43A92D461E3295C7007D6B4F /* LoginCell.swift */,
+				43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */,
 			);
 			path = LeftMenuVCViews;
 			sourceTree = "<group>";
@@ -1051,6 +1057,7 @@
 				43B056C31E0E4691007083E8 /* BlurView.swift in Sources */,
 				43F6752B1DF20078001F83BE /* TabBarController.swift in Sources */,
 				43ABEB911E1391B000458E3D /* AnalyticsManagerProtocol.swift in Sources */,
+				43A92D471E3295C7007D6B4F /* LoginCell.swift in Sources */,
 				43B056CD1E0E4691007083E8 /* KeyboardLayoutConstraint.swift in Sources */,
 				4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */,
 				43B056D01E0E4691007083E8 /* Misc.swift in Sources */,
@@ -1076,6 +1083,7 @@
 				43F675291DF20078001F83BE /* SFXManagerType.swift in Sources */,
 				43433DA21E057E620017FAB0 /* ActivityIndicatorCell.swift in Sources */,
 				43433DAB1E057E620017FAB0 /* SubmissionTextCell.swift in Sources */,
+				43A92D491E3295D5007D6B4F /* LoginCellViewModel.swift in Sources */,
 				43433DA51E057E620017FAB0 /* CommentsSortByCell.swift in Sources */,
 				43ABEB861E137FA300458E3D /* FlurryEmpty.m in Sources */,
 				43433D8E1E057C160017FAB0 /* FindSubverseViewController.swift in Sources */,

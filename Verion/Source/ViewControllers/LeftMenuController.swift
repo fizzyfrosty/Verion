@@ -15,6 +15,7 @@ protocol LeftMenuControllerDelegate: class {
     func leftMenuDidPurchaseProduct(leftMenu: LeftMenuController, productId: String)
     func leftMenuDidPressClose(leftMenu: LeftMenuController)
     func leftMenuDidPressFindSubverse(leftMenu: LeftMenuController)
+    func leftMenuDidPressLogin(leftMenu: LeftMenuController)
 }
 
 class LeftMenuController: UITableViewController {
@@ -25,8 +26,9 @@ class LeftMenuController: UITableViewController {
         case filters = 2
         case supportUs = 3
         case contactUs = 4
+        case settings = 5
         
-        static let allValues = [icon, subverseHistory, filters, supportUs, contactUs]
+        static let allValues = [icon, subverseHistory, filters, supportUs, contactUs, settings]
     }
     
     // Section Titles
@@ -104,6 +106,16 @@ class LeftMenuController: UITableViewController {
     private let PURCHASE_REMOVE_ADS_SUCCESS_MESSAGE = "Thank you for your support! We hope you continue enjoy using Voatify!"
     private let PURCHASE_FAILED_MESSAGE = "Purchase was cancelled."
     
+    // Settings section
+    private let SETTINGS_SECTION_TITLE = "    Settings"
+    enum SettingsRows: Int {
+        case login = 0
+        
+        static let allValues = [login]
+    }
+    private let LOGIN_CELL_REUSE_ID = "LoginCell"
+    fileprivate var loginCellViewModel: LoginCellViewModel?
+    
     
     private let ERROR_TITLE = "Error"
     private let ERROR_MESSAGE = "There was a problem. Please try again later."
@@ -167,6 +179,14 @@ class LeftMenuController: UITableViewController {
             self.useNsfwThumbnailCellVm?.shouldUseNsfwThumbnails.value = verionDataModel.shouldUseNsfwThumbnail
             self.useNsfwThumbnailCellVm?.isSwitchEnabled.value = !verionDataModel.shouldHideNsfw
             self.filterLanguageCellVm?.shouldFilterLanguage.value = verionDataModel.shouldFilterLanguage
+            
+            // Settings
+            self.loginCellViewModel = LoginCellViewModel()
+            self.loginCellViewModel?.isLoggedIn = verionDataModel.isLoggedIn
+            if self.loginCellViewModel?.isLoggedIn == true {
+                self.loginCellViewModel?.username = verionDataModel.username!
+            }
+            
         }
     }
     
@@ -291,6 +311,10 @@ class LeftMenuController: UITableViewController {
             
             self.dataManager?.saveData(dataModel: verionDataModel!)
             
+            // Settings
+            verionDataModel?.isLoggedIn = self.loginCellViewModel!.isLoggedIn
+            verionDataModel?.username = self.loginCellViewModel!.username
+            
             DispatchQueue.main.async {
                 completion()
             }
@@ -345,6 +369,8 @@ class LeftMenuController: UITableViewController {
         case LeftMenuSections.contactUs.rawValue:
             return ContactUsRows.allValues.count
             
+        case LeftMenuSections.settings.rawValue:
+            return SettingsRows.allValues.count
         default:
             break;
         }
@@ -434,6 +460,14 @@ class LeftMenuController: UITableViewController {
                 return voatifySubverseCell
             }
             
+        case LeftMenuSections.settings.rawValue:
+            if indexPath.row == SettingsRows.login.rawValue {
+                let loginCell = tableView.dequeueReusableCell(withIdentifier: self.LOGIN_CELL_REUSE_ID, for: indexPath) as! LoginCell
+                loginCell.bind(viewModel: self.loginCellViewModel!)
+                
+                return loginCell
+            }
+            
         default:
             let transparentCell = tableView.dequeueReusableCell(withIdentifier: self.TRANSPARENT_CELL_REUSE_ID)
             
@@ -492,6 +526,18 @@ class LeftMenuController: UITableViewController {
                 // Go to voatify subverse
                 self.notifyDelegateToGoToSubverse(name: "voatify")
             }
+            
+        case LeftMenuSections.settings.rawValue:
+            if indexPath.row == SettingsRows.login.rawValue {
+                
+                if self.loginCellViewModel?.isLoggedIn == true {
+                    // Logout if logged in
+                    self.logout(username: self.loginCellViewModel!.username)
+                } else {
+                    // Display login
+                    self.notifyDelegateDidPressLogin()
+                }
+            }
         default:
             break
         }
@@ -509,6 +555,8 @@ class LeftMenuController: UITableViewController {
             return self.SUPPORT_US_SECTION_TITLE
         case LeftMenuSections.contactUs.rawValue:
             return self.CONTACT_SECTION_TITLE
+        case LeftMenuSections.settings.rawValue:
+            return self.SETTINGS_SECTION_TITLE
         default:
             return nil
         }
@@ -632,6 +680,16 @@ extension LeftMenuController {
         // Save
         self.saveData {
             
+        }
+    }
+    
+    fileprivate func notifyDelegateDidPressLogin() {
+        if let _ = self.delegate?.leftMenuDidPressLogin(leftMenu: self) {
+            // success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
         }
     }
     
@@ -867,3 +925,40 @@ extension LeftMenuController {
         self.present(donateAlert, animated: true, completion: nil)
     }
 }
+
+
+// MARK: - Settings
+
+extension LeftMenuController {
+    fileprivate func logout(username: String) {
+        let logoutAlert = UIAlertController.init(title: "", message: "Logout as user \(username)?", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction.init(title: "Ok", style: .default) { alertAction in
+            // Perform Logout
+            self.logout()
+            
+            // Reload table
+            self.tableView.reloadData()
+        }
+        
+        let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel) { alertAction in
+            // Close alert view
+            logoutAlert.removeFromParentViewController()
+        }
+        
+        logoutAlert.addAction(okAction)
+        logoutAlert.addAction(cancelAction)
+        
+        self.present(logoutAlert, animated: true, completion: nil)
+    }
+    
+    private func logout() {
+        self.loginCellViewModel?.isLoggedIn = false
+        self.loginCellViewModel?.username = ""
+    }
+}
+
+
+
+
+

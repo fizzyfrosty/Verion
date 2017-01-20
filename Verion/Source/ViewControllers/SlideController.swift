@@ -117,4 +117,10 @@ extension SlideController: LeftMenuControllerDelegate {
         self.closeLeft()
         self.subverseController?.showFindSubverse()
     }
+    
+    func leftMenuDidPressLogin(leftMenu: LeftMenuController) {
+        // FIXME: Implement login
+        
+        
+    }
 }
