@@ -15,20 +15,32 @@ View Users
 Login:
 
 UI
-- Create a login popup
+* Create a login popup
 	* Storyboard
 	* View Controller
-	- Animate popin
+	* Animate popin
+	* Keyboard shifts screen
+	* focus on username
+	* OK button/return button moves from username to password focus
+	* OK button then registers sign in
 	
 * Left Menu showing
 	* Login
 	* Logout (username)
 
-- Save Username to data
-- Save password using keychain
+- Perform login
+	- Make call to Data Provider
+	- Call finished callbacks
+	- Save Username to data
+	- Save password using keychain
+
+	- Make actual request
+	- Return success and error
 
 Backend
 
+
+- Save the scroll offset for the Left Menu
 
 
 

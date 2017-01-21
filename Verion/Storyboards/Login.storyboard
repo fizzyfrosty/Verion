@@ -90,6 +90,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backgroundImageView" destination="N52-ZH-3p0" id="x4i-by-gI5"/>
                         <outlet property="cancelButton" destination="ucq-Fa-hvK" id="kIb-tj-epJ"/>
                         <outlet property="passwordTextfield" destination="MQc-Zz-9EH" id="X9m-nD-P50"/>
                         <outlet property="signinButton" destination="uMt-hI-777" id="0P6-16-ugJ"/>

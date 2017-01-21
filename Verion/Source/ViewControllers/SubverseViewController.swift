@@ -267,6 +267,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         let height: CGFloat = (self.scrollViewContentOffsetY)
         
         self.customRefreshControl?.height = height
+        self.customRefreshControl?.activityIndicatorColor = self.NAVIGATION_BG_COLOR
         self.customRefreshControl?.prepareFrameForShowing()
     }
     

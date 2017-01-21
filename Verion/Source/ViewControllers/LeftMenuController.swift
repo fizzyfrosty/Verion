@@ -408,7 +408,6 @@ class LeftMenuController: UITableViewController {
                 return historyCell
             }
         case LeftMenuSections.filters.rawValue:
-            // FIXME: implement
             if indexPath.row == FilterRows.hideNsfw.rawValue {
                 let hideNsfwCell = tableView.dequeueReusableCell(withIdentifier: self.HIDE_NSFW_CELL_REUSE_ID, for: indexPath) as! HideNsfwCell
                 
@@ -805,10 +804,9 @@ extension LeftMenuController {
         }
     }
     
-    
-    // FIXME: implement
     // Hide nsfw content
     private func hideNsfwContent() {
+        // Nothing needs to be done on toggle. Content is automatically hidden from value saved.
         
         #if DEBUG
             print("NSFW Content is hidden.")

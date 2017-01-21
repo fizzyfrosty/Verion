@@ -17,6 +17,7 @@ class SubverseRefreshControl: UIViewController, UITableViewDelegate {
     
     var activityIndicator: NVActivityIndicatorView?
     let ACTIVITY_INDICATOR_LENGTH = 30
+    var activityIndicatorColor = UIColor.white
     
     @IBOutlet var backgroundView: UIView!
     @IBOutlet var label: SpringLabel!
@@ -28,7 +29,7 @@ class SubverseRefreshControl: UIViewController, UITableViewDelegate {
         
         self.activityIndicator = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width:self.ACTIVITY_INDICATOR_LENGTH, height: self.ACTIVITY_INDICATOR_LENGTH ),
                                                          type: NVActivityIndicatorType.ballSpinFadeLoader,
-                                                         color: UIColor.white,
+                                                         color: self.activityIndicatorColor,
                                                          padding: 0)
         
         self.backgroundView.addSubview(self.activityIndicator!)
@@ -57,6 +58,7 @@ class SubverseRefreshControl: UIViewController, UITableViewDelegate {
     func showActivityIndicator() {
         // Start animating
         self.activityIndicator?.isHidden = false
+        self.activityIndicator?.color = self.activityIndicatorColor
         self.activityIndicator?.startAnimating()
         self.label.isHidden = true
         
