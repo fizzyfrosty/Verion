@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Bond
 
 class LoginCell: UITableViewCell {
 
@@ -27,9 +28,16 @@ class LoginCell: UITableViewCell {
     }
     
     func bind(viewModel: LoginCellViewModel) {
-        // FIXME: Implement
-        if viewModel.isLoggedIn == true {
-            self.loginLabel.text = self.LOGOUT_TITLE + " (\(viewModel.username))"
+        self.setLabelTextForIsLoggedIn(isLoggedIn: viewModel.isLoggedIn.value, username: viewModel.username)
+        
+        _ = viewModel.isLoggedIn.observeNext { [weak self] isLoggedIn in
+            self?.setLabelTextForIsLoggedIn(isLoggedIn: isLoggedIn, username: viewModel.username)
+        }
+    }
+    
+    private func setLabelTextForIsLoggedIn(isLoggedIn: Bool, username: String) {
+        if isLoggedIn == true {
+            self.loginLabel.text = self.LOGOUT_TITLE + " (\(username))"
         } else {
             self.loginLabel.text = self.LOGIN_TITLE
         }

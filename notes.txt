@@ -16,9 +16,9 @@ Login:
 
 UI
 - Create a login popup
-- Left Menu showing
-	- Login
-	- Logout (username)
+* Left Menu showing
+	* Login
+	* Logout (username)
 
 - Save Username to data
 - Save password using keychain

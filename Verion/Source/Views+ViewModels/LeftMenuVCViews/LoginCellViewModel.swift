@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import Bond
 
 class LoginCellViewModel {
     
     var username = ""
-    var isLoggedIn = false
+    var isLoggedIn = Observable<Bool>(false)
 
     
 }

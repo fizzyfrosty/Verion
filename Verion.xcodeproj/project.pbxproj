@@ -41,6 +41,7 @@
 		43433DBF1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */; };
 		43433DC11E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */; };
 		435FEADF1E31789600BB3867 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435FEADE1E31789600BB3867 /* AdCell.swift */; };
+		436D25EE1E3308DE00FE9ED2 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 436D25ED1E3308DE00FE9ED2 /* Login.storyboard */; };
 		4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */; };
 		4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */; };
 		4375BFC41DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */; };
@@ -209,6 +210,7 @@
 		43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelProtocol.swift; sourceTree = "<group>"; };
 		43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelLegacy.swift; sourceTree = "<group>"; };
 		435FEADE1E31789600BB3867 /* AdCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
+		436D25ED1E3308DE00FE9ED2 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
 		4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Bold.swift"; sourceTree = "<group>"; };
@@ -834,6 +836,7 @@
 				43433D8B1E0575040017FAB0 /* FindSubverse.storyboard */,
 				43B0565E1E0D1AA3007083E8 /* SliderController.storyboard */,
 				43B0566A1E0D2296007083E8 /* LeftMenu.storyboard */,
+				436D25ED1E3308DE00FE9ED2 /* Login.storyboard */,
 				432564B51DEEB798001B943A /* TabController.storyboard */,
 			);
 			name = Storyboards;
@@ -929,6 +932,7 @@
 			files = (
 				43B056CC1E0E4691007083E8 /* Info.plist in Resources */,
 				43B0571D1E0E7943007083E8 /* SampleComments_v1.txt in Resources */,
+				436D25EE1E3308DE00FE9ED2 /* Login.storyboard in Resources */,
 				43B057211E0E7943007083E8 /* SampleSubverseList_v1.txt in Resources */,
 				43ABEB7C1E137F2300458E3D /* Assets.xcassets in Resources */,
 				4375C0401DF74B1700576CC6 /* Comments.storyboard in Resources */,

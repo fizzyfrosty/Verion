@@ -182,8 +182,8 @@ class LeftMenuController: UITableViewController {
             
             // Settings
             self.loginCellViewModel = LoginCellViewModel()
-            self.loginCellViewModel?.isLoggedIn = verionDataModel.isLoggedIn
-            if self.loginCellViewModel?.isLoggedIn == true {
+            self.loginCellViewModel?.isLoggedIn.value = verionDataModel.isLoggedIn
+            if self.loginCellViewModel?.isLoggedIn.value == true {
                 self.loginCellViewModel?.username = verionDataModel.username!
             }
             
@@ -312,7 +312,7 @@ class LeftMenuController: UITableViewController {
             self.dataManager?.saveData(dataModel: verionDataModel!)
             
             // Settings
-            verionDataModel?.isLoggedIn = self.loginCellViewModel!.isLoggedIn
+            verionDataModel?.isLoggedIn = self.loginCellViewModel!.isLoggedIn.value
             verionDataModel?.username = self.loginCellViewModel!.username
             
             DispatchQueue.main.async {
@@ -530,7 +530,7 @@ class LeftMenuController: UITableViewController {
         case LeftMenuSections.settings.rawValue:
             if indexPath.row == SettingsRows.login.rawValue {
                 
-                if self.loginCellViewModel?.isLoggedIn == true {
+                if self.loginCellViewModel?.isLoggedIn.value == true {
                     // Logout if logged in
                     self.logout(username: self.loginCellViewModel!.username)
                 } else {
@@ -953,7 +953,7 @@ extension LeftMenuController {
     }
     
     private func logout() {
-        self.loginCellViewModel?.isLoggedIn = false
+        self.loginCellViewModel?.isLoggedIn.value = false
         self.loginCellViewModel?.username = ""
     }
 }
