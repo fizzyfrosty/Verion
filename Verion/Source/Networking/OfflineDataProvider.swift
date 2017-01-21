@@ -30,6 +30,20 @@ class OfflineDataProvider: DataProviderType {
         self.apiVersion = apiVersion
     }
     
+    func requestLoginAuthentication(username: String, password: String, completion: @escaping (Error?) -> ()) {
+        Delayer.delay(seconds: self.DELAY_TIME_SECONDS) { 
+            
+            // Return error if empty password
+            if password == "" {
+                let error = NSError.init()
+                completion(error)
+            } else {
+                // Return success if filled password
+                completion(nil)
+            }
+        }
+    }
+    
     func requestContent(submissionDataModel: SubmissionDataModelProtocol, downloadProgress: @escaping (Double)->(), completion: @escaping (Data?, SubmissionMediaType, Bool, Error?) -> Void) {
         completion(nil, SubmissionMediaType.link, false, nil)
     }

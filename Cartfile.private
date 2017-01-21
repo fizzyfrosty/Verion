@@ -22,3 +22,5 @@ github "bahlo/SwiftGif" ~> 1.6.1
 github "Flipboard/FLAnimatedImage"
 
 github "dekatotoro/SlideMenuControllerSwift"
+
+github "jdg/MBProgressHUD" ~> 1.0.0

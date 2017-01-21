@@ -129,6 +129,11 @@ extension SlideController: LeftMenuControllerDelegate {
             
             self.leftController?.setLoggedIn(username: username)
         })
-        
+    }
+    
+    func leftMenuDidLogOut(leftMenu: LeftMenuController) {
+        ActivityIndicatorProvider.showSuccess(forView: self.view) { 
+            
+        }
     }
 }

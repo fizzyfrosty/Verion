@@ -16,6 +16,7 @@ protocol LeftMenuControllerDelegate: class {
     func leftMenuDidPressClose(leftMenu: LeftMenuController)
     func leftMenuDidPressFindSubverse(leftMenu: LeftMenuController)
     func leftMenuDidPressLogin(leftMenu: LeftMenuController)
+    func leftMenuDidLogOut(leftMenu: LeftMenuController)
 }
 
 class LeftMenuController: UITableViewController {
@@ -43,7 +44,7 @@ class LeftMenuController: UITableViewController {
     private let CLEAR_HISTORY_CELL_REUSE_ID = "ClearHistoryCell"
     private let TRANSPARENT_CELL_REUSE_ID = "TransparentCell"
     private let SECTION_HEIGHT: CGFloat = 40.0
-    private let activtyIndicator = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+    private let activityIndicator = ActivityIndicatorProvider.getStandardActivityIndicator()
     private let DEFAULT_CELL_HEIGHT: CGFloat = 50.0
     
     // Title Icon section
@@ -284,14 +285,14 @@ class LeftMenuController: UITableViewController {
     
     private func showActivityIndicator() {
         let window = UIApplication.shared.keyWindow
-        window?.addSubview(self.activtyIndicator)
-        self.activtyIndicator.center = CGPoint(x: UIScreen.main.bounds.width/2.0, y: UIScreen.main.bounds.height/2.0)
-        self.activtyIndicator.startAnimating()
+        window?.addSubview(self.activityIndicator)
+        self.activityIndicator.center = CGPoint(x: UIScreen.main.bounds.width/2.0, y: UIScreen.main.bounds.height/2.0)
+        self.activityIndicator.startAnimating()
     }
     
     private func hideActivityIndicator() {
-        self.activtyIndicator.stopAnimating()
-        self.activtyIndicator.removeFromSuperview()
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.removeFromSuperview()
     }
     
     fileprivate func saveData(completion: @escaping ()->()) {
@@ -682,16 +683,6 @@ extension LeftMenuController {
         }
     }
     
-    fileprivate func notifyDelegateDidPressLogin() {
-        if let _ = self.delegate?.leftMenuDidPressLogin(leftMenu: self) {
-            // success, do nothing
-        } else {
-            #if DEBUG
-                print("Warning: Left Menu Controller's delegate may not be set.")
-            #endif
-        }
-    }
-    
     fileprivate func notifyDelegateDidPressClose() {
         if let _ = self.delegate?.leftMenuDidPressClose(leftMenu: self) {
             // success, do nothing
@@ -935,8 +926,9 @@ extension LeftMenuController {
             // Perform Logout
             self.logout()
             
-            // Reload table
             self.tableView.reloadData()
+            
+            self.notifyDelegateDidLogOut()
         }
         
         let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel) { alertAction in
@@ -958,6 +950,26 @@ extension LeftMenuController {
     func setLoggedIn(username: String) {
         self.loginCellViewModel?.username = username
         self.loginCellViewModel?.isLoggedIn.value = true
+    }
+    
+    fileprivate func notifyDelegateDidLogOut() {
+        if let _ = self.delegate?.leftMenuDidLogOut(leftMenu: self) {
+            // success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    fileprivate func notifyDelegateDidPressLogin() {
+        if let _ = self.delegate?.leftMenuDidPressLogin(leftMenu: self) {
+            // success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
+        }
     }
 }
 

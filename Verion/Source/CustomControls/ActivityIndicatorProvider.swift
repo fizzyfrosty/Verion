@@ -8,6 +8,7 @@
 
 import UIKit
 import NVActivityIndicatorView
+import MBProgressHUD
 
 class ActivityIndicatorProvider {
 
@@ -24,5 +25,30 @@ class ActivityIndicatorProvider {
                                                               padding: 0)
         
         return activityIndicator
+    }
+    
+    static func getStandardActivityIndicator() -> UIActivityIndicatorView {
+        return UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+    }
+    
+    static func showSuccess(forView view: UIView, completion: @escaping()->()) {
+        let SUCCESS_HUD_DISPLAY_TIME: Float = 1.0
+        
+        let progressHud = MBProgressHUD.showAdded(to: view, animated: true)
+        progressHud.mode = .customView
+        
+        let image = UIImage.init(named: "Checkmark")
+        let imageView = UIImageView.init(image: image)
+        progressHud.customView = imageView
+        progressHud.animationType = .fade
+        progressHud.label.text = "Success!"
+        
+        progressHud.show(animated: true)
+        
+        Delayer.delay(seconds: SUCCESS_HUD_DISPLAY_TIME) {
+            progressHud.hide(animated: true)
+            
+            completion()
+        }
     }
 }

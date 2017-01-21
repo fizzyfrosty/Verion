@@ -29,8 +29,11 @@ UI
 	* Logout (username)
 
 - Perform login
-	- Make call to Data Provider
-	- Call finished callbacks
+	* Make call to Data Provider
+	* Call finished callbacks
+	* ActivityIndicator
+	* Show success notification
+	* Show error notification
 	- Save Username to data
 	- Save password using keychain
 

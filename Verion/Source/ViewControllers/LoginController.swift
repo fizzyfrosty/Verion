@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
+import MBProgressHUD
 
 protocol LoginControllerDelegate: class {
     func loginControllerDidLogIn(loginController: LoginController, username: String)
@@ -21,6 +23,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet var signinButton: UIButton!
     
     @IBOutlet var backgroundImageView: UIImageView!
+    @IBOutlet var failedLabel: UILabel!
     
     @IBAction func pressedSignIn(_ sender: Any) {
         self.performSignIn()
@@ -36,13 +39,12 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     
+    private var activityIndicator = ActivityIndicatorProvider.getStandardActivityIndicator()
+    private var progressHud: MBProgressHUD?
     weak var delegate: LoginControllerDelegate?
     
     // Dependencies
     var dataProvider: DataProviderType?
-    
-    
-    
     
     
     override func viewDidLoad() {
@@ -51,8 +53,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.usernameTextfield.delegate = self
         self.passwordTextfield.delegate = self
         self.registerKeyboardNotifications()
-        self.setFocusForUsernameTextfield()
-        
+        Delayer.delay(seconds: 0.15) {
+            self.setFocusForUsernameTextfield()
+        }
     }
     
     private func setFocusForUsernameTextfield() {
@@ -134,15 +137,65 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.dismissKeyboard()
         
         // FIXME: implement
+        self.showActivityIndicator()
+        self.disableButtons()
+        self.failedLabel.isHidden = true
+        
         // Perform Sign In
+        self.dataProvider?.requestLoginAuthentication(username: self.usernameTextfield.text!, password: self.passwordTextfield.text!, completion: { (error) in
+            
+            self.hideActivityIndicator()
+            
+            
+            guard error == nil else {
+                
+                // Failed
+                // Only enable buttons if failed login
+                self.enableButtons()
+                
+                // Display message
+                self.failedLabel.isHidden = false
+                
+                return
+            }
+            
+            // Success
+            ActivityIndicatorProvider.showSuccess(forView: self.view) {
+                self.notifyDelegateDidSignIn(username: self.usernameTextfield.text!)
+                
+                // Dismiss on completion
+                self.dismiss(animated: true) {
+                }
+                
+                // Save data
+                
+            }
+        })
+    }
+    
+    private func disableButtons() {
+        self.cancelButton.isEnabled = false
+        self.signinButton.isEnabled = false
+    }
+    
+    private func enableButtons() {
+        self.cancelButton.isEnabled = true
+        self.signinButton.isEnabled = true
+    }
+    
+    private func showActivityIndicator() {
         
-        // Dismiss on completion
+        let window = UIApplication.shared.keyWindow
+        window?.addSubview(self.activityIndicator)
+        self.activityIndicator.center = CGPoint(x: UIScreen.main.bounds.width/2.0, y: UIScreen.main.bounds.height/2.0)
+        self.activityIndicator.startAnimating()
+ 
+    }
+    
+    private func hideActivityIndicator() {
         
-        
-        self.notifyDelegateDidSignIn(username: self.usernameTextfield.text!)
-        
-        self.dismiss(animated: true) {
-        }
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.removeFromSuperview()
     }
     
     private func notifyDelegateDidSignIn(username: String) {

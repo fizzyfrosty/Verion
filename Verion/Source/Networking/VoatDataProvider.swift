@@ -35,6 +35,10 @@ class VoatDataProvider: DataProviderType {
         self.apiVersion = apiVersion
     }
     
+    func requestLoginAuthentication(username: String, password: String, completion: @escaping (Error?) -> ()) {
+        
+    }
+    
     func requestContent(submissionDataModel: SubmissionDataModelProtocol, downloadProgress: @escaping (Double)->(), completion: @escaping (Data?, SubmissionMediaType, Bool, Error?) -> Void) {
         let requestUrlString = self.dataProviderHelper.getContentUrlString(fromSubmissionDataModel: submissionDataModel)
         
