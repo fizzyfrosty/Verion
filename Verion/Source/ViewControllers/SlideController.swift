@@ -119,8 +119,18 @@ extension SlideController: LeftMenuControllerDelegate {
     }
     
     func leftMenuDidPressLogin(leftMenu: LeftMenuController) {
-        // FIXME: Implement login
+        // FIXME: Implement
+        self.closeLeft()
         
+        self.subverseController?.loginPresenter?.presentLogin(rootViewController: self.subverseController!, completion: { (username, error) in
+            guard error == nil else {
+                
+                return
+            }
+            
+            
+            //self.leftController?.setLoggedIn(username: username)
+        })
         
     }
 }

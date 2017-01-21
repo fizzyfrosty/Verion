@@ -13,8 +13,8 @@ class LoginCell: UITableViewCell {
 
     @IBOutlet var loginLabel: UILabel!
     
-    private let LOGIN_TITLE = "Login"
-    private let LOGOUT_TITLE = "Logout"
+    private let LOGIN_TITLE = "Log In"
+    private let LOGOUT_TITLE = "Log Out"
     
     override func awakeFromNib() {
         super.awakeFromNib()

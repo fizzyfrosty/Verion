@@ -956,6 +956,11 @@ extension LeftMenuController {
         self.loginCellViewModel?.isLoggedIn.value = false
         self.loginCellViewModel?.username = ""
     }
+    
+    func setLoggedIn(username: String) {
+        self.loginCellViewModel?.username = username
+        self.loginCellViewModel?.isLoggedIn.value = true
+    }
 }
 
 

@@ -9,15 +9,15 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Login Controller-->
         <scene sceneID="mI5-9w-rIJ">
             <objects>
-                <viewController id="NmX-Nf-bs4" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginController" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalPresentationStyle="overFullScreen" id="NmX-Nf-bs4" customClass="LoginController" customModule="Verion" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UQb-dj-8Z7"/>
                         <viewControllerLayoutGuide type="bottom" id="PTd-6Y-qac"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="dla-Aa-UqK">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="dla-Aa-UqK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -34,8 +34,11 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMt-hI-777">
-                                        <rect key="frame" x="146" y="161" width="90" height="30"/>
+                                        <rect key="frame" x="147" y="161" width="90" height="30"/>
                                         <state key="normal" image="sign_in_button"/>
+                                        <connections>
+                                            <action selector="pressedSignIn:" destination="NmX-Nf-bs4" eventType="touchUpInside" id="x17-1O-wgX"/>
+                                        </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9NA-e8-qYP">
                                         <rect key="frame" x="34" y="61" width="203" height="30"/>
@@ -52,6 +55,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucq-Fa-hvK">
                                         <rect key="frame" x="34" y="161" width="90" height="30"/>
                                         <state key="normal" image="sign_in_cancel_button"/>
+                                        <connections>
+                                            <action selector="pressedCancel:" destination="NmX-Nf-bs4" eventType="touchUpInside" id="cgD-ZC-b90"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -83,6 +89,12 @@
                             <constraint firstItem="tEx-7m-Jd7" firstAttribute="centerX" secondItem="dla-Aa-UqK" secondAttribute="centerX" id="ecU-gO-9gR"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="ucq-Fa-hvK" id="kIb-tj-epJ"/>
+                        <outlet property="passwordTextfield" destination="MQc-Zz-9EH" id="X9m-nD-P50"/>
+                        <outlet property="signinButton" destination="uMt-hI-777" id="0P6-16-ugJ"/>
+                        <outlet property="usernameTextfield" destination="9NA-e8-qYP" id="nyl-Ss-XYm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xwo-cj-2rw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

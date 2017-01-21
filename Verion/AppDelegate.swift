@@ -102,6 +102,7 @@ extension SwinjectStoryboard {
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             C.adManager = AdManager.sharedInstance
+            C.loginPresenter = LoginPresenter.sharedInstance
         })
         
         defaultContainer.storyboardInitCompleted(CommentsViewController.self, initCompleted: { (ResolverType, C) in
@@ -122,6 +123,10 @@ extension SwinjectStoryboard {
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             C.inAppPurchaseManager = InAppPurchaseManager.sharedInstance
+        }
+        
+        defaultContainer.storyboardInitCompleted(LoginController.self) { (ResolverType, C) in
+            C.dataProvider = ResolverType.resolve(DataProviderType.self)!
         }
     }
 }

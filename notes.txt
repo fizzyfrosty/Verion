@@ -16,6 +16,10 @@ Login:
 
 UI
 - Create a login popup
+	* Storyboard
+	* View Controller
+	- Animate popin
+	
 * Left Menu showing
 	* Login
 	* Logout (username)
