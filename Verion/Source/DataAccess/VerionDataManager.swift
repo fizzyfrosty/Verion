@@ -36,4 +36,12 @@ class VerionDataManager: DataManagerProtocol {
         
         return filename
     }
+    
+    func saveUsernameToKeychain(username: String) {
+        
+    }
+    
+    func savePasswordToKeychain(password: String) {
+        <#code#>
+    }
 }

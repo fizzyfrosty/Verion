@@ -11,4 +11,7 @@ import UIKit
 protocol DataManagerProtocol: class {
     func getSavedData()->VerionDataModel
     func saveData(dataModel: VerionDataModel)
+    
+    func saveUsernameToKeychain(username: String)
+    func savePasswordToKeychain(password: String)
 }

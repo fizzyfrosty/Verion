@@ -127,6 +127,7 @@ extension SwinjectStoryboard {
         
         defaultContainer.storyboardInitCompleted(LoginController.self) { (ResolverType, C) in
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
+            C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
         }
     }
 }

@@ -45,7 +45,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     // Dependencies
     var dataProvider: DataProviderType?
-    
+    var dataManager: DataManagerProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,7 +168,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 }
                 
                 // Save data
-                
+                let verionDataModel = self.dataManager?.getSavedData()
+                verionDataModel?.username = self.usernameTextfield.text
+                verionDataModel?.isLoggedIn = true
+                self.dataManager?.saveData(dataModel: verionDataModel!)
             }
         })
     }
