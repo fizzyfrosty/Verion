@@ -945,6 +945,9 @@ extension LeftMenuController {
     private func logout() {
         self.loginCellViewModel?.isLoggedIn.value = false
         self.loginCellViewModel?.username = ""
+        
+        self.dataManager?.saveUsernameToKeychain(username: "")
+        self.dataManager?.savePasswordToKeychain(password: "")
     }
     
     func setLoggedIn(username: String) {
