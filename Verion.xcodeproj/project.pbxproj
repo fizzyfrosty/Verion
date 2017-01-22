@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4300A0C21DF0EF0A00497FE4 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4300A0C01DF0EF0A00497FE4 /* ReactiveKit.framework */; };
 		4310CA401E33ED310060EC90 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4310CA3F1E33ED310060EC90 /* Bond.framework */; };
+		431310961E3455D200275B1F /* SwiftKeychainWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 431310951E3455D200275B1F /* SwiftKeychainWrapper.framework */; };
 		432564391DECAE8F001B943A /* Subverse.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564381DECAE8F001B943A /* Subverse.storyboard */; };
 		432564B61DEEB798001B943A /* TabController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564B51DEEB798001B943A /* TabController.storyboard */; };
 		432564BA1DEED077001B943A /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
@@ -182,6 +183,7 @@
 /* Begin PBXFileReference section */
 		4300A0C01DF0EF0A00497FE4 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/iOS/ReactiveKit.framework; sourceTree = "<group>"; };
 		4310CA3F1E33ED310060EC90 /* Bond.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bond.framework; path = Carthage/Build/iOS/Bond.framework; sourceTree = "<group>"; };
+		431310951E3455D200275B1F /* SwiftKeychainWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftKeychainWrapper.framework; path = Carthage/Build/iOS/SwiftKeychainWrapper.framework; sourceTree = "<group>"; };
 		432564381DECAE8F001B943A /* Subverse.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Subverse.storyboard; sourceTree = "<group>"; };
 		432564B51DEEB798001B943A /* TabController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabController.storyboard; sourceTree = "<group>"; };
 		432B77761E12272A00457F2C /* ActivityIndicatorCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorCellViewModel.swift; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				431310961E3455D200275B1F /* SwiftKeychainWrapper.framework in Frameworks */,
 				436D25F51E33DD4A00FE9ED2 /* MBProgressHUD.framework in Frameworks */,
 				43ABEB8E1E13803300458E3D /* SystemConfiguration.framework in Frameworks */,
 				43ABEB8C1E13802B00458E3D /* Security.framework in Frameworks */,
@@ -822,6 +825,7 @@
 		43F9A04C1DEA3C26001EB1FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				431310951E3455D200275B1F /* SwiftKeychainWrapper.framework */,
 				4310CA3F1E33ED310060EC90 /* Bond.framework */,
 				436D25F31E33D7C000FE9ED2 /* MBProgressHUD.framework */,
 				43ABEB8D1E13803300458E3D /* SystemConfiguration.framework */,
@@ -1003,6 +1007,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/NVActivityIndicatorView.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MBProgressHUD.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftKeychainWrapper.framework",
 			);
 			outputPaths = (
 			);

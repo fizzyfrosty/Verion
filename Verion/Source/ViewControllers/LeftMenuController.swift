@@ -185,7 +185,8 @@ class LeftMenuController: UITableViewController {
             self.loginCellViewModel = LoginCellViewModel()
             self.loginCellViewModel?.isLoggedIn.value = verionDataModel.isLoggedIn
             if self.loginCellViewModel?.isLoggedIn.value == true {
-                self.loginCellViewModel?.username = verionDataModel.username!
+                
+                self.loginCellViewModel?.username = (self.dataManager?.getUsernameFromKeychain())!
             }
             
         }
@@ -314,7 +315,6 @@ class LeftMenuController: UITableViewController {
             
             // Settings
             verionDataModel?.isLoggedIn = self.loginCellViewModel!.isLoggedIn.value
-            verionDataModel?.username = self.loginCellViewModel!.username
             
             DispatchQueue.main.async {
                 completion()

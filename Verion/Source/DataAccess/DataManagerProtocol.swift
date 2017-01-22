@@ -14,4 +14,6 @@ protocol DataManagerProtocol: class {
     
     func saveUsernameToKeychain(username: String)
     func savePasswordToKeychain(password: String)
+    func getUsernameFromKeychain() -> String
+    func getPasswordFromKeychain() -> String
 }

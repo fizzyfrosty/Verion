@@ -132,7 +132,7 @@ extension SlideController: LeftMenuControllerDelegate {
     }
     
     func leftMenuDidLogOut(leftMenu: LeftMenuController) {
-        ActivityIndicatorProvider.showSuccess(forView: self.view) { 
+        ActivityIndicatorProvider.showNotification(message: "Logged Out", view: self.view) {
             
         }
     }

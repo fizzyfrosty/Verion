@@ -24,7 +24,13 @@ class VoatDataProvider: DataProviderType {
     // V1 API
     private let VOAT_API_KEY_HEADER = "Voat-ApiKey"
     private let VOAT_API_KEY_VALUE = "VO0FEEE221244B41B7B3686098AA4EA227AT"
+    private let VOAT_API_KEY_PRIVATE_VALUE = "F80C9D5D732048E0B0928FCA8F71DA5AB8170FE1451B4967BD738D5F47C7CEC0"
     private let VOAT_V1_DOMAIN = "https://api.voat.co"
+    private let CONTENT_TYPE_HEADER = "Content-Type"
+    private let CONTENT_TYPE_AUTH_VALUE = "application/x-www-form-urlencoded"
+    
+    private var accessToken = ""
+    private var refreshToken = ""
     
     
     private let VALIDATION_SUCCESSFUL_MESSAGE = "Validation successful"
@@ -37,6 +43,26 @@ class VoatDataProvider: DataProviderType {
     
     func requestLoginAuthentication(username: String, password: String, completion: @escaping (Error?) -> ()) {
         
+        let requestUrlString = self.getAuthenticationUrlStringV1()
+        let headers = self.getAuthenticationHeaders()
+        let authParams = self.getAuthenticationParams(username: username, password: password)
+        
+        Alamofire.request(requestUrlString, method: .post, parameters: authParams, encoding: URLEncoding.default, headers: headers).validate().responseJSON { (response) in
+            
+            // FIXME: implement
+            switch response.result {
+            case .failure:
+                completion(response.error)
+            case .success:
+                
+                let jsonData = JSON.init(data: response.data!)
+                self.accessToken = jsonData["access_token"].stringValue
+                self.refreshToken = jsonData["refresh_token"].stringValue
+                
+                completion(nil)
+            }
+            
+        }
     }
     
     func requestContent(submissionDataModel: SubmissionDataModelProtocol, downloadProgress: @escaping (Double)->(), completion: @escaping (Data?, SubmissionMediaType, Bool, Error?) -> Void) {
@@ -281,6 +307,12 @@ class VoatDataProvider: DataProviderType {
         return mediaType
     }
     
+    private func getAuthenticationUrlStringV1() -> String {
+        let urlString = "https://api.voat.co/oauth/token"
+        
+        return urlString
+    }
+    
     private func getCommentsUrlStringV1(forSubverse subverse: String, submissionID: Int64) -> String {
         let urlString = self.VOAT_V1_DOMAIN + "/api/v1/v/\(subverse)/\(String(submissionID))/comments"
         return urlString
@@ -408,5 +440,26 @@ class VoatDataProvider: DataProviderType {
         case .v1:
             return [self.VOAT_API_KEY_HEADER: self.VOAT_API_KEY_VALUE]
         }
+    }
+    
+    private func getAuthenticationHeaders() -> HTTPHeaders {
+        var headers: HTTPHeaders = [:]
+        
+        headers[self.VOAT_API_KEY_HEADER] = self.VOAT_API_KEY_VALUE
+        headers[self.CONTENT_TYPE_HEADER] = self.CONTENT_TYPE_AUTH_VALUE
+        
+        return headers
+    }
+    
+    private func getAuthenticationParams(username: String, password: String) -> [String: Any]{
+        var params: [String: Any] = [:]
+        
+        params["grant_type"] = "password"
+        params["username"] = username
+        params["password"] = password
+        params["client_id"] = self.VOAT_API_KEY_VALUE
+        params["client_secret"] = self.VOAT_API_KEY_PRIVATE_VALUE
+        
+        return params
     }
 }

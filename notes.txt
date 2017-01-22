@@ -35,7 +35,7 @@ UI
 	* Show success notification
 	* Show error notification
 	* Save Username to data
-	- Save password using keychain
+	* Save password using keychain
 
 	- Make actual request
 	- Return success and error

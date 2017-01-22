@@ -18,8 +18,6 @@ github "Alamofire/Alamofire" ~> 4.0
 #Run: carthage update --platform iOS --no-use-binaries
 # due to SwiftyJSON not being compiled locally
 
-github "bahlo/SwiftGif" ~> 1.6.1
-
 github "Flipboard/FLAnimatedImage"
 
 github "dekatotoro/SlideMenuControllerSwift"

@@ -160,7 +160,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
             }
             
             // Success
-            ActivityIndicatorProvider.showSuccess(forView: self.view) {
+            ActivityIndicatorProvider.showNotification(message: "Success!", view: self.view) {
                 self.notifyDelegateDidSignIn(username: self.usernameTextfield.text!)
                 
                 // Dismiss on completion
@@ -168,12 +168,18 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 }
                 
                 // Save data
-                let verionDataModel = self.dataManager?.getSavedData()
-                verionDataModel?.username = self.usernameTextfield.text
-                verionDataModel?.isLoggedIn = true
-                self.dataManager?.saveData(dataModel: verionDataModel!)
+                self.saveUserData()
             }
         })
+    }
+    
+    private func saveUserData() {
+        let verionDataModel = self.dataManager?.getSavedData()
+        verionDataModel?.isLoggedIn = true
+        self.dataManager?.saveData(dataModel: verionDataModel!)
+        
+        self.dataManager?.saveUsernameToKeychain(username: self.usernameTextfield.text!)
+        self.dataManager?.savePasswordToKeychain(password: self.passwordTextfield.text!)
     }
     
     private func disableButtons() {

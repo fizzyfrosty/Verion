@@ -31,7 +31,7 @@ class ActivityIndicatorProvider {
         return UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     }
     
-    static func showSuccess(forView view: UIView, completion: @escaping()->()) {
+    static func showNotification(message: String, view: UIView, completion: @escaping()->()) {
         let SUCCESS_HUD_DISPLAY_TIME: Float = 1.0
         
         let progressHud = MBProgressHUD.showAdded(to: view, animated: true)
@@ -41,7 +41,7 @@ class ActivityIndicatorProvider {
         let imageView = UIImageView.init(image: image)
         progressHud.customView = imageView
         progressHud.animationType = .fade
-        progressHud.label.text = "Success!"
+        progressHud.label.text = message
         
         progressHud.show(animated: true)
         
