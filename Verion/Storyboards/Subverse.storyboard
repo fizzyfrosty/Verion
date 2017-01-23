@@ -34,12 +34,12 @@
                                                 <constraint firstAttribute="height" constant="75" id="lWO-1a-lSb"/>
                                             </constraints>
                                         </imageView>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pYi-Ci-SdD">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pYi-Ci-SdD">
                                             <rect key="frame" x="8" y="153" width="24" height="31"/>
                                             <state key="normal" image="arrow_up_grey"/>
                                             <state key="selected" image="arrow_up_red"/>
                                         </button>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aix-uF-6Wg">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aix-uF-6Wg">
                                             <rect key="frame" x="77" y="156" width="24" height="31"/>
                                             <state key="normal" image="arrow_down_grey"/>
                                             <state key="selected" image="arrow_down_blue"/>

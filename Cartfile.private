@@ -4,7 +4,7 @@ github "Swinject/Swinject" "2.0.0-beta.3"
 github "Swinject/SwinjectStoryboard" "1.0.0-beta.3"
 
 github "ReactiveKit/ReactiveKit" == 3.1.2
-github "ReactiveKit/Bond" ~> 5.1
+github "ReactiveKit/Bond" == 5.3.1
 
 github "Quick/Quick"
 github "Quick/Nimble"
@@ -25,3 +25,5 @@ github "dekatotoro/SlideMenuControllerSwift"
 github "jdg/MBProgressHUD" ~> 1.0.0
 
 github "jrendel/SwiftKeychainWrapper" ~> 3.0
+
+github "ninjaprox/NVActivityIndicatorView" == 3.0

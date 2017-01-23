@@ -43,9 +43,13 @@ class SubmissionCellViewModel{
 
     var voteCountTotal = Observable<Int>(0)
     private(set) var voteSeparatedCountString = Observable<String>("")
+
+    private(set) var didRequestUpvote = Observable<Bool>(false)
+    private(set) var didRequestDownvote = Observable<Bool>(false)
+    private(set) var didRequestNoVote = Observable<Bool>(false)
     
-    private(set) var didUpvote = Observable<Bool>(false)
-    private(set) var didDownvote = Observable<Bool>(false)
+    private(set) var isUpvoted = Observable<Bool>(false)
+    private(set) var isDownvoted = Observable<Bool>(false)
     
     var commentCount = 0
     

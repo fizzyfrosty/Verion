@@ -8,6 +8,7 @@
 
 import UIKit
 import Bond
+import ReactiveKit
 
 class SubmissionCell: UITableViewCell {
     
@@ -26,6 +27,9 @@ class SubmissionCell: UITableViewCell {
     @IBOutlet var commentLabel: UILabel!
     @IBOutlet var submittedByUserLabel: UILabel!
     @IBOutlet var submittedToSubverseLabel: UILabel!
+    
+    // Bindings
+    private var bindings: [Disposable] = []
     
     weak var viewModel: SubmissionCellViewModel?
     
@@ -87,15 +91,15 @@ class SubmissionCell: UITableViewCell {
         
         // Vote Count Label
         self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
-        _ = viewModel.voteCountTotal.observeNext() { [weak self] count in
+        self.bindings.append( viewModel.voteCountTotal.observeNext() { [weak self] count in
             self?.voteCountLabel.text = String(count)
-        }
+        })
         
         // Separated Vote Count Label
         self.voteSeparatedCountLabel.text = viewModel.voteSeparatedCountString.value
-        _ = viewModel.voteSeparatedCountString.observeNext() { [weak self] separatedCountString in
+        self.bindings.append( viewModel.voteSeparatedCountString.observeNext() { [weak self] separatedCountString in
             self?.voteSeparatedCountLabel.text = separatedCountString
-        }
+        })
         
         // Comments Label
         self.commentLabel.text = String(viewModel.commentCount)
@@ -108,16 +112,65 @@ class SubmissionCell: UITableViewCell {
         
         // Bind to User-input events
         // Upvote
-        _ = self.upvoteButton.bnd_tap.observeNext {
-            viewModel.didUpvote.value = true
-        }
+        self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
+            
+            // If previously selected
+            if self?.upvoteButton.isSelected == true {
+                viewModel.didRequestNoVote.value = true
+                self?.upvoteButton.isSelected = false
+                
+                viewModel.upvoteCount.value -= 1
+                
+            } else {
+                // If not previously selected, attempt to select
+                viewModel.didRequestUpvote.value = true
+                viewModel.upvoteCount.value += 1
+                
+                // Temporarily show vote result for responsive UI
+                self?.upvoteButton.isSelected = true
+                
+                if self?.downvoteButton.isSelected == true {
+                    self?.downvoteButton.isSelected = false
+                    viewModel.downvoteCount.value -= 1
+                }
+            }
+        })
+        
         
         // Downvote
-        _ = self.downvoteButton.bnd_tap.observeNext {
-            viewModel.didDownvote.value = true
-        }
+        self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
+            
+            // If previously selected
+            if self?.downvoteButton.isSelected == true {
+                viewModel.didRequestNoVote.value = true
+                self?.downvoteButton.isSelected = false
+                
+                viewModel.downvoteCount.value -= 1
+                
+            } else {
+                // If not previously selected, attempt to select
+                viewModel.didRequestDownvote.value = true
+                viewModel.downvoteCount.value += 1
+                
+                // Temporarily show vote result for responsive UI
+                self?.downvoteButton.isSelected = true
+                
+                if self?.upvoteButton.isSelected == true {
+                    self?.upvoteButton.isSelected = false
+                    viewModel.upvoteCount.value -= 1
+                }
+            }
+        })
     }
     
-    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        for binding in self.bindings {
+            binding.dispose()
+        }
+        
+        self.bindings.removeAll()
+    }
 
 }

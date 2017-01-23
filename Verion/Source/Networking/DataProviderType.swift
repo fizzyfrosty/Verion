@@ -29,6 +29,7 @@ protocol DataProviderType: class {
     func requestSubverseList(completion: @escaping ([SubverseSearchResultDataModelProtocol], Error?) ->Void)
     func requestContent(submissionDataModel: SubmissionDataModelProtocol, downloadProgress: @escaping (Double)->(), completion: @escaping (Data?, SubmissionMediaType, Bool, Error?) -> Void)
     func requestLoginAuthentication(username: String, password: String, completion: @escaping (Error?)->()) -> ()
+    func requestSubmissionVote(submissionId: Int64, voteValue: Int, completion: @escaping(Error?)->())
     
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void
     func bind(subTitleViewModel: SubmissionTitleCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void

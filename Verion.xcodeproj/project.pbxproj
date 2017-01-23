@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4300A0C21DF0EF0A00497FE4 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4300A0C01DF0EF0A00497FE4 /* ReactiveKit.framework */; };
+		430F2F791E358C13001C05EB /* OAuth2Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430F2F781E358C13001C05EB /* OAuth2Handler.swift */; };
 		4310CA401E33ED310060EC90 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4310CA3F1E33ED310060EC90 /* Bond.framework */; };
 		431310961E3455D200275B1F /* SwiftKeychainWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 431310951E3455D200275B1F /* SwiftKeychainWrapper.framework */; };
 		432564391DECAE8F001B943A /* Subverse.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564381DECAE8F001B943A /* Subverse.storyboard */; };
@@ -62,6 +63,7 @@
 		437644371E22519800EE64A7 /* CommentDataSegmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437644361E22519800EE64A7 /* CommentDataSegmentProtocol.swift */; };
 		43829EFA1E25B09500754AF3 /* ProfanityFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43829EF71E25B09500754AF3 /* ProfanityFilter.swift */; };
 		43829EFB1E25B09500754AF3 /* Profanity.json in Resources */ = {isa = PBXBuildFile; fileRef = 43829EF91E25B09500754AF3 /* Profanity.json */; };
+		43A33CFD1E36745D0032D7A7 /* VoteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A33CFC1E36745D0032D7A7 /* VoteType.swift */; };
 		43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */; };
 		43A92D471E3295C7007D6B4F /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A92D461E3295C7007D6B4F /* LoginCell.swift */; };
 		43A92D491E3295D5007D6B4F /* LoginCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */; };
@@ -182,6 +184,7 @@
 
 /* Begin PBXFileReference section */
 		4300A0C01DF0EF0A00497FE4 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/iOS/ReactiveKit.framework; sourceTree = "<group>"; };
+		430F2F781E358C13001C05EB /* OAuth2Handler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Handler.swift; sourceTree = "<group>"; };
 		4310CA3F1E33ED310060EC90 /* Bond.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bond.framework; path = Carthage/Build/iOS/Bond.framework; sourceTree = "<group>"; };
 		431310951E3455D200275B1F /* SwiftKeychainWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftKeychainWrapper.framework; path = Carthage/Build/iOS/SwiftKeychainWrapper.framework; sourceTree = "<group>"; };
 		432564381DECAE8F001B943A /* Subverse.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Subverse.storyboard; sourceTree = "<group>"; };
@@ -235,6 +238,7 @@
 		437644361E22519800EE64A7 /* CommentDataSegmentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataSegmentProtocol.swift; sourceTree = "<group>"; };
 		43829EF71E25B09500754AF3 /* ProfanityFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfanityFilter.swift; sourceTree = "<group>"; };
 		43829EF91E25B09500754AF3 /* Profanity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Profanity.json; sourceTree = "<group>"; };
+		43A33CFC1E36745D0032D7A7 /* VoteType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteType.swift; sourceTree = "<group>"; };
 		43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelLegacy.swift; sourceTree = "<group>"; };
 		43A92D461E3295C7007D6B4F /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
 		43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCellViewModel.swift; sourceTree = "<group>"; };
@@ -731,6 +735,7 @@
 				4375C08B1E011F8E00576CC6 /* SortType.swift */,
 				43B056741E0D4272007083E8 /* VerionDataModel.swift */,
 				432B777A1E12357700457F2C /* SubmissionsRequestParams.swift */,
+				43A33CFC1E36745D0032D7A7 /* VoteType.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -745,6 +750,7 @@
 				4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */,
 				4375BFC71DF3EDC300576CC6 /* Delayer.swift */,
 				43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */,
+				430F2F781E358C13001C05EB /* OAuth2Handler.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1030,6 +1036,7 @@
 				43B056CE1E0E4691007083E8 /* LoadingView.swift in Sources */,
 				43433DB41E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift in Sources */,
 				43433DB21E0581510017FAB0 /* SubverseSearchResultCell.swift in Sources */,
+				43A33CFD1E36745D0032D7A7 /* VoteType.swift in Sources */,
 				43433DA61E057E620017FAB0 /* CommentsSortByCellViewModel.swift in Sources */,
 				436D25F21E33267900FE9ED2 /* LoginPresenter.swift in Sources */,
 				43ABEB871E137FA300458E3D /* FlurryWatchEmpty.m in Sources */,
@@ -1061,6 +1068,7 @@
 				43433DAF1E057E620017FAB0 /* SubmissionCell.swift in Sources */,
 				43B0566E1E0D3F8C007083E8 /* SubverseCell.swift in Sources */,
 				43B056BC1E0E4691007083E8 /* FLAnimatedImageView.m in Sources */,
+				430F2F791E358C13001C05EB /* OAuth2Handler.swift in Sources */,
 				43433D7B1E027FD00017FAB0 /* ImageDownloader.swift in Sources */,
 				43B056E11E0E4691007083E8 /* TSBaseParser.m in Sources */,
 				43B056D81E0E4691007083E8 /* SpringTextView.swift in Sources */,

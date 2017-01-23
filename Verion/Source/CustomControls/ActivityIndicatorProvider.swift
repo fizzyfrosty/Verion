@@ -51,4 +51,5 @@ class ActivityIndicatorProvider {
             completion()
         }
     }
+    
 }

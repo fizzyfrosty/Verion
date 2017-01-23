@@ -28,7 +28,7 @@ UI
 	* Login
 	* Logout (username)
 
-- Perform login
+* Perform login
 	* Make call to Data Provider
 	* Call finished callbacks
 	* ActivityIndicator
@@ -37,8 +37,16 @@ UI
 	* Save Username to data
 	* Save password using keychain
 
-	- Make actual request
-	- Return success and error
+	* Make actual request
+	* Return success and error
+
+- Vote up/down UI
+	* Register count on ui
+	* Register arrow highlight from ui
+	* Make request on button tap
+	* On success, do nothing
+	- Handle error return
+	- If not logged in, request login
 
 Backend
 

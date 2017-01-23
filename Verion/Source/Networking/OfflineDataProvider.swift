@@ -30,6 +30,14 @@ class OfflineDataProvider: DataProviderType {
         self.apiVersion = apiVersion
     }
     
+    func requestSubmissionVote(submissionId: Int64, voteValue: Int, completion: @escaping (Error?) -> ()) {
+        Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
+            
+            // Automatically pass vote
+            completion(nil)
+        }
+    }
+    
     func requestLoginAuthentication(username: String, password: String, completion: @escaping (Error?) -> ()) {
         Delayer.delay(seconds: self.DELAY_TIME_SECONDS) { 
             
@@ -127,14 +135,67 @@ class OfflineDataProvider: DataProviderType {
     
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {
         
-        // TODO: UPVOTE/DOWNVOTE feature isn't supported by legacy api. Will do later when I get new API key
-        // The viewModel dictates what requests are made: upvote, downvote
-        // Bind upvote event to request
-        // Bind downvote event to request
-        
         // Initialize the view model's values with data models
         let subCellVmInitData = self.dataProviderHelper.getSubCellVmInitData(fromDataModel: dataModel)
         subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
+        subCellViewModel.dataModel = dataModel
+        
+        // FIXME: need to reset these bindings. Tag onto the viewModels?
+        
+        // Bind upvote event to request
+        _ = subCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
+            if didRequestUpvote {
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.up.rawValue, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
+                        return
+                    }
+                    
+                    // Success
+                    //subCellViewModel.isUpvoted.value = true
+                })
+                
+                subCellViewModel.didRequestUpvote.value = false
+            }
+        }
+        
+        // Bind downvote event to request
+        _ = subCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
+            if didRequestDownvote {
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.down.rawValue, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
+                        return
+                    }
+                    
+                    // Success
+                    //subCellViewModel.isDownvoted.value = true
+                })
+                
+                subCellViewModel.didRequestDownvote.value = false
+            }
+        }
+        
+        _ = subCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
+            if didRequestNoVote {
+                
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.none.rawValue, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
+                        return
+                    }
+                    
+                    // Success
+                    //subCellViewModel.isUpvoted.value = false
+                    //subCellViewModel.isDownvoted.value = false
+                })
+                
+                subCellViewModel.didRequestNoVote.value = false
+            }
+        }
     }
     
     func bind(subTitleViewModel: SubmissionTitleCellViewModel, dataModel: SubmissionDataModelProtocol) {
