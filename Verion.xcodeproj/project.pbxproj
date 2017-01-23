@@ -91,6 +91,38 @@
 		43A33D331E36ABA00032D7A7 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A33D321E36ABA00032D7A7 /* CoreBluetooth.framework */; };
 		43A33D351E36ABA80032D7A7 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A33D341E36ABA80032D7A7 /* GLKit.framework */; };
 		43A33D371E36ABAE0032D7A7 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A33D361E36ABAE0032D7A7 /* SafariServices.framework */; };
+		43A33DD91E36B1780032D7A7 /* Appodeal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A33DB91E36B1780032D7A7 /* Appodeal.framework */; };
+		43A33DDA1E36B1780032D7A7 /* __vungle.db in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DBB1E36B1780032D7A7 /* __vungle.db */; };
+		43A33DDB1E36B1780032D7A7 /* Appodeal.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DBC1E36B1780032D7A7 /* Appodeal.bundle */; };
+		43A33DDC1E36B1780032D7A7 /* MPAdBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DBD1E36B1780032D7A7 /* MPAdBrowserController.xib */; };
+		43A33DDD1E36B1780032D7A7 /* MPCloseBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DBE1E36B1780032D7A7 /* MPCloseBtn.png */; };
+		43A33DDE1E36B1780032D7A7 /* MPCloseBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DBF1E36B1780032D7A7 /* MPCloseBtn@2x.png */; };
+		43A33DDF1E36B1780032D7A7 /* MPCloseBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC01E36B1780032D7A7 /* MPCloseBtn@3x.png */; };
+		43A33DE01E36B1780032D7A7 /* MPCloseButtonX.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC11E36B1780032D7A7 /* MPCloseButtonX.png */; };
+		43A33DE11E36B1780032D7A7 /* MPCloseButtonX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC21E36B1780032D7A7 /* MPCloseButtonX@2x.png */; };
+		43A33DE21E36B1780032D7A7 /* MPCloseButtonX@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC31E36B1780032D7A7 /* MPCloseButtonX@3x.png */; };
+		43A33DE31E36B1780032D7A7 /* MPDAAIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC41E36B1780032D7A7 /* MPDAAIcon.png */; };
+		43A33DE41E36B1780032D7A7 /* MPDAAIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC51E36B1780032D7A7 /* MPDAAIcon@2x.png */; };
+		43A33DE51E36B1780032D7A7 /* MPDAAIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC61E36B1780032D7A7 /* MPDAAIcon@3x.png */; };
+		43A33DE61E36B1780032D7A7 /* MPMutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC71E36B1780032D7A7 /* MPMutedBtn.png */; };
+		43A33DE71E36B1780032D7A7 /* MPMutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC81E36B1780032D7A7 /* MPMutedBtn@2x.png */; };
+		43A33DE81E36B1780032D7A7 /* MPMutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DC91E36B1780032D7A7 /* MPMutedBtn@3x.png */; };
+		43A33DE91E36B1780032D7A7 /* MPPlayBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DCA1E36B1780032D7A7 /* MPPlayBtn.png */; };
+		43A33DEA1E36B1780032D7A7 /* MPPlayBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DCB1E36B1780032D7A7 /* MPPlayBtn@2x.png */; };
+		43A33DEB1E36B1780032D7A7 /* MPPlayBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DCC1E36B1780032D7A7 /* MPPlayBtn@3x.png */; };
+		43A33DEC1E36B1780032D7A7 /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DCD1E36B1780032D7A7 /* MPUnmutedBtn.png */; };
+		43A33DED1E36B1780032D7A7 /* MPUnmutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DCE1E36B1780032D7A7 /* MPUnmutedBtn@2x.png */; };
+		43A33DEE1E36B1780032D7A7 /* MPUnmutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DCF1E36B1780032D7A7 /* MPUnmutedBtn@3x.png */; };
+		43A33DEF1E36B1780032D7A7 /* MRAID.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD01E36B1780032D7A7 /* MRAID.bundle */; };
+		43A33DF01E36B1780032D7A7 /* StartApp.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD11E36B1780032D7A7 /* StartApp.bundle */; };
+		43A33DF11E36B1780032D7A7 /* TapjoyResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD21E36B1780032D7A7 /* TapjoyResources.bundle */; };
+		43A33DF21E36B1780032D7A7 /* UnityAds.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD31E36B1780032D7A7 /* UnityAds.bundle */; };
+		43A33DF31E36B1780032D7A7 /* vg_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD41E36B1780032D7A7 /* vg_close.png */; };
+		43A33DF41E36B1780032D7A7 /* vg_cta.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD51E36B1780032D7A7 /* vg_cta.png */; };
+		43A33DF51E36B1780032D7A7 /* vg_mute_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD61E36B1780032D7A7 /* vg_mute_off.png */; };
+		43A33DF61E36B1780032D7A7 /* vg_mute_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD71E36B1780032D7A7 /* vg_mute_on.png */; };
+		43A33DF71E36B1780032D7A7 /* vg_privacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD81E36B1780032D7A7 /* vg_privacy.png */; };
+		43A33DF91E36B2420032D7A7 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A33DF81E36B2420032D7A7 /* libz.tbd */; };
 		43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */; };
 		43A92D471E3295C7007D6B4F /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A92D461E3295C7007D6B4F /* LoginCell.swift */; };
 		43A92D491E3295D5007D6B4F /* LoginCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */; };
@@ -292,6 +324,38 @@
 		43A33D321E36ABA00032D7A7 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		43A33D341E36ABA80032D7A7 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		43A33D361E36ABAE0032D7A7 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		43A33DB91E36B1780032D7A7 /* Appodeal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Appodeal.framework; sourceTree = "<group>"; };
+		43A33DBB1E36B1780032D7A7 /* __vungle.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = __vungle.db; sourceTree = "<group>"; };
+		43A33DBC1E36B1780032D7A7 /* Appodeal.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Appodeal.bundle; sourceTree = "<group>"; };
+		43A33DBD1E36B1780032D7A7 /* MPAdBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MPAdBrowserController.xib; sourceTree = "<group>"; };
+		43A33DBE1E36B1780032D7A7 /* MPCloseBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseBtn.png; sourceTree = "<group>"; };
+		43A33DBF1E36B1780032D7A7 /* MPCloseBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@2x.png"; sourceTree = "<group>"; };
+		43A33DC01E36B1780032D7A7 /* MPCloseBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@3x.png"; sourceTree = "<group>"; };
+		43A33DC11E36B1780032D7A7 /* MPCloseButtonX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseButtonX.png; sourceTree = "<group>"; };
+		43A33DC21E36B1780032D7A7 /* MPCloseButtonX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@2x.png"; sourceTree = "<group>"; };
+		43A33DC31E36B1780032D7A7 /* MPCloseButtonX@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@3x.png"; sourceTree = "<group>"; };
+		43A33DC41E36B1780032D7A7 /* MPDAAIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPDAAIcon.png; sourceTree = "<group>"; };
+		43A33DC51E36B1780032D7A7 /* MPDAAIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@2x.png"; sourceTree = "<group>"; };
+		43A33DC61E36B1780032D7A7 /* MPDAAIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@3x.png"; sourceTree = "<group>"; };
+		43A33DC71E36B1780032D7A7 /* MPMutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPMutedBtn.png; sourceTree = "<group>"; };
+		43A33DC81E36B1780032D7A7 /* MPMutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@2x.png"; sourceTree = "<group>"; };
+		43A33DC91E36B1780032D7A7 /* MPMutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@3x.png"; sourceTree = "<group>"; };
+		43A33DCA1E36B1780032D7A7 /* MPPlayBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPPlayBtn.png; sourceTree = "<group>"; };
+		43A33DCB1E36B1780032D7A7 /* MPPlayBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@2x.png"; sourceTree = "<group>"; };
+		43A33DCC1E36B1780032D7A7 /* MPPlayBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@3x.png"; sourceTree = "<group>"; };
+		43A33DCD1E36B1780032D7A7 /* MPUnmutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPUnmutedBtn.png; sourceTree = "<group>"; };
+		43A33DCE1E36B1780032D7A7 /* MPUnmutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@2x.png"; sourceTree = "<group>"; };
+		43A33DCF1E36B1780032D7A7 /* MPUnmutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@3x.png"; sourceTree = "<group>"; };
+		43A33DD01E36B1780032D7A7 /* MRAID.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MRAID.bundle; sourceTree = "<group>"; };
+		43A33DD11E36B1780032D7A7 /* StartApp.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = StartApp.bundle; sourceTree = "<group>"; };
+		43A33DD21E36B1780032D7A7 /* TapjoyResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapjoyResources.bundle; sourceTree = "<group>"; };
+		43A33DD31E36B1780032D7A7 /* UnityAds.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UnityAds.bundle; sourceTree = "<group>"; };
+		43A33DD41E36B1780032D7A7 /* vg_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_close.png; sourceTree = "<group>"; };
+		43A33DD51E36B1780032D7A7 /* vg_cta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_cta.png; sourceTree = "<group>"; };
+		43A33DD61E36B1780032D7A7 /* vg_mute_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_mute_off.png; sourceTree = "<group>"; };
+		43A33DD71E36B1780032D7A7 /* vg_mute_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_mute_on.png; sourceTree = "<group>"; };
+		43A33DD81E36B1780032D7A7 /* vg_privacy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_privacy.png; sourceTree = "<group>"; };
+		43A33DF81E36B2420032D7A7 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelLegacy.swift; sourceTree = "<group>"; };
 		43A92D461E3295C7007D6B4F /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
 		43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCellViewModel.swift; sourceTree = "<group>"; };
@@ -420,6 +484,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43A33DF91E36B2420032D7A7 /* libz.tbd in Frameworks */,
 				43A33D371E36ABAE0032D7A7 /* SafariServices.framework in Frameworks */,
 				43A33D351E36ABA80032D7A7 /* GLKit.framework in Frameworks */,
 				43A33D331E36ABA00032D7A7 /* CoreBluetooth.framework in Frameworks */,
@@ -430,6 +495,7 @@
 				43A33D291E36AB750032D7A7 /* StoreKit.framework in Frameworks */,
 				43A33D271E36AB700032D7A7 /* Social.framework in Frameworks */,
 				43A33D251E36AB620032D7A7 /* QuartzCore.framework in Frameworks */,
+				43A33DD91E36B1780032D7A7 /* Appodeal.framework in Frameworks */,
 				43A33D231E36AB590032D7A7 /* MobileCoreServices.framework in Frameworks */,
 				43A33D211E36AB4F0032D7A7 /* MessageUI.framework in Frameworks */,
 				43A33D1F1E36AB480032D7A7 /* MediaPlayer.framework in Frameworks */,
@@ -566,6 +632,53 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		43A33DB81E36B1780032D7A7 /* Appodeal */ = {
+			isa = PBXGroup;
+			children = (
+				43A33DB91E36B1780032D7A7 /* Appodeal.framework */,
+				43A33DBA1E36B1780032D7A7 /* Resources */,
+			);
+			name = Appodeal;
+			path = Carthage/Build/iOS/Appodeal;
+			sourceTree = SOURCE_ROOT;
+		};
+		43A33DBA1E36B1780032D7A7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				43A33DBB1E36B1780032D7A7 /* __vungle.db */,
+				43A33DBC1E36B1780032D7A7 /* Appodeal.bundle */,
+				43A33DBD1E36B1780032D7A7 /* MPAdBrowserController.xib */,
+				43A33DBE1E36B1780032D7A7 /* MPCloseBtn.png */,
+				43A33DBF1E36B1780032D7A7 /* MPCloseBtn@2x.png */,
+				43A33DC01E36B1780032D7A7 /* MPCloseBtn@3x.png */,
+				43A33DC11E36B1780032D7A7 /* MPCloseButtonX.png */,
+				43A33DC21E36B1780032D7A7 /* MPCloseButtonX@2x.png */,
+				43A33DC31E36B1780032D7A7 /* MPCloseButtonX@3x.png */,
+				43A33DC41E36B1780032D7A7 /* MPDAAIcon.png */,
+				43A33DC51E36B1780032D7A7 /* MPDAAIcon@2x.png */,
+				43A33DC61E36B1780032D7A7 /* MPDAAIcon@3x.png */,
+				43A33DC71E36B1780032D7A7 /* MPMutedBtn.png */,
+				43A33DC81E36B1780032D7A7 /* MPMutedBtn@2x.png */,
+				43A33DC91E36B1780032D7A7 /* MPMutedBtn@3x.png */,
+				43A33DCA1E36B1780032D7A7 /* MPPlayBtn.png */,
+				43A33DCB1E36B1780032D7A7 /* MPPlayBtn@2x.png */,
+				43A33DCC1E36B1780032D7A7 /* MPPlayBtn@3x.png */,
+				43A33DCD1E36B1780032D7A7 /* MPUnmutedBtn.png */,
+				43A33DCE1E36B1780032D7A7 /* MPUnmutedBtn@2x.png */,
+				43A33DCF1E36B1780032D7A7 /* MPUnmutedBtn@3x.png */,
+				43A33DD01E36B1780032D7A7 /* MRAID.bundle */,
+				43A33DD11E36B1780032D7A7 /* StartApp.bundle */,
+				43A33DD21E36B1780032D7A7 /* TapjoyResources.bundle */,
+				43A33DD31E36B1780032D7A7 /* UnityAds.bundle */,
+				43A33DD41E36B1780032D7A7 /* vg_close.png */,
+				43A33DD51E36B1780032D7A7 /* vg_cta.png */,
+				43A33DD61E36B1780032D7A7 /* vg_mute_off.png */,
+				43A33DD71E36B1780032D7A7 /* vg_mute_on.png */,
+				43A33DD81E36B1780032D7A7 /* vg_privacy.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		43ABEB7D1E137FA300458E3D /* Flurry */ = {
 			isa = PBXGroup;
 			children = (
@@ -638,6 +751,7 @@
 		43B056821E0E4691007083E8 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				43A33DB81E36B1780032D7A7 /* Appodeal */,
 				43829EF51E25B09500754AF3 /* GoshDarnIt */,
 				43ABEBAD1E14EF3000458E3D /* RMStore */,
 				43ABEB7D1E137FA300458E3D /* Flurry */,
@@ -900,6 +1014,7 @@
 		43F9A04C1DEA3C26001EB1FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43A33DF81E36B2420032D7A7 /* libz.tbd */,
 				43A33D361E36ABAE0032D7A7 /* SafariServices.framework */,
 				43A33D341E36ABA80032D7A7 /* GLKit.framework */,
 				43A33D321E36ABA00032D7A7 /* CoreBluetooth.framework */,
@@ -1049,26 +1164,56 @@
 			buildActionMask = 2147483647;
 			files = (
 				43B056CC1E0E4691007083E8 /* Info.plist in Resources */,
+				43A33DE11E36B1780032D7A7 /* MPCloseButtonX@2x.png in Resources */,
 				43B0571D1E0E7943007083E8 /* SampleComments_v1.txt in Resources */,
 				436D25EE1E3308DE00FE9ED2 /* Login.storyboard in Resources */,
 				43B057211E0E7943007083E8 /* SampleSubverseList_v1.txt in Resources */,
+				43A33DDC1E36B1780032D7A7 /* MPAdBrowserController.xib in Resources */,
 				43ABEB7C1E137F2300458E3D /* Assets.xcassets in Resources */,
+				43A33DDF1E36B1780032D7A7 /* MPCloseBtn@3x.png in Resources */,
 				4375C0401DF74B1700576CC6 /* Comments.storyboard in Resources */,
 				43B0571C1E0E7943007083E8 /* SampleComments_legacy.txt in Resources */,
+				43A33DF11E36B1780032D7A7 /* TapjoyResources.bundle in Resources */,
+				43A33DEE1E36B1780032D7A7 /* MPUnmutedBtn@3x.png in Resources */,
+				43A33DE51E36B1780032D7A7 /* MPDAAIcon@3x.png in Resources */,
 				43B056DF1E0E4691007083E8 /* Info.plist in Resources */,
+				43A33DF51E36B1780032D7A7 /* vg_mute_off.png in Resources */,
+				43A33DDD1E36B1780032D7A7 /* MPCloseBtn.png in Resources */,
 				43F9A0371DEA3AE0001EB1FC /* LaunchScreen.storyboard in Resources */,
+				43A33DF21E36B1780032D7A7 /* UnityAds.bundle in Resources */,
+				43A33DEC1E36B1780032D7A7 /* MPUnmutedBtn.png in Resources */,
+				43A33DDE1E36B1780032D7A7 /* MPCloseBtn@2x.png in Resources */,
+				43A33DE81E36B1780032D7A7 /* MPMutedBtn@3x.png in Resources */,
 				43B057201E0E7943007083E8 /* SampleSubverseList_legacy.txt in Resources */,
 				43B0571E1E0E7943007083E8 /* SampleJsonSubmissions_legacy.txt in Resources */,
+				43A33DE21E36B1780032D7A7 /* MPCloseButtonX@3x.png in Resources */,
+				43A33DE91E36B1780032D7A7 /* MPPlayBtn.png in Resources */,
+				43A33DF01E36B1780032D7A7 /* StartApp.bundle in Resources */,
 				43B056BD1E0E4691007083E8 /* Info.plist in Resources */,
+				43A33DF31E36B1780032D7A7 /* vg_close.png in Resources */,
 				43B056BE1E0E4691007083E8 /* Info.plist in Resources */,
+				43A33DF71E36B1780032D7A7 /* vg_privacy.png in Resources */,
+				43A33DEA1E36B1780032D7A7 /* MPPlayBtn@2x.png in Resources */,
 				43433D8C1E0575040017FAB0 /* FindSubverse.storyboard in Resources */,
+				43A33DDA1E36B1780032D7A7 /* __vungle.db in Resources */,
 				43B056CF1E0E4691007083E8 /* LoadingView.xib in Resources */,
+				43A33DE01E36B1780032D7A7 /* MPCloseButtonX.png in Resources */,
+				43A33DF41E36B1780032D7A7 /* vg_cta.png in Resources */,
 				43829EFB1E25B09500754AF3 /* Profanity.json in Resources */,
+				43A33DE61E36B1780032D7A7 /* MPMutedBtn.png in Resources */,
 				43B0565F1E0D1AA3007083E8 /* SliderController.storyboard in Resources */,
+				43A33DE41E36B1780032D7A7 /* MPDAAIcon@2x.png in Resources */,
 				432564B61DEEB798001B943A /* TabController.storyboard in Resources */,
+				43A33DDB1E36B1780032D7A7 /* Appodeal.bundle in Resources */,
+				43A33DE71E36B1780032D7A7 /* MPMutedBtn@2x.png in Resources */,
+				43A33DEF1E36B1780032D7A7 /* MRAID.bundle in Resources */,
+				43A33DED1E36B1780032D7A7 /* MPUnmutedBtn@2x.png in Resources */,
 				432564391DECAE8F001B943A /* Subverse.storyboard in Resources */,
 				43B0571F1E0E7943007083E8 /* SampleJsonSubmissions_v1.txt in Resources */,
+				43A33DF61E36B1780032D7A7 /* vg_mute_on.png in Resources */,
+				43A33DEB1E36B1780032D7A7 /* MPPlayBtn@3x.png in Resources */,
 				43B0566B1E0D2296007083E8 /* LeftMenu.storyboard in Resources */,
+				43A33DE31E36B1780032D7A7 /* MPDAAIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1306,6 +1451,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1325,6 +1471,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1357,6 +1504,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1369,6 +1517,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1387,6 +1536,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Verion/Source/Libraries/Admob",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Appodeal-1.3.7-fat",
+					"$(PROJECT_DIR)/Verion/Source/Libraries/Appodeal-1.3.7-fat",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Appodeal",
 				);
 				INFOPLIST_FILE = Verion/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1419,6 +1571,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Verion/Source/Libraries/Admob",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Appodeal-1.3.7-fat",
+					"$(PROJECT_DIR)/Verion/Source/Libraries/Appodeal-1.3.7-fat",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Appodeal",
 				);
 				INFOPLIST_FILE = Verion/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

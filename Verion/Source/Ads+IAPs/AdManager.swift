@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Appodeal
 
 enum AdServiceType {
     case none
@@ -18,11 +19,13 @@ class AdManager: NSObject {
 
     private let GOOGLE_ADS_KEY = "ca-app-pub-4428866879213280~5788052650"
     private let GOOGLE_AD_UNIT_KEY = "ca-app-pub-4428866879213280/1218252257"
+    private let APPODEAL_API_KEY = "8f5394101ef4f3f028acfc163ce8bec3163596840b7ec09d"
+    
     var adServiceType: AdServiceType = .none
     
     private var currentBannerAd: UIView?
     private var lastRefreshTime: Date?
-    private let REFRESH_TIME_INTERVAL: TimeInterval = 60.0
+    private let REFRESH_TIME_INTERVAL: TimeInterval = 16.0
     
     static let sharedInstance: AdManager = {
         let instance = AdManager(adServiceType: .appodeal)
@@ -44,7 +47,7 @@ class AdManager: NSObject {
         if self.adServiceType == .admob {
             //GADMobileAds.configure(withApplicationID: self.GOOGLE_ADS_KEY)
         } else if self.adServiceType == .appodeal {
-            
+            Appodeal.initialize(withApiKey: self.APPODEAL_API_KEY, types: .banner)
         }
     }
     
@@ -78,9 +81,29 @@ class AdManager: NSObject {
                 bannerAd = self.currentBannerAd
             }*/
             break
+        case .appodeal:
+            if self.isCurrentTimePastRefreshInterval() {
+                // If it is, get a new ad
+                self.currentBannerAd = self.getAppodealBannerAd(rootViewController: rootViewController)
+                bannerAd = self.currentBannerAd
+            } else {
+                // If it isn't, return the old ad
+                bannerAd = self.currentBannerAd
+            }
+            
         default:
             break
         }
+        
+        return bannerAd
+    }
+    
+    private func getAppodealBannerAd(rootViewController: UIViewController) -> UIView? {
+        
+        let width = UIScreen.main.bounds.size.width
+        let size = CGSize(width: width, height: 32.0)
+        let bannerAd = AppodealBannerView.init(size: size, rootViewController: rootViewController)
+        bannerAd?.loadAd()
         
         return bannerAd
     }
@@ -140,7 +163,7 @@ class AdManager: NSObject {
                 bannerHeight = 90.0
             }
         default:
-            bannerHeight = 0.0
+            bannerHeight = 32.0
             break
         }
         
