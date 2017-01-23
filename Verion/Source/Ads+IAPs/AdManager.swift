@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import GoogleMobileAds
 
 enum AdServiceType {
     case none
     case admob
+    case appodeal
 }
 
 class AdManager: NSObject {
@@ -25,7 +25,7 @@ class AdManager: NSObject {
     private let REFRESH_TIME_INTERVAL: TimeInterval = 60.0
     
     static let sharedInstance: AdManager = {
-        let instance = AdManager(adServiceType: .admob)
+        let instance = AdManager(adServiceType: .appodeal)
         return instance
     }()
     
@@ -42,7 +42,9 @@ class AdManager: NSObject {
     
     func startAdNetwork() {
         if self.adServiceType == .admob {
-            GADMobileAds.configure(withApplicationID: self.GOOGLE_ADS_KEY)
+            //GADMobileAds.configure(withApplicationID: self.GOOGLE_ADS_KEY)
+        } else if self.adServiceType == .appodeal {
+            
         }
     }
     
@@ -65,6 +67,7 @@ class AdManager: NSObject {
         switch self.adServiceType {
         case .admob:
             
+            /*
             // Check if current time is past the refresh interval for last request time
             if self.isCurrentTimePastRefreshInterval() {
                 // If it is, get a new ad
@@ -73,8 +76,8 @@ class AdManager: NSObject {
             } else {
                 // If it isn't, return the old ad
                 bannerAd = self.currentBannerAd
-            }
-            
+            }*/
+            break
         default:
             break
         }
@@ -82,6 +85,7 @@ class AdManager: NSObject {
         return bannerAd
     }
     
+    /*
     private func getGoogleBannerAd(rootViewController: UIViewController) -> UIView? {
         let adSize: GADAdSize
         if (UIDevice.current.orientation == UIDeviceOrientation.portrait) {
@@ -96,7 +100,7 @@ class AdManager: NSObject {
         googleBannerAd.load(GADRequest())
         
         return googleBannerAd
-    }
+    }*/
     
     private func isCurrentTimePastRefreshInterval() -> Bool {
         var shouldRefresh = false
@@ -144,6 +148,7 @@ class AdManager: NSObject {
     }
 }
 
+/*
 extension AdManager: GADBannerViewDelegate {
     func adViewDidReceiveAd(_ bannerView: GADBannerView) {
         bannerView.isHidden = false
@@ -165,3 +170,4 @@ extension AdManager: GADBannerViewDelegate {
         
     }
 }
+*/
