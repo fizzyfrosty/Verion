@@ -55,7 +55,7 @@ class CommentCellViewModel {
     
     // Cell Height
     let CELL_VERTICAL_MARGINS: CGFloat = 55.0
-    private let CELL_HORIZONTAL_MARGINS: CGFloat = 30.0
+    private let CELL_HORIZONTAL_MARGINS: CGFloat = 40.0
     private let CELL_MAX_HEIGHT: CGFloat = 9999.0
     private let CELL_MINIMIZED_HEIGHT: CGFloat = 30.0
     private let BOTTOM_BUTTONS_HEIGHT: CGFloat = 35.0
@@ -94,7 +94,7 @@ class CommentCellViewModel {
             
             let textHeight = self.textHeight
             
-            let height = textHeight + self.CELL_VERTICAL_MARGINS + self.BOTTOM_BUTTONS_HEIGHT
+            let height = CGFloat(Int(textHeight + self.CELL_VERTICAL_MARGINS + self.BOTTOM_BUTTONS_HEIGHT))
             
             return height
         }

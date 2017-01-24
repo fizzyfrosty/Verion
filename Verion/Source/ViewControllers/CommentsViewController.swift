@@ -115,7 +115,13 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             self.adSectionNumber = 1
             self.commentsSectionNumber = self.adSectionNumber + 1
             self.numOfSectionsBeforeComments = 2
+            
+            // Pre-emptively Load the banner ad
+            _ = self.adManager?.getBannerAd(rootViewController: self)
         }
+        
+        
+        
     }
     
     fileprivate func saveData() {

@@ -32,8 +32,11 @@ class CommentCell: UITableViewCell {
     
     @IBOutlet var shiftingViewLeadingConstraint: NSLayoutConstraint!
     
-    let BACKGROUND_COLOR_EVEN_CHILD = UIColor.white
-    let BACKGROUND_COLOR_ODD_CHILD = UIColor.init(red: 209.0/255.0, green: 229.0/255.0, blue: 241.0/255.0, alpha: 1.0)//UIColor.init(red: 209.0/255.0, green: 229.0/255.0, blue: 241.0/255.0, alpha: 1.0)
+    @IBOutlet var childColorBar: UIView!
+    
+    
+    let BACKGROUND_COLOR_EVEN_CHILD = UIColor.init(red: 135.0/255.0, green: 145.0/255.0, blue: 241.0/255.0, alpha: 1.0)
+    let BACKGROUND_COLOR_ODD_CHILD = UIColor.init(red: 255.0/255.0, green: 179.0/255.0, blue: 192.0/255.0, alpha: 1.0)
     
     @IBOutlet var headerView: UIView!
     
@@ -147,9 +150,10 @@ class CommentCell: UITableViewCell {
     }
     
     private func setBackgroundColors(withColor color: UIColor) {
-        self.contentView.backgroundColor = color
-        self.shiftingContentView.backgroundColor = color
-        self.textView.backgroundColor = color
+        //self.contentView.backgroundColor = color
+        //self.shiftingContentView.backgroundColor = color
+        //self.textView.backgroundColor = color
+        self.childColorBar.backgroundColor = color
     }
     
     private func notifyDelegateDidPressBlockUser(sender: Any) {
