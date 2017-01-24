@@ -37,8 +37,8 @@ UI
 	* Save Username to data
 	* Save password using keychain
 
-	- Make actual request
-	- Return success and error
+	* Make actual request
+	* Return success and error
 
 Backend
 
