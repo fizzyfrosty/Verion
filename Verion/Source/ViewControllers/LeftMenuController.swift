@@ -29,7 +29,7 @@ class LeftMenuController: UITableViewController {
         case contactUs = 4
         case settings = 5
         
-        static let allValues = [icon, subverseHistory, filters, supportUs, contactUs, settings]
+        static let allValues = [icon, subverseHistory, filters, supportUs, contactUs]
     }
     
     // Section Titles

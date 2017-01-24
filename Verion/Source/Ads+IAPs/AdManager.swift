@@ -82,14 +82,9 @@ class AdManager: NSObject {
             }*/
             break
         case .appodeal:
-            if self.isCurrentTimePastRefreshInterval() {
-                // If it is, get a new ad
-                self.currentBannerAd = self.getAppodealBannerAd(rootViewController: rootViewController)
-                bannerAd = self.currentBannerAd
-            } else {
-                // If it isn't, return the old ad
-                bannerAd = self.currentBannerAd
-            }
+            
+            self.currentBannerAd = self.getAppodealBannerAd(rootViewController: rootViewController)
+            bannerAd = self.currentBannerAd
             
         default:
             break
@@ -99,11 +94,17 @@ class AdManager: NSObject {
     }
     
     private func getAppodealBannerAd(rootViewController: UIViewController) -> UIView? {
+        var bannerAd: AppodealBannerView?
         
-        let width = UIScreen.main.bounds.size.width
-        let size = CGSize(width: width, height: 32.0)
-        let bannerAd = AppodealBannerView.init(size: size, rootViewController: rootViewController)
-        bannerAd?.loadAd()
+        if self.currentBannerAd != nil {
+            bannerAd = self.currentBannerAd as? AppodealBannerView
+            bannerAd?.rootViewController = rootViewController
+        } else {
+            let width = UIScreen.main.bounds.size.width
+            let size = CGSize(width: width, height: self.getBannerAdHeight())
+            bannerAd = AppodealBannerView.init(size: size, rootViewController: rootViewController)
+            bannerAd?.loadAd()
+        }
         
         return bannerAd
     }
@@ -154,6 +155,15 @@ class AdManager: NSObject {
         // These are google standards: https://firebase.google.com/docs/admob/ios/banner?hl=en-US
         switch self.adServiceType {
         case .admob:
+            let screenHeight = UIScreen.main.bounds.height
+            if screenHeight <= 400 {
+                bannerHeight = 32.0
+            } else if screenHeight > 400 && screenHeight <= 720 {
+                bannerHeight = 50.0
+            } else {
+                bannerHeight = 90.0
+            }
+        case .appodeal:
             let screenHeight = UIScreen.main.bounds.height
             if screenHeight <= 400 {
                 bannerHeight = 32.0
