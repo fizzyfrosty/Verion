@@ -140,62 +140,91 @@ class OfflineDataProvider: DataProviderType {
         subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
         subCellViewModel.dataModel = dataModel
         
-        // FIXME: need to reset these bindings. Tag onto the viewModels?
+        subCellViewModel.resetDataProviderBindings()
         
         // Bind upvote event to request
-        _ = subCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
+        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
             if didRequestUpvote {
+                // Ensure that access/refresh tokens are available
+                
                 self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.up.rawValue, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
+                        
+                        #if DEBUG
+                            print("Response failed: Upvote")
+                        #endif
+                        
                         return
                     }
                     
                     // Success
-                    //subCellViewModel.isUpvoted.value = true
+                    subCellViewModel.isUpvoted.value = true
+                    
+                    #if DEBUG
+                    print("Response received: Upvote")
+                    #endif
                 })
                 
                 subCellViewModel.didRequestUpvote.value = false
             }
-        }
+        })
         
         // Bind downvote event to request
-        _ = subCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
+        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
             if didRequestDownvote {
                 self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.down.rawValue, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
+                        
+                        #if DEBUG
+                            print("Response failed: Downvote")
+                        #endif
+                        
                         return
                     }
                     
                     // Success
-                    //subCellViewModel.isDownvoted.value = true
+                    subCellViewModel.isDownvoted.value = true
+                    
+                    #if DEBUG
+                        print("Response received: Downvote")
+                    #endif
                 })
                 
                 subCellViewModel.didRequestDownvote.value = false
             }
-        }
+        })
         
-        _ = subCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
+        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
             if didRequestNoVote {
                 
                 self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.none.rawValue, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
+                        
+                        #if DEBUG
+                            print("Response failed: NoVote")
+                        #endif
+                        
                         return
                     }
                     
                     // Success
-                    //subCellViewModel.isUpvoted.value = false
-                    //subCellViewModel.isDownvoted.value = false
+                    subCellViewModel.isUpvoted.value = false
+                    subCellViewModel.isDownvoted.value = false
+                    
+                    #if DEBUG
+                        print("Response received: NoVote")
+                    #endif
                 })
                 
                 subCellViewModel.didRequestNoVote.value = false
             }
-        }
+        })
     }
     
     func bind(subTitleViewModel: SubmissionTitleCellViewModel, dataModel: SubmissionDataModelProtocol) {

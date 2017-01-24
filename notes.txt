@@ -48,6 +48,21 @@ UI
 	- Handle error return
 	- If not logged in, request login
 
+
+* Save all bindings for SubCellViewModel to external and dispose before binding
+- Before making request, ensure that access/refresh tokens are available
+	- Present login if not, then continue with request
+	- 
+
+
+- Make a top level comment
+
+- Reply to comments
+	- Add button for reply
+	- UI for submitting comment
+	- Insert comment/reload comments
+
+
 Backend
 
 

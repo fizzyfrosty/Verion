@@ -72,6 +72,7 @@ class SubmissionCell: UITableViewCell {
     
     func bind(toViewModel viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool) {
         self.viewModel = viewModel
+        viewModel.resetViewBindings()
         
         // Bind to UI elements
         
@@ -91,13 +92,13 @@ class SubmissionCell: UITableViewCell {
         
         // Vote Count Label
         self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
-        self.bindings.append( viewModel.voteCountTotal.observeNext() { [weak self] count in
+        viewModel.viewBindings.append( viewModel.voteCountTotal.observeNext() { [weak self] count in
             self?.voteCountLabel.text = String(count)
         })
         
         // Separated Vote Count Label
         self.voteSeparatedCountLabel.text = viewModel.voteSeparatedCountString.value
-        self.bindings.append( viewModel.voteSeparatedCountString.observeNext() { [weak self] separatedCountString in
+        viewModel.viewBindings.append( viewModel.voteSeparatedCountString.observeNext() { [weak self] separatedCountString in
             self?.voteSeparatedCountLabel.text = separatedCountString
         })
         
@@ -112,6 +113,7 @@ class SubmissionCell: UITableViewCell {
         
         // Bind to User-input events
         // Upvote
+        self.upvoteButton.isSelected = viewModel.isUpvoted.value
         self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
             
             // If previously selected
@@ -138,6 +140,7 @@ class SubmissionCell: UITableViewCell {
         
         
         // Downvote
+        self.downvoteButton.isSelected = viewModel.isDownvoted.value
         self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
             
             // If previously selected
@@ -166,6 +169,12 @@ class SubmissionCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        self.resetBindings()
+        self.downvoteButton.isSelected = false
+        self.upvoteButton.isSelected = false
+    }
+    
+    private func resetBindings() {
         for binding in self.bindings {
             binding.dispose()
         }
