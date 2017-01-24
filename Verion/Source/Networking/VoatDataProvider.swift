@@ -29,9 +29,6 @@ class VoatDataProvider: DataProviderType {
     private let CONTENT_TYPE_HEADER = "Content-Type"
     private let CONTENT_TYPE_AUTH_VALUE = "application/x-www-form-urlencoded"
     
-    private var accessToken = ""
-    private var refreshToken = ""
-    
     
     private let VALIDATION_SUCCESSFUL_MESSAGE = "Validation successful"
     private let FRONTPAGE_SUBVERSE_NAME = "frontpage"
@@ -46,7 +43,7 @@ class VoatDataProvider: DataProviderType {
         
     }
     
-    func requestLoginAuthentication(username: String, password: String, completion: @escaping (Error?) -> ()) {
+    func requestLoginAuthentication(username: String, password: String, completion: @escaping (_ accessToken: String, _ refreshToken: String, Error?) -> ()) {
         
         let requestUrlString = self.getAuthenticationUrlStringV1()
         let headers = self.getAuthenticationHeaders()
@@ -57,14 +54,14 @@ class VoatDataProvider: DataProviderType {
             // FIXME: implement
             switch response.result {
             case .failure:
-                completion(response.error)
+                completion("", "", response.error)
             case .success:
                 
                 let jsonData = JSON.init(data: response.data!)
-                self.accessToken = jsonData["access_token"].stringValue
-                self.refreshToken = jsonData["refresh_token"].stringValue
+                let accessToken = jsonData["access_token"].stringValue
+                let refreshToken = jsonData["refresh_token"].stringValue
                 
-                completion(nil)
+                completion(accessToken, refreshToken, nil)
             }
             
         }
@@ -256,7 +253,7 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
-    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {
+    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol, viewController: SubverseViewController) -> Void {
         
         // Initialize the view model's values with data models
         let subCellVmInitData = self.dataProviderHelper.getSubCellVmInitData(fromDataModel: dataModel)

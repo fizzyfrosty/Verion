@@ -138,6 +138,11 @@ class SubmissionCell: UITableViewCell {
             }
         })
         
+        /*
+        viewModel.viewBindings.append( viewModel.isUpvoted.observeNext { [weak self] isUpvoted in
+            self?.upvoteButton.isSelected = isUpvoted
+        })*/
+        
         
         // Downvote
         self.downvoteButton.isSelected = viewModel.isDownvoted.value
@@ -164,6 +169,12 @@ class SubmissionCell: UITableViewCell {
                 }
             }
         })
+        
+        /*
+        viewModel.viewBindings.append( viewModel.isDownvoted.observeNext { [weak self] isDownvoted in
+            self?.downvoteButton.isSelected = isDownvoted
+        })*/
+        
     }
     
     override func prepareForReuse() {

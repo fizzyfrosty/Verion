@@ -11,6 +11,11 @@ import Alamofire
 
 class OAuth2Handler: RequestAdapter, RequestRetrier {
 
+    static let sharedInstance: OAuth2Handler = {
+        let instance = OAuth2Handler.init(clientID: "", baseURLString: "", accessToken: "", refreshToken: "")
+        return instance
+    }()
+    
     private typealias RefreshCompletion = (_ succeeded: Bool, _ accessToken: String?, _ refreshToken: String?) -> Void
     
     private let sessionManager: SessionManager = {
@@ -22,10 +27,10 @@ class OAuth2Handler: RequestAdapter, RequestRetrier {
     
     private let lock = NSLock()
     
-    private var clientID: String
-    private var baseURLString: String
-    private var accessToken: String
-    private var refreshToken: String
+    var clientID: String
+    var baseURLString: String
+    var accessToken: String
+    var refreshToken: String
     
     private var isRefreshing = false
     private var requestsToRetry: [RequestRetryCompletion] = []
@@ -38,6 +43,7 @@ class OAuth2Handler: RequestAdapter, RequestRetrier {
         self.accessToken = accessToken
         self.refreshToken = refreshToken
     }
+    
     
     // MARK: - RequestAdapter
     

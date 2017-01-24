@@ -28,10 +28,10 @@ protocol DataProviderType: class {
     func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentDataModelProtocol], CommentDataSegmentProtocol?,Error?) -> ())
     func requestSubverseList(completion: @escaping ([SubverseSearchResultDataModelProtocol], Error?) ->Void)
     func requestContent(submissionDataModel: SubmissionDataModelProtocol, downloadProgress: @escaping (Double)->(), completion: @escaping (Data?, SubmissionMediaType, Bool, Error?) -> Void)
-    func requestLoginAuthentication(username: String, password: String, completion: @escaping (Error?)->()) -> ()
+    func requestLoginAuthentication(username: String, password: String, completion: @escaping (_ accessToken: String, _ refreshToken: String, Error?)->()) -> ()
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, completion: @escaping(Error?)->())
     
-    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void
+    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol, viewController: SubverseViewController) -> Void
     func bind(subTitleViewModel: SubmissionTitleCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void
     func bind(subTextCellViewModel: SubmissionTextCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void
     func bind(subImageCellViewModel: SubmissionImageCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void

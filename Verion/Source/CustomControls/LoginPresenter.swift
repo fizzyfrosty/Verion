@@ -16,15 +16,15 @@ class LoginPresenter: LoginControllerDelegate {
         return instance
     }()
     
-    var completion: (_ username: String, _ error: Error?) -> ()
+    var completion: (_ username: String, _ accessToken: String, _ refreshToken: String, _ error: Error?) -> ()
     
     init() {
-        self.completion = { username, error in
+        self.completion = { username, accessToken, refreshToken, error in
             
         }
     }
     
-    func presentLogin(rootViewController: UIViewController, completion: @escaping (_ username: String, _ error: Error?
+    func presentLogin(rootViewController: UIViewController, completion: @escaping (_ username: String, _ accessToken: String, _ refreshToken: String, _ error: Error?
         )->() ) {
         
         // Initialize storyboard, view controller
@@ -49,18 +49,25 @@ class LoginPresenter: LoginControllerDelegate {
     
     
     
-    func loginControllerDidLogIn(loginController: LoginController, username: String) {
-        
+    func loginControllerDidLogIn(loginController: LoginController, username: String, accessToken: String, refreshToken: String) {
         #if DEBUG
             print("Signed In with username: \(username)")
         #endif
         
-        self.completion(username, nil)
+        self.completion(username, accessToken, refreshToken, nil)
+    }
+    
+    enum LoginError: Error {
+        case cancelled
+        case failed
     }
     
     func loginControllerFailedLogin(loginController: LoginController) {
         
+        self.completion("", "", "", LoginError.failed)
     }
     
-    
+    func loginControllerCancelledLogin(loginController: LoginController) {
+        self.completion("", "", "", LoginError.cancelled)
+    }
 }

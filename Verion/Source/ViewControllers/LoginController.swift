@@ -11,8 +11,9 @@ import NVActivityIndicatorView
 import MBProgressHUD
 
 protocol LoginControllerDelegate: class {
-    func loginControllerDidLogIn(loginController: LoginController, username: String)
+    func loginControllerDidLogIn(loginController: LoginController, username: String, accessToken: String, refreshToken: String)
     func loginControllerFailedLogin(loginController: LoginController)
+    func loginControllerCancelledLogin(loginController: LoginController)
 }
 
 class LoginController: UIViewController, UITextFieldDelegate {
@@ -31,6 +32,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     @IBAction func pressedCancel(_ sender: Any) {
         
+        self.notifyDelegateDidCancel()
+        
         self.dismissKeyboard()
         
         // Dismiss on cancel
@@ -41,6 +44,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     private var activityIndicator = ActivityIndicatorProvider.getStandardActivityIndicator()
     private var progressHud: MBProgressHUD?
+    private var accessToken: String = ""
+    private var refreshToken: String = ""
     weak var delegate: LoginControllerDelegate?
     
     // Dependencies
@@ -142,7 +147,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.failedLabel.isHidden = true
         
         // Perform Sign In
-        self.dataProvider?.requestLoginAuthentication(username: self.usernameTextfield.text!, password: self.passwordTextfield.text!, completion: { (error) in
+        self.dataProvider?.requestLoginAuthentication(username: self.usernameTextfield.text!, password: self.passwordTextfield.text!, completion: { (accessToken, refreshToken, error) in
             
             self.hideActivityIndicator()
             
@@ -160,8 +165,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
             }
             
             // Success
+            self.accessToken = accessToken
+            self.refreshToken = refreshToken
+            // Set Oauth Handler tokens
+            self.setOAuthHandlerTokens(accessToken: self.accessToken, refreshToken: self.refreshToken)
+            
             ActivityIndicatorProvider.showNotification(message: "Success!", view: self.view) {
-                self.notifyDelegateDidSignIn(username: self.usernameTextfield.text!)
+                self.notifyDelegateDidSignIn(username: self.usernameTextfield.text!, accessToken: self.accessToken, refreshToken: self.refreshToken)
                 
                 // Dismiss on completion
                 self.dismiss(animated: true) {
@@ -173,13 +183,21 @@ class LoginController: UIViewController, UITextFieldDelegate {
         })
     }
     
+    private func setOAuthHandlerTokens(accessToken: String, refreshToken: String) {
+        OAuth2Handler.sharedInstance.accessToken = accessToken
+        OAuth2Handler.sharedInstance.refreshToken = refreshToken
+    }
+    
     private func saveUserData() {
         let verionDataModel = self.dataManager?.getSavedData()
         verionDataModel?.isLoggedIn = true
         self.dataManager?.saveData(dataModel: verionDataModel!)
         
+        
         self.dataManager?.saveUsernameToKeychain(username: self.usernameTextfield.text!)
         self.dataManager?.savePasswordToKeychain(password: self.passwordTextfield.text!)
+        self.dataManager?.saveAccessTokenToKeychain(accessToken: self.accessToken)
+        self.dataManager?.saveRefreshTokenToKeychain(refreshToken: self.refreshToken)
     }
     
     private func disableButtons() {
@@ -207,12 +225,22 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.activityIndicator.removeFromSuperview()
     }
     
-    private func notifyDelegateDidSignIn(username: String) {
-        if let _ = self.delegate?.loginControllerDidLogIn(loginController: self, username: username) {
+    private func notifyDelegateDidSignIn(username: String, accessToken: String, refreshToken: String) {
+        if let _ = self.delegate?.loginControllerDidLogIn(loginController: self, username: username, accessToken: accessToken, refreshToken: refreshToken) {
             
         } else {
             #if DEBUG
             print("Warning: LoginController's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    private func notifyDelegateDidCancel() {
+        if let _ = self.delegate?.loginControllerCancelledLogin(loginController: self) {
+            
+        } else {
+            #if DEBUG
+                print("Warning: LoginController's delegate may not be set.")
             #endif
         }
     }
