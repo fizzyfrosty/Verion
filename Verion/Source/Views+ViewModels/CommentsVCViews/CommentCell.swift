@@ -36,7 +36,7 @@ class CommentCell: UITableViewCell {
     
     
     let BACKGROUND_COLOR_EVEN_CHILD = UIColor.init(red: 135.0/255.0, green: 145.0/255.0, blue: 241.0/255.0, alpha: 1.0)
-    let BACKGROUND_COLOR_ODD_CHILD = UIColor.init(red: 255.0/255.0, green: 179.0/255.0, blue: 192.0/255.0, alpha: 1.0)
+    let BACKGROUND_COLOR_ODD_CHILD = UIColor.init(red: 141.0/255.0, green: 204.0/255.0, blue: 255.0/255.0, alpha: 1.0)
     
     @IBOutlet var headerView: UIView!
     

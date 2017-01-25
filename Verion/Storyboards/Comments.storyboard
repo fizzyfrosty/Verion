@@ -317,7 +317,7 @@
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="awY-Xg-eHe" userLabel="bg2 View">
                                             <rect key="frame" x="10" y="0.0" width="10" height="229"/>
-                                            <color key="backgroundColor" red="0.99814003705978394" green="0.70346087217330933" blue="0.75484448671340942" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="0.55294117647058827" green="0.80000000000000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vST-wb-IGw" userLabel="bg3 View">
                                             <rect key="frame" x="20" y="0.0" width="10" height="229"/>
@@ -325,7 +325,7 @@
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oLu-tp-rks" userLabel="bg4 View">
                                             <rect key="frame" x="30" y="0.0" width="10" height="229"/>
-                                            <color key="backgroundColor" red="0.99814003705978394" green="0.70346087217330933" blue="0.75484448671340942" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="0.55294117647058827" green="0.80000000000000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cdv-ug-OPB" userLabel="bg5 View">
                                             <rect key="frame" x="40" y="0.0" width="10" height="229"/>
@@ -333,7 +333,7 @@
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hdv-LA-jkc" userLabel="bg6 View">
                                             <rect key="frame" x="50" y="0.0" width="10" height="229"/>
-                                            <color key="backgroundColor" red="0.99814003705978394" green="0.70346087217330933" blue="0.75484448671340942" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="0.55294117647058827" green="0.80000000000000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e8A-Fo-ikU" userLabel="bg7 View">
                                             <rect key="frame" x="60" y="0.0" width="10" height="229"/>
@@ -341,7 +341,7 @@
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fB4-28-Ocx" userLabel="bg8 View">
                                             <rect key="frame" x="70" y="0.0" width="10" height="229"/>
-                                            <color key="backgroundColor" red="0.99814003705978394" green="0.70346087217330933" blue="0.75484448671340942" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="0.55294117647058827" green="0.80000000000000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gW9-El-Pm3" userLabel="bg9 View">
                                             <rect key="frame" x="80" y="0.0" width="10" height="229"/>
@@ -349,7 +349,7 @@
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aZZ-Sf-kkn" userLabel="bg10 View">
                                             <rect key="frame" x="90" y="0.0" width="10" height="229"/>
-                                            <color key="backgroundColor" red="0.99814003705978394" green="0.70346087217330933" blue="0.75484448671340942" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="0.55171949501207829" green="0.79856067335954739" blue="0.99814003705978394" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ReM-e4-Fti" userLabel="bg11 View">
                                             <rect key="frame" x="100" y="0.0" width="10" height="229"/>
