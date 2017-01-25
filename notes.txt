@@ -45,8 +45,8 @@ UI
 	* Register arrow highlight from ui
 	* Make request on button tap
 	* On success, do nothing
+	* If not logged in, request login
 	- Handle error return
-	- If not logged in, request login
 
 
 * Save all bindings for SubCellViewModel to external and dispose before binding
@@ -60,9 +60,10 @@ UI
 		* Set tokens where authentication finishes
 		* Remove tokens where users log out
 
-
-
 - Make a top level comment
+	- Add button to comment
+	- UI for entering comment
+	- Insert comment on top level
 
 - Reply to comments
 	- Add button for reply
