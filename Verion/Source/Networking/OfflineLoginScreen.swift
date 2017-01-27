@@ -11,13 +11,16 @@ import SwinjectStoryboard
 
 class OfflineLoginScreen: LoginScreenProtocol, LoginControllerDelegate {
     
-    var authHandler: OAuth2Handler?
+    // Dependencies
+    private var authHandler: OAuth2Handler?
+    private var dataManager: DataManagerProtocol?
     
     private var completion: (_ username: String, _ error: Error?) -> ()
 
     
-    required init(authHandler: OAuth2Handler) {
+    required init(authHandler: OAuth2Handler, dataManager: DataManagerProtocol) {
         self.authHandler = authHandler
+        self.dataManager = dataManager
         self.completion = { username, error in
         }
     }
@@ -44,6 +47,8 @@ class OfflineLoginScreen: LoginScreenProtocol, LoginControllerDelegate {
             print("Signed In with username: \(username)")
         #endif
         
+        self.saveUserData(username: username, accessToken: accessToken, refreshToken: refreshToken)
+        
         self.completion(username, nil)
     }
     
@@ -53,6 +58,17 @@ class OfflineLoginScreen: LoginScreenProtocol, LoginControllerDelegate {
 
     func loginControllerCancelledLogin(loginController: LoginController) {
         // FIXME: return error
+    }
+    
+    private func saveUserData(username: String, accessToken: String, refreshToken: String) {
+        let verionDataModel = self.dataManager?.getSavedData()
+        verionDataModel?.isLoggedIn = true
+        self.dataManager?.saveData(dataModel: verionDataModel!)
+        
+        
+        self.dataManager?.saveUsernameToKeychain(username: username)
+        self.dataManager?.saveAccessTokenToKeychain(accessToken: accessToken)
+        self.dataManager?.saveRefreshTokenToKeychain(refreshToken: refreshToken)
     }
 
 }

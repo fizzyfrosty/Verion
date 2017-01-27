@@ -9,9 +9,7 @@
 import UIKit
 
 protocol LoginScreenProtocol: class {
-
-    var authHandler: OAuth2Handler? {get set}
     
-    init(authHandler: OAuth2Handler)
+    init(authHandler: OAuth2Handler, dataManager: DataManagerProtocol)
     func presentLogin(rootViewController: UIViewController, completion: @escaping (_ username: String, _ error: Error? ) ->())
 }

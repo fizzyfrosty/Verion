@@ -49,7 +49,6 @@
 		435FEADF1E31789600BB3867 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435FEADE1E31789600BB3867 /* AdCell.swift */; };
 		436D25EE1E3308DE00FE9ED2 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 436D25ED1E3308DE00FE9ED2 /* Login.storyboard */; };
 		436D25F01E3322E100FE9ED2 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D25EF1E3322E100FE9ED2 /* LoginController.swift */; };
-		436D25F21E33267900FE9ED2 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D25F11E33267900FE9ED2 /* LoginPresenter.swift */; };
 		436D25F51E33DD4A00FE9ED2 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436D25F31E33D7C000FE9ED2 /* MBProgressHUD.framework */; };
 		4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */; };
 		4375BFC21DF33EFB00576CC6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */; };
@@ -288,7 +287,6 @@
 		435FEADE1E31789600BB3867 /* AdCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
 		436D25ED1E3308DE00FE9ED2 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		436D25EF1E3322E100FE9ED2 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		436D25F11E33267900FE9ED2 /* LoginPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 		436D25F31E33D7C000FE9ED2 /* MBProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MBProgressHUD.framework; path = Carthage/Build/iOS/MBProgressHUD.framework; sourceTree = "<group>"; };
 		4375BFBC1DF30F5F00576CC6 /* APIVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
 		4375BFC11DF33EFB00576CC6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
@@ -615,7 +613,6 @@
 			children = (
 				4375BFCC1DF5D45400576CC6 /* SubverseRefreshControl.swift */,
 				4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */,
-				436D25F11E33267900FE9ED2 /* LoginPresenter.swift */,
 			);
 			path = CustomControls;
 			sourceTree = "<group>";
@@ -1301,7 +1298,6 @@
 				43433DB21E0581510017FAB0 /* SubverseSearchResultCell.swift in Sources */,
 				43A33CFD1E36745D0032D7A7 /* VoteType.swift in Sources */,
 				43433DA61E057E620017FAB0 /* CommentsSortByCellViewModel.swift in Sources */,
-				436D25F21E33267900FE9ED2 /* LoginPresenter.swift in Sources */,
 				43ABEB871E137FA300458E3D /* FlurryWatchEmpty.m in Sources */,
 				43F675251DF20078001F83BE /* DataProviderType.swift in Sources */,
 				43ABEC1A1E14EF3000458E3D /* RMStore.m in Sources */,

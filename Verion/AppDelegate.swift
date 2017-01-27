@@ -9,6 +9,7 @@
 import UIKit
 import Swinject
 import SwinjectStoryboard
+import OAuthSwift
 
 @UIApplicationMain
 
@@ -30,15 +31,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AdManager.sharedInstance.startAdNetwork()
         }
         
-        /*
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.makeKeyAndVisible()
-        self.window = window
+        return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         
-        let storyboard = SwinjectStoryboard.create(name: "Main", bundle: nil, container: container)
-        window.rootViewController = storyboard.instantiateInitialViewController()
-        */
-        
+        if url.host == "oauth-callback-url" {
+            OAuthSwift.handle(url: url)
+            
+        } else {
+            print ("Warning: Incorrect hostname returned from oauth-callback-url: \(url.host)")
+        }
         
         return true
     }
@@ -79,19 +82,19 @@ extension SwinjectStoryboard {
         let defaultContainer = SwinjectStoryboard.defaultContainer
         
         // FIXME: Set Offline or Online mode here before running
-        let mode: OnlineMode = .offline
+        let mode: OnlineMode = .online
         
         defaultContainer.register(SFXManagerType.self, factory: { _ in
             SFXManager()
         })
         
-        defaultContainer.register(LoginScreenProtocol.self) { _ in
+        defaultContainer.register(LoginScreenProtocol.self) { resolver in
             
             switch mode {
             case .offline:
-                return OfflineLoginScreen(authHandler: OAuth2Handler.sharedInstance)
+                return OfflineLoginScreen(authHandler: OAuth2Handler.sharedInstance, dataManager: resolver.resolve(DataManagerProtocol.self)!)
             case .online:
-                return OAuthSwiftAuthenticator(authHandler: OAuth2Handler.sharedInstance)
+                return OAuthSwiftAuthenticator(authHandler: OAuth2Handler.sharedInstance, dataManager: resolver.resolve(DataManagerProtocol.self)!)
             }
         }
         
@@ -153,7 +156,6 @@ extension SwinjectStoryboard {
         
         defaultContainer.storyboardInitCompleted(LoginController.self) { (ResolverType, C) in
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
-            C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
         }
     }
 }

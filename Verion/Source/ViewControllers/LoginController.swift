@@ -50,7 +50,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     // Dependencies
     var dataProvider: DataProviderType?
-    var dataManager: DataManagerProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -176,9 +175,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 // Dismiss on completion
                 self.dismiss(animated: true) {
                 }
-                
-                // Save data
-                self.saveUserData()
             }
         })
     }
@@ -186,18 +182,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
     private func setOAuthHandlerTokens(accessToken: String, refreshToken: String) {
         OAuth2Handler.sharedInstance.accessToken = accessToken
         OAuth2Handler.sharedInstance.refreshToken = refreshToken
-    }
-    
-    private func saveUserData() {
-        let verionDataModel = self.dataManager?.getSavedData()
-        verionDataModel?.isLoggedIn = true
-        self.dataManager?.saveData(dataModel: verionDataModel!)
-        
-        
-        self.dataManager?.saveUsernameToKeychain(username: self.usernameTextfield.text!)
-        self.dataManager?.savePasswordToKeychain(password: self.passwordTextfield.text!)
-        self.dataManager?.saveAccessTokenToKeychain(accessToken: self.accessToken)
-        self.dataManager?.saveRefreshTokenToKeychain(refreshToken: self.refreshToken)
     }
     
     private func disableButtons() {
