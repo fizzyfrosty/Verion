@@ -9,7 +9,7 @@
 import UIKit
 import SwinjectStoryboard
 
-class LoginPresenter: LoginControllerDelegate {
+class LoginPresenter {
     
     static let sharedInstance: LoginPresenter = {
         let instance = LoginPresenter.init()
@@ -27,15 +27,7 @@ class LoginPresenter: LoginControllerDelegate {
     func presentLogin(rootViewController: UIViewController, completion: @escaping (_ username: String, _ error: Error?
         )->() ) {
         
-        // Initialize storyboard, view controller
-        let storyboard = SwinjectStoryboard.create(name: "Login", bundle: nil)
-        let loginController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginController
-        loginController.delegate = self
         
-        // Push Controller
-        rootViewController.present(loginController, animated: true) { 
-            
-        }
         
         // Receive Login credentials
         
@@ -45,21 +37,6 @@ class LoginPresenter: LoginControllerDelegate {
         
         // On complete, call completion closure
         self.completion = completion
-    }
-    
-    
-    
-    func loginControllerDidLogIn(loginController: LoginController, username: String) {
-        
-        #if DEBUG
-            print("Signed In with username: \(username)")
-        #endif
-        
-        self.completion(username, nil)
-    }
-    
-    func loginControllerFailedLogin(loginController: LoginController) {
-        
     }
     
     
