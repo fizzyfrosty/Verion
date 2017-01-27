@@ -146,6 +146,27 @@ class LeftMenuController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        self.loginCellViewModel = self.getRefreshedLoginCellViewModel()
+        self.tableView.reloadData()
+    }
+    
+    private func getRefreshedLoginCellViewModel() -> LoginCellViewModel{
+        let loginCellViewModel = LoginCellViewModel()
+        
+        if let verionDataModel = dataManager?.getSavedData() {
+            
+            loginCellViewModel.isLoggedIn.value = verionDataModel.isLoggedIn
+            if loginCellViewModel.isLoggedIn.value == true {
+                
+                loginCellViewModel.username = (self.dataManager?.getUsernameFromKeychain())!
+            }
+        }
+        
+        return loginCellViewModel
+    }
+    
     private func setContentInsets() {
         let bottomInset: CGFloat = 200.0
         let originalContentInset = self.tableView.contentInset
@@ -182,13 +203,7 @@ class LeftMenuController: UITableViewController {
             self.filterLanguageCellVm?.shouldFilterLanguage.value = verionDataModel.shouldFilterLanguage
             
             // Settings
-            self.loginCellViewModel = LoginCellViewModel()
-            self.loginCellViewModel?.isLoggedIn.value = verionDataModel.isLoggedIn
-            if self.loginCellViewModel?.isLoggedIn.value == true {
-                
-                self.loginCellViewModel?.username = (self.dataManager?.getUsernameFromKeychain())!
-            }
-            
+            self.loginCellViewModel = self.getRefreshedLoginCellViewModel()
         }
     }
     
@@ -948,6 +963,11 @@ extension LeftMenuController {
         
         self.dataManager?.saveUsernameToKeychain(username: "")
         self.dataManager?.savePasswordToKeychain(password: "")
+        self.dataManager?.saveAccessTokenToKeychain(accessToken: "")
+        self.dataManager?.saveRefreshTokenToKeychain(refreshToken: "")
+        
+        OAuth2Handler.sharedInstance.accessToken = ""
+        OAuth2Handler.sharedInstance.refreshToken = ""
     }
     
     func setLoggedIn(username: String) {

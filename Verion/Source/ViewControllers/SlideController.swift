@@ -121,7 +121,7 @@ extension SlideController: LeftMenuControllerDelegate {
     func leftMenuDidPressLogin(leftMenu: LeftMenuController) {
         self.closeLeft()
         
-        self.subverseController?.loginPresenter?.presentLogin(rootViewController: self.subverseController!, completion: { (username, error) in
+        self.subverseController?.loginPresenter?.presentLogin(rootViewController: self.subverseController!, completion: { (username, accessToken, refreshToken, error) in
             guard error == nil else {
                 
                 return

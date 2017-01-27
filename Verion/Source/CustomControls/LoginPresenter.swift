@@ -16,15 +16,15 @@ class LoginPresenter {
         return instance
     }()
     
-    var completion: (_ username: String, _ error: Error?) -> ()
+    var completion: (_ username: String, _ accessToken: String, _ refreshToken: String, _ error: Error?) -> ()
     
     init() {
-        self.completion = { username, error in
+        self.completion = { username, accessToken, refreshToken, error in
             
         }
     }
     
-    func presentLogin(rootViewController: UIViewController, completion: @escaping (_ username: String, _ error: Error?
+    func presentLogin(rootViewController: UIViewController, completion: @escaping (_ username: String, _ accessToken: String, _ refreshToken: String, _ error: Error?
         )->() ) {
         
         
@@ -39,5 +39,8 @@ class LoginPresenter {
         self.completion = completion
     }
     
-    
+    enum LoginError: Error {
+        case cancelled
+        case failed
+    }
 }

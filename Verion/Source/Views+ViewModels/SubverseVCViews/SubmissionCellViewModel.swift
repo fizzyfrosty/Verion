@@ -8,6 +8,7 @@
 
 import UIKit
 import Bond
+import ReactiveKit
 
 struct SubmissionCellViewModelInitData {
     var titleString: String = "This is a Sample Title for a Submission"
@@ -43,9 +44,18 @@ class SubmissionCellViewModel{
 
     var voteCountTotal = Observable<Int>(0)
     private(set) var voteSeparatedCountString = Observable<String>("")
+
+    // Data Provider Bindings
+    var dataProviderBindings: [Disposable] = [] // for external use
     
-    private(set) var didUpvote = Observable<Bool>(false)
-    private(set) var didDownvote = Observable<Bool>(false)
+    private(set) var didRequestUpvote = Observable<Bool>(false)
+    private(set) var didRequestDownvote = Observable<Bool>(false)
+    private(set) var didRequestNoVote = Observable<Bool>(false)
+    
+    var viewBindings: [Disposable] = [] // for external use
+    
+    private(set) var isUpvoted = Observable<Bool>(false)
+    private(set) var isDownvoted = Observable<Bool>(false)
     
     var commentCount = 0
     
@@ -124,6 +134,23 @@ class SubmissionCellViewModel{
         
     }
     
+    // External use
+    func resetDataProviderBindings() {
+        for binding in self.dataProviderBindings {
+            binding.dispose()
+        }
+        
+        self.dataProviderBindings.removeAll()
+    }
+    
+    func resetViewBindings() {
+        for binding in self.viewBindings {
+            binding.dispose()
+        }
+        
+        self.viewBindings.removeAll()
+    }
+    
     private func setupInternalBindings() {
         // Bindings for upvotes and downvotes to update votecount separated string and total vote count
         _ = self.upvoteCount.observeNext {[weak self] _ in
@@ -137,6 +164,18 @@ class SubmissionCellViewModel{
             self?.voteCountTotal.value = (self?.upvoteCount.value)! - (self?.downvoteCount.value)!
             
             self?.voteSeparatedCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
+        }
+        
+        _ = self.isUpvoted.observeNext { [weak self] isUpvoted in
+            if isUpvoted {
+                self?.isDownvoted.value = false
+            }
+        }
+        
+        _ = self.isDownvoted.observeNext { [weak self] isDownvoted in
+            if isDownvoted {
+                self?.isUpvoted.value = false
+            }
         }
     }
     

@@ -28,7 +28,7 @@ UI
 	* Login
 	* Logout (username)
 
-- Perform login
+* Perform login
 	* Make call to Data Provider
 	* Call finished callbacks
 	* ActivityIndicator
@@ -39,6 +39,36 @@ UI
 
 	* Make actual request
 	* Return success and error
+
+- Vote up/down UI
+	* Register count on ui
+	* Register arrow highlight from ui
+	* Make request on button tap
+	* On success, do nothing
+	* If not logged in, request login
+	- Handle error return
+
+
+* Save all bindings for SubCellViewModel to external and dispose before binding
+* Before making request, ensure that access/refresh tokens are available
+	* Present login if not, then continue with request
+* Tie logout to oauth handler's access token
+	x Do we want to always access keychain for obtaining the access token?
+	* Or use a shared OAuth instance?
+	* Simplest solution is to use a shared instance
+		* Create a shared instance of oauth handler
+		* Set tokens where authentication finishes
+		* Remove tokens where users log out
+
+- Make a top level comment
+	- Add button to comment
+	- UI for entering comment
+	- Insert comment on top level
+
+- Reply to comments
+	- Add button for reply
+	- UI for submitting comment
+	- Insert comment/reload comments
 
 Backend
 

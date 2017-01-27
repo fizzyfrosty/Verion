@@ -29,9 +29,6 @@ class VoatDataProvider: DataProviderType {
     private let CONTENT_TYPE_HEADER = "Content-Type"
     private let CONTENT_TYPE_AUTH_VALUE = "application/x-www-form-urlencoded"
     
-    private var accessToken = ""
-    private var refreshToken = ""
-    
     
     private let VALIDATION_SUCCESSFUL_MESSAGE = "Validation successful"
     private let FRONTPAGE_SUBVERSE_NAME = "frontpage"
@@ -41,7 +38,12 @@ class VoatDataProvider: DataProviderType {
         self.apiVersion = apiVersion
     }
     
-    func requestLoginAuthentication(username: String, password: String, completion: @escaping (Error?) -> ()) {
+    func requestSubmissionVote(submissionId: Int64, voteValue: Int, completion: @escaping (Error?) -> ()) {
+        // FIXME: Implement
+        
+    }
+    
+    func requestLoginAuthentication(username: String, password: String, completion: @escaping (_ accessToken: String, _ refreshToken: String, Error?) -> ()) {
         
         let requestUrlString = self.getAuthenticationUrlStringV1()
         let headers = self.getAuthenticationHeaders()
@@ -52,14 +54,14 @@ class VoatDataProvider: DataProviderType {
             // FIXME: implement
             switch response.result {
             case .failure:
-                completion(response.error)
+                completion("", "", response.error)
             case .success:
                 
                 let jsonData = JSON.init(data: response.data!)
-                self.accessToken = jsonData["access_token"].stringValue
-                self.refreshToken = jsonData["refresh_token"].stringValue
+                let accessToken = jsonData["access_token"].stringValue
+                let refreshToken = jsonData["refresh_token"].stringValue
                 
-                completion(nil)
+                completion(accessToken, refreshToken, nil)
             }
             
         }
@@ -251,16 +253,26 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
-    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void {
+    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol, viewController: SubverseViewController) -> Void {
         
+        // Initialize the view model's values with data models
+        let subCellVmInitData = self.dataProviderHelper.getSubCellVmInitData(fromDataModel: dataModel)
+        subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
+        
+        // FIXME: implement
         // TODO: UPVOTE/DOWNVOTE feature isn't supported by legacy api. Will do later when I get new API key
         // The viewModel dictates what requests are made: upvote, downvote
         // Bind upvote event to request
         // Bind downvote event to request
         
-        // Initialize the view model's values with data models
-        let subCellVmInitData = self.dataProviderHelper.getSubCellVmInitData(fromDataModel: dataModel)
-        subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
+        /*
+        _ = subCellViewModel.didUpvote.observeNext { [weak self] (didUpvote) in
+            
+            // Make upvote request
+            //self?.
+            
+            // On completion, set to true
+        }*/
     }
     
     func bind(subTitleViewModel: SubmissionTitleCellViewModel, dataModel: SubmissionDataModelProtocol) {
@@ -306,6 +318,8 @@ class VoatDataProvider: DataProviderType {
         
         return mediaType
     }
+    
+    // MARK: - Private functions
     
     private func getAuthenticationUrlStringV1() -> String {
         let urlString = "https://api.voat.co/oauth/token"
