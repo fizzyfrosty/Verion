@@ -11,8 +11,39 @@ Read messages
 Write Messages
 View Users
 
+Upvote/Downvote Submission 
+
+- Prompt login if not logged in
+- If Successfully logged in, register upvote
+	- Attempt to make request using OAuthHandler with access token
+	- Attempt to use refreshToken with an invalid access token
+
+- If failed login, reset voting
+
+- Register the "Vote" value for submission loading/refresh in UI
+- Realign margins for vote buttons
+
+
+
+
+- Make a top level comment
+	- Add button to comment
+	- UI for entering comment
+	- Insert comment on top level
+
+- Reply to comments
+	- Add button for reply
+	- UI for submitting comment
+	- Insert comment/reload comments
+
 
 Login:
+
+* Retrieve username from authentication
+* Consolidate API Keys and endpoints
+* Display Success Indicator for Online login
+* Set Access and Refresh Tokens
+* Offline and Online login
 
 UI
 * Create a login popup
@@ -40,13 +71,12 @@ UI
 	* Make actual request
 	* Return success and error
 
-- Vote up/down UI
+* Vote up/down UI
 	* Register count on ui
 	* Register arrow highlight from ui
 	* Make request on button tap
 	* On success, do nothing
 	* If not logged in, request login
-	- Handle error return
 
 
 * Save all bindings for SubCellViewModel to external and dispose before binding
@@ -59,22 +89,6 @@ UI
 		* Create a shared instance of oauth handler
 		* Set tokens where authentication finishes
 		* Remove tokens where users log out
-
-- Make a top level comment
-	- Add button to comment
-	- UI for entering comment
-	- Insert comment on top level
-
-- Reply to comments
-	- Add button for reply
-	- UI for submitting comment
-	- Insert comment/reload comments
-
-Backend
-
-
-- Save the scroll offset for the Left Menu
-
 
 
 

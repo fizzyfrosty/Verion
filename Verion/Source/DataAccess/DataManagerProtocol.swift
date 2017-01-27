@@ -13,12 +13,10 @@ protocol DataManagerProtocol: class {
     func saveData(dataModel: VerionDataModel)
     
     func saveUsernameToKeychain(username: String)
-    func savePasswordToKeychain(password: String)
     func saveAccessTokenToKeychain(accessToken: String)
     func saveRefreshTokenToKeychain(refreshToken: String)
     
     func getUsernameFromKeychain() -> String
-    func getPasswordFromKeychain() -> String
     func getAccessTokenFromKeychain() -> String
     func getRefreshTokenFromKeychain() -> String
 }

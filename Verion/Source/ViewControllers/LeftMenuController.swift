@@ -952,7 +952,6 @@ extension LeftMenuController {
         self.loginCellViewModel?.username = ""
         
         self.dataManager?.saveUsernameToKeychain(username: "")
-        self.dataManager?.savePasswordToKeychain(password: "")
         self.dataManager?.saveAccessTokenToKeychain(accessToken: "")
         self.dataManager?.saveRefreshTokenToKeychain(refreshToken: "")
         

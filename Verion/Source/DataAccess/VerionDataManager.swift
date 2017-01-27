@@ -14,7 +14,6 @@ class VerionDataManager: DataManagerProtocol {
     private let EXTENSION_NAME = ".verionData"
     private let dataManagerHelper = DataManagerHelper()
     private let USERNAME_KEY = "verion_username"
-    private let PASSWORD_KEY = "verion_password"
     private let ACCESS_TOKEN_KEY = "verion_access_token"
     private let REFRESH_TOKEN_KEY = "verion_refresh_token"
     
@@ -47,25 +46,11 @@ class VerionDataManager: DataManagerProtocol {
         
         if isSaveSuccessful {
             #if DEBUG
-                print("Saved to Keychain username: " + username)
+                print("Saved username to Keychain: " + username)
             #endif
         } else {
             #if DEBUG
-                print("Failed to save to Keychain username: " + username)
-            #endif
-        }
-    }
-    
-    func savePasswordToKeychain(password: String) {
-        let isSaveSuccessful = KeychainWrapper.standard.set(password, forKey: self.PASSWORD_KEY)
-        
-        if isSaveSuccessful {
-            #if DEBUG
-                print("Saved password to Keychain")
-            #endif
-        } else {
-            #if DEBUG
-                print("Failed to save password to Keychain")
+                print("Failed to save username to Keychain: " + username)
             #endif
         }
     }
@@ -106,16 +91,6 @@ class VerionDataManager: DataManagerProtocol {
         }
         
         return username!
-    }
-    
-    func getPasswordFromKeychain() -> String {
-        var password = KeychainWrapper.standard.string(forKey: self.PASSWORD_KEY)
-        
-        if password == nil {
-            password = ""
-        }
-        
-        return password!
     }
     
     func getAccessTokenFromKeychain() -> String {

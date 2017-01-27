@@ -10,14 +10,20 @@ import UIKit
 import Alamofire
 
 class OAuth2Handler: RequestAdapter, RequestRetrier {
-
+    static let CLIENT_ID = "VO0FEEE221244B41B7B3686098AA4EA227AT"
+    static let CLIENT_SECRET = "F80C9D5D732048E0B0928FCA8F71DA5AB8170FE1451B4967BD738D5F47C7CEC0"
+    static let AUTH_ENDPOINT = "https://api.voat.co/oauth/authorize"
+    static let TOKEN_ENDPOINT = "https://api.voat.co/oauth/token"
+    static let CALLBACK_URL = "voatify://oauth-callback-url"
+    
     static let sharedInstance: OAuth2Handler = {
         
         let dataManager = VerionDataManager()
         let accessToken = dataManager.getAccessTokenFromKeychain()
         let refreshToken = dataManager.getRefreshTokenFromKeychain()
         
-        let instance = OAuth2Handler.init(clientID: "", baseURLString: "", accessToken: accessToken, refreshToken: refreshToken)
+        let instance = OAuth2Handler.init(clientID: OAuth2Handler.CLIENT_ID, baseURLString: OAuth2Handler.TOKEN_ENDPOINT, accessToken: accessToken, refreshToken: refreshToken)
+        
         return instance
     }()
     
@@ -36,7 +42,7 @@ class OAuth2Handler: RequestAdapter, RequestRetrier {
     var baseURLString: String
     var accessToken: String
     var refreshToken: String
-    
+        
     private var isRefreshing = false
     private var requestsToRetry: [RequestRetryCompletion] = []
     

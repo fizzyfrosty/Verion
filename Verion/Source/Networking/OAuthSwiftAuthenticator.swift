@@ -8,14 +8,15 @@
 
 import UIKit
 import OAuthSwift
+import SwiftyJSON
 
 class OAuthSwiftAuthenticator: LoginScreenProtocol {
     
-    let CLIENT_ID = "VO0FEEE221244B41B7B3686098AA4EA227AT"
-    let CLIENT_SECRET = "F80C9D5D732048E0B0928FCA8F71DA5AB8170FE1451B4967BD738D5F47C7CEC0"
-    let AUTH_ENDPOINT = "https://api.voat.co/oauth/authorize"
-    let TOKEN_ENDPOINT = "https://api.voat.co/oauth/token"
-    let CALLBACK_URL = "voatify://oauth-callback-url"
+    let CLIENT_ID = OAuth2Handler.CLIENT_ID
+    let CLIENT_SECRET = OAuth2Handler.CLIENT_SECRET
+    let AUTH_ENDPOINT = OAuth2Handler.AUTH_ENDPOINT
+    let TOKEN_ENDPOINT = OAuth2Handler.TOKEN_ENDPOINT
+    let CALLBACK_URL = OAuth2Handler.CALLBACK_URL
     
     let AUTHORIZATION_BASIC_HEADER_VALUE = "Vk8wRkVFRTIyMTI0NEI0MUI3QjM2ODYwOThBQTRFQTIyN0FUOkY4MEM5RDVENzMyMDQ4RTBCMDky"
     
@@ -52,8 +53,6 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
                                            success: { [weak self] (credential, response, parameters) in
                                             print ("Successfully Authenticated!")
                                             
-                                            
-                                            
                                             let accessToken = credential.oauthToken
                                             let refreshToken = credential.oauthRefreshToken
                                             let username = self?.getUsername(fromResponse: response!)
@@ -62,6 +61,10 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
                                             
                                             self?.authHandler?.accessToken = accessToken
                                             self?.authHandler?.refreshToken = refreshToken
+                                            
+                                            ActivityIndicatorProvider.showNotification(message: "Success!", view: rootViewController.view) {
+
+                                            }
                                             
                                             self?.completion(username!, nil)
                                             
@@ -73,10 +76,10 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
         }
     }
     
-    private func getUsername(fromResponse: OAuthSwiftResponse) -> String {
-        var username = "TestUsername"
+    private func getUsername(fromResponse response: OAuthSwiftResponse) -> String {
         
-        // FIXME: Get username from response
+        let json = JSON(data: response.data)
+        let username = json["userName"].stringValue
         
         return username
     }

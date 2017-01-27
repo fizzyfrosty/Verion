@@ -23,8 +23,8 @@ class VoatDataProvider: DataProviderType {
     
     // V1 API
     private let VOAT_API_KEY_HEADER = "Voat-ApiKey"
-    private let VOAT_API_KEY_VALUE = "VO0FEEE221244B41B7B3686098AA4EA227AT"
-    private let VOAT_API_KEY_PRIVATE_VALUE = "F80C9D5D732048E0B0928FCA8F71DA5AB8170FE1451B4967BD738D5F47C7CEC0"
+    private let VOAT_API_KEY_VALUE = OAuth2Handler.CLIENT_ID
+    private let VOAT_API_KEY_PRIVATE_VALUE = OAuth2Handler.CLIENT_SECRET
     private let VOAT_V1_DOMAIN = "https://api.voat.co"
     private let CONTENT_TYPE_HEADER = "Content-Type"
     private let CONTENT_TYPE_AUTH_VALUE = "application/x-www-form-urlencoded"
