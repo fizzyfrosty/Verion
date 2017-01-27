@@ -11,6 +11,10 @@
 		430F2F791E358C13001C05EB /* OAuth2Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430F2F781E358C13001C05EB /* OAuth2Handler.swift */; };
 		4310CA401E33ED310060EC90 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4310CA3F1E33ED310060EC90 /* Bond.framework */; };
 		431310961E3455D200275B1F /* SwiftKeychainWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 431310951E3455D200275B1F /* SwiftKeychainWrapper.framework */; };
+		431C639F1E3BCD0000F5236C /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 431C639E1E3BCD0000F5236C /* OAuthSwift.framework */; };
+		431C63A11E3BCD7B00F5236C /* OAuthSwiftAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C63A01E3BCD7B00F5236C /* OAuthSwiftAuthenticator.swift */; };
+		431C63A31E3BCE5D00F5236C /* LoginScreenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C63A21E3BCE5D00F5236C /* LoginScreenProtocol.swift */; };
+		431C63A51E3BD00700F5236C /* OfflineLoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C63A41E3BD00600F5236C /* OfflineLoginScreen.swift */; };
 		432564391DECAE8F001B943A /* Subverse.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564381DECAE8F001B943A /* Subverse.storyboard */; };
 		432564B61DEEB798001B943A /* TabController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 432564B51DEEB798001B943A /* TabController.storyboard */; };
 		432564BA1DEED077001B943A /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
@@ -63,6 +67,7 @@
 		437644371E22519800EE64A7 /* CommentDataSegmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437644361E22519800EE64A7 /* CommentDataSegmentProtocol.swift */; };
 		43829EFA1E25B09500754AF3 /* ProfanityFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43829EF71E25B09500754AF3 /* ProfanityFilter.swift */; };
 		43829EFB1E25B09500754AF3 /* Profanity.json in Resources */ = {isa = PBXBuildFile; fileRef = 43829EF91E25B09500754AF3 /* Profanity.json */; };
+		43A33CFD1E36745D0032D7A7 /* VoteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A33CFC1E36745D0032D7A7 /* VoteType.swift */; };
 		43A33CFF1E36AABE0032D7A7 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A33CFE1E36AABE0032D7A7 /* AdSupport.framework */; };
 		43A33D011E36AAC30032D7A7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A33D001E36AAC30032D7A7 /* AudioToolbox.framework */; };
 		43A33D031E36AAC90032D7A7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A33D021E36AAC90032D7A7 /* AVFoundation.framework */; };
@@ -124,7 +129,6 @@
 		43A33DF61E36B1780032D7A7 /* vg_mute_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD71E36B1780032D7A7 /* vg_mute_on.png */; };
 		43A33DF71E36B1780032D7A7 /* vg_privacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 43A33DD81E36B1780032D7A7 /* vg_privacy.png */; };
 		43A33DF91E36B2420032D7A7 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A33DF81E36B2420032D7A7 /* libz.tbd */; };
-		43A33CFD1E36745D0032D7A7 /* VoteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A33CFC1E36745D0032D7A7 /* VoteType.swift */; };
 		43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */; };
 		43A92D471E3295C7007D6B4F /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A92D461E3295C7007D6B4F /* LoginCell.swift */; };
 		43A92D491E3295D5007D6B4F /* LoginCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */; };
@@ -247,6 +251,10 @@
 		430F2F781E358C13001C05EB /* OAuth2Handler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Handler.swift; sourceTree = "<group>"; };
 		4310CA3F1E33ED310060EC90 /* Bond.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bond.framework; path = Carthage/Build/iOS/Bond.framework; sourceTree = "<group>"; };
 		431310951E3455D200275B1F /* SwiftKeychainWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftKeychainWrapper.framework; path = Carthage/Build/iOS/SwiftKeychainWrapper.framework; sourceTree = "<group>"; };
+		431C639E1E3BCD0000F5236C /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
+		431C63A01E3BCD7B00F5236C /* OAuthSwiftAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthSwiftAuthenticator.swift; sourceTree = "<group>"; };
+		431C63A21E3BCE5D00F5236C /* LoginScreenProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreenProtocol.swift; sourceTree = "<group>"; };
+		431C63A41E3BD00600F5236C /* OfflineLoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfflineLoginScreen.swift; sourceTree = "<group>"; };
 		432564381DECAE8F001B943A /* Subverse.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Subverse.storyboard; sourceTree = "<group>"; };
 		432564B51DEEB798001B943A /* TabController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TabController.storyboard; sourceTree = "<group>"; };
 		432B77761E12272A00457F2C /* ActivityIndicatorCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorCellViewModel.swift; sourceTree = "<group>"; };
@@ -298,6 +306,7 @@
 		437644361E22519800EE64A7 /* CommentDataSegmentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataSegmentProtocol.swift; sourceTree = "<group>"; };
 		43829EF71E25B09500754AF3 /* ProfanityFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfanityFilter.swift; sourceTree = "<group>"; };
 		43829EF91E25B09500754AF3 /* Profanity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Profanity.json; sourceTree = "<group>"; };
+		43A33CFC1E36745D0032D7A7 /* VoteType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteType.swift; sourceTree = "<group>"; };
 		43A33CFE1E36AABE0032D7A7 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		43A33D001E36AAC30032D7A7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		43A33D021E36AAC90032D7A7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -359,7 +368,6 @@
 		43A33DD71E36B1780032D7A7 /* vg_mute_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_mute_on.png; sourceTree = "<group>"; };
 		43A33DD81E36B1780032D7A7 /* vg_privacy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vg_privacy.png; sourceTree = "<group>"; };
 		43A33DF81E36B2420032D7A7 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		43A33CFC1E36745D0032D7A7 /* VoteType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteType.swift; sourceTree = "<group>"; };
 		43A359411E06681E006994F3 /* CommentDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelLegacy.swift; sourceTree = "<group>"; };
 		43A92D461E3295C7007D6B4F /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
 		43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCellViewModel.swift; sourceTree = "<group>"; };
@@ -531,6 +539,7 @@
 				4310CA401E33ED310060EC90 /* Bond.framework in Frameworks */,
 				4300A0C21DF0EF0A00497FE4 /* ReactiveKit.framework in Frameworks */,
 				43ABEB881E137FA300458E3D /* libFlurry_7.8.2.a in Frameworks */,
+				431C639F1E3BCD0000F5236C /* OAuthSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -940,6 +949,9 @@
 				4375BFC71DF3EDC300576CC6 /* Delayer.swift */,
 				43433D7A1E027FD00017FAB0 /* ImageDownloader.swift */,
 				430F2F781E358C13001C05EB /* OAuth2Handler.swift */,
+				431C63A21E3BCE5D00F5236C /* LoginScreenProtocol.swift */,
+				431C63A01E3BCD7B00F5236C /* OAuthSwiftAuthenticator.swift */,
+				431C63A41E3BD00600F5236C /* OfflineLoginScreen.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1020,6 +1032,7 @@
 		43F9A04C1DEA3C26001EB1FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				431C639E1E3BCD0000F5236C /* OAuthSwift.framework */,
 				43A33DF81E36B2420032D7A7 /* libz.tbd */,
 				43A33D361E36ABAE0032D7A7 /* SafariServices.framework */,
 				43A33D341E36ABA80032D7A7 /* GLKit.framework */,
@@ -1263,6 +1276,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MBProgressHUD.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftKeychainWrapper.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
 			);
 			outputPaths = (
 			);
@@ -1352,6 +1366,7 @@
 				43433DA71E057E620017FAB0 /* SubmissionImageCell.swift in Sources */,
 				43433DA91E057E620017FAB0 /* SubmissionLinkCell.swift in Sources */,
 				43ABEBA41E14E42C00458E3D /* AdManager.swift in Sources */,
+				431C63A11E3BCD7B00F5236C /* OAuthSwiftAuthenticator.swift in Sources */,
 				43433DC11E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift in Sources */,
 				43F675281DF20078001F83BE /* SFXManagerDummy.swift in Sources */,
 				43B056BB1E0E4691007083E8 /* FLAnimatedImage.m in Sources */,
@@ -1371,7 +1386,9 @@
 				43433DA81E057E620017FAB0 /* SubmissionImageCellViewModel.swift in Sources */,
 				43B056C61E0E4691007083E8 /* DesignableLabel.swift in Sources */,
 				43B056BF1E0E4691007083E8 /* SlideMenuController.swift in Sources */,
+				431C63A51E3BD00700F5236C /* OfflineLoginScreen.swift in Sources */,
 				43B056E21E0E4691007083E8 /* TSMarkdownParser.m in Sources */,
+				431C63A31E3BCE5D00F5236C /* LoginScreenProtocol.swift in Sources */,
 				43B056691E0D21F4007083E8 /* LeftMenuController.swift in Sources */,
 				43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */,
 				4375BFC61DF3737F00576CC6 /* SubmissionType.swift in Sources */,

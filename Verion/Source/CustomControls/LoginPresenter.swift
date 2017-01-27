@@ -11,6 +11,11 @@ import SwinjectStoryboard
 
 class LoginPresenter {
     
+    enum LoginError: Error {
+        case cancelled
+        case failed
+    }
+    
     static let sharedInstance: LoginPresenter = {
         let instance = LoginPresenter.init()
         return instance
@@ -39,8 +44,5 @@ class LoginPresenter {
         self.completion = completion
     }
     
-    enum LoginError: Error {
-        case cancelled
-        case failed
-    }
+    
 }

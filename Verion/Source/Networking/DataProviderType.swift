@@ -21,7 +21,7 @@ import UIKit
 
 protocol DataProviderType: class {
     var apiVersion: APIVersion {get}
-    init(apiVersion: APIVersion)
+    init(apiVersion: APIVersion, loginScreen: LoginScreenProtocol)
     
     func requestSubverseSubmissions(submissionParams: SubmissionsRequestParams, completion: @escaping ([SubmissionDataModelProtocol], Error?)->Void)
     func requestComments(subverse: String, submissionId: Int64, completion: @escaping ([CommentDataModelProtocol], CommentDataSegmentProtocol?, Error?)->Void)

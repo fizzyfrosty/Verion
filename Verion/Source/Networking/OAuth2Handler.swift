@@ -12,7 +12,12 @@ import Alamofire
 class OAuth2Handler: RequestAdapter, RequestRetrier {
 
     static let sharedInstance: OAuth2Handler = {
-        let instance = OAuth2Handler.init(clientID: "", baseURLString: "", accessToken: "", refreshToken: "")
+        
+        let dataManager = VerionDataManager()
+        let accessToken = dataManager.getAccessTokenFromKeychain()
+        let refreshToken = dataManager.getRefreshTokenFromKeychain()
+        
+        let instance = OAuth2Handler.init(clientID: "", baseURLString: "", accessToken: accessToken, refreshToken: refreshToken)
         return instance
     }()
     

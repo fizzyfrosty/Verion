@@ -26,8 +26,12 @@ class OfflineDataProvider: DataProviderType {
     private let DELAY_TIME_SECONDS: Float = 1.0
     private let SEARCH_RESULTS_DELAY_TIME: Float = 0.25
     
-    required init(apiVersion: APIVersion) {
+    // Dependencies
+    private var loginScreen: LoginScreenProtocol?
+    
+    required init(apiVersion: APIVersion, loginScreen: LoginScreenProtocol) {
         self.apiVersion = apiVersion
+        self.loginScreen = loginScreen
     }
     
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, completion: @escaping (Error?) -> ()) {
@@ -170,8 +174,8 @@ class OfflineDataProvider: DataProviderType {
                 
                 // Ensure that access/refresh tokens are available
                 guard OAuth2Handler.sharedInstance.accessToken != "" else {
-                    viewController.loginPresenter?.presentLogin(rootViewController: viewController, completion: { (username, accessToken, refreshToken, error) in
-                        
+                    
+                    self?.loginScreen?.presentLogin(rootViewController: viewController, completion: { (username, error) in
                         guard error == nil else {
                             // failed to login
                             subCellViewModel.isUpvoted.value = false

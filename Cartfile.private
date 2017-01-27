@@ -27,3 +27,5 @@ github "jdg/MBProgressHUD" ~> 1.0.0
 github "jrendel/SwiftKeychainWrapper" ~> 3.0
 
 github "ninjaprox/NVActivityIndicatorView" == 3.0
+
+github "OAuthSwift/OAuthSwift" ~> 1.1.0

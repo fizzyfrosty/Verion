@@ -69,16 +69,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension SwinjectStoryboard {
+    
+    enum OnlineMode {
+        case offline
+        case online
+    }
+    
     class func setup() {
         let defaultContainer = SwinjectStoryboard.defaultContainer
+        
+        // FIXME: Set Offline or Online mode here before running
+        let mode: OnlineMode = .offline
         
         defaultContainer.register(SFXManagerType.self, factory: { _ in
             SFXManager()
         })
         
-        defaultContainer.register(DataProviderType.self){ _ in
-            OfflineDataProvider(apiVersion: .v1)
-            //VoatDataProvider(apiVersion: .v1)
+        defaultContainer.register(LoginScreenProtocol.self) { _ in
+            
+            switch mode {
+            case .offline:
+                return OfflineLoginScreen(authHandler: OAuth2Handler.sharedInstance)
+            case .online:
+                return OAuthSwiftAuthenticator(authHandler: OAuth2Handler.sharedInstance)
+            }
+        }
+        
+        defaultContainer.register(DataProviderType.self){ resolver in
+            switch mode {
+            case .offline:
+                return OfflineDataProvider(apiVersion: .v1, loginScreen: resolver.resolve(LoginScreenProtocol.self)!)
+            case .online:
+                return VoatDataProvider(apiVersion: .v1, loginScreen: resolver.resolve(LoginScreenProtocol.self)!)
+            }
         }
         
         defaultContainer.register(DataManagerProtocol.self) { _ in
@@ -95,13 +118,16 @@ extension SwinjectStoryboard {
             return AnalyticsManager(analyticsType: analyticsType)
         }
         
+        defaultContainer.storyboardInitCompleted(SlideController.self) { (Resolver, C) in
+            C.loginScreen = Resolver.resolve(LoginScreenProtocol.self)!
+        }
+        
         defaultContainer.storyboardInitCompleted(SubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             C.adManager = AdManager.sharedInstance
-            C.loginPresenter = LoginPresenter.sharedInstance
         })
         
         defaultContainer.storyboardInitCompleted(CommentsViewController.self, initCompleted: { (ResolverType, C) in
@@ -122,6 +148,7 @@ extension SwinjectStoryboard {
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             C.inAppPurchaseManager = InAppPurchaseManager.sharedInstance
+            C.authHandler = OAuth2Handler.sharedInstance
         }
         
         defaultContainer.storyboardInitCompleted(LoginController.self) { (ResolverType, C) in

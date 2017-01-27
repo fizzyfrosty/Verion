@@ -102,7 +102,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     var dataManager: DataManagerProtocol?
     var analyticsManager: AnalyticsManagerProtocol?
     var adManager: AdManager?
-    var loginPresenter: LoginPresenter?
     
     // Delegate
     weak var delegate: SubverseViewControllerDelegate?

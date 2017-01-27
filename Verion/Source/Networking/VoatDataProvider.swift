@@ -34,8 +34,12 @@ class VoatDataProvider: DataProviderType {
     private let FRONTPAGE_SUBVERSE_NAME = "frontpage"
     private let ALL_SUBVERSE_NAME = "all"
     
-    required init(apiVersion: APIVersion) {
+    // Dependencies
+    private var loginScreen: LoginScreenProtocol?
+    
+    required init(apiVersion: APIVersion, loginScreen: LoginScreenProtocol) {
         self.apiVersion = apiVersion
+        self.loginScreen = loginScreen
     }
     
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, completion: @escaping (Error?) -> ()) {

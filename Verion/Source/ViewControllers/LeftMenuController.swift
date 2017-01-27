@@ -29,7 +29,7 @@ class LeftMenuController: UITableViewController {
         case contactUs = 4
         case settings = 5
         
-        static let allValues = [icon, subverseHistory, filters, supportUs, contactUs]
+        static let allValues = [icon, subverseHistory, filters, supportUs, contactUs, settings]
     }
     
     // Section Titles
@@ -130,6 +130,7 @@ class LeftMenuController: UITableViewController {
     var dataManager: DataManagerProtocol?
     var analyticsManager: AnalyticsManagerProtocol?
     var inAppPurchaseManager: InAppPurchaseManager?
+    var authHandler: OAuth2Handler?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,6 +151,10 @@ class LeftMenuController: UITableViewController {
         
         self.loginCellViewModel = self.getRefreshedLoginCellViewModel()
         self.tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.saveData {}
     }
     
     private func getRefreshedLoginCellViewModel() -> LoginCellViewModel{
@@ -326,10 +331,12 @@ class LeftMenuController: UITableViewController {
             verionDataModel?.shouldUseNsfwThumbnail = self.useNsfwThumbnailCellVm!.shouldUseNsfwThumbnails.value
             verionDataModel?.shouldFilterLanguage = self.filterLanguageCellVm!.shouldFilterLanguage.value
             
-            self.dataManager?.saveData(dataModel: verionDataModel!)
-            
             // Settings
             verionDataModel?.isLoggedIn = self.loginCellViewModel!.isLoggedIn.value
+            
+            
+            // Save
+            self.dataManager?.saveData(dataModel: verionDataModel!)
             
             DispatchQueue.main.async {
                 completion()
@@ -691,11 +698,6 @@ extension LeftMenuController {
         
         // Reload table
         self.tableView.reloadData()
-        
-        // Save
-        self.saveData {
-            
-        }
     }
     
     fileprivate func notifyDelegateDidPressClose() {
@@ -751,10 +753,6 @@ extension LeftMenuController {
         self.tableView.reloadSections(indexSet, with: .automatic)
         
         self.delegate?.leftMenuDidClearHistory(leftMenu: self)
-        
-        self.saveData(){
-            
-        }
     }
     
     fileprivate func limitSubverseHistory(byMaxCount maxCount: Int) {
@@ -779,8 +777,6 @@ extension LeftMenuController {
             
             // Bind to enable/disable of UseNsfwThumbnailCell's switch
             self?.useNsfwThumbnailCellVm?.isSwitchEnabled.value = !shouldHide
-            self?.saveData {
-            }
         }
     }
     
@@ -791,9 +787,6 @@ extension LeftMenuController {
             } else {
                 self?.disableNsfwThumbnail()
             }
-            
-            self?.saveData {
-            }
         }
     }
     
@@ -803,9 +796,6 @@ extension LeftMenuController {
                 self?.enableFilterLanguage()
             } else {
                 self?.disableFilterLanguage()
-            }
-            
-            self?.saveData {
             }
         }
     }
@@ -966,8 +956,8 @@ extension LeftMenuController {
         self.dataManager?.saveAccessTokenToKeychain(accessToken: "")
         self.dataManager?.saveRefreshTokenToKeychain(refreshToken: "")
         
-        OAuth2Handler.sharedInstance.accessToken = ""
-        OAuth2Handler.sharedInstance.refreshToken = ""
+        self.authHandler?.accessToken = ""
+        self.authHandler?.refreshToken = ""
     }
     
     func setLoggedIn(username: String) {
