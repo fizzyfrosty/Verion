@@ -13,18 +13,15 @@ View Users
 
 Upvote/Downvote Submission 
 
-- Prompt login if not logged in
-- If Successfully logged in, register upvote
-	- Attempt to make request using OAuthHandler with access token
-	- Attempt to use refreshToken with an invalid access token
-
-- If failed login, reset voting
-
+* Prompt login if not logged in
+* If Successfully logged in, register upvote
+* If failed login, reset voting
 - Register the "Vote" value for submission loading/refresh in UI
 - Realign margins for vote buttons
 
-
-
+- Vote for Comments
+	- Add Buttons
+	- UI with request behavior
 
 - Make a top level comment
 	- Add button to comment
@@ -35,6 +32,16 @@ Upvote/Downvote Submission
 	- Add button for reply
 	- UI for submitting comment
 	- Insert comment/reload comments
+
+
+Online Requests
+- Attempt to make request using OAuthHandler with access token
+- Attempt to use refreshToken with an invalid access token
+- Submission Voting
+- Comment Voting
+- Comment Replies
+	- Top comment
+	- Child reply comment
 
 
 Login:

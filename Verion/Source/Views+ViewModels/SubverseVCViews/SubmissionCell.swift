@@ -73,6 +73,8 @@ class SubmissionCell: UITableViewCell {
     func bind(toViewModel viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool) {
         self.viewModel = viewModel
         viewModel.resetViewBindings()
+        self.downvoteButton.isSelected = false
+        self.upvoteButton.isSelected = false
         
         // Bind to UI elements
         
@@ -119,17 +121,18 @@ class SubmissionCell: UITableViewCell {
             // If previously selected
             if self?.upvoteButton.isSelected == true {
                 viewModel.didRequestNoVote.value = true
+                self?.upvoteButton.isSelected = false
                 
             } else {
                 // If not previously selected, attempt to select
                 viewModel.didRequestUpvote.value = true
+                viewModel.didRequestDownvote.value = false
+                self?.upvoteButton.isSelected = true
             }
         })
         
         
         viewModel.viewBindings.append( viewModel.isUpvoted.observeNext { [weak self] isUpvoted in
-            
-            
             if isUpvoted {
                 viewModel.upvoteCount.value += 1
                 self?.upvoteButton.isSelected = true
@@ -139,12 +142,12 @@ class SubmissionCell: UITableViewCell {
                     self?.downvoteButton.isSelected = false
                     viewModel.downvoteCount.value -= 1
                 }
-            } else if (self?.upvoteButton.isSelected)! {
+            } else if viewModel.didRequestUpvote.value == true {
                 self?.upvoteButton.isSelected = false
                 viewModel.upvoteCount.value -= 1
+                viewModel.didRequestUpvote.value = false
+                
             }
-            
-            
         })
         
         
@@ -156,9 +159,12 @@ class SubmissionCell: UITableViewCell {
             if self?.downvoteButton.isSelected == true {
                 // Request NoVote
                 viewModel.didRequestNoVote.value = true
+                self?.downvoteButton.isSelected = false
             } else {
                 // If not previously selected, attempt to select
                 viewModel.didRequestDownvote.value = true
+                viewModel.didRequestUpvote.value = false
+                self?.downvoteButton.isSelected = true
             }
         })
         
@@ -173,9 +179,10 @@ class SubmissionCell: UITableViewCell {
                     self?.upvoteButton.isSelected = false
                     viewModel.upvoteCount.value -= 1
                 }
-            } else if (self?.downvoteButton.isSelected)! {
+            } else if viewModel.didRequestDownvote.value == true {
                 self?.downvoteButton.isSelected = false
                 viewModel.downvoteCount.value -= 1
+                viewModel.didRequestDownvote.value = false
             }
  
         })
@@ -186,8 +193,7 @@ class SubmissionCell: UITableViewCell {
         super.prepareForReuse()
         
         self.resetBindings()
-        self.downvoteButton.isSelected = false
-        self.upvoteButton.isSelected = false
+        
     }
     
     private func resetBindings() {

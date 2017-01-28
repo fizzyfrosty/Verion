@@ -45,11 +45,7 @@ class OfflineDataProvider: DataProviderType {
         
         let requestClosure: ()->() = { [weak self] in
             
-            self?.showActivityIndicator(rootViewController: rootViewController.navigationController!)
-            
             Delayer.delay(seconds: (self?.DELAY_TIME_SECONDS)!) {
-                
-                self?.hideActivityIndicator()
                 
                 // Automatically pass vote
                 completion(nil)
@@ -187,6 +183,7 @@ class OfflineDataProvider: DataProviderType {
                         #if DEBUG
                             print("Response failed: Upvote")
                         #endif
+                        
                         return
                     }
                     
@@ -197,7 +194,7 @@ class OfflineDataProvider: DataProviderType {
                         print("Response received: Upvote")
                     #endif
                 })
-                subCellViewModel.didRequestUpvote.value = false
+                
             }
         })
         
@@ -222,7 +219,6 @@ class OfflineDataProvider: DataProviderType {
                         print("Response received: Downvote")
                     #endif
                 })
-                subCellViewModel.didRequestDownvote.value = false
             }
         })
         
@@ -240,13 +236,12 @@ class OfflineDataProvider: DataProviderType {
                     // Success
                     subCellViewModel.isUpvoted.value = false
                     subCellViewModel.isDownvoted.value = false
-                    
                     #if DEBUG
                         print("Response received: NoVote")
                     #endif
                 })
                 
-                subCellViewModel.didRequestNoVote.value = false
+                
             }
         })
     }
