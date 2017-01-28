@@ -16,8 +16,7 @@ Upvote/Downvote Submission
 * Prompt login if not logged in
 * If Successfully logged in, register upvote
 * If failed login, reset voting
-- Register the "Vote" value for submission loading/refresh in UI
-- Realign margins for vote buttons
+
 
 - Vote for Comments
 	- Add Buttons
@@ -42,7 +41,8 @@ Online Requests
 - Comment Replies
 	- Top comment
 	- Child reply comment
-
+- Register the "Vote" value for submission loading/refresh in UI
+- Realign margins for vote buttons
 
 Login:
 

@@ -183,7 +183,8 @@ class OfflineDataProvider: DataProviderType {
                         #if DEBUG
                             print("Response failed: Upvote")
                         #endif
-                        
+                        subCellViewModel.didRequestUpvote.value = false
+                        subCellViewModel.isUpvoted.value = false
                         return
                     }
                     
@@ -209,6 +210,8 @@ class OfflineDataProvider: DataProviderType {
                         #if DEBUG
                             print("Response failed: Downvote")
                         #endif
+                        subCellViewModel.didRequestDownvote.value = false
+                        subCellViewModel.isDownvoted.value = false
                         return
                     }
                     

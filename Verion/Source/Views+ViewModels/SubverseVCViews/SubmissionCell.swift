@@ -133,9 +133,10 @@ class SubmissionCell: UITableViewCell {
         
         
         viewModel.viewBindings.append( viewModel.isUpvoted.observeNext { [weak self] isUpvoted in
+            self?.upvoteButton.isSelected = isUpvoted
+            
             if isUpvoted {
                 viewModel.upvoteCount.value += 1
-                self?.upvoteButton.isSelected = true
                 
                 // Unselect Downvote
                 if self?.downvoteButton.isSelected == true {
@@ -143,10 +144,8 @@ class SubmissionCell: UITableViewCell {
                     viewModel.downvoteCount.value -= 1
                 }
             } else if viewModel.didRequestUpvote.value == true {
-                self?.upvoteButton.isSelected = false
                 viewModel.upvoteCount.value -= 1
                 viewModel.didRequestUpvote.value = false
-                
             }
         })
         
@@ -169,10 +168,10 @@ class SubmissionCell: UITableViewCell {
         })
         
         viewModel.viewBindings.append( viewModel.isDownvoted.observeNext { [weak self] isDownvoted in
+            self?.downvoteButton.isSelected = isDownvoted
             
             if isDownvoted {
                 viewModel.downvoteCount.value += 1
-                self?.downvoteButton.isSelected = true
                 
                 // Unselect Upvote
                 if self?.upvoteButton.isSelected == true {
@@ -180,7 +179,6 @@ class SubmissionCell: UITableViewCell {
                     viewModel.upvoteCount.value -= 1
                 }
             } else if viewModel.didRequestDownvote.value == true {
-                self?.downvoteButton.isSelected = false
                 viewModel.downvoteCount.value -= 1
                 viewModel.didRequestDownvote.value = false
             }
