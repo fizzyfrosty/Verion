@@ -182,6 +182,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.navigationController?.navigationBar.barTintColor = self.NAVIGATION_BG_COLOR
         self.tableView.backgroundColor = self.BGCOLOR
         
+        self.preloadAd()
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
         self.loadSavedData()
@@ -462,6 +463,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             }
             
         }
+    }
+    
+    private func preloadAd() {
+        _ = self.adManager?.getBannerAd(rootViewController: self)
     }
     
     private func loadMoreTableCells(completion: @escaping ()->()) {
