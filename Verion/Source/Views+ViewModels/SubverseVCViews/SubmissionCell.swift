@@ -119,29 +119,33 @@ class SubmissionCell: UITableViewCell {
             // If previously selected
             if self?.upvoteButton.isSelected == true {
                 viewModel.didRequestNoVote.value = true
-                self?.upvoteButton.isSelected = false
-                
-                viewModel.upvoteCount.value -= 1
                 
             } else {
                 // If not previously selected, attempt to select
                 viewModel.didRequestUpvote.value = true
+            }
+        })
+        
+        
+        viewModel.viewBindings.append( viewModel.isUpvoted.observeNext { [weak self] isUpvoted in
+            
+            
+            if isUpvoted {
                 viewModel.upvoteCount.value += 1
-                
-                // Temporarily show vote result for responsive UI
                 self?.upvoteButton.isSelected = true
                 
+                // Unselect Downvote
                 if self?.downvoteButton.isSelected == true {
                     self?.downvoteButton.isSelected = false
                     viewModel.downvoteCount.value -= 1
                 }
+            } else if (self?.upvoteButton.isSelected)! {
+                self?.upvoteButton.isSelected = false
+                viewModel.upvoteCount.value -= 1
             }
+            
+            
         })
-        
-        /*
-        viewModel.viewBindings.append( viewModel.isUpvoted.observeNext { [weak self] isUpvoted in
-            self?.upvoteButton.isSelected = isUpvoted
-        })*/
         
         
         // Downvote
@@ -150,30 +154,31 @@ class SubmissionCell: UITableViewCell {
             
             // If previously selected
             if self?.downvoteButton.isSelected == true {
+                // Request NoVote
                 viewModel.didRequestNoVote.value = true
-                self?.downvoteButton.isSelected = false
-                
-                viewModel.downvoteCount.value -= 1
-                
             } else {
                 // If not previously selected, attempt to select
                 viewModel.didRequestDownvote.value = true
+            }
+        })
+        
+        viewModel.viewBindings.append( viewModel.isDownvoted.observeNext { [weak self] isDownvoted in
+            
+            if isDownvoted {
                 viewModel.downvoteCount.value += 1
-                
-                // Temporarily show vote result for responsive UI
                 self?.downvoteButton.isSelected = true
                 
+                // Unselect Upvote
                 if self?.upvoteButton.isSelected == true {
                     self?.upvoteButton.isSelected = false
                     viewModel.upvoteCount.value -= 1
                 }
+            } else if (self?.downvoteButton.isSelected)! {
+                self?.downvoteButton.isSelected = false
+                viewModel.downvoteCount.value -= 1
             }
+ 
         })
-        
-        /*
-        viewModel.viewBindings.append( viewModel.isDownvoted.observeNext { [weak self] isDownvoted in
-            self?.downvoteButton.isSelected = isDownvoted
-        })*/
         
     }
     

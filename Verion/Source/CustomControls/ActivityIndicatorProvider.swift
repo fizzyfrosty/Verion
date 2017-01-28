@@ -31,6 +31,14 @@ class ActivityIndicatorProvider {
         return UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     }
     
+    static func getAndShowProgressHudActivityIndicator(rootViewController: UIViewController) -> MBProgressHUD {
+        let progressHud = MBProgressHUD.showAdded(to: rootViewController.view, animated: true)
+        progressHud.animationType = .fade
+        progressHud.mode = .indeterminate
+        
+        return progressHud
+    }
+    
     static func showNotification(message: String, view: UIView, completion: @escaping()->()) {
         let SUCCESS_HUD_DISPLAY_TIME: Float = 1.0
         

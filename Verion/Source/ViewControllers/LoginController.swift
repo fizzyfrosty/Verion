@@ -200,7 +200,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         window?.addSubview(self.activityIndicator)
         self.activityIndicator.center = CGPoint(x: UIScreen.main.bounds.width/2.0, y: UIScreen.main.bounds.height/2.0)
         self.activityIndicator.startAnimating()
- 
     }
     
     private func hideActivityIndicator() {

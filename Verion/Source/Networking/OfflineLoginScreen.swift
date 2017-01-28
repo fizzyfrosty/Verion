@@ -11,6 +11,11 @@ import SwinjectStoryboard
 
 class OfflineLoginScreen: LoginScreenProtocol, LoginControllerDelegate {
     
+    enum OfflineLoginError: Error {
+        case failedLogin
+        case cancelledLogin
+    }
+    
     // Dependencies
     private var authHandler: OAuth2Handler?
     private var dataManager: DataManagerProtocol?
@@ -32,6 +37,7 @@ class OfflineLoginScreen: LoginScreenProtocol, LoginControllerDelegate {
         let storyboard = SwinjectStoryboard.create(name: "Login", bundle: nil)
         let loginController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginController
         loginController.delegate = self
+        self.completion = completion
         
         // Push Controller
         rootViewController.present(loginController, animated: true) {
@@ -53,11 +59,11 @@ class OfflineLoginScreen: LoginScreenProtocol, LoginControllerDelegate {
     }
     
     func loginControllerFailedLogin(loginController: LoginController) {
-        // FIXME: return error
+        self.completion("", OfflineLoginError.failedLogin)
     }
 
     func loginControllerCancelledLogin(loginController: LoginController) {
-        // FIXME: return error
+        self.completion("", OfflineLoginError.cancelledLogin)
     }
     
     private func saveUserData(username: String, accessToken: String, refreshToken: String) {

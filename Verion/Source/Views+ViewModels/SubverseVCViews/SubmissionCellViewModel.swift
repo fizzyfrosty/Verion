@@ -165,18 +165,6 @@ class SubmissionCellViewModel{
             
             self?.voteSeparatedCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
         }
-        
-        _ = self.isUpvoted.observeNext { [weak self] isUpvoted in
-            if isUpvoted {
-                self?.isDownvoted.value = false
-            }
-        }
-        
-        _ = self.isDownvoted.observeNext { [weak self] isDownvoted in
-            if isDownvoted {
-                self?.isUpvoted.value = false
-            }
-        }
     }
     
     private func cleanupInternalBindings() {

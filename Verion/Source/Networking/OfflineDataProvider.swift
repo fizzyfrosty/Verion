@@ -8,10 +8,17 @@
 
 import UIKit
 import SwiftyJSON
+import MBProgressHUD
 
 class OfflineDataProvider: DataProviderType {
     
     var dataProviderHelper = DataProviderHelper()
+    var activityIndicator: MBProgressHUD?
+    
+    enum OfflineRequestError: Error {
+        case notAuthenticated
+        case invalidToken
+    }
     
     var apiVersion: APIVersion = .legacy // default to be overwritten by initializer
     private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY = "SampleJsonSubmissions_legacy"
@@ -34,12 +41,35 @@ class OfflineDataProvider: DataProviderType {
         self.loginScreen = loginScreen
     }
     
-    func requestSubmissionVote(submissionId: Int64, voteValue: Int, completion: @escaping (Error?) -> ()) {
-        Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
+    func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
+        
+        let requestClosure: ()->() = { [weak self] in
             
-            // Automatically pass vote
-            completion(nil)
+            self?.showActivityIndicator(rootViewController: rootViewController.navigationController!)
+            
+            Delayer.delay(seconds: (self?.DELAY_TIME_SECONDS)!) {
+                
+                self?.hideActivityIndicator()
+                
+                // Automatically pass vote
+                completion(nil)
+            }
         }
+        
+        guard OAuth2Handler.sharedInstance.accessToken != "" else {
+            self.loginScreen?.presentLogin(rootViewController: rootViewController, completion: { (username, error) in
+                guard error == nil else {
+                    completion(OfflineRequestError.notAuthenticated)
+                    return
+                }
+                
+                // Successfully logged in, continue to make request
+                requestClosure()
+            })
+            return
+        }
+        
+        requestClosure()
     }
     
     func requestLoginAuthentication(username: String, password: String, completion: @escaping (_ accessToken: String, _ refreshToken: String, Error?) -> ()) {
@@ -150,62 +180,38 @@ class OfflineDataProvider: DataProviderType {
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
             if didRequestUpvote {
                 
-                let requestClosure: ()->() = {
-                    self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.up.rawValue, completion: { (error) in
-                        
-                        // Failed
-                        guard error == nil else {
-                            #if DEBUG
-                                print("Response failed: Upvote")
-                            #endif
-                            return
-                        }
-                        
-                        // Success
-                        subCellViewModel.isUpvoted.value = true
-                        
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
                         #if DEBUG
-                            print("Response received: Upvote")
+                            print("Response failed: Upvote")
                         #endif
-                    })
+                        return
+                    }
                     
-                    subCellViewModel.didRequestUpvote.value = false
-                }
-                
-                // Ensure that access/refresh tokens are available
-                guard OAuth2Handler.sharedInstance.accessToken != "" else {
+                    // Success
+                    subCellViewModel.isUpvoted.value = true
                     
-                    self?.loginScreen?.presentLogin(rootViewController: viewController, completion: { (username, error) in
-                        guard error == nil else {
-                            // failed to login
-                            subCellViewModel.isUpvoted.value = false
-                            
-                            return
-                        }
-                        
-                        // Successfully logged in, continue to make request
-                        requestClosure()
-                    })
-                    
-                    return
-                }
-                
-                requestClosure()
+                    #if DEBUG
+                        print("Response received: Upvote")
+                    #endif
+                })
+                subCellViewModel.didRequestUpvote.value = false
             }
         })
         
         // Bind downvote event to request
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
             if didRequestDownvote {
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.down.rawValue, completion: { (error) in
+                
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
-                        
                         #if DEBUG
                             print("Response failed: Downvote")
                         #endif
-                        
                         return
                     }
                     
@@ -216,23 +222,18 @@ class OfflineDataProvider: DataProviderType {
                         print("Response received: Downvote")
                     #endif
                 })
-                
                 subCellViewModel.didRequestDownvote.value = false
             }
         })
         
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
             if didRequestNoVote {
-                
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.none.rawValue, completion: { (error) in
-                    
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
                     // Failed
                     guard error == nil else {
-                        
                         #if DEBUG
                             print("Response failed: NoVote")
                         #endif
-                        
                         return
                     }
                     
@@ -292,4 +293,11 @@ class OfflineDataProvider: DataProviderType {
         return mediaType
     }
     
+    private func showActivityIndicator(rootViewController: UIViewController) {
+        self.activityIndicator = ActivityIndicatorProvider.getAndShowProgressHudActivityIndicator(rootViewController: rootViewController)
+    }
+    
+    private func hideActivityIndicator() {
+        self.activityIndicator?.hide(animated: true)
+    }
 }

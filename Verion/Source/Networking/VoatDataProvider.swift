@@ -42,7 +42,7 @@ class VoatDataProvider: DataProviderType {
         self.loginScreen = loginScreen
     }
     
-    func requestSubmissionVote(submissionId: Int64, voteValue: Int, completion: @escaping (Error?) -> ()) {
+    func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
         // FIXME: Implement
         
     }

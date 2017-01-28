@@ -18,8 +18,6 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
     let TOKEN_ENDPOINT = OAuth2Handler.TOKEN_ENDPOINT
     let CALLBACK_URL = OAuth2Handler.CALLBACK_URL
     
-    let AUTHORIZATION_BASIC_HEADER_VALUE = "Vk8wRkVFRTIyMTI0NEI0MUI3QjM2ODYwOThBQTRFQTIyN0FUOkY4MEM5RDVENzMyMDQ4RTBCMDky"
-    
     var oauthHandle: OAuthSwiftRequestHandle?
     private var completion: (_ username: String, _ error: Error?) -> ()
     
