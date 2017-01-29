@@ -8,6 +8,7 @@
 
 import UIKit
 import Bond
+import ReactiveKit
 
 struct CommentCellViewModelInitData {
     var date: Date = Date()
@@ -52,6 +53,8 @@ class CommentCellViewModel {
     
     private(set) var children: [CommentCellViewModel] = []
     weak var parent: CommentCellViewModel?
+    
+    var viewBindings: [Disposable] = [] // for external use
     
     // Cell Height
     let CELL_VERTICAL_MARGINS: CGFloat = 55.0
@@ -182,6 +185,14 @@ class CommentCellViewModel {
     
     func toggleMinimized() {
         self.isMinimized.value = !self.isMinimized.value
+    }
+    
+    func resetViewBindings() {
+        for binding in self.viewBindings {
+            binding.dispose()
+        }
+        
+        self.viewBindings.removeAll()
     }
     
     private func getVoteCountTotal( upvoteCount: Int, downvoteCount: Int) -> Int {

@@ -42,6 +42,7 @@ class CommentCell: UITableViewCell {
     
     let MINIMIZED_LABEL_STRING = "[+]"
     let MAXIMIZED_LABEL_STRING = "[-]"
+    let MINIMIZE_MAXIMIZE_DELAY_TIME: Float = 0.15
     
     weak var delegate: CommentCellDelegate?
     weak var viewModel: CommentCellViewModel?
@@ -50,6 +51,9 @@ class CommentCell: UITableViewCell {
     @IBAction func pressedBlockUser(_ sender: Any) {
         self.notifyDelegateDidPressBlockUser(sender: sender)
     }
+    
+    @IBOutlet var upvoteButton: UIButton!
+    @IBOutlet var downvoteButton: UIButton!
     
     
     override func awakeFromNib() {
@@ -68,44 +72,21 @@ class CommentCell: UITableViewCell {
     func bind(toViewModel viewModel: CommentCellViewModel, shouldFilterLanguage: Bool) {
         
         self.viewModel = viewModel
-        
-        // Background
-        self.shiftingViewLeadingConstraint.constant = CGFloat(viewModel.childDepthIndex) * viewModel.COMMENT_CHILD_ALIGNMENTVIEWS_WIDTH
-        if viewModel.childDepthIndex % 2 == 0 {
-            self.setBackgroundColors(withColor: self.BACKGROUND_COLOR_EVEN_CHILD)
-        } else {
-            self.setBackgroundColors(withColor: self.BACKGROUND_COLOR_ODD_CHILD)
-        }
-        
-        // Name color
-        if viewModel.isUserOP == true {
-            self.usernameLabel.textColor = self.USERNAME_COLOR_OP
-        } else if viewModel.isLoadMoreCell == true {
-            self.usernameLabel.textColor = self.USERNAME_COLOR_LOAD_MORE_TITLE
-        } else {
-            self.usernameLabel.textColor = self.USERNAME_COLOR_DEFAULT
-        }
-        
-        self.usernameLabel.text = viewModel.usernameString
+        viewModel.resetViewBindings()
         
         
-        // Show title data
+        // Background offset and colors
+        self.setBackgroundProperties(forViewModel: viewModel)
+        
+        
+        // Username
+        self.setUsernameProperties(forViewModel: viewModel)
+        
+        // Header data
         if viewModel.isLoadMoreCell {
-            self.datePostedLabel.text = ""
-            self.voteCountLabel.text = ""
-            self.separatedVoteCountLabel.text = ""
+            self.clearHeaderElements()
         } else {
-            self.datePostedLabel.text = viewModel.dateString
-            
-            self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
-            _ = viewModel.voteCountTotal.observeNext() { [weak self] voteCount in
-                self?.voteCountLabel.text = String(voteCount)
-            }
-            
-            self.separatedVoteCountLabel.text = viewModel.separatedVoteCountString.value
-            _ = viewModel.separatedVoteCountString.observeNext() { [weak self] string in
-                self?.separatedVoteCountLabel.text = string
-            }
+            self.setHeaderProperties(fromViewModel: viewModel)
         }
         
         // Text Content
@@ -115,44 +96,118 @@ class CommentCell: UITableViewCell {
             self.textView.attributedText = viewModel.attributedTextString
         }
         
+        // Minimize and Maximize
+        self.setMinimizeMaximizeBindings(forViewModel: viewModel)
         
+        // Upvote and downvote buttons
+        self.setVotingButtonsBindings(forViewModel: viewModel)
         
+        // Blocked user button title
+        self.setBlockUserButtonTitle(forViewModel: viewModel)
+       
+    }
+    
+    private func setVotingButtonsBindings(forViewModel viewModel: CommentCellViewModel) {
+        // FIXME: implement bindings for voting buttons
         
-        _ = viewModel.isMinimized.observeNext() { [weak self] isMinimized in
+    }
+    
+    private func setBackgroundProperties(forViewModel viewModel: CommentCellViewModel) {
+        self.shiftingViewLeadingConstraint.constant = CGFloat(viewModel.childDepthIndex) * viewModel.COMMENT_CHILD_ALIGNMENTVIEWS_WIDTH
+        if viewModel.childDepthIndex % 2 == 0 {
+            self.setBackgroundColors(withColor: self.BACKGROUND_COLOR_EVEN_CHILD)
+        } else {
+            self.setBackgroundColors(withColor: self.BACKGROUND_COLOR_ODD_CHILD)
+        }
+    }
+    
+    private func setBlockUserButtonTitle(forViewModel viewModel: CommentCellViewModel) {
+        if viewModel.isBlocked {
+            let UNBLOCK_USER_TITLE = "Unblock User"
+            self.setBlockUserButtonTitle(title: UNBLOCK_USER_TITLE)
+            
+        } else {
+            let BLOCK_USER_TITLE = "Block User"
+            self.setBlockUserButtonTitle(title: BLOCK_USER_TITLE)
+        }
+    }
+    
+    private func setBlockUserButtonTitle(title: String) {
+        self.blockUserButton.setTitle(title, for: .normal)
+        self.blockUserButton.setTitle(title, for: .selected)
+        self.blockUserButton.setTitle(title, for: .focused)
+    }
+    
+    private func setMinimizeMaximizeBindings(forViewModel viewModel: CommentCellViewModel) {
+        viewModel.viewBindings.append( viewModel.isMinimized.observeNext() { [weak self] isMinimized in
+            
+            // Notify delegate - probably to allow for refresh of this cell
             if let _ = self?.delegate?.commentCellDidChange(commentCell: self!) {
                 if isMinimized == true {
-                    self?.textView.isHidden = true
-                    self?.minimizeMaximizeLabel.text = self?.MINIMIZED_LABEL_STRING
-                    self?.blockUserButton.isHidden = true
+                    self?.hideUIElements()
                 }
                 else {
-                    self?.textView.isHidden = false
-                    self?.minimizeMaximizeLabel.text = self?.MAXIMIZED_LABEL_STRING
-                    self?.blockUserButton.isHidden = false
+                    // Adding a delay to make UI visibility-animation more fluid
+                    Delayer.delay(seconds: (self?.MINIMIZE_MAXIMIZE_DELAY_TIME)!) {
+                        self?.showUIElements()
+                    }
                 }
             } else {
                 print("Warning: Delegate for Comment Cell may not be set.")
             }
-        }
-        
-        // Blocked user
-        if viewModel.isBlocked {
-            let UNBLOCK_USER_TITLE = "Unblock User"
-            self.blockUserButton.setTitle(UNBLOCK_USER_TITLE, for: .normal)
-            self.blockUserButton.setTitle(UNBLOCK_USER_TITLE, for: .selected)
-            self.blockUserButton.setTitle(UNBLOCK_USER_TITLE, for: .focused)
+        })
+    }
+    
+    private func setUsernameProperties(forViewModel viewModel: CommentCellViewModel) {
+        if viewModel.isUserOP == true {
+            self.usernameLabel.textColor = self.USERNAME_COLOR_OP
+        } else if viewModel.isLoadMoreCell == true {
+            self.usernameLabel.textColor = self.USERNAME_COLOR_LOAD_MORE_TITLE
         } else {
-            let BLOCK_USER_TITLE = "Block User"
-            self.blockUserButton.setTitle(BLOCK_USER_TITLE, for: .normal)
-            self.blockUserButton.setTitle(BLOCK_USER_TITLE, for: .selected)
-            self.blockUserButton.setTitle(BLOCK_USER_TITLE, for: .focused)
+            self.usernameLabel.textColor = self.USERNAME_COLOR_DEFAULT
         }
+        self.usernameLabel.text = viewModel.usernameString // If cell is a "LoadMoreCell", username should automatically be supplied by the viewModel
+
+    }
+    
+    private func clearHeaderElements() {
+        self.datePostedLabel.text = ""
+        self.voteCountLabel.text = ""
+        self.separatedVoteCountLabel.text = ""
+    }
+    
+    private func setHeaderProperties(fromViewModel viewModel: CommentCellViewModel) {
+        self.datePostedLabel.text = viewModel.dateString
+        self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
+        
+        viewModel.viewBindings.append( viewModel.voteCountTotal.observeNext() { [weak self] voteCount in
+            self?.voteCountLabel.text = String(voteCount)
+        })
+        
+        self.separatedVoteCountLabel.text = viewModel.separatedVoteCountString.value
+        
+        viewModel.viewBindings.append( viewModel.separatedVoteCountString.observeNext() { [weak self] string in
+            self?.separatedVoteCountLabel.text = string
+        })
+    }
+    
+    private func hideUIElements() {
+        self.textView.isHidden = true
+        self.minimizeMaximizeLabel.text = self.MINIMIZED_LABEL_STRING
+        self.blockUserButton.isHidden = true
+        self.upvoteButton.isHidden = true
+        self.downvoteButton.isHidden = true
+    }
+    
+    private func showUIElements() {
+        self.textView.isHidden = false
+        self.minimizeMaximizeLabel.text = self.MAXIMIZED_LABEL_STRING
+        self.blockUserButton.isHidden = false
+        self.upvoteButton.isHidden = false
+        self.downvoteButton.isHidden = false
     }
     
     private func setBackgroundColors(withColor color: UIColor) {
-        //self.contentView.backgroundColor = color
-        //self.shiftingContentView.backgroundColor = color
-        //self.textView.backgroundColor = color
         self.childColorBar.backgroundColor = color
     }
     

@@ -43,32 +43,14 @@ class VoatDataProvider: DataProviderType {
     }
     
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
-        // FIXME: Implement
+        // FIXME: Implement submission vote
         
     }
     
+    // This method is not used. Access OAuthSwiftAuthenticator for online login
     func requestLoginAuthentication(username: String, password: String, completion: @escaping (_ accessToken: String, _ refreshToken: String, Error?) -> ()) {
         
-        let requestUrlString = self.getAuthenticationUrlStringV1()
-        let headers = self.getAuthenticationHeaders()
-        let authParams = self.getAuthenticationParams(username: username, password: password)
-        
-        Alamofire.request(requestUrlString, method: .post, parameters: authParams, encoding: URLEncoding.default, headers: headers).validate().responseJSON { (response) in
-            
-            // FIXME: implement
-            switch response.result {
-            case .failure:
-                completion("", "", response.error)
-            case .success:
-                
-                let jsonData = JSON.init(data: response.data!)
-                let accessToken = jsonData["access_token"].stringValue
-                let refreshToken = jsonData["refresh_token"].stringValue
-                
-                completion(accessToken, refreshToken, nil)
-            }
-            
-        }
+        // Do not use. Resource Owner Credentials access is not permitted.
     }
     
     func requestContent(submissionDataModel: SubmissionDataModelProtocol, downloadProgress: @escaping (Double)->(), completion: @escaping (Data?, SubmissionMediaType, Bool, Error?) -> Void) {
@@ -143,9 +125,6 @@ class VoatDataProvider: DataProviderType {
                 
                 submissionDataModels = self.dataProviderHelper.getSubmissionDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
                 
-                
-                // TODO: Implement error
-                
                 // Return the data models
                 completion(submissionDataModels, nil)
                 
@@ -179,8 +158,6 @@ class VoatDataProvider: DataProviderType {
                 
                 subverseDataModels = self.dataProviderHelper.getSubverseSearchResultDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
                 
-                // TODO: Implement error
-                
                 // Return the data models
                 completion(subverseDataModels, nil)
             case .failure(let error):
@@ -212,8 +189,6 @@ class VoatDataProvider: DataProviderType {
                 
                 let commentDataSegment = self.dataProviderHelper.getCommentDataSegment(fromJson: jsonData!, apiVersion: self.apiVersion)
                 
-                // TODO: Implement error
-                
                 // Return the data models
                 completion(commentDataModels, commentDataSegment, nil)
             case .failure(let error):
@@ -244,9 +219,7 @@ class VoatDataProvider: DataProviderType {
                 commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
                 
                 let commentDataSegment = self.dataProviderHelper.getCommentDataSegment(fromJson: jsonData!, apiVersion: self.apiVersion)
-                
-                // TODO: Implement error
-                
+                                
                 // Return the data models
                 completion(commentDataModels, commentDataSegment, nil)
             case .failure(let error):
@@ -263,7 +236,7 @@ class VoatDataProvider: DataProviderType {
         let subCellVmInitData = self.dataProviderHelper.getSubCellVmInitData(fromDataModel: dataModel)
         subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
         
-        // FIXME: implement
+        // FIXME: implement submission upvote downvote bindings
         // TODO: UPVOTE/DOWNVOTE feature isn't supported by legacy api. Will do later when I get new API key
         // The viewModel dictates what requests are made: upvote, downvote
         // Bind upvote event to request
@@ -460,24 +433,4 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
-    private func getAuthenticationHeaders() -> HTTPHeaders {
-        var headers: HTTPHeaders = [:]
-        
-        headers[self.VOAT_API_KEY_HEADER] = self.VOAT_API_KEY_VALUE
-        headers[self.CONTENT_TYPE_HEADER] = self.CONTENT_TYPE_AUTH_VALUE
-        
-        return headers
-    }
-    
-    private func getAuthenticationParams(username: String, password: String) -> [String: Any]{
-        var params: [String: Any] = [:]
-        
-        params["grant_type"] = "password"
-        params["username"] = username
-        params["password"] = password
-        params["client_id"] = self.VOAT_API_KEY_VALUE
-        params["client_secret"] = self.VOAT_API_KEY_PRIVATE_VALUE
-        
-        return params
-    }
 }

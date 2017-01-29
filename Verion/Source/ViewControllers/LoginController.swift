@@ -140,7 +140,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
     private func performSignIn() {
         self.dismissKeyboard()
         
-        // FIXME: implement
         self.showActivityIndicator()
         self.disableButtons()
         self.failedLabel.isHidden = true

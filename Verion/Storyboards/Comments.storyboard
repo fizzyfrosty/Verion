@@ -439,15 +439,10 @@
                                                         <action selector="pressedBlockUser:" destination="oMF-Ty-rs7" eventType="touchUpInside" id="Qw9-ne-pl6"/>
                                                     </connections>
                                                 </button>
-                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9wW-nT-b6Y">
-                                                    <rect key="frame" x="34" y="167" width="35" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9wW-nT-b6Y">
+                                                    <rect key="frame" x="20" y="193" width="24" height="31"/>
                                                     <state key="normal" image="arrow_up_grey"/>
-                                                </button>
-                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaG-oE-iyx">
-                                                    <rect key="frame" x="83" y="167" width="44" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="arrow_down_grey"/>
+                                                    <state key="selected" image="arrow_up_red"/>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bNb-XE-gib" userLabel="Child Color Bar">
                                                     <rect key="frame" x="0.0" y="31" width="10" height="198"/>
@@ -456,13 +451,20 @@
                                                         <constraint firstAttribute="width" constant="10" id="B82-4j-6kL"/>
                                                     </constraints>
                                                 </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaG-oE-iyx">
+                                                    <rect key="frame" x="59" y="193" width="24" height="31"/>
+                                                    <state key="normal" image="arrow_down_grey"/>
+                                                    <state key="selected" image="arrow_down_blue"/>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
+                                                <constraint firstItem="qaG-oE-iyx" firstAttribute="leading" secondItem="9wW-nT-b6Y" secondAttribute="trailing" constant="15" id="6je-Jl-iwE"/>
                                                 <constraint firstAttribute="bottom" secondItem="bNb-XE-gib" secondAttribute="bottom" id="9Kh-o8-c2j"/>
                                                 <constraint firstAttribute="trailing" secondItem="OBE-MF-QqL" secondAttribute="trailing" id="BV7-6D-Sls"/>
                                                 <constraint firstItem="O1w-5l-zPS" firstAttribute="centerY" secondItem="0xz-3N-aIr" secondAttribute="centerY" id="BqT-Bv-jow"/>
                                                 <constraint firstItem="8BV-v8-VK4" firstAttribute="centerY" secondItem="0xz-3N-aIr" secondAttribute="centerY" id="Img-sj-5XK"/>
+                                                <constraint firstAttribute="bottom" secondItem="9wW-nT-b6Y" secondAttribute="bottom" constant="5" id="JrY-P9-ltK"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Wry-d7-6u7" secondAttribute="trailing" id="L22-W9-0sp"/>
                                                 <constraint firstItem="bNb-XE-gib" firstAttribute="leading" secondItem="cPH-Dd-uh4" secondAttribute="leading" id="L4u-fz-DpZ"/>
                                                 <constraint firstItem="CDb-rp-dmR" firstAttribute="top" secondItem="cPH-Dd-uh4" secondAttribute="top" id="Loe-bG-6L5"/>
@@ -474,6 +476,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="eHP-Vh-crv" secondAttribute="trailing" constant="15" id="X6b-Wg-uAD"/>
                                                 <constraint firstItem="CDb-rp-dmR" firstAttribute="leading" secondItem="cPH-Dd-uh4" secondAttribute="leading" id="XQX-pr-Re8"/>
                                                 <constraint firstItem="8BV-v8-VK4" firstAttribute="leading" secondItem="Tzv-Wt-DsD" secondAttribute="trailing" constant="10" id="a8K-WK-HOF"/>
+                                                <constraint firstItem="qaG-oE-iyx" firstAttribute="bottom" secondItem="9wW-nT-b6Y" secondAttribute="bottom" id="cBb-ZM-UZb"/>
                                                 <constraint firstItem="OBE-MF-QqL" firstAttribute="top" secondItem="CDb-rp-dmR" secondAttribute="bottom" id="eyN-0t-Uch"/>
                                                 <constraint firstItem="fhl-6g-0g9" firstAttribute="leading" secondItem="8BV-v8-VK4" secondAttribute="trailing" constant="5" id="lbG-ws-DcP"/>
                                                 <constraint firstItem="Tzv-Wt-DsD" firstAttribute="leading" secondItem="0xz-3N-aIr" secondAttribute="trailing" constant="10" id="leY-Mw-yci"/>
@@ -482,6 +485,7 @@
                                                 <constraint firstItem="O1w-5l-zPS" firstAttribute="top" secondItem="cPH-Dd-uh4" secondAttribute="top" constant="5" id="w9I-0Y-EaW"/>
                                                 <constraint firstItem="O1w-5l-zPS" firstAttribute="leading" secondItem="cPH-Dd-uh4" secondAttribute="leading" constant="5" id="wFe-KO-CR3"/>
                                                 <constraint firstItem="bNb-XE-gib" firstAttribute="top" secondItem="OBE-MF-QqL" secondAttribute="bottom" id="wWd-tZ-D92"/>
+                                                <constraint firstItem="9wW-nT-b6Y" firstAttribute="leading" secondItem="bNb-XE-gib" secondAttribute="trailing" constant="10" id="xOy-oz-q15"/>
                                                 <constraint firstItem="Wry-d7-6u7" firstAttribute="top" secondItem="OBE-MF-QqL" secondAttribute="bottom" id="xeI-Wa-jRV"/>
                                             </constraints>
                                         </view>
@@ -560,12 +564,14 @@
                                     <outlet property="blockUserButton" destination="eHP-Vh-crv" id="377-i5-maU"/>
                                     <outlet property="childColorBar" destination="bNb-XE-gib" id="Q7k-Qh-Qwj"/>
                                     <outlet property="datePostedLabel" destination="Tzv-Wt-DsD" id="oDR-gH-3ni"/>
+                                    <outlet property="downvoteButton" destination="qaG-oE-iyx" id="XzD-yz-Pq1"/>
                                     <outlet property="headerView" destination="CDb-rp-dmR" id="AQs-8K-npd"/>
                                     <outlet property="minimizeMaximizeLabel" destination="O1w-5l-zPS" id="gSc-Gh-UDT"/>
                                     <outlet property="separatedVoteCountLabel" destination="fhl-6g-0g9" id="hL7-TY-00I"/>
                                     <outlet property="shiftingContentView" destination="cPH-Dd-uh4" id="ZGK-wC-0RD"/>
                                     <outlet property="shiftingViewLeadingConstraint" destination="g3V-br-gvt" id="ktw-gx-Ioh"/>
                                     <outlet property="textView" destination="Wry-d7-6u7" id="U3G-Ec-Qbl"/>
+                                    <outlet property="upvoteButton" destination="9wW-nT-b6Y" id="Dhd-h3-pxi"/>
                                     <outlet property="usernameLabel" destination="0xz-3N-aIr" id="Tz1-rR-AcS"/>
                                     <outlet property="voteCountLabel" destination="8BV-v8-VK4" id="n4L-kB-Qfe"/>
                                 </connections>
@@ -732,8 +738,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow_down_blue" width="24" height="31"/>
         <image name="arrow_down_grey" width="24" height="31"/>
         <image name="arrow_up_grey" width="24" height="31"/>
+        <image name="arrow_up_red" width="24" height="31"/>
         <image name="comment_bubble_medium" width="36" height="37"/>
         <image name="plus_button" width="33" height="26"/>
     </resources>

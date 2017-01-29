@@ -47,8 +47,6 @@ class OfflineLoginScreen: LoginScreenProtocol, LoginControllerDelegate {
     
     func loginControllerDidLogIn(loginController: LoginController, username: String, accessToken: String, refreshToken: String) {
         
-        // FIXME: Set access and refresh token to auth handler here
-        
         #if DEBUG
             print("Signed In with username: \(username)")
         #endif

@@ -167,13 +167,6 @@ class SubmissionCellViewModel{
         }
     }
     
-    private func cleanupInternalBindings() {
-        _ = self.upvoteCount.observeNext { _ in
-        }
-        _ = self.downvoteCount.observeNext { _ in
-        }
-    }
-    
     // Minimum Cell Height
     private func getMinimumCellHeight(dependingOnThumbnailLink thumbnailLink: String) -> CGFloat {
         if thumbnailLink != "" {
