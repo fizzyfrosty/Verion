@@ -163,7 +163,7 @@ class OfflineDataProvider: DataProviderType {
         completion(commentDataModels, commentDataSegment, nil)
     }
     
-    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol, viewController: SubverseViewController) -> Void {
+    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol, viewController: UIViewController) -> Void {
         
         // Initialize the view model's values with data models
         let subCellVmInitData = self.dataProviderHelper.getSubCellVmInitData(fromDataModel: dataModel)
@@ -280,9 +280,89 @@ class OfflineDataProvider: DataProviderType {
         subverseSearchResultCellViewModel.loadInitData(initData: subverseSearchResultCellVmInitData)
     }
     
-    func bind(commentCellViewModel: CommentCellViewModel, dataModel: CommentDataModelProtocol) {
+    func bindTopLevelCommentViewModel(commentCellViewModel: CommentCellViewModel, dataModel: CommentDataModelProtocol){
         let commentCellVmInitData = self.dataProviderHelper.getCommentCellVmInitData(fromDataModel: dataModel)
         commentCellViewModel.loadInitData(initData: commentCellVmInitData)
+    }
+    
+    func bind(commentCellViewModel: CommentCellViewModel, viewController: UIViewController) {
+        commentCellViewModel.resetDataProviderBindings()
+        
+        // Bind upvote event to request
+        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
+            if didRequestUpvote {
+                
+                self?.requestSubmissionVote(submissionId: commentCellViewModel.id, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
+                        #if DEBUG
+                            print("Response failed: Upvote")
+                        #endif
+                        commentCellViewModel.didRequestUpvote.value = false
+                        commentCellViewModel.isUpvoted.value = false
+                        return
+                    }
+                    
+                    // Success
+                    commentCellViewModel.isUpvoted.value = true
+                    
+                    #if DEBUG
+                        print("Response received: Upvote")
+                    #endif
+                })
+                
+            }
+        })
+        
+        // Bind downvote event to request
+        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
+            if didRequestDownvote {
+                
+                self?.requestSubmissionVote(submissionId: commentCellViewModel.id, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
+                        #if DEBUG
+                            print("Response failed: Downvote")
+                        #endif
+                        commentCellViewModel.didRequestDownvote.value = false
+                        commentCellViewModel.isDownvoted.value = false
+                        return
+                    }
+                    
+                    // Success
+                    commentCellViewModel.isDownvoted.value = true
+                    
+                    #if DEBUG
+                        print("Response received: Downvote")
+                    #endif
+                })
+            }
+        })
+        
+        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
+            if didRequestNoVote {
+                self?.requestSubmissionVote(submissionId: commentCellViewModel.id, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
+                    // Failed
+                    guard error == nil else {
+                        #if DEBUG
+                            print("Response failed: NoVote")
+                        #endif
+                        return
+                    }
+                    
+                    // Success
+                    commentCellViewModel.isUpvoted.value = false
+                    commentCellViewModel.isDownvoted.value = false
+                    #if DEBUG
+                        print("Response received: NoVote")
+                    #endif
+                })
+                
+                
+            }
+        })
     }
     
     func getSubmissionMediaType(submissionDataModel: SubmissionDataModelProtocol) -> SubmissionMediaType {

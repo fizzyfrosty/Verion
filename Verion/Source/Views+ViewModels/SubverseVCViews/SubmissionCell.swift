@@ -114,6 +114,10 @@ class SubmissionCell: UITableViewCell {
         self.submittedToSubverseLabel.attributedText = viewModel.submittedToSubverseString
         
         // Bind to User-input events
+        self.setVotingButtonsBindings(forViewModel: viewModel)
+    }
+    
+    private func setVotingButtonsBindings(forViewModel viewModel: SubmissionCellViewModel) {
         // Upvote
         self.upvoteButton.isSelected = viewModel.isUpvoted.value
         self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
@@ -182,9 +186,8 @@ class SubmissionCell: UITableViewCell {
                 viewModel.downvoteCount.value -= 1
                 viewModel.didRequestDownvote.value = false
             }
- 
+            
         })
-        
     }
     
     override func prepareForReuse() {

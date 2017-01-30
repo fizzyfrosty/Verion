@@ -292,6 +292,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 // Put all comment cells, and children, into a single array
                 let allCommentViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: topLevelCommentVms)
                 
+                // Bind events
+                self.bindCommentCellViewModelsToDataProvider(viewModels: allCommentViewModelsLinearArray)
+                
                 self.blockUsersFromList(commentCellViewModels: allCommentViewModelsLinearArray)
                 
                 self.commentsViewModels.append(contentsOf: allCommentViewModelsLinearArray)
@@ -338,7 +341,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             topLevelComments.append(commentViewModel)
             
             let dataModel = dataModels[i]
-            self.dataProvider?.bind(commentCellViewModel: commentViewModel, dataModel: dataModel)
+            self.dataProvider?.bindTopLevelCommentViewModel(commentCellViewModel: commentViewModel, dataModel: dataModel)
         }
         
         return topLevelComments
@@ -371,12 +374,17 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 let childrenViewModels = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: viewModel.children)
                 
-                
                 commentCellViewModelsAll.append(contentsOf: childrenViewModels)
             }
         }
         
         return commentCellViewModelsAll
+    }
+    
+    private func bindCommentCellViewModelsToDataProvider(viewModels: [CommentCellViewModel]) {
+        for viewModel in viewModels {
+            self.dataProvider?.bind(commentCellViewModel: viewModel, viewController: self)
+        }
     }
     
     private func isUserBlocked(forViewModel viewModel: CommentCellViewModel) -> Bool {
@@ -767,6 +775,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         // Get uncollapsed tree from children
         let commentCellViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: commentCellViewModels)
         
+        // Bind events
+        self.bindCommentCellViewModelsToDataProvider(viewModels: commentCellViewModelsLinearArray)
+        
         self.blockUsersFromList(commentCellViewModels: commentCellViewModelsLinearArray)
         
         // Replace LoadMoreCell with contents of first view model
@@ -812,6 +823,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         var childrenVmToAdd = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: [viewModel])
         // Remove the first child, which is the top node
         childrenVmToAdd.remove(at: 0)
+        
+        // Bind events
+        self.bindCommentCellViewModelsToDataProvider(viewModels: childrenVmToAdd)
         
         self.commentsViewModels.insert(contentsOf: childrenVmToAdd, at: currentIndex+1)
         

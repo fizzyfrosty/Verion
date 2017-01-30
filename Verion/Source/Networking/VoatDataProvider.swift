@@ -230,7 +230,7 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
-    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol, viewController: SubverseViewController) -> Void {
+    func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol, viewController: UIViewController) -> Void {
         
         // Initialize the view model's values with data models
         let subCellVmInitData = self.dataProviderHelper.getSubCellVmInitData(fromDataModel: dataModel)
@@ -283,9 +283,13 @@ class VoatDataProvider: DataProviderType {
         subverseSearchResultCellViewModel.loadInitData(initData: subverseSearchResultCellVmInitData)
     }
     
-    func bind(commentCellViewModel: CommentCellViewModel, dataModel: CommentDataModelProtocol) {
+    func bindTopLevelCommentViewModel(commentCellViewModel: CommentCellViewModel, dataModel: CommentDataModelProtocol) {
         let commentCellVmInitData = self.dataProviderHelper.getCommentCellVmInitData(fromDataModel: dataModel)
         commentCellViewModel.loadInitData(initData: commentCellVmInitData)
+    }
+    
+    func bind(commentCellViewModel: CommentCellViewModel, viewController: UIViewController) {
+        // TODO: Implement
     }
     
     func getSubmissionMediaType(submissionDataModel: SubmissionDataModelProtocol) -> SubmissionMediaType {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReactiveKit
 
 protocol CommentCellDelegate: class {
     func commentCellDidChange(commentCell: CommentCell)
@@ -44,6 +45,7 @@ class CommentCell: UITableViewCell {
     let MAXIMIZED_LABEL_STRING = "[-]"
     let MINIMIZE_MAXIMIZE_DELAY_TIME: Float = 0.15
     
+    private var bindings: [Disposable] = []
     weak var delegate: CommentCellDelegate?
     weak var viewModel: CommentCellViewModel?
     
@@ -108,8 +110,78 @@ class CommentCell: UITableViewCell {
     }
     
     private func setVotingButtonsBindings(forViewModel viewModel: CommentCellViewModel) {
-        // FIXME: implement bindings for voting buttons
         
+        // Bind to User-input events
+        // Upvote
+        self.upvoteButton.isSelected = viewModel.isUpvoted.value
+        self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
+            
+            // If previously selected
+            if self?.upvoteButton.isSelected == true {
+                viewModel.didRequestNoVote.value = true
+                self?.upvoteButton.isSelected = false
+                
+            } else {
+                // If not previously selected, attempt to select
+                viewModel.didRequestUpvote.value = true
+                viewModel.didRequestDownvote.value = false
+                self?.upvoteButton.isSelected = true
+            }
+        })
+        
+        
+        viewModel.viewBindings.append( viewModel.isUpvoted.observeNext { [weak self] isUpvoted in
+            self?.upvoteButton.isSelected = isUpvoted
+            
+            if isUpvoted {
+                viewModel.upvoteCount.value += 1
+                
+                // Unselect Downvote
+                if self?.downvoteButton.isSelected == true {
+                    self?.downvoteButton.isSelected = false
+                    viewModel.downvoteCount.value -= 1
+                }
+            } else if viewModel.didRequestUpvote.value == true {
+                viewModel.upvoteCount.value -= 1
+                viewModel.didRequestUpvote.value = false
+            }
+        })
+        
+        
+        // Downvote
+        self.downvoteButton.isSelected = viewModel.isDownvoted.value
+        self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
+            
+            // If previously selected
+            if self?.downvoteButton.isSelected == true {
+                // Request NoVote
+                viewModel.didRequestNoVote.value = true
+                self?.downvoteButton.isSelected = false
+            } else {
+                // If not previously selected, attempt to select
+                viewModel.didRequestDownvote.value = true
+                viewModel.didRequestUpvote.value = false
+                self?.downvoteButton.isSelected = true
+            }
+        })
+        
+        viewModel.viewBindings.append( viewModel.isDownvoted.observeNext { [weak self] isDownvoted in
+            self?.downvoteButton.isSelected = isDownvoted
+            
+            if isDownvoted {
+                viewModel.downvoteCount.value += 1
+                
+                // Unselect Upvote
+                if self?.upvoteButton.isSelected == true {
+                    self?.upvoteButton.isSelected = false
+                    viewModel.upvoteCount.value -= 1
+                }
+            } else if viewModel.didRequestDownvote.value == true {
+                viewModel.downvoteCount.value -= 1
+                viewModel.didRequestDownvote.value = false
+            }
+            
+        })
     }
     
     private func setBackgroundProperties(forViewModel viewModel: CommentCellViewModel) {
@@ -219,6 +291,20 @@ class CommentCell: UITableViewCell {
             print("Warning: CommentCell's delegate may not be set.")
             #endif
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.resetBindings()
+    }
+    
+    private func resetBindings() {
+        for binding in self.bindings {
+            binding.dispose()
+        }
+        
+        self.bindings.removeAll()
     }
     
     deinit{

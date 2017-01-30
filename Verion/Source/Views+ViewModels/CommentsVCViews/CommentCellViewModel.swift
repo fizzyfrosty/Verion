@@ -55,6 +55,14 @@ class CommentCellViewModel {
     weak var parent: CommentCellViewModel?
     
     var viewBindings: [Disposable] = [] // for external use
+    var dataProviderBindings: [Disposable] = []
+    
+    private(set) var didRequestUpvote = Observable<Bool>(false)
+    private(set) var didRequestDownvote = Observable<Bool>(false)
+    private(set) var didRequestNoVote = Observable<Bool>(false)
+    
+    private(set) var isUpvoted = Observable<Bool>(false)
+    private(set) var isDownvoted = Observable<Bool>(false)
     
     // Cell Height
     let CELL_VERTICAL_MARGINS: CGFloat = 55.0
@@ -193,6 +201,14 @@ class CommentCellViewModel {
         }
         
         self.viewBindings.removeAll()
+    }
+    
+    func resetDataProviderBindings() {
+        for binding in self.dataProviderBindings {
+            binding.dispose()
+        }
+        
+        self.dataProviderBindings.removeAll()
     }
     
     private func getVoteCountTotal( upvoteCount: Int, downvoteCount: Int) -> Int {

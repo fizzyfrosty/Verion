@@ -10,4 +10,5 @@ import UIKit
 
 protocol CommentDataModelProtocol {
     var apiVersion: APIVersion {get}
+    var id: Int64 {get}
 }

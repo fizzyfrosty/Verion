@@ -18,9 +18,9 @@ Upvote/Downvote Submission
 * If failed login, reset voting
 
 
-- Vote for Comments
-	- Add Buttons
-	- UI with request behavior
+* Vote for Comments
+	* Add Buttons
+	* UI with request behavior
 
 - Make a top level comment
 	- Add button to comment
