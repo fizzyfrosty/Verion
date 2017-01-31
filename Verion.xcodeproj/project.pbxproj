@@ -215,6 +215,7 @@
 		43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */; };
 		43DF45311E09F04E00478AD9 /* ProgressIndicatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF45301E09F04E00478AD9 /* ProgressIndicatorCell.swift */; };
 		43DF45351E09F0A500478AD9 /* ProgressIndicatorCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DF45341E09F0A500478AD9 /* ProgressIndicatorCellViewModel.swift */; };
+		43EC1E4A1E4079C800B75020 /* ComposeCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC1E491E4079C800B75020 /* ComposeCommentViewController.swift */; };
 		43F674231DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */; };
 		43F674261DF114CD001F83BE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674241DF114CD001F83BE /* Nimble.framework */; };
 		43F674271DF114CD001F83BE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F674251DF114CD001F83BE /* Quick.framework */; };
@@ -465,6 +466,7 @@
 		43DF44AB1E08B6B900478AD9 /* MarkdownParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkdownParser.swift; sourceTree = "<group>"; };
 		43DF45301E09F04E00478AD9 /* ProgressIndicatorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicatorCell.swift; sourceTree = "<group>"; };
 		43DF45341E09F0A500478AD9 /* ProgressIndicatorCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicatorCellViewModel.swift; sourceTree = "<group>"; };
+		43EC1E491E4079C800B75020 /* ComposeCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeCommentViewController.swift; sourceTree = "<group>"; };
 		43F674221DF11217001F83BE /* SubmissionCellViewViewModelBindingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionCellViewViewModelBindingsTest.swift; sourceTree = "<group>"; };
 		43F674241DF114CD001F83BE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		43F674251DF114CD001F83BE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -976,6 +978,7 @@
 				43B056621E0D1CDA007083E8 /* SlideController.swift */,
 				43B056681E0D21F4007083E8 /* LeftMenuController.swift */,
 				436D25EF1E3322E100FE9ED2 /* LoginController.swift */,
+				43EC1E491E4079C800B75020 /* ComposeCommentViewController.swift */,
 				43F6751E1DF20078001F83BE /* TabBarController.swift */,
 			);
 			path = ViewControllers;
@@ -1409,6 +1412,7 @@
 				43433DBF1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift in Sources */,
 				43DF45351E09F0A500478AD9 /* ProgressIndicatorCellViewModel.swift in Sources */,
 				43B056C11E0E4691007083E8 /* AsyncImageView.swift in Sources */,
+				43EC1E4A1E4079C800B75020 /* ComposeCommentViewController.swift in Sources */,
 				43433D7D1E02B8750017FAB0 /* SubmissionTextFormatter.swift in Sources */,
 				43F675271DF20078001F83BE /* SFXManager.swift in Sources */,
 			);

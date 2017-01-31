@@ -21,14 +21,15 @@ Upvote/Downvote Submission
 * Vote for Comments
 	* Add Buttons
 	* UI with request behavior
+	- Handle Not Enough CCP to downvote result
 
 - Make a top level comment
-	- Add button to comment
+	* Add button to comment
 	- UI for entering comment
 	- Insert comment on top level
 
 - Reply to comments
-	- Add button for reply
+	* Add button for reply
 	- UI for submitting comment
 	- Insert comment/reload comments
 

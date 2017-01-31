@@ -56,12 +56,13 @@ class CommentCell: UITableViewCell {
     
     @IBOutlet var upvoteButton: UIButton!
     @IBOutlet var downvoteButton: UIButton!
+    @IBOutlet var commentButton: UIButton!
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.headerView.layer.borderWidth = 1.0
+        self.headerView.layer.borderWidth = 0
         self.headerView.layer.borderColor = UIColor.lightGray.cgColor
     }
 
@@ -269,6 +270,7 @@ class CommentCell: UITableViewCell {
         self.blockUserButton.isHidden = true
         self.upvoteButton.isHidden = true
         self.downvoteButton.isHidden = true
+        self.commentButton.isHidden = true
     }
     
     private func showUIElements() {
@@ -277,6 +279,7 @@ class CommentCell: UITableViewCell {
         self.blockUserButton.isHidden = false
         self.upvoteButton.isHidden = false
         self.downvoteButton.isHidden = false
+        self.commentButton.isHidden = false
     }
     
     private func setBackgroundColors(withColor color: UIColor) {
