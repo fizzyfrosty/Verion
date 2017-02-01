@@ -31,8 +31,35 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
         self.completion = { _, _ in}
     }
 
-    func presentLogin(rootViewController: UIViewController, completion: @escaping (_ username: String, Error?) -> ()) {
-        self.useOauthSwift(rootViewController: rootViewController)
+    func presentLogin(rootViewController: UIViewController, showConfirmation: Bool, completion: @escaping (_ username: String, Error?) -> ()) {
+        
+        self.completion = completion
+        let signInClosure: ()->() = { [weak self] in
+            self?.useOauthSwift(rootViewController: rootViewController)
+        }
+        
+        if showConfirmation {
+            // Ask user if they want to log in
+            let message = "This feature requires you to sign-in to your Voat account. Would you like to sign in now?"
+            let loginAlert = UIAlertController.init(title: "Sign In", message: message, preferredStyle: .alert)
+            
+            let signInAction = UIAlertAction.init(title: "Sign In", style: .default) { (action) in
+                // Sign In
+                signInClosure()
+            }
+            
+            let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+            
+            loginAlert.addAction(signInAction)
+            loginAlert.addAction(cancelAction)
+            
+            rootViewController.present(loginAlert, animated: true, completion: nil)
+        } else {
+            // No confirmation required, sign in
+            signInClosure()
+        }
+        
+        
     }
     
     

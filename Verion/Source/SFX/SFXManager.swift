@@ -29,6 +29,22 @@ class SFXManager: SFXManagerType {
         view.layer.shadowPath = shadowPath
     }
     
+    static func getAndSetDarkenedView(ontoParentView parentView: UIView, alpha: CGFloat) -> UIView {
+        let darkView = UIView.init(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+        darkView.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1.0)
+        
+        
+        let bottom = NSLayoutConstraint.init(item: darkView, attribute: .bottom, relatedBy: .equal, toItem: parentView, attribute: .bottom, multiplier: 1, constant: 0)
+        let top = NSLayoutConstraint.init(item: parentView, attribute: .top, relatedBy: .equal, toItem: parentView, attribute: .top, multiplier: 1, constant: 0)
+        let leading = NSLayoutConstraint.init(item: darkView, attribute: .leading, relatedBy: .equal, toItem: parentView, attribute: .leading, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint.init(item: darkView, attribute: .trailing, relatedBy: .equal, toItem: parentView, attribute: .trailing, multiplier: 1, constant: 0)
+        
+        parentView.addSubview(darkView)
+        parentView.addConstraints([bottom, top, leading, trailing])
+        
+        return darkView
+    }
+    
     deinit {
         #if DEBUG
         //print("Deallocated SFXManager")

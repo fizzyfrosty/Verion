@@ -42,11 +42,11 @@ class VoatDataProvider: DataProviderType {
         self.loginScreen = loginScreen
     }
     
-    func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (Error?) -> ()) {
+    func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
         // FIXME: Implement top level comment
     }
     
-    func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (Error?) -> ()) {
+    func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
         // FIXME: Implement comment reply
     }
     

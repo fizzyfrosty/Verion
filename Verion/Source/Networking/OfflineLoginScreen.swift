@@ -31,17 +31,40 @@ class OfflineLoginScreen: LoginScreenProtocol, LoginControllerDelegate {
     }
     
     
-    func presentLogin(rootViewController: UIViewController, completion: @escaping (String, Error?) -> ()) {
+    func presentLogin(rootViewController: UIViewController, showConfirmation: Bool, completion: @escaping (String, Error?) -> ()) {
         
-        // Initialize storyboard, view controller
-        let storyboard = SwinjectStoryboard.create(name: "Login", bundle: nil)
-        let loginController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginController
-        loginController.delegate = self
-        self.completion = completion
-        
-        // Push Controller
-        rootViewController.present(loginController, animated: true) {
+        let signInClosure: ()->() = { [weak self] in
+            // Initialize storyboard, view controller
+            let storyboard = SwinjectStoryboard.create(name: "Login", bundle: nil)
+            let loginController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginController
+            loginController.delegate = self
+            self?.completion = completion
             
+            // Push Controller
+            rootViewController.present(loginController, animated: true) {
+                
+            }
+        }
+        
+        if showConfirmation {
+            // Ask user if they want to log in
+            let message = "This feature requires you to sign-in to your Voat account. Would you like to sign in now?"
+            let loginAlert = UIAlertController.init(title: "Sign In", message: message, preferredStyle: .alert)
+            
+            let signInAction = UIAlertAction.init(title: "Sign In", style: .default) { (action) in
+                // Sign In
+                signInClosure()
+            }
+            
+            let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+            
+            loginAlert.addAction(signInAction)
+            loginAlert.addAction(cancelAction)
+            
+            rootViewController.present(loginAlert, animated: true, completion: nil)
+        } else {
+            // No confirmation required, sign in
+            signInClosure()
         }
     }
     

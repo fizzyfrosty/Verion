@@ -24,7 +24,7 @@ struct ComposeCommentViewControllerDataModel {
 }
 
 protocol ComposeCommentViewControllerDelegate: class {
-    func composeCommentViewControllerSubmittedComment(controller: ComposeCommentViewController, dataModel: ComposeCommentViewControllerDataModel, comment: String)
+    func composeCommentViewControllerSubmittedComment(controller: ComposeCommentViewController, composeCommentDataModel: ComposeCommentViewControllerDataModel, commentDataModel: CommentDataModelProtocol)
     func composeCommentViewControllerDidClose(controller: ComposeCommentViewController)
 }
 
@@ -32,6 +32,7 @@ class ComposeCommentViewController: UIViewController {
     
     @IBOutlet var backgroundView: UIView!
     @IBOutlet var backgroundViewHeight: NSLayoutConstraint!
+    var darkenedBackground: UIView?
     
     var bottomConstraint: NSLayoutConstraint?
     var leadingConstraint: NSLayoutConstraint?
@@ -39,6 +40,7 @@ class ComposeCommentViewController: UIViewController {
     
     let ANIMATE_TIME: TimeInterval = 0.25
     let HIDE_TIME: TimeInterval = 0.5
+    let SCREEN_HEIGHT_PERCENT: CGFloat = 0.30
     
     @IBOutlet var usernameLabel: UILabel!
     @IBOutlet var textView: UITextView!
@@ -46,13 +48,7 @@ class ComposeCommentViewController: UIViewController {
     @IBOutlet var closeButton: UIButton!
     @IBAction func pressedClose(_ sender: Any) {
         
-        if self.textView.text != "" {
-            self.showConfirmToClose() {
-                self.dismissTextView()
-            }
-        } else {
-            self.dismissTextView()
-        }
+       self.dismissTextView()
         
     }
     
@@ -89,7 +85,7 @@ class ComposeCommentViewController: UIViewController {
     // MARK: - Public Methods
     
     func prepareFrameForShowing() {
-        let height = UIScreen.main.bounds.size.height * 0.25
+        let height = UIScreen.main.bounds.size.height * self.SCREEN_HEIGHT_PERCENT
         
         self.backgroundViewHeight.constant = height
         
@@ -102,10 +98,11 @@ class ComposeCommentViewController: UIViewController {
         self.dataModel = dataModel
         self.loadData(dataModel: self.dataModel!)
         self.enableButtons()
+        self.setDarkenedBackground()
         
-        // FIXME: Animate show
         self.rootViewController?.view.addSubview(self.backgroundView)
         self.backgroundView.alpha = 0
+        self.darkenedBackground?.alpha = 0
         self.animateShow(duration: self.ANIMATE_TIME) {
             self.textView.becomeFirstResponder()
         }
@@ -116,14 +113,13 @@ class ComposeCommentViewController: UIViewController {
         self.trailingConstraint = NSLayoutConstraint.init(item: self.backgroundView, attribute: .trailing, relatedBy: .equal, toItem: rootViewController.view, attribute: .trailing, multiplier: 1, constant: 0)
         
     
-        self.rootViewController?.view.addConstraint(self.bottomConstraint!)
-        self.rootViewController?.view.addConstraint(self.leadingConstraint!)
-        self.rootViewController?.view.addConstraint(self.trailingConstraint!)
+        self.rootViewController?.view.addConstraints([self.bottomConstraint!, self.leadingConstraint!, self.trailingConstraint!])
         
         self.isShown = true
     }
     
     func dismissTextView() {
+        self.dismissKeyboard()
         
         self.animateHide(duration: self.HIDE_TIME) {
             // Remove view and constraints
@@ -131,14 +127,23 @@ class ComposeCommentViewController: UIViewController {
             self.removeKeyboardObservers()
             self.isShown = false
             
+            self.darkenedBackground?.removeFromSuperview()
+            
             self.rootViewController?.view.removeConstraint(self.bottomConstraint!)
             self.rootViewController?.view.removeConstraint(self.leadingConstraint!)
             self.rootViewController?.view.removeConstraint(self.trailingConstraint!)
             
-            // Reset the text
-            self.textView.text = ""
-            
             self.notifyDelegateDidClose()
+        }
+    }
+    
+    func confirmBeforeClosing() {
+        if self.textView.text != "" {
+            self.showConfirmToClose() {
+                self.dismissTextView()
+            }
+        } else {
+            self.dismissTextView()
         }
     }
     
@@ -152,7 +157,7 @@ class ComposeCommentViewController: UIViewController {
         self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
-        self.tapGesture?.cancelsTouchesInView = false
+        //self.tapGesture?.cancelsTouchesInView = false
         
         self.rootViewController!.view.addGestureRecognizer(self.tapGesture!)
     }
@@ -185,9 +190,18 @@ class ComposeCommentViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    private func setDarkenedBackground() {
+        self.darkenedBackground = UIView.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        self.darkenedBackground?.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.25)
+        self.darkenedBackground?.isUserInteractionEnabled = false
+        
+        self.rootViewController?.view.addSubview(self.darkenedBackground!)
+    }
+    
     private func animateShow(duration: TimeInterval, completion: @escaping ()->()) {
         UIView.animate(withDuration: duration, animations: { 
             self.backgroundView.alpha = 1.0
+            self.darkenedBackground!.alpha = 1.0
         }) { (finished) in
             completion()
         }
@@ -196,6 +210,7 @@ class ComposeCommentViewController: UIViewController {
     private func animateHide(duration: TimeInterval, completion: @escaping ()->()) {
         UIView.animate(withDuration: duration, animations: {
             self.backgroundView.alpha = 0
+            self.darkenedBackground!.alpha = 0
         }) { (finished) in
             completion()
         }
@@ -246,7 +261,7 @@ class ComposeCommentViewController: UIViewController {
         self.showActivityIndicator()
         self.disableButtons()
         
-        self.dataProvider?.requestSubmitTopLevelComment(subverseName: (self.dataModel?.subverseName)!, submissionId: (self.dataModel?.submissionId)!, comment: comment) { [weak self] error in
+        self.dataProvider?.requestSubmitTopLevelComment(subverseName: (self.dataModel?.subverseName)!, submissionId: (self.dataModel?.submissionId)!, comment: comment) { [weak self] commentDataModel, error in
             
             self?.hideActivityIndicator()
             
@@ -258,7 +273,7 @@ class ComposeCommentViewController: UIViewController {
             }
             
             // Success
-            self?.returnCommentAndClose(comment: comment)
+            self?.returnCommentAndClose(commentDataModel: commentDataModel!)
         }
     }
     
@@ -267,7 +282,7 @@ class ComposeCommentViewController: UIViewController {
         self.showActivityIndicator()
         self.disableButtons()
         
-        self.dataProvider?.requestSubmitCommentReply(subverseName: (self.dataModel?.subverseName)!, submissionId: (self.dataModel?.submissionId)!, commentId: (self.dataModel?.commentId)!, comment: comment) { [weak self] error in
+        self.dataProvider?.requestSubmitCommentReply(subverseName: (self.dataModel?.subverseName)!, submissionId: (self.dataModel?.submissionId)!, commentId: (self.dataModel?.commentId)!, comment: comment) { [weak self] commentDataModel, error in
             
             self?.hideActivityIndicator()
             
@@ -280,15 +295,17 @@ class ComposeCommentViewController: UIViewController {
             }
             
             // Success
-            self?.returnCommentAndClose(comment: comment)
+            self?.returnCommentAndClose(commentDataModel: commentDataModel!)
         }
         
     }
     
-    private func returnCommentAndClose(comment: String) {
-        ActivityIndicatorProvider.showNotification(message: "Success!", view: (self.rootViewController?.view)!) {
+    private func returnCommentAndClose(commentDataModel: CommentDataModelProtocol) {
+        ActivityIndicatorProvider.showNotification(message: "Comment Posted!", view: (self.rootViewController?.view)!) {
             
-            self.notifyDelegateDidSubmitComment(comment: comment)
+            // Reset text
+            self.textView.text = ""
+            self.notifyDelegateDidSubmitComment(commentDataModel: commentDataModel)
             self.dismissTextView()
         }
     }
@@ -340,8 +357,8 @@ class ComposeCommentViewController: UIViewController {
         }
     }
     
-    private func notifyDelegateDidSubmitComment(comment: String) {
-        if let _ = self.delegate?.composeCommentViewControllerSubmittedComment(controller: self, dataModel: self.dataModel!, comment: comment) {
+    private func notifyDelegateDidSubmitComment(commentDataModel: CommentDataModelProtocol) {
+        if let _ = self.delegate?.composeCommentViewControllerSubmittedComment(controller: self, composeCommentDataModel: self.dataModel!, commentDataModel: commentDataModel) {
             
         } else {
             #if DEBUG

@@ -46,30 +46,50 @@ class OfflineDataProvider: DataProviderType {
     }
     
     
-    func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (Error?) -> ()) {
+    func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
         
         Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
             
             if submissionId == -1 {
                 // Failure
-                completion(CommentError.invalidIds)
+                completion(nil, CommentError.invalidIds)
             } else {
+                
                 // Success
-                completion(nil)
+                var commentDataModel: CommentDataModelProtocol
+                
+                switch self.apiVersion {
+                case .legacy:
+                    commentDataModel = CommentDataModelLegacy()
+                case .v1:
+                    commentDataModel = self.getTestCommentDataV1(comment: comment)
+                }
+                
+                completion(commentDataModel, nil)
             }
         }
     }
     
-    func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (Error?) -> ()) {
+    func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
         
         Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
             
             if submissionId == -1 || commentId == -1 {
                 // Failure
-                completion(CommentError.invalidIds)
+                completion(nil, CommentError.invalidIds)
             } else {
+                
                 // Success
-                completion(nil)
+                var commentDataModel: CommentDataModelProtocol
+                
+                switch self.apiVersion {
+                case .legacy:
+                    commentDataModel = CommentDataModelLegacy()
+                case .v1:
+                    commentDataModel = self.getTestCommentDataV1(comment: comment)
+                }
+                
+                completion(commentDataModel, nil)
             }
         }
     }
@@ -86,7 +106,7 @@ class OfflineDataProvider: DataProviderType {
         }
         
         guard OAuth2Handler.sharedInstance.accessToken != "" else {
-            self.loginScreen?.presentLogin(rootViewController: rootViewController, completion: { (username, error) in
+            self.loginScreen?.presentLogin(rootViewController: rootViewController, showConfirmation: false, completion: { (username, error) in
                 guard error == nil else {
                     completion(OfflineRequestError.notAuthenticated)
                     return
@@ -410,5 +430,14 @@ class OfflineDataProvider: DataProviderType {
     
     private func hideActivityIndicator() {
         self.activityIndicator?.hide(animated: true)
+    }
+    
+    private func getTestCommentDataV1(comment: String) -> CommentDataModelV1 {
+        let commentDataModel = CommentDataModelV1()
+        commentDataModel.creationDateString = "2016-12-02T06:34:50.3834343"
+        commentDataModel.content = comment
+        commentDataModel.username = "TestUser"
+        
+        return commentDataModel
     }
 }

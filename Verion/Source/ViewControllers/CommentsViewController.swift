@@ -104,6 +104,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
     private func loadData() {
         self.verionDataModel = self.dataManager?.getSavedData()
         
@@ -124,9 +128,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             // Pre-emptively Load the banner ad
             _ = self.adManager?.getBannerAd(rootViewController: self)
         }
-        
-        
-        
     }
     
     fileprivate func saveData() {
@@ -147,7 +148,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
     
     func reloadTableCommentsAnimated() {
-        self.reloadTableAnimated(startingIndexInclusive: 1, endingIndexExclusive: self.commentsViewModels.count+1, animation: .automatic)
+        self.reloadTableAnimated(startingIndexInclusive: self.numOfSectionsBeforeComments, endingIndexExclusive: self.commentsViewModels.count+self.numOfSectionsBeforeComments, animation: .automatic)
     }
     
     private func reloadTableAnimated(startingIndexInclusive: Int, endingIndexExclusive:
@@ -304,8 +305,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 self.commentsViewModels.append(contentsOf: allCommentViewModelsLinearArray)
                 
-                self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: topLevelCommentVms, startingDepthIndex: 0)
-                
                 self.areCommentsLoaded = true
                 
                 
@@ -369,7 +368,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 if viewModel.hasMoreUnloadedChildren == true {
                     if let loadMoreCommentCellViewModel = self.getLoadMoreCellViewModel(withParentViewModel: viewModel) {
                         // Add it as a child of current view model
-                        viewModel.addChild(viewModel: loadMoreCommentCellViewModel, parentIndex: i)
+                        viewModel.addChild(viewModel: loadMoreCommentCellViewModel)
                         
                         // Turn off once appended
                         viewModel.hasMoreUnloadedChildren = false
@@ -450,15 +449,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         loadMoreCommentCellVmInitData.parentId = -1 // This is required for top level comment retrieval
         return loadMoreCommentCellVmInitData
 
-    }
-    
-    private func setAllCommentViewModelChildDepthIndexes(topLevelViewModels: [CommentCellViewModel], startingDepthIndex: Int) {
-        
-        for viewModel in topLevelViewModels {
-            viewModel.childDepthIndex = startingDepthIndex
-            
-            self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: viewModel.children, startingDepthIndex: startingDepthIndex + 1)
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -769,13 +759,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 for i in 0..<commentCellViewModels.count {
                     let viewModel = commentCellViewModels[i]
-                    parentCommentCellViewModel.addChild(viewModel: viewModel, parentIndex: i)
+                    parentCommentCellViewModel.addChild(viewModel: viewModel)
                 }
             }
         }
-        
-        // Set the child depth indexes
-        self.setAllCommentViewModelChildDepthIndexes(topLevelViewModels: commentCellViewModels, startingDepthIndex: loadMoreCellViewModel.childDepthIndex)
         
         // Get uncollapsed tree from children
         let commentCellViewModelsLinearArray = self.getAllCommentViewModelsInTreeIfUncollapsed(fromTopLevelViewModels: commentCellViewModels)
@@ -975,6 +962,22 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
     }
     
+    fileprivate func getIndexOfCommentViewModel(byId id: Int64) -> Int? {
+        var index: Int?
+        
+        for i in 0..<self.commentsViewModels.count {
+            
+            let viewModel = self.commentsViewModels[i]
+            
+            if viewModel.id == id {
+                index = i
+                break
+            }
+        }
+        
+        return index
+    }
+    
     deinit {
         self.tableView.dataSource = nil
         self.tableView.delegate = nil
@@ -1037,8 +1040,44 @@ extension CommentsViewController: ComposeCommentViewControllerDelegate {
         
     }
     
-    func composeCommentViewControllerSubmittedComment(controller: ComposeCommentViewController, dataModel: ComposeCommentViewControllerDataModel, comment: String) {
-        // FIXME: Insert comment into current viewmodel
+    func composeCommentViewControllerSubmittedComment(controller: ComposeCommentViewController, composeCommentDataModel: ComposeCommentViewControllerDataModel, commentDataModel: CommentDataModelProtocol) {
+        
+        switch composeCommentDataModel.type {
+        case .topLevelComment:
+            self.addTopLevelComment(commentDataModel: commentDataModel)
+        case .reply:
+            self.addReplyComment(commentDataModel: commentDataModel, parentCommentId: composeCommentDataModel.commentId)
+        }
+    }
+    
+    fileprivate func addTopLevelComment(commentDataModel: CommentDataModelProtocol) {
+        // Create view model and bind
+        let viewModel = CommentCellViewModel()
+        self.dataProvider?.bindTopLevelCommentViewModel(commentCellViewModel: viewModel, dataModel: commentDataModel)
+        
+        // Add view model to self.viewmodels
+        self.commentsViewModels.insert(viewModel, at: 0)
+        
+        // Reload table
+        self.reloadTableCommentsAnimated()
+    }
+    
+    fileprivate func addReplyComment(commentDataModel: CommentDataModelProtocol, parentCommentId: Int64) {
+        // Create view model and bind
+        let viewModel = CommentCellViewModel()
+        self.dataProvider?.bindTopLevelCommentViewModel(commentCellViewModel: viewModel, dataModel: commentDataModel)
+        
+        // Insert View Model into parent
+        // Find parent
+        if let parentCommentViewModelIndex = self.getIndexOfCommentViewModel(byId: parentCommentId) {
+            
+            let parentCommentViewModel = self.commentsViewModels[parentCommentViewModelIndex]
+            parentCommentViewModel.addChild(viewModel: viewModel)
+            self.commentsViewModels.insert(viewModel, at: parentCommentViewModelIndex+1)
+            
+            // Reload table
+            self.reloadTableCommentsAnimated()
+        }
     }
 }
 
@@ -1141,7 +1180,7 @@ extension CommentsViewController: CommentCellDelegate{
         if OAuth2Handler.sharedInstance.accessToken != "" {
             commentReplyClosure()
         } else {
-            self.loginScreen?.presentLogin(rootViewController: self, completion: { (username, error) in
+            self.loginScreen?.presentLogin(rootViewController: self, showConfirmation: true, completion: { (username, error) in
                 
                 guard error == nil else {
                     self.showAlert(title: "Error", message: "Failed to Sign In")
@@ -1185,7 +1224,25 @@ extension CommentsViewController: CommentCellDelegate{
     }
     
     func commentsSortByCell(cell: CommentsSortByCell, didPressComment: Any) {
-        self.showSubmitCommentView(type: CommentResponseType.topLevelComment, commentId: nil)
+        let commentReplyClosure: ()->() = { [weak self] in
+            self?.showSubmitCommentView(type: CommentResponseType.topLevelComment, commentId: nil)
+        }
+        
+        // Check login first
+        if OAuth2Handler.sharedInstance.accessToken != "" {
+            commentReplyClosure()
+        } else {
+            self.loginScreen?.presentLogin(rootViewController: self, showConfirmation: true, completion: { (username, error) in
+                
+                guard error == nil else {
+                    self.showAlert(title: "Error", message: "Failed to Sign In")
+                    return
+                }
+                
+                // Success
+                commentReplyClosure()
+            })
+        }
     }
     
     private func getTextLink(dataModel: SubmissionDataModelProtocol) -> String {

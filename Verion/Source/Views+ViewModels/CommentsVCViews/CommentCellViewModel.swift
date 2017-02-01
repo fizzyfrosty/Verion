@@ -38,7 +38,7 @@ class CommentCellViewModel {
     private(set) var date: Date?
     private(set) var id: Int64 = 0
     private(set) var parentId: Int64 = 0
-    var parentIndex = 0 // for setting externally
+    var parentChildrenArrayIndex = 0 // for setting externally, this is the index where it resides in the parent's children array
     
     private(set) var voteCountTotal = Observable<Int>(0)
     private(set) var upvoteCount = Observable<Int>(0)
@@ -157,9 +157,10 @@ class CommentCellViewModel {
         
         // Load children
         for childInitData in initData.children {
-            let viewModel = CommentCellViewModel()
-            viewModel.loadInitData(initData: childInitData)
-            self.children.append(viewModel)
+            let childViewModel = CommentCellViewModel()
+            childViewModel.childDepthIndex = self.childDepthIndex+1 // This must be set before its children gets initialized
+            childViewModel.loadInitData(initData: childInitData)
+            self.addChild(viewModel: childViewModel)
         }
         
         // Bindings
@@ -177,10 +178,11 @@ class CommentCellViewModel {
         }
     }
     
-    func addChild(viewModel: CommentCellViewModel, parentIndex: Int) {
-        self.parentIndex = parentIndex
+    func addChild(viewModel: CommentCellViewModel) {
         self.children.append(viewModel)
         viewModel.parent = self
+        viewModel.parentChildrenArrayIndex = self.children.count-1
+        viewModel.childDepthIndex = self.childDepthIndex+1
     }
     
     func removeLastChild() {
@@ -188,7 +190,7 @@ class CommentCellViewModel {
     }
     
     func removeFromParent() {
-        self.parent?.children.remove(at: self.parentIndex)
+        self.parent?.children.remove(at: self.parentChildrenArrayIndex)
     }
     
     func toggleMinimized() {
