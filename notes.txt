@@ -33,6 +33,38 @@ Upvote/Downvote Submission
 	- UI for submitting comment
 	- Insert comment/reload comments
 
+- ComposeCommentViewController
+	* Add white border to background view
+	* Make UITextView rounded
+	* Make a data model for the viewcontroller
+		* initialize with type - top level, or comment reply
+		* load username
+		* subverse name
+		* submission id
+		* comment id (if reply)
+	* Create delegate
+		* send, successful
+		* did close
+	- When press send, send to server
+		- Add request to data provider
+	- On error, display message returned on popup alert
+	- On success, dismiss, tell delegate finished
+		- return a copy of the data model
+		- Include the markdown text used
+	- Inject dependencies
+
+- CommentsViewController
+	- Load the ComposeCommentsViewController with an initializing data model
+	- Do not push view controller
+		- just add background subview
+		- create a strong reference
+		- call a show() method, possibly using SpringViews
+	- Set as delegate
+	- On success return: reload, or insert returned comment into comments
+	- On return, success or failure
+		- remove strong reference
+		- call hide() method, possibly using SpringViews
+
 
 Online Requests
 - Attempt to make request using OAuthHandler with access token

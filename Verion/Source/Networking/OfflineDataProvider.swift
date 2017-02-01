@@ -41,6 +41,15 @@ class OfflineDataProvider: DataProviderType {
         self.loginScreen = loginScreen
     }
     
+    
+    func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (Error?) -> ()) {
+        // FIXME: Implement top level comment
+    }
+    
+    func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (Error?) -> ()) {
+        // FIXME: Implement comment reply
+    }
+    
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
         
         let requestClosure: ()->() = { [weak self] in
