@@ -44,7 +44,7 @@ class CommentCell: UITableViewCell {
     
     let MINIMIZED_LABEL_STRING = "[+]"
     let MAXIMIZED_LABEL_STRING = "[-]"
-    let MINIMIZE_MAXIMIZE_DELAY_TIME: Float = 0.15
+    let MINIMIZE_MAXIMIZE_DELAY_TIME: Float = 0.25
     
     private var bindings: [Disposable] = []
     weak var delegate: CommentCellDelegate?
@@ -67,7 +67,7 @@ class CommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.headerView.layer.borderWidth = 0
+        self.headerView.layer.borderWidth = 1.0
         self.headerView.layer.borderColor = UIColor.lightGray.cgColor
     }
 

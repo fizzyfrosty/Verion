@@ -41,6 +41,7 @@ class ComposeCommentViewController: UIViewController {
     let ANIMATE_TIME: TimeInterval = 0.25
     let HIDE_TIME: TimeInterval = 0.5
     let SCREEN_HEIGHT_PERCENT: CGFloat = 0.30
+    var isKeyboardShown = false
     
     @IBOutlet var usernameLabel: UILabel!
     @IBOutlet var textView: UITextView!
@@ -154,7 +155,7 @@ class ComposeCommentViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         //Looks for single or multiple taps.
-        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dissmissKeyboardOrClose))
         
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
         //self.tapGesture?.cancelsTouchesInView = false
@@ -170,12 +171,21 @@ class ComposeCommentViewController: UIViewController {
     }
     
     //Calls this function when the tap is recognized.
+    func dissmissKeyboardOrClose() {
+        if self.isKeyboardShown == true {
+            self.dismissKeyboard()
+        } else {
+            self.dismissTextView()
+        }
+    }
+    
     func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         self.rootViewController!.view.endEditing(true)
     }
     
     func keyboardWillShow(notification: NSNotification) {
+        self.isKeyboardShown = true
         
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             
@@ -185,6 +195,8 @@ class ComposeCommentViewController: UIViewController {
     }
     
     func keyboardWillHide(notification: NSNotification) {
+        self.isKeyboardShown = false
+        
         self.bottomConstraint?.constant = 0
     }
     

@@ -23,15 +23,15 @@ Upvote/Downvote Submission
 	* UI with request behavior
 	- Handle Not Enough CCP to downvote result, from response?
 
-- Make a top level comment
+* Make a top level comment
 	* Add button to comment
 	* UI for entering comment
-	- Insert comment on top level
+	* Insert comment on top level
 
-- Reply to comments
+* Reply to comments
 	* Add button for reply
 	* UI for submitting comment
-	- Insert comment/reload comments
+	* Insert comment/reload comments
 
 * ComposeCommentViewController
 	* Add white border to background view
@@ -74,12 +74,12 @@ Upvote/Downvote Submission
 	* Has faded background
 	* Cannot be interrupted
 
-- On success return: reload, or insert returned comment into comments
+* On success return: reload, or insert returned comment into comments
 	* initialize a view model, bind to returned CommentDataModel
 	* If top level comment, add to beginning of array
 		* Reload table
-	- If comment reply, add to the viewModel's children
-		- Reload table for inserted item
+	* If comment reply, add to the viewModel's children
+		* Reload table for inserted item
 
 
 
