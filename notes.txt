@@ -59,17 +59,19 @@ Upvote/Downvote Submission
 	* Shift View by keyboard height
 	* Do not allow more than 1 ComposeCommentVC to be presented
 
-- CommentsViewController
-	- Load the ComposeCommentsViewController with an initializing data model
-	- Do not push view controller
-		- just add background subview
-		- create a strong reference
-		- call a show() method, possibly using SpringViews
-	- Set as delegate
-	- On success return: reload, or insert returned comment into comments
-	- On return, success or failure
-		- remove strong reference
-		- call hide() method, possibly using SpringViews
+* CommentsViewController
+	* Load the ComposeCommentsViewController with an initializing data model
+	* Do not push view controller
+		* just add background subview
+		* create a strong reference
+		* call a show() method
+	* Set as delegate
+	* Call from top level comment
+	* Call from each comment reply
+	* On success return: reload, or insert returned comment into comments
+	* On return, success or failure
+		x remove strong reference
+		* call hide() method, possibly using SpringViews
 
 
 Online Requests

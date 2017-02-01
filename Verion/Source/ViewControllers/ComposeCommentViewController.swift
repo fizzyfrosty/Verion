@@ -24,7 +24,7 @@ struct ComposeCommentViewControllerDataModel {
 }
 
 protocol ComposeCommentViewControllerDelegate: class {
-    func composeCommentViewControllerSubmittedComment(controller: ComposeCommentViewController, comment: String)
+    func composeCommentViewControllerSubmittedComment(controller: ComposeCommentViewController, dataModel: ComposeCommentViewControllerDataModel, comment: String)
     func composeCommentViewControllerDidClose(controller: ComposeCommentViewController)
 }
 
@@ -101,6 +101,7 @@ class ComposeCommentViewController: UIViewController {
         self.registerKeyboardNotifications()
         self.dataModel = dataModel
         self.loadData(dataModel: self.dataModel!)
+        self.enableButtons()
         
         // FIXME: Animate show
         self.rootViewController?.view.addSubview(self.backgroundView)
@@ -133,6 +134,9 @@ class ComposeCommentViewController: UIViewController {
             self.rootViewController?.view.removeConstraint(self.bottomConstraint!)
             self.rootViewController?.view.removeConstraint(self.leadingConstraint!)
             self.rootViewController?.view.removeConstraint(self.trailingConstraint!)
+            
+            // Reset the text
+            self.textView.text = ""
             
             self.notifyDelegateDidClose()
         }
@@ -267,6 +271,7 @@ class ComposeCommentViewController: UIViewController {
             
             self?.hideActivityIndicator()
             
+            
             guard error == nil else {
                 // Failure
                 self?.showErrorAlert()
@@ -336,7 +341,7 @@ class ComposeCommentViewController: UIViewController {
     }
     
     private func notifyDelegateDidSubmitComment(comment: String) {
-        if let _ = self.delegate?.composeCommentViewControllerSubmittedComment(controller: self, comment: comment) {
+        if let _ = self.delegate?.composeCommentViewControllerSubmittedComment(controller: self, dataModel: self.dataModel!, comment: comment) {
             
         } else {
             #if DEBUG

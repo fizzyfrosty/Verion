@@ -12,6 +12,7 @@ import ReactiveKit
 protocol CommentCellDelegate: class {
     func commentCellDidChange(commentCell: CommentCell)
     func commentCellDidPressBlockUser(commentCell: CommentCell, username: String)
+    func commentCellDidPressComment(commentCell: CommentCell, viewModel: CommentCellViewModel)
 }
 
 class CommentCell: UITableViewCell {
@@ -52,6 +53,10 @@ class CommentCell: UITableViewCell {
     @IBOutlet var blockUserButton: UIButton!
     @IBAction func pressedBlockUser(_ sender: Any) {
         self.notifyDelegateDidPressBlockUser(sender: sender)
+    }
+    
+    @IBAction func pressedCommentButton(_ sender: Any) {
+        self.notifyDelegateDidPressComment()
     }
     
     @IBOutlet var upvoteButton: UIButton!
@@ -292,6 +297,16 @@ class CommentCell: UITableViewCell {
         } else {
             #if DEBUG
             print("Warning: CommentCell's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    private func notifyDelegateDidPressComment() {
+        if let _ = self.delegate?.commentCellDidPressComment(commentCell: self, viewModel: self.viewModel!) {
+            
+        } else {
+            #if DEBUG
+                print("Warning: CommentCell's delegate may not be set.")
             #endif
         }
     }

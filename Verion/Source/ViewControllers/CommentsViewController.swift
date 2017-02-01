@@ -81,6 +81,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var analyticsManager: AnalyticsManagerProtocol?
     var adManager: AdManager?
     var dataManager: DataManagerProtocol?
+    var loginScreen: LoginScreenProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -986,7 +987,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
 
 // MARK: - Submit comments
 
-extension CommentsViewController {
+extension CommentsViewController: ComposeCommentViewControllerDelegate {
     
     fileprivate func showSubmitCommentView(type: CommentResponseType, commentId: Int64?) {
         
@@ -997,7 +998,6 @@ extension CommentsViewController {
                 return
             }
         }
-        
         
         // Prepare data
         var commentSubmissionDataModel = ComposeCommentViewControllerDataModel()
@@ -1018,14 +1018,27 @@ extension CommentsViewController {
             commentSubmissionDataModel.commentId = commentId!
         }
         
-        let composeCommentSb = SwinjectStoryboard.create(name: "Comments", bundle: nil)
-        self.composeCommentVc = composeCommentSb.instantiateViewController(withIdentifier: "ComposeCommentViewController") as? ComposeCommentViewController
-        
-        // Force call of viewDidLoad()
-        _ = self.composeCommentVc?.view
-        
+        // Initialize if not initialized
+        if self.composeCommentVc == nil {
+            let composeCommentSb = SwinjectStoryboard.create(name: "Comments", bundle: nil)
+            self.composeCommentVc = composeCommentSb.instantiateViewController(withIdentifier: "ComposeCommentViewController") as? ComposeCommentViewController
+            self.composeCommentVc?.delegate = self
+            
+            // Force call of viewDidLoad()
+            _ = self.composeCommentVc?.view
+        }
         
         self.composeCommentVc?.showTextView(rootViewController: self.navigationController!, dataModel: commentSubmissionDataModel)
+    }
+    
+    // MARK: - Compose Comments VC Delegate methods
+    
+    func composeCommentViewControllerDidClose(controller: ComposeCommentViewController) {
+        
+    }
+    
+    func composeCommentViewControllerSubmittedComment(controller: ComposeCommentViewController, dataModel: ComposeCommentViewControllerDataModel, comment: String) {
+        // FIXME: Insert comment into current viewmodel
     }
 }
 
@@ -1115,9 +1128,33 @@ extension CommentsViewController: CommentCellDelegate{
             
             self.present(unblockAlert, animated: true, completion: nil)
         }
-        
-        
     }
+    
+    // Comment Reply
+    func commentCellDidPressComment(commentCell: CommentCell, viewModel: CommentCellViewModel) {
+        
+        let commentReplyClosure: ()->() = { [weak self] in
+            self?.showSubmitCommentView(type: .reply, commentId: viewModel.id)
+        }
+        
+        // Check login first
+        if OAuth2Handler.sharedInstance.accessToken != "" {
+            commentReplyClosure()
+        } else {
+            self.loginScreen?.presentLogin(rootViewController: self, completion: { (username, error) in
+                
+                guard error == nil else {
+                    self.showAlert(title: "Error", message: "Failed to Sign In")
+                    return
+                }
+                
+                // Success
+                commentReplyClosure()
+            })
+        }
+    }
+    
+    
     
     // Share
     func commentsSortByCell(cell: CommentsSortByCell, didPressShare: Any) {

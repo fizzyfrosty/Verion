@@ -139,6 +139,7 @@ extension SwinjectStoryboard {
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
             C.adManager = AdManager.sharedInstance
+            C.loginScreen = ResolverType.resolve(LoginScreenProtocol.self)!
         })
         
         defaultContainer.storyboardInitCompleted(FindSubverseViewController.self, initCompleted: { (ResolverType, C) in
