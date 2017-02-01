@@ -157,6 +157,10 @@ extension SwinjectStoryboard {
         defaultContainer.storyboardInitCompleted(LoginController.self) { (ResolverType, C) in
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
         }
+        
+        defaultContainer.storyboardInitCompleted(ComposeCommentViewController.self) { (Resolver, controller) in
+            controller.dataProvider = Resolver.resolve(DataProviderType.self)!
+        }
     }
 }
 

@@ -9,6 +9,7 @@
 import UIKit
 import NVActivityIndicatorView
 import SafariServices
+import SwinjectStoryboard
 
 class CommentsViewController: UITableViewController, UITextViewDelegate, CommentsSortByCellDelegate {
     
@@ -70,6 +71,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     // Web View Controller 
     var linkString = ""
+    
+    // Compose Comment
+    fileprivate var composeCommentVc: ComposeCommentViewController?
     
     // Dependencies
     var sfxManager: SFXManagerType?
@@ -980,6 +984,50 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     }
 }
 
+// MARK: - Submit comments
+
+extension CommentsViewController {
+    
+    fileprivate func showSubmitCommentView(type: CommentResponseType, commentId: Int64?) {
+        
+        if self.composeCommentVc != nil {
+            guard self.composeCommentVc?.isShown == false else {
+                // If currently showing, do not show
+                
+                return
+            }
+        }
+        
+        
+        // Prepare data
+        var commentSubmissionDataModel = ComposeCommentViewControllerDataModel()
+        commentSubmissionDataModel.submissionId = (self.submissionDataModel?.id)!
+        commentSubmissionDataModel.subverseName = (self.submissionDataModel?.subverseName)!
+        commentSubmissionDataModel.username = (self.dataManager?.getUsernameFromKeychain())!
+        commentSubmissionDataModel.type = type
+        
+        switch type {
+        case .topLevelComment:
+            // do nothing
+            break
+        case .reply:
+            // Set comment ID
+            if commentId == nil {
+                fatalError("Comment ID required for Comment Reply submissions.")
+            }
+            commentSubmissionDataModel.commentId = commentId!
+        }
+        
+        let composeCommentSb = SwinjectStoryboard.create(name: "Comments", bundle: nil)
+        self.composeCommentVc = composeCommentSb.instantiateViewController(withIdentifier: "ComposeCommentViewController") as? ComposeCommentViewController
+        
+        // Force call of viewDidLoad()
+        _ = self.composeCommentVc?.view
+        
+        
+        self.composeCommentVc?.showTextView(rootViewController: self.navigationController!, dataModel: commentSubmissionDataModel)
+    }
+}
 
 extension CommentsViewController: SFSafariViewControllerDelegate {
     fileprivate func openSafariViewController(link: String) {
@@ -1097,6 +1145,10 @@ extension CommentsViewController: CommentCellDelegate{
         reportAlert.addAction(yesAction)
         
         self.present(reportAlert, animated: true, completion: nil)
+    }
+    
+    func commentsSortByCell(cell: CommentsSortByCell, didPressComment: Any) {
+        self.showSubmitCommentView(type: CommentResponseType.topLevelComment, commentId: nil)
     }
     
     private func getTextLink(dataModel: SubmissionDataModelProtocol) -> String {

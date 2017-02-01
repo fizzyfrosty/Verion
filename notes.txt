@@ -45,13 +45,19 @@ Upvote/Downvote Submission
 	* Create delegate
 		* send, successful
 		* did close
-	- When press send, send to server
-		- Add request to data provider
-	- On error, display message returned on popup alert
-	- On success, dismiss, tell delegate finished
-		- return a copy of the data model
-		- Include the markdown text used
-	- Inject dependencies
+	* When press send, send to server
+		* Add request to data provider
+	* On success, dismiss, tell delegate finished
+		x return a copy of the data model
+		* Include the markdown text used
+	* Inject dependencies
+	* On error, display message returned on popup alert
+	* On Close, confirm close before closing
+	* Animate show
+	* Animate hide
+	* Show Keyboard
+	* Shift View by keyboard height
+	* Do not allow more than 1 ComposeCommentVC to be presented
 
 - CommentsViewController
 	- Load the ComposeCommentsViewController with an initializing data model

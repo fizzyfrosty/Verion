@@ -20,6 +20,10 @@ class OfflineDataProvider: DataProviderType {
         case invalidToken
     }
     
+    enum CommentError: Error {
+        case invalidIds
+    }
+    
     var apiVersion: APIVersion = .legacy // default to be overwritten by initializer
     private let SAMPLE_JSON_SUBVERSE_SUBMISSIONS_DATA_FILE_LEGACY = "SampleJsonSubmissions_legacy"
     private let SAMPLE_JSON_SUBVERSE_LIST_DATA_FILE_LEGACY = "SampleSubverseList_legacy"
@@ -43,11 +47,31 @@ class OfflineDataProvider: DataProviderType {
     
     
     func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (Error?) -> ()) {
-        // FIXME: Implement top level comment
+        
+        Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
+            
+            if submissionId == -1 {
+                // Failure
+                completion(CommentError.invalidIds)
+            } else {
+                // Success
+                completion(nil)
+            }
+        }
     }
     
     func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (Error?) -> ()) {
-        // FIXME: Implement comment reply
+        
+        Delayer.delay(seconds: self.DELAY_TIME_SECONDS) {
+            
+            if submissionId == -1 || commentId == -1 {
+                // Failure
+                completion(CommentError.invalidIds)
+            } else {
+                // Success
+                completion(nil)
+            }
+        }
     }
     
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {

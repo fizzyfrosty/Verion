@@ -12,6 +12,7 @@ protocol CommentsSortByCellDelegate: class {
     func commentsSortByCell(cell: CommentsSortByCell, didSortBy sortType: SortTypeComments)
     func commentsSortByCell(cell: CommentsSortByCell, didPressShare: Any)
     func commentsSortByCell(cell: CommentsSortByCell, didPressReport: Any)
+    func commentsSortByCell(cell: CommentsSortByCell, didPressComment: Any)
 }
 
 class CommentsSortByCell: UITableViewCell {
@@ -35,6 +36,11 @@ class CommentsSortByCell: UITableViewCell {
     @IBAction func pressedReport(_ sender: Any) {
         self.notifyDelegateDidPressReport(sender: sender)
     }
+    
+    @IBAction func pressedComment(_ sender: Any) {
+        self.notifyDelegateDidPressComment(sender: sender)
+    }
+    
     
     
     var viewModel: CommentsSortByCellViewModel?
@@ -146,6 +152,16 @@ extension CommentsSortByCell {
         } else {
             #if DEBUG
             print("Warning: CommentsSortByCell's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    fileprivate func notifyDelegateDidPressComment(sender: Any) {
+        if let _ = self.delegate?.commentsSortByCell(cell: self, didPressComment: sender) {
+            
+        } else {
+            #if DEBUG
+                print("Warning: CommentsSortByCell's delegate may not be set.")
             #endif
         }
     }

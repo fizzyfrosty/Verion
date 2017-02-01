@@ -13,4 +13,5 @@ protocol SubmissionDataModelProtocol: class {
     var id: Int64 {get}
     var subverseName: String {get}
     var isAdult: Bool {get}
+    var username: String {get}
 }
