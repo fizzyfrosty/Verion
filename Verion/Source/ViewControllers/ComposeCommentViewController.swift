@@ -33,6 +33,9 @@ class ComposeCommentViewController: UIViewController {
     @IBOutlet var backgroundView: UIView!
     @IBOutlet var backgroundViewHeight: NSLayoutConstraint!
     var darkenedBackground: UIView?
+    private let LIGHT_OPACITY: CGFloat = 0.25
+    private let DARK_OPACITY: CGFloat = 1.0
+    private var darkenedBackgroundOpacity: CGFloat = 1.0
     
     var bottomConstraint: NSLayoutConstraint?
     var leadingConstraint: NSLayoutConstraint?
@@ -155,7 +158,7 @@ class ComposeCommentViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         //Looks for single or multiple taps.
-        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dissmissKeyboardOrClose))
+        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissTextView))
         
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
         //self.tapGesture?.cancelsTouchesInView = false
@@ -170,8 +173,8 @@ class ComposeCommentViewController: UIViewController {
         self.rootViewController?.view.removeGestureRecognizer(self.tapGesture!)
     }
     
-    //Calls this function when the tap is recognized.
-    func dissmissKeyboardOrClose() {
+    func dismissKeyboardOrClose() {
+        
         if self.isKeyboardShown == true {
             self.dismissKeyboard()
         } else {
@@ -186,6 +189,7 @@ class ComposeCommentViewController: UIViewController {
     
     func keyboardWillShow(notification: NSNotification) {
         self.isKeyboardShown = true
+        self.setBackgroundInteraction(enabled: false)
         
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             
@@ -196,16 +200,37 @@ class ComposeCommentViewController: UIViewController {
     
     func keyboardWillHide(notification: NSNotification) {
         self.isKeyboardShown = false
+        self.setBackgroundInteraction(enabled: true)
         
         self.bottomConstraint?.constant = 0
     }
     
     // MARK: - Private Methods
     
+    private func setBackgroundInteraction(enabled: Bool) {
+        if enabled {
+            // Animate lightened dimmed bg
+            self.darkenedBackgroundOpacity = self.LIGHT_OPACITY
+            
+            // Release touch to enable other interactions
+            self.darkenedBackground?.isUserInteractionEnabled = false
+        } else {
+            // Animate darkened dimmed bg
+            self.darkenedBackgroundOpacity = self.DARK_OPACITY
+            
+            // Swallow touch to disable other interactions
+            self.darkenedBackground?.isUserInteractionEnabled = true
+        }
+        
+        UIView.animate(withDuration: self.ANIMATE_TIME, animations: {
+            self.darkenedBackground?.alpha = self.darkenedBackgroundOpacity
+        })
+    }
+    
     private func setDarkenedBackground() {
         self.darkenedBackground = UIView.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-        self.darkenedBackground?.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.25)
-        self.darkenedBackground?.isUserInteractionEnabled = false
+        self.darkenedBackground?.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.75)
+        self.darkenedBackgroundOpacity = self.LIGHT_OPACITY
         
         self.rootViewController?.view.addSubview(self.darkenedBackground!)
     }
@@ -213,7 +238,7 @@ class ComposeCommentViewController: UIViewController {
     private func animateShow(duration: TimeInterval, completion: @escaping ()->()) {
         UIView.animate(withDuration: duration, animations: { 
             self.backgroundView.alpha = 1.0
-            self.darkenedBackground!.alpha = 1.0
+            self.darkenedBackground!.alpha = self.darkenedBackgroundOpacity
         }) { (finished) in
             completion()
         }

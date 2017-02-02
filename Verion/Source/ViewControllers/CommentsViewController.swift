@@ -30,6 +30,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     private let NUM_OF_CELLS_TO_INCREMENT_BY = 15
     private var numOfCellsToDisplay = 0
     private let BOTTOM_INSET: CGFloat = 50.0
+    fileprivate let BLOCK_USER_ACTIVITY_INDICATOR_DELAY: Float = 1.0
     
     // Cell configuration
     let COMMENT_CELL_REUSE_ID = "CommentCell"
@@ -1124,12 +1125,17 @@ extension CommentsViewController: CommentCellDelegate{
             let blockAlert = UIAlertController.init(title: "Block User", message: "Block all comments by this user?", preferredStyle: .alert)
             
             let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
+                let activityIndicator = ActivityIndicatorProvider.getAndShowProgressHudActivityIndicator(rootViewController: self.navigationController!)
+                
                 // Add user to block list
                 self.verionDataModel?.blockedUsers!.insert(username)
                 self.saveData()
                 
                 // Refresh comments
                 self.loadCommentCells {
+                    Delayer.delay(seconds: self.BLOCK_USER_ACTIVITY_INDICATOR_DELAY) {
+                        activityIndicator.hide(animated: true)
+                    }
                 }
             })
             
@@ -1149,12 +1155,17 @@ extension CommentsViewController: CommentCellDelegate{
             
             let yesAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
                 
+                let activityIndicator = ActivityIndicatorProvider.getAndShowProgressHudActivityIndicator(rootViewController: self.navigationController!)
+                
                 // unblock user
                 _ = self.verionDataModel?.blockedUsers!.remove(username)
                 self.saveData()
                 
                 // Refresh comments
                 self.loadCommentCells {
+                    Delayer.delay(seconds: self.BLOCK_USER_ACTIVITY_INDICATOR_DELAY) {
+                        activityIndicator.hide(animated: true)
+                    }
                 }
             })
             

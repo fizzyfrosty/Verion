@@ -84,6 +84,17 @@ Upvote/Downvote Submission
 
 
 Online Requests
+- Set Alamofire adapter and retrier
+- Make voting for submission request
+	- Binding submission vote buttons
+- Make voting for comments request
+	- Binding comment vote buttons
+- Make Submit comments request
+
+- Test expired access token
+- Test invalid refresh token
+
+
 - Attempt to make request using OAuthHandler with access token
 - Attempt to use refreshToken with an invalid access token
 - Submission Voting
@@ -93,6 +104,8 @@ Online Requests
 	- Child reply comment
 - Register the "Vote" value for submission loading/refresh in UI
 - Realign margins for vote buttons
+
+- Analytics for Comment Submission
 
 
 
