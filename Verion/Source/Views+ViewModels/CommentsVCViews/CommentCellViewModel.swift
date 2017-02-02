@@ -24,6 +24,7 @@ struct CommentCellViewModelInitData {
     var isMinimized = false
     
     var isUserOP = false
+    var voteValue: VoteValue = .none
     
     var hasMoreUnloadedChildren = false
     var remainingChildrenCount = 0
@@ -41,8 +42,36 @@ class CommentCellViewModel {
     var parentChildrenArrayIndex = 0 // for setting externally, this is the index where it resides in the parent's children array
     
     private(set) var voteCountTotal = Observable<Int>(0)
-    private(set) var upvoteCount = Observable<Int>(0)
-    private(set) var downvoteCount = Observable<Int>(0)
+    var upvoteCount: Int {
+        get {
+            var upvoteCount = self._upvoteCount.value
+            
+            if self.voteValue.value == .up {
+                // Add 1 upvote count
+                upvoteCount += 1
+            }
+            
+            return upvoteCount
+        }
+    }
+    
+    var downvoteCount: Int {
+        get {
+            var downvoteCount = self._downvoteCount.value
+            
+            if self.voteValue.value == .down {
+                // Add 1 to downvote count
+                downvoteCount += 1
+            }
+            
+            return downvoteCount
+        }
+    }
+    
+    private(set) var _upvoteCount = Observable<Int>(0)
+    private(set) var _downvoteCount = Observable<Int>(0)
+    
+    var voteValue = Observable<VoteValue>(.none)
     
     private(set) var usernameString = ""
     var textString = ""
@@ -140,13 +169,13 @@ class CommentCellViewModel {
         self.date = initData.date
         self.id = initData.id
         self.voteCountTotal.value = initData.voteCountTotal
-        self.upvoteCount.value = initData.upvoteCount
-        self.downvoteCount.value = initData.downvoteCount
+        self._upvoteCount.value = initData.upvoteCount
+        self._downvoteCount.value = initData.downvoteCount
         self.usernameString = initData.usernameString
         self.textString = initData.textString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         self.attributedTextString = MarkdownParser.attributedString(fromMarkdownString: self.textString)
         
-        self.separatedVoteCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount.value, downvoteCount: self.downvoteCount.value)
+        self.separatedVoteCountString.value = self.textFormatter.createVoteCountSeparatedString(upvoteCount: self.upvoteCount, downvoteCount: self.downvoteCount)
         self.dateString = self.textFormatter.createDateSubmittedString(gmtDate: self.date!) + " ago"
         self.isMinimized.value = initData.isMinimized
         self.isUserOP = initData.isUserOP
@@ -154,6 +183,7 @@ class CommentCellViewModel {
         self.remainingChildrenCount = initData.remainingChildrenCount
         self.latestChildIndex = initData.latestChildIndex
         self.parentId = initData.parentId
+        self.voteValue.value = initData.voteValue
         
         // Load children
         for childInitData in initData.children {
@@ -163,18 +193,29 @@ class CommentCellViewModel {
             self.addChild(viewModel: childViewModel)
         }
         
+        self.setupBindings()
+    }
+    
+    private func setupBindings() {
         // Bindings
-        _ = self.upvoteCount.observeNext() { [weak self] upvoteCount in
-            self?.separatedVoteCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
+        _ = self._upvoteCount.observeNext() { [weak self] upvoteCount in
+            
+            self?.separatedVoteCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount)!, downvoteCount: (self?.downvoteCount)!))!
             
             
-            self?.voteCountTotal.value = (self?.getVoteCountTotal(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
+            self?.voteCountTotal.value = (self?.getVoteCountTotal(upvoteCount: (self?.upvoteCount)!, downvoteCount: (self?.downvoteCount)!))!
         }
         
-        _ = self.downvoteCount.observeNext() { [weak self] downvoteCount in
-            self?.separatedVoteCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
+        _ = self._downvoteCount.observeNext() { [weak self] downvoteCount in
+            self?.separatedVoteCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount)!, downvoteCount: (self?.downvoteCount)!))!
             
-            self?.voteCountTotal.value = (self?.getVoteCountTotal(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
+            self?.voteCountTotal.value = (self?.getVoteCountTotal(upvoteCount: (self?.upvoteCount)!, downvoteCount: (self?.downvoteCount)!))!
+        }
+        
+        _ = self.voteValue.observeNext { [weak self] voteValue in
+            // Whenever vote value is set, recalculate upvote/downvote counts
+            self?._downvoteCount.value = (self?._downvoteCount.value)!
+            self?._upvoteCount.value = (self?._upvoteCount.value)!
         }
     }
     

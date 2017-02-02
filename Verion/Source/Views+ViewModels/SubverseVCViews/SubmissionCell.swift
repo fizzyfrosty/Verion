@@ -73,10 +73,7 @@ class SubmissionCell: UITableViewCell {
     func bind(toViewModel viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool) {
         self.viewModel = viewModel
         viewModel.resetViewBindings()
-        self.downvoteButton.isSelected = false
-        self.upvoteButton.isSelected = false
         
-        // Bind to UI elements
         
         // Title
         if shouldFilterLanguage == true {
@@ -115,6 +112,20 @@ class SubmissionCell: UITableViewCell {
         
         // Bind to User-input events
         self.setVotingButtonsBindings(forViewModel: viewModel)
+        
+        self.setVoteButtonsIsSelected(forViewModel: viewModel)
+    }
+    
+    private func setVoteButtonsIsSelected(forViewModel viewModel: SubmissionCellViewModel) {
+        switch viewModel.voteValue.value {
+        case .none:
+            // Do nothing
+            break;
+        case .up:
+            self.upvoteButton.isSelected = true
+        case .down:
+            self.downvoteButton.isSelected = true
+        }
     }
     
     private func setVotingButtonsBindings(forViewModel viewModel: SubmissionCellViewModel) {
@@ -194,7 +205,17 @@ class SubmissionCell: UITableViewCell {
         super.prepareForReuse()
         
         self.resetBindings()
-        
+        self.resetUI()
+        self.resetProperties()
+    }
+    
+    private func resetProperties() {
+        self.viewModel = nil
+    }
+    
+    private func resetUI() {
+        self.downvoteButton.isSelected = false
+        self.upvoteButton.isSelected = false
     }
     
     private func resetBindings() {

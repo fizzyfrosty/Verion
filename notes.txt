@@ -11,6 +11,53 @@ Read messages
 Write Messages
 View Users
 
+
+
+
+
+* BUG: Hide NSFW Content hides pizzagate posts
+
+* Frontpage is set to user's frontpage
+* Show Vote registered from Submission response
+	* Use SessionManager to get subverse
+	* check that the vote value is set properly
+	x Set the vote value to isUpvoted bool in data model
+	* create VoteValue in viewModel
+	* On SubmissionCell bind, set selected
+
+* Show Vote registered for comment response
+	* Use SessionManager to get comments
+	* check that vote value is set
+	* Set the vote to isUpvoted in dataModel
+	* On bind, set selected
+
+- Match Upvote action with Vote count, compensate for server delay
+	* When getting upvote/downvote count, check the voteValue to add or subtract 1
+	- Complete for Submissions
+
+
+* Bug: Minimize/maximize triggers didUpvote observer for comment cell
+	* Remove increase upvote/downvote count from observer
+	* Replace didUpvote observers with voteValue increment
+
+- Reimplement voting bindings
+	* Keeping didRequest bindings are fine
+	* On setting isUpvoted/isDownvoted, set the voteValue instead of incrementing
+	* Complete for comments
+	- Complete for submissions
+	
+- VoatDataProvider, register no vote with a revoting of up/down
+	- For comments
+	- For submissions
+
+- Analytics for Comment Submission
+- Redesign UI
+
+
+* Realign margins for vote buttons
+* Confirm/test expired refresh tokens
+
+
 Upvote/Downvote Submission 
 
 * Prompt login if not logged in
@@ -91,25 +138,17 @@ Online Requests
 	* Binding comment vote buttons
 * Make Submit comments request
 
-- Frontpage is set to user's frontpage
-- Show Vote registered from Submission response
-
 * Test expired access token
 * Test invalid refresh token
 
 
-- Attempt to make request using OAuthHandler with access token
-- Attempt to use refreshToken with an invalid access token
-- Submission Voting
-- Comment Voting
-- Comment Replies
-	- Top comment
-	- Child reply comment
-- Register the "Vote" value for submission loading/refresh in UI
-- Realign margins for vote buttons
-
-- Analytics for Comment Submission
-
+* Attempt to make request using OAuthHandler with access token
+* Attempt to use refreshToken with an invalid access token
+* Submission Voting
+* Comment Voting
+* Comment Replies
+	* Top comment
+	* Child reply comment
 
 
 Login:

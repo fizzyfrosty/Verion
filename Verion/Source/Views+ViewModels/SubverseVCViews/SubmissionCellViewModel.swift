@@ -18,6 +18,7 @@ struct SubmissionCellViewModelInitData {
     var voteCountTotal: Int = 4331
     var upvoteCount: Int = 211
     var downvoteCount: Int = 154
+    var voteValue: VoteValue = .none
     var username: String = "SampleUsername"
     var subverseName: String = "SampleSubverse"
     var date: Date = Date()
@@ -56,6 +57,8 @@ class SubmissionCellViewModel{
     
     private(set) var isUpvoted = Observable<Bool>(false)
     private(set) var isDownvoted = Observable<Bool>(false)
+    
+    var voteValue = Observable<VoteValue>(.none)
     
     var commentCount = 0
     
@@ -117,6 +120,7 @@ class SubmissionCellViewModel{
         self.date = subCellVmInitData.date
         self.rank = subCellVmInitData.rank
         self.isNsfw = subCellVmInitData.isNsfw
+        self.voteValue.value = subCellVmInitData.voteValue
         self.dateSubmittedString = self.textFormatter.createDateSubmittedString(gmtDate: subCellVmInitData.date)
         self.submittedByString = self.textFormatter.createSubmittedByUsernameString(username: subCellVmInitData.username, fontSize: self.USERNAME_LABEL_FONT_SIZE)
         

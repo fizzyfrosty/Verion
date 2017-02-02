@@ -256,7 +256,7 @@ class OfflineDataProvider: DataProviderType {
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
             if didRequestUpvote {
                 
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -283,7 +283,7 @@ class OfflineDataProvider: DataProviderType {
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
             if didRequestDownvote {
                 
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -307,7 +307,7 @@ class OfflineDataProvider: DataProviderType {
         
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
             if didRequestNoVote {
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.none.rawValue, rootViewController: viewController, completion: { (error) in
                     // Failed
                     guard error == nil else {
                         #if DEBUG
@@ -372,7 +372,7 @@ class OfflineDataProvider: DataProviderType {
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
             if didRequestUpvote {
                 
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -380,12 +380,13 @@ class OfflineDataProvider: DataProviderType {
                             print("Response failed: Upvote")
                         #endif
                         commentCellViewModel.didRequestUpvote.value = false
-                        commentCellViewModel.isUpvoted.value = false
+                        // Trigger callback to reset previous value
+                        commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.isUpvoted.value = true
+                    commentCellViewModel.voteValue.value = .up
                     
                     #if DEBUG
                         print("Response received: Upvote")
@@ -399,7 +400,7 @@ class OfflineDataProvider: DataProviderType {
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
             if didRequestDownvote {
                 
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -407,12 +408,13 @@ class OfflineDataProvider: DataProviderType {
                             print("Response failed: Downvote")
                         #endif
                         commentCellViewModel.didRequestDownvote.value = false
-                        commentCellViewModel.isDownvoted.value = false
+                        // Trigger callback to reset previous value
+                        commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.isDownvoted.value = true
+                    commentCellViewModel.voteValue.value = .down
                     
                     #if DEBUG
                         print("Response received: Downvote")
@@ -423,18 +425,20 @@ class OfflineDataProvider: DataProviderType {
         
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
             if didRequestNoVote {
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.none.rawValue, rootViewController: viewController, completion: { (error) in
                     // Failed
                     guard error == nil else {
                         #if DEBUG
                             print("Response failed: NoVote")
                         #endif
+                        
+                        // Trigger callback to reset previous value
+                        commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.isUpvoted.value = false
-                    commentCellViewModel.isDownvoted.value = false
+                    commentCellViewModel.voteValue.value = .none
                     #if DEBUG
                         print("Response received: NoVote")
                     #endif

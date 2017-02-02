@@ -30,7 +30,7 @@ class CommentDataModelV1: CommentDataModelProtocol {
     
     var subverseName = ""
     var username = ""
-    var vote = ""
+    var vote: Int = 0
     var upvoteCount = 0
     var downvoteCount = 0
     var voteCountTotal = 0

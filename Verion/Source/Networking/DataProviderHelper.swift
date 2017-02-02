@@ -385,6 +385,7 @@ class DataProviderHelper {
         commentCellVmInitData.remainingChildrenCount = dataModel.remainingChildrenCount
         commentCellVmInitData.id = dataModel.id
         commentCellVmInitData.parentId = dataModel.parentId
+        commentCellVmInitData.voteValue = self.getVoteValueFromIntValueV1(int: dataModel.vote)
         
         for childData in dataModel.children {
             let commentCellVmInitDataChild = self.getCommentViewModelInitDataFromV1(dataModel: childData)
@@ -427,7 +428,7 @@ class DataProviderHelper {
         commentModelV1.submissionId = json["submissionID"].int64Value
         commentModelV1.subverseName = json["subverse"].stringValue
         commentModelV1.username = json["userName"].stringValue
-        commentModelV1.vote = json["vote"].stringValue
+        commentModelV1.vote = json["vote"].intValue
         commentModelV1.voteCountTotal = json["sum"].intValue
         commentModelV1.upvoteCount = json["upCount"].intValue
         commentModelV1.downvoteCount = json["downCount"].intValue
@@ -629,6 +630,7 @@ class DataProviderHelper {
         subCellVmInitData.downvoteCount = dataModel.downvoteCount
         subCellVmInitData.commentCount = dataModel.commentCount
         subCellVmInitData.titleString = dataModel.title
+        subCellVmInitData.voteValue = self.getVoteValueFromIntValueV1(int: dataModel.vote)
         
         // Get link short string description, based on Text/Link submission type
         switch dataModel.type.lowercased() {
@@ -771,4 +773,23 @@ class DataProviderHelper {
         }
     }
 
+    private func getVoteValueFromIntValueV1(int: Int) -> VoteValue {
+        var voteValue: VoteValue
+        
+        switch int {
+        case 0:
+            voteValue = .none
+        case -1:
+            voteValue = .down
+        case 1:
+            voteValue = .up
+        default:
+            voteValue = .none
+            #if DEBUG
+            print("Warning: Vote value has an unexpected value: \(int)")
+            #endif
+        }
+        
+        return voteValue
+    }
 }

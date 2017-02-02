@@ -419,7 +419,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                     if self.verionDataModel?.shouldHideNsfw == true {
                         if subCellViewModel.dataModel?.isAdult == true {
                             // Don't add, skip to next data model
-                            break
+                            continue
                         }
                     }
                     

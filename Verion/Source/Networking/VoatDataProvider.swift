@@ -34,7 +34,21 @@ class VoatDataProvider: DataProviderType {
     private let FRONTPAGE_SUBVERSE_NAME = "frontpage"
     private let ALL_SUBVERSE_NAME = "all"
     
-    private var sessionManager: SessionManager?
+    private var _sessionManager: SessionManager?
+    private var sessionManager: SessionManager {
+        get {
+         
+            if _sessionManager == nil {
+                _sessionManager = SessionManager()
+            }
+            
+            _sessionManager?.adapter = OAuth2Handler.sharedInstance
+            _sessionManager?.retrier = OAuth2Handler.sharedInstance
+            
+            return _sessionManager!
+            
+        }
+    }
     
     
     // Dependencies
@@ -47,11 +61,11 @@ class VoatDataProvider: DataProviderType {
     
     func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
         let submitCommentClosure: ()->() = {
-            self.sessionManager = self.getSessionManager()
+            
             let urlString = self.getSubmitTopLevelCommentUrlString(subverse: subverseName, submissionId: submissionId, apiVersion: self.apiVersion)
             let params = self.getSubmitCommentParams(comment: comment, apiVersion: self.apiVersion)
             
-            self.sessionManager!.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).validate().responseJSON { (response) in
+            self.sessionManager.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).validate().responseJSON { (response) in
                 switch response.result {
                 case .success:
                     // Parse response, get comment data model
@@ -73,11 +87,11 @@ class VoatDataProvider: DataProviderType {
     func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
         
         let submitCommentClosure: ()->() = {
-            self.sessionManager = self.getSessionManager()
+            
             let urlString = self.getSubmitCommentReplyUrlString(subverse: subverseName, submissionId: submissionId, commentId: commentId, apiVersion: self.apiVersion)
             let params = self.getSubmitCommentParams(comment: comment, apiVersion: self.apiVersion)
             
-            self.sessionManager!.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).validate().responseJSON { (response) in
+            self.sessionManager.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).validate().responseJSON { (response) in
                 switch response.result {
                 case .success:
                     // Parse response, get comment data model
@@ -98,10 +112,10 @@ class VoatDataProvider: DataProviderType {
     
     func requestCommentVote(commentId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
         let requestCommentVoteClosure: ()->() = {
-            self.sessionManager = self.getSessionManager()
+            
             let urlString = self.getCommentVoteUrlString(commentId: commentId, voteType: voteValue, apiVersion: self.apiVersion)
             
-            self.sessionManager!.request(urlString, method: .post).validate().responseJSON { (response) in
+            self.sessionManager.request(urlString, method: .post).validate().responseJSON { (response) in
                 switch response.result {
                 case .success:
                     completion(nil)
@@ -133,10 +147,10 @@ class VoatDataProvider: DataProviderType {
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
         
         let requestSubmissionVoteClosure: ()->() = {
-            self.sessionManager = self.getSessionManager()
+            
             let urlString = self.getSubmissionVoteUrlString(submissionId: submissionId, voteType: voteValue, apiVersion: self.apiVersion)
             
-            self.sessionManager!.request(urlString, method: .post).validate().responseJSON { (response) in
+            self.sessionManager.request(urlString, method: .post).validate().responseJSON { (response) in
                 switch response.result {
                 case .success:
                     completion(nil)
@@ -228,10 +242,7 @@ class VoatDataProvider: DataProviderType {
         
         let requestUrlString = self.getSubverseSubmissionsRequestUrlString(submissionParams: submissionParams, apiVersion: self.apiVersion)
         
-        let headers = self.getHeaders(apiVersion: self.apiVersion)
-        
-        // Get data with Alamofire
-        Alamofire.request(requestUrlString, headers: headers).validate().responseJSON() { response in
+        self.sessionManager.request(requestUrlString).validate().responseJSON { response in
             switch response.result {
             case .success:
                 
@@ -292,15 +303,9 @@ class VoatDataProvider: DataProviderType {
         let requestUrlString = self.getCommentsRequestUrlString(forSubverse: subverse, submissionId: submissionId, apiVersion: self.apiVersion)
         var jsonData: JSON?
         
-        let headers = self.getHeaders(apiVersion: self.apiVersion)
-        
-        Alamofire.request(requestUrlString, headers: headers).validate().responseJSON { response in
+        self.sessionManager.request(requestUrlString).validate().responseJSON { (response) in
             switch response.result {
             case .success:
-                #if DEBUG
-                    print(self.VALIDATION_SUCCESSFUL_MESSAGE)
-                #endif
-                
                 jsonData = JSON.init(data: response.data!)
                 
                 commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
@@ -323,21 +328,15 @@ class VoatDataProvider: DataProviderType {
         let requestUrlString = self.getChildCommentsRequestUrlString(forSubverse: subverse, submissionId: submissionId, parentId: parentId, startingIndex: startingIndex, apiVersion: self.apiVersion)
         var jsonData: JSON?
         
-        let headers = self.getHeaders(apiVersion: self.apiVersion)
-        
-        Alamofire.request(requestUrlString, headers: headers).validate().responseJSON { response in
+        self.sessionManager.request(requestUrlString).validate().responseJSON { (response) in
             switch response.result {
             case .success:
-                #if DEBUG
-                    print(self.VALIDATION_SUCCESSFUL_MESSAGE)
-                #endif
-                
                 jsonData = JSON.init(data: response.data!)
                 
                 commentDataModels = self.dataProviderHelper.getCommentDataModels(fromJson: jsonData!, apiVersion: self.apiVersion)
                 
                 let commentDataSegment = self.dataProviderHelper.getCommentDataSegment(fromJson: jsonData!, apiVersion: self.apiVersion)
-                                
+                
                 // Return the data models
                 completion(commentDataModels, commentDataSegment, nil)
             case .failure(let error):
@@ -360,7 +359,7 @@ class VoatDataProvider: DataProviderType {
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
             if didRequestUpvote {
                 
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -387,7 +386,7 @@ class VoatDataProvider: DataProviderType {
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
             if didRequestDownvote {
                 
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -411,7 +410,7 @@ class VoatDataProvider: DataProviderType {
         
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
             if didRequestNoVote {
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.none.rawValue, rootViewController: viewController, completion: { (error) in
                     // Failed
                     guard error == nil else {
                         #if DEBUG
@@ -474,7 +473,7 @@ class VoatDataProvider: DataProviderType {
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
             if didRequestUpvote {
                 
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -482,12 +481,13 @@ class VoatDataProvider: DataProviderType {
                             print("Response failed: Upvote")
                         #endif
                         commentCellViewModel.didRequestUpvote.value = false
-                        commentCellViewModel.isUpvoted.value = false
+                        // Trigger callback to reset previous value
+                        commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.isUpvoted.value = true
+                    commentCellViewModel.voteValue.value = .up
                     
                     #if DEBUG
                         print("Response received: Upvote")
@@ -501,7 +501,7 @@ class VoatDataProvider: DataProviderType {
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
             if didRequestDownvote {
                 
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -509,12 +509,13 @@ class VoatDataProvider: DataProviderType {
                             print("Response failed: Downvote")
                         #endif
                         commentCellViewModel.didRequestDownvote.value = false
-                        commentCellViewModel.isDownvoted.value = false
+                        // Trigger callback to reset previous value
+                        commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.isDownvoted.value = true
+                    commentCellViewModel.voteValue.value = .down
                     
                     #if DEBUG
                         print("Response received: Downvote")
@@ -525,18 +526,20 @@ class VoatDataProvider: DataProviderType {
         
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
             if didRequestNoVote {
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.none.rawValue, rootViewController: viewController, completion: { (error) in
                     // Failed
                     guard error == nil else {
                         #if DEBUG
                             print("Response failed: NoVote")
                         #endif
+                        
+                        // Trigger callback to reset previous value
+                        commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.isUpvoted.value = false
-                    commentCellViewModel.isDownvoted.value = false
+                    commentCellViewModel.voteValue.value = .none
                     #if DEBUG
                         print("Response received: NoVote")
                     #endif
@@ -757,15 +760,6 @@ class VoatDataProvider: DataProviderType {
         case .v1:
             return [self.VOAT_API_KEY_HEADER: self.VOAT_API_KEY_VALUE]
         }
-    }
-    
-    private func getSessionManager() -> SessionManager {
-        let sessionManager = SessionManager()
-        
-        sessionManager.adapter = OAuth2Handler.sharedInstance
-        sessionManager.retrier = OAuth2Handler.sharedInstance
-        
-        return sessionManager
     }
     
 }

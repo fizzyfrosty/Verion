@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum VoteType: Int {
+enum VoteValue: Int {
     case up = 1
     case down = -1
     case none = 0
