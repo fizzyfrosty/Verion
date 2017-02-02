@@ -46,13 +46,54 @@ class VoatDataProvider: DataProviderType {
     }
     
     func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
+        let submitCommentClosure: ()->() = {
+            self.sessionManager = self.getSessionManager()
+            let urlString = self.getSubmitTopLevelCommentUrlString(subverse: subverseName, submissionId: submissionId, apiVersion: self.apiVersion)
+            let params = self.getSubmitCommentParams(comment: comment, apiVersion: self.apiVersion)
+            
+            self.sessionManager!.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).validate().responseJSON { (response) in
+                switch response.result {
+                case .success:
+                    // Parse response, get comment data model
+                    let jsonData = JSON.init(data: response.data!)
+                    let dataModel = self.dataProviderHelper.getCommentDataModelFromSubmitComment(fromJson: jsonData, apiVersion: self.apiVersion)
+                    
+                    completion(dataModel, nil)
+                case .failure(let error):
+                    completion(nil, error)
+                }
+            }
+        }
         
-        
+        // No need to check for login here like in other requests. 
+        // Submitting comments already require login before getting through UI
+        submitCommentClosure()
     }
     
     func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
         
-        // FIXME: Implement
+        let submitCommentClosure: ()->() = {
+            self.sessionManager = self.getSessionManager()
+            let urlString = self.getSubmitCommentReplyUrlString(subverse: subverseName, submissionId: submissionId, commentId: commentId, apiVersion: self.apiVersion)
+            let params = self.getSubmitCommentParams(comment: comment, apiVersion: self.apiVersion)
+            
+            self.sessionManager!.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).validate().responseJSON { (response) in
+                switch response.result {
+                case .success:
+                    // Parse response, get comment data model
+                    let jsonData = JSON.init(data: response.data!)
+                    let dataModel = self.dataProviderHelper.getCommentDataModelFromSubmitComment(fromJson: jsonData, apiVersion: self.apiVersion)
+                    
+                    completion(dataModel, nil)
+                case .failure(let error):
+                    completion(nil, error)
+                }
+            }
+        }
+        
+        // No need to check for login here like in other requests.
+        // Submitting comments already require login before getting through UI
+        submitCommentClosure()
     }
     
     func requestCommentVote(commentId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
@@ -87,7 +128,6 @@ class VoatDataProvider: DataProviderType {
             // Already signed in
             requestCommentVoteClosure()
         }
-        
     }
     
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
@@ -667,6 +707,47 @@ class VoatDataProvider: DataProviderType {
         }
         
         return urlString
+    }
+    
+    private func getSubmitTopLevelCommentUrlString(subverse: String, submissionId: Int64, apiVersion: APIVersion) -> String {
+        var urlString = ""
+        
+        switch apiVersion {
+        case .legacy:
+            urlString = "" // Unsupported
+        case .v1:
+            urlString = self.VOAT_V1_DOMAIN + "/api/v1/v/\(subverse)/\(submissionId)/comment"
+        }
+        
+        return urlString
+    }
+    
+    private func getSubmitCommentReplyUrlString(subverse: String, submissionId: Int64, commentId: Int64, apiVersion: APIVersion) -> String {
+        var urlString = ""
+        
+        switch apiVersion {
+        case .legacy:
+            urlString = "" // Unsupported
+        case .v1:
+            urlString = self.VOAT_V1_DOMAIN + "/api/v1/v/\(subverse)/\(submissionId)/comment/\(commentId)"
+        }
+        
+        return urlString
+    }
+    
+    private func getSubmitCommentParams(comment: String, apiVersion: APIVersion) -> [String:String] {
+        
+        var params: [String:String] = [:]
+        
+        switch apiVersion {
+        case .legacy:
+            // unsupported
+            break
+        case .v1:
+            params["value"] = comment
+        }
+        
+        return params
     }
     
     private func getHeaders(apiVersion: APIVersion) -> HTTPHeaders {

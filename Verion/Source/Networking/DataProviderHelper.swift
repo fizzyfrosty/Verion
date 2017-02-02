@@ -246,6 +246,22 @@ class DataProviderHelper {
         return commentDataModels
     }
     
+    func getCommentDataModelFromSubmitComment(fromJson json: JSON, apiVersion: APIVersion) -> CommentDataModelProtocol? {
+        
+        var commentDataModel: CommentDataModelProtocol?
+        
+        switch apiVersion {
+        case .legacy:
+            // Unsupported
+            break
+        case .v1:
+            let commentJson = json["data"]
+            commentDataModel = self.getCommentDataModelV1(fromCommentJson: commentJson)
+        }
+        
+        return commentDataModel
+    }
+    
     func getSubverseSearchResultDataModels(fromJson json: JSON, apiVersion: APIVersion) -> [SubverseSearchResultDataModelProtocol] {
         var searchResultDataModels: [SubverseSearchResultDataModelProtocol]
         

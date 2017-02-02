@@ -279,6 +279,13 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     fileprivate func loadCommentCells(completion: @escaping ()->()) {
         self.dataProvider?.requestComments(subverse:self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, completion: { (commentDataModels, commentDataSegment, error) in
             
+            guard error == nil else {
+                // Failure
+                
+                return
+            }
+            
+            
             DispatchQueue.global(qos: .background).async {
                 
                 // Reset comment cells
@@ -1010,6 +1017,7 @@ extension CommentsViewController: ComposeCommentViewControllerDelegate {
         commentSubmissionDataModel.username = (self.dataManager?.getUsernameFromKeychain())!
         commentSubmissionDataModel.type = type
         
+        // Set Comment Id if applicable
         switch type {
         case .topLevelComment:
             // do nothing
