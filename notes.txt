@@ -84,15 +84,18 @@ Upvote/Downvote Submission
 
 
 Online Requests
-- Set Alamofire adapter and retrier
-- Make voting for submission request
-	- Binding submission vote buttons
-- Make voting for comments request
-	- Binding comment vote buttons
+* Set Alamofire adapter and retrier
+* Make voting for submission request
+	* Binding submission vote buttons
+- Show Vote registered from Submission response
+* Make voting for comments request
+	* Binding comment vote buttons
 - Make Submit comments request
 
-- Test expired access token
-- Test invalid refresh token
+- Frontpage is set to user's frontpage
+
+* Test expired access token
+* Test invalid refresh token
 
 
 - Attempt to make request using OAuthHandler with access token

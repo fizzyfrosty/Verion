@@ -31,7 +31,7 @@ class SubmissionDataModelV1: SubmissionDataModelProtocol {
     var isAdult = false
     
     var views: UInt = 0
-    var vote = ""
+    var vote: Int = 0
     
     var upvoteCount = 0
     var downvoteCount = 0

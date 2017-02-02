@@ -34,6 +34,9 @@ class VoatDataProvider: DataProviderType {
     private let FRONTPAGE_SUBVERSE_NAME = "frontpage"
     private let ALL_SUBVERSE_NAME = "all"
     
+    private var sessionManager: SessionManager?
+    
+    
     // Dependencies
     private var loginScreen: LoginScreenProtocol?
     
@@ -43,21 +46,88 @@ class VoatDataProvider: DataProviderType {
     }
     
     func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
-        // FIXME: Implement top level comment
+        
+        
     }
     
     func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
-        // FIXME: Implement comment reply
+        
+        // FIXME: Implement
+    }
+    
+    func requestCommentVote(commentId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
+        let requestCommentVoteClosure: ()->() = {
+            self.sessionManager = self.getSessionManager()
+            let urlString = self.getCommentVoteUrlString(commentId: commentId, voteType: voteValue, apiVersion: self.apiVersion)
+            
+            self.sessionManager!.request(urlString, method: .post).validate().responseJSON { (response) in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        }
+        
+        // Check for accesstoken and prompt for login
+        if OAuth2Handler.sharedInstance.accessToken == "" {
+            self.loginScreen?.presentLogin(rootViewController: rootViewController, showConfirmation: true, completion: { (username, error) in
+                
+                guard error == nil else {
+                    // Failed to log in
+                    completion(error)
+                    return
+                }
+                
+                // Success
+                requestCommentVoteClosure()
+            })
+        } else {
+            // Already signed in
+            requestCommentVoteClosure()
+        }
+        
     }
     
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
-        // FIXME: Implement submission vote
         
+        let requestSubmissionVoteClosure: ()->() = {
+            self.sessionManager = self.getSessionManager()
+            let urlString = self.getSubmissionVoteUrlString(submissionId: submissionId, voteType: voteValue, apiVersion: self.apiVersion)
+            
+            self.sessionManager!.request(urlString, method: .post).validate().responseJSON { (response) in
+                switch response.result {
+                case .success:
+                    completion(nil)
+                case .failure(let error):
+                    completion(error)
+                }
+            }
+        }
+        
+        // Check for accesstoken and prompt for login
+        if OAuth2Handler.sharedInstance.accessToken == "" {
+            self.loginScreen?.presentLogin(rootViewController: rootViewController, showConfirmation: true, completion: { (username, error) in
+                
+                guard error == nil else {
+                    // Failed to log in
+                    completion(error)
+                    return
+                }
+                
+                // Success
+                requestSubmissionVoteClosure()
+            })
+            
+        } else {
+            // Already signed in
+            requestSubmissionVoteClosure()
+        }
     }
     
     // This method is not used. Access OAuthSwiftAuthenticator for online login
     func requestLoginAuthentication(username: String, password: String, completion: @escaping (_ accessToken: String, _ refreshToken: String, Error?) -> ()) {
-        
         // Do not use. Resource Owner Credentials access is not permitted.
     }
     
@@ -244,20 +314,81 @@ class VoatDataProvider: DataProviderType {
         let subCellVmInitData = self.dataProviderHelper.getSubCellVmInitData(fromDataModel: dataModel)
         subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
         
-        // FIXME: implement submission upvote downvote bindings
-        // TODO: UPVOTE/DOWNVOTE feature isn't supported by legacy api. Will do later when I get new API key
-        // The viewModel dictates what requests are made: upvote, downvote
-        // Bind upvote event to request
-        // Bind downvote event to request
+        subCellViewModel.resetDataProviderBindings()
         
-        /*
-        _ = subCellViewModel.didUpvote.observeNext { [weak self] (didUpvote) in
-            
-            // Make upvote request
-            //self?.
-            
-            // On completion, set to true
-        }*/
+        // Bind upvote event to request
+        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
+            if didRequestUpvote {
+                
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
+                        #if DEBUG
+                            print("Response failed: Upvote")
+                        #endif
+                        subCellViewModel.didRequestUpvote.value = false
+                        subCellViewModel.isUpvoted.value = false
+                        return
+                    }
+                    
+                    // Success
+                    subCellViewModel.isUpvoted.value = true
+                    
+                    #if DEBUG
+                        print("Response received: Upvote")
+                    #endif
+                })
+                
+            }
+        })
+        
+        // Bind downvote event to request
+        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
+            if didRequestDownvote {
+                
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
+                        #if DEBUG
+                            print("Response failed: Downvote")
+                        #endif
+                        subCellViewModel.didRequestDownvote.value = false
+                        subCellViewModel.isDownvoted.value = false
+                        return
+                    }
+                    
+                    // Success
+                    subCellViewModel.isDownvoted.value = true
+                    
+                    #if DEBUG
+                        print("Response received: Downvote")
+                    #endif
+                })
+            }
+        })
+        
+        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
+            if didRequestNoVote {
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
+                    // Failed
+                    guard error == nil else {
+                        #if DEBUG
+                            print("Response failed: NoVote")
+                        #endif
+                        return
+                    }
+                    
+                    // Success
+                    subCellViewModel.isUpvoted.value = false
+                    subCellViewModel.isDownvoted.value = false
+                    #if DEBUG
+                        print("Response received: NoVote")
+                    #endif
+                })
+            }
+        })
     }
     
     func bind(subTitleViewModel: SubmissionTitleCellViewModel, dataModel: SubmissionDataModelProtocol) {
@@ -297,7 +428,81 @@ class VoatDataProvider: DataProviderType {
     }
     
     func bind(commentCellViewModel: CommentCellViewModel, viewController: UIViewController) {
-        // TODO: Implement
+        commentCellViewModel.resetDataProviderBindings()
+        
+        // Bind upvote event to request
+        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
+            if didRequestUpvote {
+                
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
+                        #if DEBUG
+                            print("Response failed: Upvote")
+                        #endif
+                        commentCellViewModel.didRequestUpvote.value = false
+                        commentCellViewModel.isUpvoted.value = false
+                        return
+                    }
+                    
+                    // Success
+                    commentCellViewModel.isUpvoted.value = true
+                    
+                    #if DEBUG
+                        print("Response received: Upvote")
+                    #endif
+                })
+                
+            }
+        })
+        
+        // Bind downvote event to request
+        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
+            if didRequestDownvote {
+                
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
+                    
+                    // Failed
+                    guard error == nil else {
+                        #if DEBUG
+                            print("Response failed: Downvote")
+                        #endif
+                        commentCellViewModel.didRequestDownvote.value = false
+                        commentCellViewModel.isDownvoted.value = false
+                        return
+                    }
+                    
+                    // Success
+                    commentCellViewModel.isDownvoted.value = true
+                    
+                    #if DEBUG
+                        print("Response received: Downvote")
+                    #endif
+                })
+            }
+        })
+        
+        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
+            if didRequestNoVote {
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
+                    // Failed
+                    guard error == nil else {
+                        #if DEBUG
+                            print("Response failed: NoVote")
+                        #endif
+                        return
+                    }
+                    
+                    // Success
+                    commentCellViewModel.isUpvoted.value = false
+                    commentCellViewModel.isDownvoted.value = false
+                    #if DEBUG
+                        print("Response received: NoVote")
+                    #endif
+                })
+            }
+        })
     }
     
     func getSubmissionMediaType(submissionDataModel: SubmissionDataModelProtocol) -> SubmissionMediaType {
@@ -436,6 +641,34 @@ class VoatDataProvider: DataProviderType {
         return urlString
     }
     
+    private func getSubmissionVoteUrlString(submissionId: Int64, voteType: Int, apiVersion: APIVersion) -> String{
+        let type = "submission"
+        var urlString = ""
+        
+        switch apiVersion {
+        case .legacy:
+            urlString = "" // Unsupported
+        case .v1:
+            urlString = self.VOAT_V1_DOMAIN + "/api/v1/vote/\(type)/\(submissionId)/\(voteType)?revokeOnRevote=false"
+        }
+        
+        return urlString
+    }
+    
+    private func getCommentVoteUrlString(commentId: Int64, voteType: Int, apiVersion: APIVersion) -> String {
+        let type = "comment"
+        var urlString = ""
+        
+        switch apiVersion {
+        case .legacy:
+            urlString = "" // Unsupported
+        case .v1:
+            urlString = self.VOAT_V1_DOMAIN + "/api/v1/vote/\(type)/\(commentId)/\(voteType)?revokeOnRevote=false"
+        }
+        
+        return urlString
+    }
+    
     private func getHeaders(apiVersion: APIVersion) -> HTTPHeaders {
         switch apiVersion {
         case .legacy:
@@ -443,6 +676,15 @@ class VoatDataProvider: DataProviderType {
         case .v1:
             return [self.VOAT_API_KEY_HEADER: self.VOAT_API_KEY_VALUE]
         }
+    }
+    
+    private func getSessionManager() -> SessionManager {
+        let sessionManager = SessionManager()
+        
+        sessionManager.adapter = OAuth2Handler.sharedInstance
+        sessionManager.retrier = OAuth2Handler.sharedInstance
+        
+        return sessionManager
     }
     
 }

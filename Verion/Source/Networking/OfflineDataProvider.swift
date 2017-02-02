@@ -94,6 +94,33 @@ class OfflineDataProvider: DataProviderType {
         }
     }
     
+    func requestCommentVote(commentId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
+        
+        let requestClosure: ()->() = { [weak self] in
+            
+            Delayer.delay(seconds: (self?.DELAY_TIME_SECONDS)!) {
+                
+                // Automatically pass vote
+                completion(nil)
+            }
+        }
+        
+        guard OAuth2Handler.sharedInstance.accessToken != "" else {
+            self.loginScreen?.presentLogin(rootViewController: rootViewController, showConfirmation: false, completion: { (username, error) in
+                guard error == nil else {
+                    completion(OfflineRequestError.notAuthenticated)
+                    return
+                }
+                
+                // Successfully logged in, continue to make request
+                requestClosure()
+            })
+            return
+        }
+        
+        requestClosure()
+    }
+    
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
         
         let requestClosure: ()->() = { [weak self] in
@@ -345,7 +372,7 @@ class OfflineDataProvider: DataProviderType {
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
             if didRequestUpvote {
                 
-                self?.requestSubmissionVote(submissionId: commentCellViewModel.id, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.up.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -372,7 +399,7 @@ class OfflineDataProvider: DataProviderType {
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
             if didRequestDownvote {
                 
-                self?.requestSubmissionVote(submissionId: commentCellViewModel.id, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.down.rawValue, rootViewController: viewController, completion: { (error) in
                     
                     // Failed
                     guard error == nil else {
@@ -396,7 +423,7 @@ class OfflineDataProvider: DataProviderType {
         
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
             if didRequestNoVote {
-                self?.requestSubmissionVote(submissionId: commentCellViewModel.id, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteType.none.rawValue, rootViewController: viewController, completion: { (error) in
                     // Failed
                     guard error == nil else {
                         #if DEBUG
@@ -412,8 +439,6 @@ class OfflineDataProvider: DataProviderType {
                         print("Response received: NoVote")
                     #endif
                 })
-                
-                
             }
         })
     }

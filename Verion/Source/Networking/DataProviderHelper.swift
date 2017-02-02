@@ -500,7 +500,7 @@ class DataProviderHelper {
         submissionDataModelV1.url = json["url"].stringValue
         submissionDataModelV1.username = json["userName"].stringValue
         submissionDataModelV1.views = json["views"].uIntValue
-        submissionDataModelV1.vote = json["vote"].stringValue
+        submissionDataModelV1.vote = json["vote"].intValue
         submissionDataModelV1.voteCountTotal = json["sum"].intValue
         
         return submissionDataModelV1

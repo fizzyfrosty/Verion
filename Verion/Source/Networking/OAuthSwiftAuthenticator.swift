@@ -9,8 +9,9 @@
 import UIKit
 import OAuthSwift
 import SwiftyJSON
+import SafariServices
 
-class OAuthSwiftAuthenticator: LoginScreenProtocol {
+class OAuthSwiftAuthenticator: NSObject, LoginScreenProtocol, SFSafariViewControllerDelegate {
     
     let CLIENT_ID = OAuth2Handler.CLIENT_ID
     let CLIENT_SECRET = OAuth2Handler.CLIENT_SECRET
@@ -20,6 +21,10 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
     
     var oauthHandle: OAuthSwiftRequestHandle?
     private var completion: (_ username: String, _ error: Error?) -> ()
+    
+    enum OAuthError: Error {
+        case cancelledLogin
+    }
     
     // Dependencies
     private var authHandler: OAuth2Handler?
@@ -48,7 +53,9 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
                 signInClosure()
             }
             
-            let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in
+                self.completion("", OAuthError.cancelledLogin)
+            }
             
             loginAlert.addAction(signInAction)
             loginAlert.addAction(cancelAction)
@@ -71,6 +78,7 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
                                 responseType: "code")
         
         let safariHandler = SafariURLHandler(viewController: rootViewController, oauthSwift: oauth)
+        safariHandler.delegate = self
         oauth.authorizeURLHandler = safariHandler
         self.oauthHandle = oauth.authorize(withCallbackURL: URL(string: self.CALLBACK_URL)!,
                                            scope: "",
@@ -93,11 +101,10 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
                                             
                                             self?.completion(username!, nil)
                                             
-        }) { [weak self] (error) in
+        }) { (error) in
             print ("Failed Authentication!")
             print(error.localizedDescription)
-            
-            self?.completion("", error)
+            // Do not return with completion. Only return on pressing Close on Safari
         }
     }
     
@@ -119,4 +126,14 @@ class OAuthSwiftAuthenticator: LoginScreenProtocol {
         self.dataManager?.saveAccessTokenToKeychain(accessToken: accessToken)
         self.dataManager?.saveRefreshTokenToKeychain(refreshToken: refreshToken)
     }
+    
+    // Safari delegates
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        #if DEBUG
+            print("Safari View Controller pressed Close")
+        #endif
+        
+        self.completion("", OAuthError.cancelledLogin)
+    }
+    
 }
