@@ -83,9 +83,9 @@ class LeftMenuController: UITableViewController {
     
     // Support us section
     enum SupportUsRows: Int {
-        case removeAds = 0
-        case restorePurchases = 1
-        case donate = 2
+        case donate = 0
+        case removeAds = 1
+        case restorePurchases = 2
         
         static let allValues = [removeAds, restorePurchases,donate]
     }

@@ -109,9 +109,6 @@ class CommentCell: UITableViewCell {
         
         // Upvote and downvote buttons
         self.setVotingButtonsBindings(forViewModel: viewModel)
-        
-        // Blocked user button title
-        self.setBlockUserButtonTitle(forViewModel: viewModel)
        
     }
     
@@ -197,23 +194,6 @@ class CommentCell: UITableViewCell {
         } else {
             self.setBackgroundColors(withColor: self.BACKGROUND_COLOR_ODD_CHILD)
         }
-    }
-    
-    private func setBlockUserButtonTitle(forViewModel viewModel: CommentCellViewModel) {
-        if viewModel.isBlocked {
-            let UNBLOCK_USER_TITLE = "Unblock User"
-            self.setBlockUserButtonTitle(title: UNBLOCK_USER_TITLE)
-            
-        } else {
-            let BLOCK_USER_TITLE = "Block User"
-            self.setBlockUserButtonTitle(title: BLOCK_USER_TITLE)
-        }
-    }
-    
-    private func setBlockUserButtonTitle(title: String) {
-        self.blockUserButton.setTitle(title, for: .normal)
-        self.blockUserButton.setTitle(title, for: .selected)
-        self.blockUserButton.setTitle(title, for: .focused)
     }
     
     private func setMinimizeMaximizeBindings(forViewModel viewModel: CommentCellViewModel) {

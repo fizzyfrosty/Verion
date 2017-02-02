@@ -158,7 +158,7 @@ class ComposeCommentViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         //Looks for single or multiple taps.
-        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissTextView))
+        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboardOrClose))
         
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
         //self.tapGesture?.cancelsTouchesInView = false

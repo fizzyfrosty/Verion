@@ -87,12 +87,12 @@ Online Requests
 * Set Alamofire adapter and retrier
 * Make voting for submission request
 	* Binding submission vote buttons
-- Show Vote registered from Submission response
 * Make voting for comments request
 	* Binding comment vote buttons
-- Make Submit comments request
+* Make Submit comments request
 
 - Frontpage is set to user's frontpage
+- Show Vote registered from Submission response
 
 * Test expired access token
 * Test invalid refresh token

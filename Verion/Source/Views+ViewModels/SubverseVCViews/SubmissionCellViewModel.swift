@@ -34,7 +34,7 @@ class SubmissionCellViewModel{
     private let CELL_TITLE_FONT_NAME = "AmericanTypewriter-Bold"
     private let CELL_TITLE_FONT_SIZE: CGFloat = 18
     private let MAX_CELL_HEIGHT: CGFloat = 999
-    private let MINIMUM_CELL_HEIGHT_WITH_IMAGE: CGFloat = 125.0
+    private let MINIMUM_CELL_HEIGHT_WITH_IMAGE: CGFloat = 130.0
     private let MINIMUM_CELL_HEIGHT_NO_IMAGE: CGFloat = 80.0
     
     // Variables for binding to UI
