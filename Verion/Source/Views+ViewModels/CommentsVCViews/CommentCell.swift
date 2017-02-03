@@ -81,7 +81,7 @@ class CommentCell: UITableViewCell {
         
         self.viewModel = viewModel
         viewModel.resetViewBindings()
-        
+        self.resetUI()
         
         // Background offset and colors
         self.setBackgroundProperties(forViewModel: viewModel)
@@ -289,7 +289,6 @@ class CommentCell: UITableViewCell {
         super.prepareForReuse()
         
         self.resetBindings()
-        self.resetUI()
         self.resetProperties()
     }
     

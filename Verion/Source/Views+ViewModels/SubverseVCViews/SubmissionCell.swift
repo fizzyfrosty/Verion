@@ -73,7 +73,7 @@ class SubmissionCell: UITableViewCell {
     func bind(toViewModel viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool) {
         self.viewModel = viewModel
         viewModel.resetViewBindings()
-        
+        self.resetUI()
         
         // Title
         if shouldFilterLanguage == true {
@@ -205,7 +205,6 @@ class SubmissionCell: UITableViewCell {
         super.prepareForReuse()
         
         self.resetBindings()
-        self.resetUI()
         self.resetProperties()
     }
     

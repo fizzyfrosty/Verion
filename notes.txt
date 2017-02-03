@@ -50,8 +50,24 @@ View Users
 	- For comments
 	- For submissions
 
+- Voting on Subverse Controller does not translate vote to Comment Controller
+
 - Analytics for Comment Submission
 - Redesign UI
+- Rate button under Support Us category
+
+- Add Native Ads
+- Re-examine banner view ads (sizes)
+- Welcome Screen?
+- Price of Remove Ads, dynamic, increase?
+
+- Add Upvote button for submission on Comments Controller
+- Add cache for comment ID of posted comment on Top Level Comment
+	- If loading "load-more" and has same ID, do not load it
+- Handle Vote not going through from not enough CCP
+- Handle comments/voting from being banned
+
+
 
 
 * Realign margins for vote buttons
