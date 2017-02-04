@@ -195,8 +195,6 @@
 		43B056DC1E0E4691007083E8 /* UnwindSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056AB1E0E4691007083E8 /* UnwindSegue.swift */; };
 		43B056DD1E0E4691007083E8 /* SwiftWebViewProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056AE1E0E4691007083E8 /* SwiftWebViewProgress.swift */; };
 		43B056DE1E0E4691007083E8 /* SwiftWebViewProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056AF1E0E4691007083E8 /* SwiftWebViewProgressView.swift */; };
-		43B056DF1E0E4691007083E8 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43B056B11E0E4691007083E8 /* Info.plist */; };
-		43B056E01E0E4691007083E8 /* SwiftyMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056B31E0E4691007083E8 /* SwiftyMarkdown.swift */; };
 		43B057101E0E71AD007083E8 /* SubmissionDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0570F1E0E71AD007083E8 /* SubmissionDataModelV1.swift */; };
 		43B057121E0E7616007083E8 /* CommentDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B057111E0E7616007083E8 /* CommentDataModelV1.swift */; };
 		43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */; };
@@ -447,9 +445,6 @@
 		43B056AB1E0E4691007083E8 /* UnwindSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnwindSegue.swift; sourceTree = "<group>"; };
 		43B056AE1E0E4691007083E8 /* SwiftWebViewProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftWebViewProgress.swift; sourceTree = "<group>"; };
 		43B056AF1E0E4691007083E8 /* SwiftWebViewProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftWebViewProgressView.swift; sourceTree = "<group>"; };
-		43B056B11E0E4691007083E8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		43B056B21E0E4691007083E8 /* SwiftyMarkdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftyMarkdown.h; sourceTree = "<group>"; };
-		43B056B31E0E4691007083E8 /* SwiftyMarkdown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdown.swift; sourceTree = "<group>"; };
 		43B0570F1E0E71AD007083E8 /* SubmissionDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionDataModelV1.swift; sourceTree = "<group>"; };
 		43B057111E0E7616007083E8 /* CommentDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelV1.swift; sourceTree = "<group>"; };
 		43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelV1.swift; sourceTree = "<group>"; };
@@ -798,7 +793,6 @@
 				43B056891E0E4691007083E8 /* SlideMenuControllerSwift */,
 				43B0568D1E0E4691007083E8 /* Spring */,
 				43B056AD1E0E4691007083E8 /* SwiftWebViewProgress */,
-				43B056B01E0E4691007083E8 /* SwiftyMarkdown */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -869,16 +863,6 @@
 				43B056AF1E0E4691007083E8 /* SwiftWebViewProgressView.swift */,
 			);
 			path = SwiftWebViewProgress;
-			sourceTree = "<group>";
-		};
-		43B056B01E0E4691007083E8 /* SwiftyMarkdown */ = {
-			isa = PBXGroup;
-			children = (
-				43B056B11E0E4691007083E8 /* Info.plist */,
-				43B056B21E0E4691007083E8 /* SwiftyMarkdown.h */,
-				43B056B31E0E4691007083E8 /* SwiftyMarkdown.swift */,
-			);
-			path = SwiftyMarkdown;
 			sourceTree = "<group>";
 		};
 		43B057151E0E7943007083E8 /* Resources */ = {
@@ -1193,7 +1177,6 @@
 				43A33DF11E36B1780032D7A7 /* TapjoyResources.bundle in Resources */,
 				43A33DEE1E36B1780032D7A7 /* MPUnmutedBtn@3x.png in Resources */,
 				43A33DE51E36B1780032D7A7 /* MPDAAIcon@3x.png in Resources */,
-				43B056DF1E0E4691007083E8 /* Info.plist in Resources */,
 				43A33DF51E36B1780032D7A7 /* vg_mute_off.png in Resources */,
 				43A33DDD1E36B1780032D7A7 /* MPCloseBtn.png in Resources */,
 				43F9A0371DEA3AE0001EB1FC /* LaunchScreen.storyboard in Resources */,
@@ -1338,7 +1321,6 @@
 				43B056D11E0E4691007083E8 /* SoundPlayer.swift in Sources */,
 				437644351E22511000EE64A7 /* CommentDataSegmentV1.swift in Sources */,
 				432B77771E12272A00457F2C /* ActivityIndicatorCellViewModel.swift in Sources */,
-				43B056E01E0E4691007083E8 /* SwiftyMarkdown.swift in Sources */,
 				43B056C41E0E4691007083E8 /* DesignableButton.swift in Sources */,
 				43B056631E0D1CDA007083E8 /* SlideController.swift in Sources */,
 				43433DA41E057E620017FAB0 /* CommentCellViewModel.swift in Sources */,

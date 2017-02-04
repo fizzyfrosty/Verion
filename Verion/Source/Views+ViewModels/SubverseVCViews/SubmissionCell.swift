@@ -91,13 +91,13 @@ class SubmissionCell: UITableViewCell {
         
         // Vote Count Label
         self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
-        viewModel.viewBindings.append( viewModel.voteCountTotal.observeNext() { [weak self] count in
+        self.bindings.append( viewModel.voteCountTotal.observeNext() { [weak self] count in
             self?.voteCountLabel.text = String(count)
         })
         
         // Separated Vote Count Label
         self.voteSeparatedCountLabel.text = viewModel.voteSeparatedCountString.value
-        viewModel.viewBindings.append( viewModel.voteSeparatedCountString.observeNext() { [weak self] separatedCountString in
+        self.bindings.append( viewModel.voteSeparatedCountString.observeNext() { [weak self] separatedCountString in
             self?.voteSeparatedCountLabel.text = separatedCountString
         })
         
@@ -153,7 +153,7 @@ class SubmissionCell: UITableViewCell {
             }
         })
         
-        viewModel.viewBindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in
+        self.bindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in
             
             // Reset UI
             self?.downvoteButton.isSelected = false
@@ -192,6 +192,12 @@ class SubmissionCell: UITableViewCell {
         }
         
         self.bindings.removeAll()
+    }
+    
+    deinit{
+        #if DEBUG
+            print("Deallocated a Submission Cell")
+        #endif
     }
 
 }
