@@ -413,7 +413,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                     var isDuplicate = false
                     
                     let subCellViewModel = SubmissionCellViewModel()
-                    subCellViewModel.dataModel = submissionDataModels[i]
                     
                     // Hide if NSFW filter is on
                     if self.verionDataModel?.shouldHideNsfw == true {
@@ -702,9 +701,9 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             // Bind dataModel-viewModel-dataProvider
             
             let subCellViewModel = self.subCellViewModels[i]
-            let dataModel = subCellViewModel.dataModel
+            let dataModel = self.submissionDataModels[i]
             
-            self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: dataModel!, viewController: self)
+            self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: dataModel, viewController: self)
             #if DEBUG
                 //print("Binding cell to viewModel \(i)...")
             #endif
@@ -802,6 +801,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             // Comments View Controller segue
             if let commentsViewController = segue.destination as? CommentsViewController {
                 commentsViewController.submissionDataModel = self.subCellViewModels[self.selectedIndex].dataModel
+                commentsViewController.submissionCellViewModel = self.subCellViewModels[self.selectedIndex]
                 commentsViewController.backgroundColor = self.BGCOLOR
             }
             

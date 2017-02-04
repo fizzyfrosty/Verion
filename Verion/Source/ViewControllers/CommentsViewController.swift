@@ -49,6 +49,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     let WEBVIEW_SEGUE_ID = "WebViewSegue"
     
     var submissionDataModel: SubmissionDataModelProtocol?
+    var submissionCellViewModel: SubmissionCellViewModel?
     var verionDataModel: VerionDataModel?
     
     // View Models
@@ -164,6 +165,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     private func loadSubmissionInfo(completion: @escaping ()->()) {
         DispatchQueue.global(qos: .background).async {
+            
             self.loadSubmissionTitle(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider)
             self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider) {
                 
@@ -626,7 +628,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             if indexPath.row == 0 {
                 
                 let titleCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath) as! SubmissionTitleCell
-                titleCell.bind(toViewModel: self.submissionTitleVm!, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
+                titleCell.bind(viewModel:self.submissionCellViewModel!, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
                 
                 return titleCell
                 
@@ -674,7 +676,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             } else {
                 // If third row, SortedBy Cell
                 let sortByCell = tableView.dequeueReusableCell(withIdentifier: self.SORTED_BY_CELL_REUSE_ID, for: indexPath) as! CommentsSortByCell
-                sortByCell.bind(toViewModel: self.commentsSortByVm!)
+                sortByCell.bind(toViewModel: self.commentsSortByVm!, submissionCellViewModel: self.submissionCellViewModel!)
                 sortByCell.navigationController = self.navigationController
                 sortByCell.delegate = self
                 

@@ -53,7 +53,8 @@ View Users
 * Add cache for comment ID of posted comment on Top Level Comment
 	* If loading from "load-more" and has same ID, do not load it
 
-- Add Upvote button for submission on Comments Controller
+* Add Upvote button for submission on Comments Controller
+- Replace Markdown parser, because it crashes sometimes
 
 - Analytics for Comment Submission
 - Redesign UI

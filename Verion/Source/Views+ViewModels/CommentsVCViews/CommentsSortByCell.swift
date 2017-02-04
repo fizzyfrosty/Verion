@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReactiveKit
 
 protocol CommentsSortByCellDelegate: class {
     func commentsSortByCell(cell: CommentsSortByCell, didSortBy sortType: SortTypeComments)
@@ -42,7 +43,7 @@ class CommentsSortByCell: UITableViewCell {
     }
     
     
-    
+    private var bindings: [Disposable] = []
     var viewModel: CommentsSortByCellViewModel?
     var navigationController: UINavigationController?
     
@@ -119,16 +120,62 @@ class CommentsSortByCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func bind(toViewModel viewModel: CommentsSortByCellViewModel) {
+    func bind(toViewModel viewModel: CommentsSortByCellViewModel, submissionCellViewModel: SubmissionCellViewModel) {
         self.viewModel = viewModel
+        self.viewModel?.resetViewBindings()
         
+        self.resetUI()
         
         // Bind the viewModel to the button's title
-        _ = self.viewModel?.sortType.observeNext() { [weak self] sortTypeComment in
+        viewModel.viewBindings.append( viewModel.sortType.observeNext() { [weak self] sortTypeComment in
             let titleString = self?.getButtonTitleString(sortTypeString: sortTypeComment.rawValue)
             self?.setButtonTitle(titleString: titleString!)
-        }
+        })
         
+        // Bind to User-input events
+        self.setVotingButtonsBindings(forViewModel: submissionCellViewModel)
+    }
+    
+    private func setVotingButtonsBindings(forViewModel viewModel: SubmissionCellViewModel) {
+        // Upvote
+        self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
+            
+            viewModel.didRequestUpvote.value = true
+            self?.upvoteButton.isSelected = !((self?.upvoteButton.isSelected)!)
+            
+            // Unselect the other button
+            if self?.upvoteButton.isSelected == true {
+                self?.downvoteButton.isSelected = false
+            }
+        })
+        
+        // Downvote
+        self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
+            
+            viewModel.didRequestDownvote.value = true
+            self?.downvoteButton.isSelected = !((self?.downvoteButton.isSelected)!)
+            
+            // Unselect the other button
+            if self?.downvoteButton.isSelected == true {
+                self?.upvoteButton.isSelected = false
+            }
+        })
+        
+        self.bindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in
+            
+            // Reset UI
+            self?.downvoteButton.isSelected = false
+            self?.upvoteButton.isSelected = false
+            
+            switch voteValue {
+            case .down:
+                self?.downvoteButton.isSelected = true
+            case .up:
+                self?.upvoteButton.isSelected = true
+            case .none:
+                break
+            }
+        })
     }
     
     private func getButtonTitleString(sortTypeString: String) -> String {
@@ -140,6 +187,30 @@ class CommentsSortByCell: UITableViewCell {
         self.sortByButton.setTitle(titleString, for: .normal)
         self.sortByButton.setTitle(titleString, for: .selected)
         self.sortByButton.setTitle(titleString, for: .disabled)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.resetBindings()
+        self.resetProperties()
+    }
+    
+    private func resetProperties() {
+        self.viewModel = nil
+    }
+    
+    private func resetBindings() {
+        for binding in self.bindings {
+            binding.dispose()
+        }
+        
+        self.bindings.removeAll()
+    }
+    
+    private func resetUI() {
+        self.downvoteButton.isSelected = false
+        self.upvoteButton.isSelected = false
     }
 
 }

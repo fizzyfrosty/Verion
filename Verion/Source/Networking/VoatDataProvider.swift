@@ -353,6 +353,7 @@ class VoatDataProvider: DataProviderType {
         // Initialize the view model's values with data models
         let subCellVmInitData = self.dataProviderHelper.getSubCellVmInitData(fromDataModel: dataModel)
         subCellViewModel.loadInitData(subCellVmInitData: subCellVmInitData)
+        subCellViewModel.dataModel = dataModel
         
         subCellViewModel.resetDataProviderBindings()
         
