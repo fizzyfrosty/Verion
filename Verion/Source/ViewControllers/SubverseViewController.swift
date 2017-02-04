@@ -117,6 +117,9 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     func showFindSubverse() {
+        
+        self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerFindSubverse, timed: false)
+        
         self.performSegue(withIdentifier: self.FIND_SUBVERSE_SEGUE_IDENTIFIER, sender: self)
     }
     

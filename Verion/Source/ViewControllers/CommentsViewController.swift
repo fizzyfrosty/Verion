@@ -1080,8 +1080,16 @@ extension CommentsViewController: ComposeCommentViewControllerDelegate {
         
         switch composeCommentDataModel.type {
         case .topLevelComment:
+            // Analytics
+            let topLevelParams = AnalyticsEvents.getCommentControllerSubmitTopLevelCommentParams(subverseName: (self.submissionDataModel?.subverseName)!, mediaType: self.submissionMediaType)
+            self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerSubmitTopLevelComment, params: topLevelParams, timed: false)
+            
             self.addTopLevelComment(commentDataModel: commentDataModel)
         case .reply:
+            // Analytics
+            let replyCommentParams = AnalyticsEvents.getCommentControllerSubmitCommentReplyParams(subverseName: (self.submissionDataModel?.subverseName)!, mediaType: self.submissionMediaType)
+            self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerSubmitCommentReply, params: replyCommentParams, timed: false)
+            
             self.addReplyComment(commentDataModel: commentDataModel, parentCommentId: composeCommentDataModel.commentId)
         }
     }

@@ -72,7 +72,7 @@ class SubmissionCell: UITableViewCell {
     
     func bind(toViewModel viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool) {
         self.viewModel = viewModel
-        viewModel.resetViewBindings()
+        viewModel.resetViewBindings() // TODO: This may not be needed, as all bindings are owned by the setter
         self.resetUI()
         
         // Title

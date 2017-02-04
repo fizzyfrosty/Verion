@@ -50,8 +50,8 @@ int xng_markdown_consume(char *text, XNGMarkdownParserCode token, yyscan_t scann
     if ((self = [super init])) {
         _headerFonts = [NSMutableDictionary dictionary];
 
-        self.paragraphFont = [UINSFont systemFontOfSize:14];
-        self.boldFontName = [UINSFont boldSystemFontOfSize:14].fontName;
+        self.paragraphFont = [UINSFont systemFontOfSize:16];
+        self.boldFontName = [UINSFont boldSystemFontOfSize:16].fontName;
         self.italicFontName = @"Helvetica-Oblique";
         self.boldItalicFontName = @"Helvetica-BoldOblique";
         self.codeFontName = @"Courier";

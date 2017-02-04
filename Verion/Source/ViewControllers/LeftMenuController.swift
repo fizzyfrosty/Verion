@@ -713,6 +713,9 @@ extension LeftMenuController {
     fileprivate func notifyDelegateDidPressFindSubverse() {
         if let _ = self.delegate?.leftMenuDidPressFindSubverse(leftMenu: self) {
             // success, do nothing
+            
+            self.analyticsManager?.logEvent(name: AnalyticsEvents.leftMenuFindSubverse, timed: false)
+            
         } else {
             #if DEBUG
                 print("Warning: Left Menu Controller's delegate may not be set.")

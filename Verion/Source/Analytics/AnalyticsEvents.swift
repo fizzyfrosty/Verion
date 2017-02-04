@@ -16,6 +16,8 @@ class AnalyticsEvents {
     private static let SWITCH_ENABLED_KEY = "switch_enabled"
     
     // MARK: - Subverse controller
+    static let subverseControllerFindSubverse = "Subverse Controller - Find Subverse"
+    
     static let subverseControllerLoaded = "Subverse Controller - Initially Loaded"
     static func getSubverseControllerLoadedParams(subverseName: String) -> Dictionary<AnyHashable, Any>{
         
@@ -77,6 +79,19 @@ class AnalyticsEvents {
                           (self.SUBMISSION_MEDIA_TYPE_PARAM_KEY, mediaType.rawValue))
     }
     
+    static let commentsControllerSubmitTopLevelComment = "Comments Controller - Submitted Top Level Comment"
+    static func getCommentControllerSubmitTopLevelCommentParams(subverseName: String, mediaType: SubmissionMediaType) -> Dictionary<AnyHashable, Any> {
+        return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName),
+                          (self.SUBMISSION_MEDIA_TYPE_PARAM_KEY, mediaType.rawValue))
+    }
+    
+    static let commentsControllerSubmitCommentReply = "Comments Controller - Submitted Comment Reply"
+    static func getCommentControllerSubmitCommentReplyParams(subverseName: String, mediaType: SubmissionMediaType) -> Dictionary<AnyHashable, Any> {
+        
+        return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName),
+                          (self.SUBMISSION_MEDIA_TYPE_PARAM_KEY, mediaType.rawValue))
+    }
+    
     // MARK: - Left Menu Controller
     static let leftMenuViewing = "Left Menu - Viewing"
     
@@ -116,4 +131,6 @@ class AnalyticsEvents {
     static func getLeftMenuFilterLanguageParams(isEnabled: Bool) -> Dictionary<AnyHashable, Any>{
         return Dictionary(dictionaryLiteral: (self.SWITCH_ENABLED_KEY, isEnabled))
     }
+    
+    static let leftMenuFindSubverse = "Left Menu - Find Subverse"
 }
