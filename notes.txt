@@ -54,7 +54,8 @@ View Users
 	* If loading from "load-more" and has same ID, do not load it
 
 * Add Upvote button for submission on Comments Controller
-- Replace Markdown parser, because it crashes sometimes
+* Replace Markdown parser, bug of crossout links causing crash
+	* Replaced with XNG Markdown Parser
 
 - Analytics for Comment Submission
 - Redesign UI

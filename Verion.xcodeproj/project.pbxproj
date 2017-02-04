@@ -46,6 +46,10 @@
 		43433DB41E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DB31E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift */; };
 		43433DBF1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */; };
 		43433DC11E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */; };
+		43456AB61E45CE680055165C /* fmemopen.c in Sources */ = {isa = PBXBuildFile; fileRef = 43456AAF1E45CE680055165C /* fmemopen.c */; };
+		43456AB71E45CE680055165C /* XNGMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43456AB21E45CE680055165C /* XNGMarkdownParser.m */; };
+		43456AB81E45CE680055165C /* XNGMarkdownTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 43456AB31E45CE680055165C /* XNGMarkdownTokenizer.m */; };
+		43456AB91E45CE680055165C /* XNGMarkdownTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 43456AB51E45CE680055165C /* XNGMarkdownTokens.m */; };
 		435FEADF1E31789600BB3867 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435FEADE1E31789600BB3867 /* AdCell.swift */; };
 		436D25EE1E3308DE00FE9ED2 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 436D25ED1E3308DE00FE9ED2 /* Login.storyboard */; };
 		436D25F01E3322E100FE9ED2 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D25EF1E3322E100FE9ED2 /* LoginController.swift */; };
@@ -193,8 +197,6 @@
 		43B056DE1E0E4691007083E8 /* SwiftWebViewProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056AF1E0E4691007083E8 /* SwiftWebViewProgressView.swift */; };
 		43B056DF1E0E4691007083E8 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43B056B11E0E4691007083E8 /* Info.plist */; };
 		43B056E01E0E4691007083E8 /* SwiftyMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B056B31E0E4691007083E8 /* SwiftyMarkdown.swift */; };
-		43B056E11E0E4691007083E8 /* TSBaseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B056B61E0E4691007083E8 /* TSBaseParser.m */; };
-		43B056E21E0E4691007083E8 /* TSMarkdownParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B056B91E0E4691007083E8 /* TSMarkdownParser.m */; };
 		43B057101E0E71AD007083E8 /* SubmissionDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0570F1E0E71AD007083E8 /* SubmissionDataModelV1.swift */; };
 		43B057121E0E7616007083E8 /* CommentDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B057111E0E7616007083E8 /* CommentDataModelV1.swift */; };
 		43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */; };
@@ -285,6 +287,13 @@
 		43433DB31E0582420017FAB0 /* SubverseSearchResultCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultCellViewModel.swift; sourceTree = "<group>"; };
 		43433DBE1E059FE70017FAB0 /* SubverseSearchResultDataModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelProtocol.swift; sourceTree = "<group>"; };
 		43433DC01E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelLegacy.swift; sourceTree = "<group>"; };
+		43456AAF1E45CE680055165C /* fmemopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fmemopen.c; sourceTree = "<group>"; };
+		43456AB01E45CE680055165C /* fmemopen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmemopen.h; sourceTree = "<group>"; };
+		43456AB11E45CE680055165C /* XNGMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNGMarkdownParser.h; sourceTree = "<group>"; };
+		43456AB21E45CE680055165C /* XNGMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNGMarkdownParser.m; sourceTree = "<group>"; };
+		43456AB31E45CE680055165C /* XNGMarkdownTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNGMarkdownTokenizer.m; sourceTree = "<group>"; };
+		43456AB41E45CE680055165C /* XNGMarkdownTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XNGMarkdownTokens.h; sourceTree = "<group>"; };
+		43456AB51E45CE680055165C /* XNGMarkdownTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XNGMarkdownTokens.m; sourceTree = "<group>"; };
 		435FEADE1E31789600BB3867 /* AdCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
 		436D25ED1E3308DE00FE9ED2 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		436D25EF1E3322E100FE9ED2 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -441,11 +450,6 @@
 		43B056B11E0E4691007083E8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43B056B21E0E4691007083E8 /* SwiftyMarkdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftyMarkdown.h; sourceTree = "<group>"; };
 		43B056B31E0E4691007083E8 /* SwiftyMarkdown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdown.swift; sourceTree = "<group>"; };
-		43B056B51E0E4691007083E8 /* TSBaseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBaseParser.h; sourceTree = "<group>"; };
-		43B056B61E0E4691007083E8 /* TSBaseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBaseParser.m; sourceTree = "<group>"; };
-		43B056B71E0E4691007083E8 /* TSMarkdownParser-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TSMarkdownParser-Prefix.pch"; sourceTree = "<group>"; };
-		43B056B81E0E4691007083E8 /* TSMarkdownParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMarkdownParser.h; sourceTree = "<group>"; };
-		43B056B91E0E4691007083E8 /* TSMarkdownParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMarkdownParser.m; sourceTree = "<group>"; };
 		43B0570F1E0E71AD007083E8 /* SubmissionDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionDataModelV1.swift; sourceTree = "<group>"; };
 		43B057111E0E7616007083E8 /* CommentDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataModelV1.swift; sourceTree = "<group>"; };
 		43B057131E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseSearchResultDataModelV1.swift; sourceTree = "<group>"; };
@@ -610,6 +614,28 @@
 			path = SubverseVCViews;
 			sourceTree = "<group>";
 		};
+		43456AAD1E45CE680055165C /* XNGMarkdown */ = {
+			isa = PBXGroup;
+			children = (
+				43456AAE1E45CE680055165C /* src */,
+			);
+			path = XNGMarkdown;
+			sourceTree = "<group>";
+		};
+		43456AAE1E45CE680055165C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				43456AAF1E45CE680055165C /* fmemopen.c */,
+				43456AB01E45CE680055165C /* fmemopen.h */,
+				43456AB11E45CE680055165C /* XNGMarkdownParser.h */,
+				43456AB21E45CE680055165C /* XNGMarkdownParser.m */,
+				43456AB31E45CE680055165C /* XNGMarkdownTokenizer.m */,
+				43456AB41E45CE680055165C /* XNGMarkdownTokens.h */,
+				43456AB51E45CE680055165C /* XNGMarkdownTokens.m */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		4375BFCB1DF5D43900576CC6 /* CustomControls */ = {
 			isa = PBXGroup;
 			children = (
@@ -763,6 +789,7 @@
 		43B056821E0E4691007083E8 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				43456AAD1E45CE680055165C /* XNGMarkdown */,
 				43A33DB81E36B1780032D7A7 /* Appodeal */,
 				43829EF51E25B09500754AF3 /* GoshDarnIt */,
 				43ABEBAD1E14EF3000458E3D /* RMStore */,
@@ -770,11 +797,8 @@
 				43B056831E0E4691007083E8 /* FLAnimatedImage */,
 				43B056891E0E4691007083E8 /* SlideMenuControllerSwift */,
 				43B0568D1E0E4691007083E8 /* Spring */,
-				43B056AC1E0E4691007083E8 /* SwiftGifCommon */,
 				43B056AD1E0E4691007083E8 /* SwiftWebViewProgress */,
 				43B056B01E0E4691007083E8 /* SwiftyMarkdown */,
-				43B056B41E0E4691007083E8 /* TSMarkdownParser */,
-				43B056BA1E0E4691007083E8 /* UIImage+animatedGIF */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -838,13 +862,6 @@
 			path = Spring;
 			sourceTree = "<group>";
 		};
-		43B056AC1E0E4691007083E8 /* SwiftGifCommon */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SwiftGifCommon;
-			sourceTree = "<group>";
-		};
 		43B056AD1E0E4691007083E8 /* SwiftWebViewProgress */ = {
 			isa = PBXGroup;
 			children = (
@@ -862,25 +879,6 @@
 				43B056B31E0E4691007083E8 /* SwiftyMarkdown.swift */,
 			);
 			path = SwiftyMarkdown;
-			sourceTree = "<group>";
-		};
-		43B056B41E0E4691007083E8 /* TSMarkdownParser */ = {
-			isa = PBXGroup;
-			children = (
-				43B056B51E0E4691007083E8 /* TSBaseParser.h */,
-				43B056B61E0E4691007083E8 /* TSBaseParser.m */,
-				43B056B71E0E4691007083E8 /* TSMarkdownParser-Prefix.pch */,
-				43B056B81E0E4691007083E8 /* TSMarkdownParser.h */,
-				43B056B91E0E4691007083E8 /* TSMarkdownParser.m */,
-			);
-			path = TSMarkdownParser;
-			sourceTree = "<group>";
-		};
-		43B056BA1E0E4691007083E8 /* UIImage+animatedGIF */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "UIImage+animatedGIF";
 			sourceTree = "<group>";
 		};
 		43B057151E0E7943007083E8 /* Resources */ = {
@@ -1332,7 +1330,6 @@
 				43B056BC1E0E4691007083E8 /* FLAnimatedImageView.m in Sources */,
 				430F2F791E358C13001C05EB /* OAuth2Handler.swift in Sources */,
 				43433D7B1E027FD00017FAB0 /* ImageDownloader.swift in Sources */,
-				43B056E11E0E4691007083E8 /* TSBaseParser.m in Sources */,
 				43B056D81E0E4691007083E8 /* SpringTextView.swift in Sources */,
 				43F675231DF20078001F83BE /* SubmissionDataModelLegacy.swift in Sources */,
 				43433D7F1E03C8290017FAB0 /* CellHeightCalculator.swift in Sources */,
@@ -1363,14 +1360,17 @@
 				43B056C51E0E4691007083E8 /* DesignableImageView.swift in Sources */,
 				43B056DE1E0E4691007083E8 /* SwiftWebViewProgressView.swift in Sources */,
 				43433DA71E057E620017FAB0 /* SubmissionImageCell.swift in Sources */,
+				43456AB61E45CE680055165C /* fmemopen.c in Sources */,
 				43433DA91E057E620017FAB0 /* SubmissionLinkCell.swift in Sources */,
 				43ABEBA41E14E42C00458E3D /* AdManager.swift in Sources */,
 				431C63A11E3BCD7B00F5236C /* OAuthSwiftAuthenticator.swift in Sources */,
 				43433DC11E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift in Sources */,
+				43456AB81E45CE680055165C /* XNGMarkdownTokenizer.m in Sources */,
 				43F675281DF20078001F83BE /* SFXManagerDummy.swift in Sources */,
 				43B056BB1E0E4691007083E8 /* FLAnimatedImage.m in Sources */,
 				4375BFC81DF3EDC300576CC6 /* Delayer.swift in Sources */,
 				4375BFC41DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift in Sources */,
+				43456AB91E45CE680055165C /* XNGMarkdownTokens.m in Sources */,
 				43F9A02D1DEA3AE0001EB1FC /* AppDelegate.swift in Sources */,
 				43F675291DF20078001F83BE /* SFXManagerType.swift in Sources */,
 				43433DA21E057E620017FAB0 /* ActivityIndicatorCell.swift in Sources */,
@@ -1386,7 +1386,6 @@
 				43B056C61E0E4691007083E8 /* DesignableLabel.swift in Sources */,
 				43B056BF1E0E4691007083E8 /* SlideMenuController.swift in Sources */,
 				431C63A51E3BD00700F5236C /* OfflineLoginScreen.swift in Sources */,
-				43B056E21E0E4691007083E8 /* TSMarkdownParser.m in Sources */,
 				431C63A31E3BCE5D00F5236C /* LoginScreenProtocol.swift in Sources */,
 				43B056691E0D21F4007083E8 /* LeftMenuController.swift in Sources */,
 				43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */,
@@ -1399,6 +1398,7 @@
 				43C8FE031E253D41007FB231 /* UseNsfwThumbnailsCell.swift in Sources */,
 				43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */,
 				43B056C71E0E4691007083E8 /* DesignableTabBarController.swift in Sources */,
+				43456AB71E45CE680055165C /* XNGMarkdownParser.m in Sources */,
 				43ABEBAC1E14E68C00458E3D /* InAppPurchaseManager.swift in Sources */,
 				43B057101E0E71AD007083E8 /* SubmissionDataModelV1.swift in Sources */,
 				43DF45311E09F04E00478AD9 /* ProgressIndicatorCell.swift in Sources */,

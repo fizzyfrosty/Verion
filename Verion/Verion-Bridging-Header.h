@@ -15,5 +15,6 @@
 #import "FLAnimatedImage.h"
 #import "Flurry.h"
 #import "RMStore.h"
+#import "XNGMarkdownParser.h"
 
 #endif /* Verion_Bridging_Header_h */

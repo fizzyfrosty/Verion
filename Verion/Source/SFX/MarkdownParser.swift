@@ -12,11 +12,9 @@ class MarkdownParser {
     static func attributedString(fromMarkdownString markdownString: String) -> NSAttributedString {
         var formattedString = NSAttributedString()
         
-        /*
-        let swiftyMarkdown = SwiftyMarkdown(string: markdownString)
-        formattedString = swiftyMarkdown.attributedString()
- */
-        formattedString = TSMarkdownParser.standard().attributedString(fromMarkdown: markdownString)
+        // XNG Markdown Parser
+        let parser = XNGMarkdownParser()
+        formattedString = parser.attributedString(fromMarkdownString: markdownString)
         
         return formattedString
     }
