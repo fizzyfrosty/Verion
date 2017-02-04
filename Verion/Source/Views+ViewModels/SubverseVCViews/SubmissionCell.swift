@@ -132,35 +132,16 @@ class SubmissionCell: UITableViewCell {
         // Upvote
         self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
             
-            // If previously selected
-            if self?.upvoteButton.isSelected == true {
-                viewModel.didRequestNoVote.value = true
-                self?.upvoteButton.isSelected = false
-                
-            } else {
-                // If not previously selected, attempt to select
-                viewModel.didRequestUpvote.value = true
-                viewModel.didRequestDownvote.value = false
-                self?.upvoteButton.isSelected = true
-                self?.downvoteButton.isSelected = false
-            }
+            viewModel.didRequestUpvote.value = true
+            self?.upvoteButton.isSelected = !((self?.upvoteButton.isSelected)!)
+
         })
         
         // Downvote
         self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
             
-            // If previously selected
-            if self?.downvoteButton.isSelected == true {
-                // Request NoVote
-                viewModel.didRequestNoVote.value = true
-                self?.downvoteButton.isSelected = false
-            } else {
-                // If not previously selected, attempt to select
-                viewModel.didRequestDownvote.value = true
-                viewModel.didRequestUpvote.value = false
-                self?.downvoteButton.isSelected = true
-                self?.upvoteButton.isSelected = false
-            }
+            viewModel.didRequestDownvote.value = true
+            self?.downvoteButton.isSelected = !((self?.downvoteButton.isSelected)!)
         })
         
         viewModel.viewBindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in

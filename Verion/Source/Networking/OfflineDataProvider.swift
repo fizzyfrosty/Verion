@@ -121,21 +121,24 @@ class OfflineDataProvider: DataProviderType {
         requestClosure()
     }
     
-    func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
+    // Offline Data Provider can only return upvotes and downvotes, no cancelled votes
+    func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (VoteValue, Error?) -> ()) {
         
         let requestClosure: ()->() = { [weak self] in
             
             Delayer.delay(seconds: (self?.DELAY_TIME_SECONDS)!) {
                 
+                let processedVoteValue = self?.dataProviderHelper.getVoteValueFromIntValueV1(int: voteValue)
+                
                 // Automatically pass vote
-                completion(nil)
+                completion(processedVoteValue!, nil)
             }
         }
         
         guard OAuth2Handler.sharedInstance.accessToken != "" else {
             self.loginScreen?.presentLogin(rootViewController: rootViewController, showConfirmation: false, completion: { (username, error) in
                 guard error == nil else {
-                    completion(OfflineRequestError.notAuthenticated)
+                    completion(VoteValue.none, OfflineRequestError.notAuthenticated)
                     return
                 }
                 
@@ -256,22 +259,25 @@ class OfflineDataProvider: DataProviderType {
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
             if didRequestUpvote {
                 
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (voteValue, error) in
+                    
+                    // Reset binding to allow for re-calling
+                    subCellViewModel.didRequestUpvote.value = false
                     
                     // Failed
                     guard error == nil else {
                         #if DEBUG
                             print("Response failed: Upvote")
                         #endif
-                        subCellViewModel.didRequestUpvote.value = false
                         subCellViewModel.voteValue.value = subCellViewModel.voteValue.value
                         return
                     }
                     
-                    subCellViewModel.voteValue.value = .up
+                    // Success
+                    subCellViewModel.voteValue.value = voteValue
                     
                     #if DEBUG
-                        print("Response received: Upvote")
+                        print("Response received: \(voteValue.rawValue)")
                     #endif
                 })
                 
@@ -282,50 +288,27 @@ class OfflineDataProvider: DataProviderType {
         subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
             if didRequestDownvote {
                 
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (voteValue, error) in
+                    
+                    // Reset binding to allow for re-calling
+                    subCellViewModel.didRequestUpvote.value = false
                     
                     // Failed
                     guard error == nil else {
                         #if DEBUG
                             print("Response failed: Downvote")
                         #endif
-                        subCellViewModel.didRequestDownvote.value = false
                         subCellViewModel.voteValue.value = subCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    subCellViewModel.voteValue.value = .down
+                    subCellViewModel.voteValue.value = voteValue
                     
                     #if DEBUG
-                        print("Response received: Downvote")
+                        print("Response received: \(voteValue.rawValue)")
                     #endif
                 })
-            }
-        })
-        
-        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
-            if didRequestNoVote {
-                self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.none.rawValue, rootViewController: viewController, completion: { (error) in
-                    // Failed
-                    guard error == nil else {
-                        #if DEBUG
-                            print("Response failed: NoVote")
-                        #endif
-                        
-                        subCellViewModel.voteValue.value = subCellViewModel.voteValue.value
-                        
-                        return
-                    }
-                    
-                    // Success
-                    subCellViewModel.voteValue.value = .none
-                    #if DEBUG
-                        print("Response received: NoVote")
-                    #endif
-                })
-                
-                
             }
         })
     }

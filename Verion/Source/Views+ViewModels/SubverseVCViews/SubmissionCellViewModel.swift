@@ -51,7 +51,6 @@ class SubmissionCellViewModel{
     
     private(set) var didRequestUpvote = Observable<Bool>(false)
     private(set) var didRequestDownvote = Observable<Bool>(false)
-    private(set) var didRequestNoVote = Observable<Bool>(false)
     
     var viewBindings: [Disposable] = [] // for external use
     

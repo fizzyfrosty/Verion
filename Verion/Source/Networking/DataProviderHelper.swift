@@ -14,7 +14,27 @@ class DataProviderHelper {
     
     
     private let VOAT_THUMBNAIL_LEGACY_URL = "https://cdn.voat.co/thumbs/"
+    let API_LEGACY_NOT_SUPPORTED_ERROR_MESSAGE = "Legacy API not supported."
     let API_V1_NOTSUPPORTED_ERROR_MESSAGE = "API.v1 not yet implemented"
+    
+    func getVoteValue(fromJson json: JSON, apiVersion: APIVersion) -> VoteValue {
+        var voteValue: VoteValue = .none
+        
+        switch apiVersion {
+        case .legacy:
+            // unsupported
+            #if DEBUG
+            print(self.API_LEGACY_NOT_SUPPORTED_ERROR_MESSAGE)
+            #endif
+            break
+        case .v1:
+            let data = json["data"]
+            let voteIntValue = data["recordedValue"].intValue
+            voteValue = self.getVoteValueFromIntValueV1(int: voteIntValue)
+        }
+        
+        return voteValue
+    }
     
     func getCommentDataSegment(fromJson jsonData: JSON, apiVersion: APIVersion) -> CommentDataSegmentProtocol? {
         var commentDataSegment: CommentDataSegmentProtocol? = nil
@@ -253,6 +273,9 @@ class DataProviderHelper {
         switch apiVersion {
         case .legacy:
             // Unsupported
+            #if DEBUG
+                print(self.API_LEGACY_NOT_SUPPORTED_ERROR_MESSAGE)
+            #endif
             break
         case .v1:
             let commentJson = json["data"]
@@ -773,7 +796,7 @@ class DataProviderHelper {
         }
     }
 
-    private func getVoteValueFromIntValueV1(int: Int) -> VoteValue {
+    func getVoteValueFromIntValueV1(int: Int) -> VoteValue {
         var voteValue: VoteValue
         
         switch int {
