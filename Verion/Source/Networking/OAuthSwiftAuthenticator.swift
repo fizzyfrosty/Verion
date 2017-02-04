@@ -19,6 +19,8 @@ class OAuthSwiftAuthenticator: NSObject, LoginScreenProtocol, SFSafariViewContro
     let TOKEN_ENDPOINT = OAuth2Handler.TOKEN_ENDPOINT
     let CALLBACK_URL = OAuth2Handler.CALLBACK_URL
     
+    private var savedStatusBarStyle: UIStatusBarStyle = .default
+    
     var oauthHandle: OAuthSwiftRequestHandle?
     private var completion: (_ username: String, _ error: Error?) -> ()
     
@@ -42,6 +44,8 @@ class OAuthSwiftAuthenticator: NSObject, LoginScreenProtocol, SFSafariViewContro
         let signInClosure: ()->() = { [weak self] in
             self?.useOauthSwift(rootViewController: rootViewController)
         }
+        
+        
         
         if showConfirmation {
             // Ask user if they want to log in
@@ -80,6 +84,7 @@ class OAuthSwiftAuthenticator: NSObject, LoginScreenProtocol, SFSafariViewContro
         let safariHandler = SafariURLHandler(viewController: rootViewController, oauthSwift: oauth)
         safariHandler.delegate = self
         oauth.authorizeURLHandler = safariHandler
+        
         self.oauthHandle = oauth.authorize(withCallbackURL: URL(string: self.CALLBACK_URL)!,
                                            scope: "",
                                            state: "VOATIFY",
@@ -98,7 +103,7 @@ class OAuthSwiftAuthenticator: NSObject, LoginScreenProtocol, SFSafariViewContro
                                             ActivityIndicatorProvider.showNotification(message: "Success!", view: rootViewController.view) {
 
                                             }
-                                            
+                                            self?.revertStatusBarStyle()
                                             self?.completion(username!, nil)
                                             
         }) { (error) in
@@ -106,6 +111,16 @@ class OAuthSwiftAuthenticator: NSObject, LoginScreenProtocol, SFSafariViewContro
             print(error.localizedDescription)
             // Do not return with completion. Only return on pressing Close on Safari
         }
+    }
+    
+    private func setStatusBarStyle() {
+        // Save and set new status bar black color for safari view controller
+        self.savedStatusBarStyle = UIApplication.shared.statusBarStyle
+        UIApplication.shared.statusBarStyle = .default
+    }
+    
+    private func revertStatusBarStyle() {
+        UIApplication.shared.statusBarStyle = self.savedStatusBarStyle
     }
     
     private func getUsername(fromResponse response: OAuthSwiftResponse) -> String {
@@ -127,12 +142,19 @@ class OAuthSwiftAuthenticator: NSObject, LoginScreenProtocol, SFSafariViewContro
         self.dataManager?.saveRefreshTokenToKeychain(refreshToken: refreshToken)
     }
     
-    // Safari delegates
+    
+    
+    // Safari View Controller callbacks
+    func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
+        self.setStatusBarStyle()
+    }
+    
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         #if DEBUG
             print("Safari View Controller pressed Close")
         #endif
         
+        self.revertStatusBarStyle()
         self.completion("", OAuthError.cancelledLogin)
     }
     

@@ -419,7 +419,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     private func bindCommentCellViewModelsToDataProvider(viewModels: [CommentCellViewModel]) {
         for viewModel in viewModels {
-            self.dataProvider?.bind(commentCellViewModel: viewModel, viewController: self)
+            self.dataProvider?.bind(commentCellViewModel: viewModel, viewController: self.navigationController!)
         }
     }
     

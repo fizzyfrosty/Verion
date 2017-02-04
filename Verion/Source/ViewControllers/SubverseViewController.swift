@@ -703,7 +703,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             let subCellViewModel = self.subCellViewModels[i]
             let dataModel = self.submissionDataModels[i]
             
-            self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: dataModel, viewController: self)
+            self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: dataModel, viewController: self.navigationController!)
             #if DEBUG
                 //print("Binding cell to viewModel \(i)...")
             #endif
