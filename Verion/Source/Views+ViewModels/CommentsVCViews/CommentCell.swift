@@ -129,7 +129,6 @@ class CommentCell: UITableViewCell {
         
         // Bind to User-input events
         // Upvote
-        self.upvoteButton.isSelected = viewModel.isUpvoted.value
         self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
             
             // If previously selected
@@ -147,7 +146,6 @@ class CommentCell: UITableViewCell {
         })
         
         // Downvote
-        self.downvoteButton.isSelected = viewModel.isDownvoted.value
         self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
             
             // If previously selected

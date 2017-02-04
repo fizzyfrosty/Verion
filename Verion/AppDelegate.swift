@@ -82,7 +82,7 @@ extension SwinjectStoryboard {
         let defaultContainer = SwinjectStoryboard.defaultContainer
         
         // FIXME: Set Offline or Online mode here before running
-        let mode: OnlineMode = .online
+        let mode: OnlineMode = .offline
         
         defaultContainer.register(SFXManagerType.self, factory: { _ in
             SFXManager()

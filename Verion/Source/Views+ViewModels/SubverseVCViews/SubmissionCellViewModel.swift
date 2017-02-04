@@ -55,9 +55,6 @@ class SubmissionCellViewModel{
     
     var viewBindings: [Disposable] = [] // for external use
     
-    private(set) var isUpvoted = Observable<Bool>(false)
-    private(set) var isDownvoted = Observable<Bool>(false)
-    
     var voteValue = Observable<VoteValue>(.none)
     
     var commentCount = 0
@@ -70,8 +67,35 @@ class SubmissionCellViewModel{
     private let NSFW_IMAGE_NAME = "nsfw_icon"
     
     // Variables - additional
-    var upvoteCount = Observable<Int>(0)
-    var downvoteCount = Observable<Int>(0)
+    var upvoteCount: Int {
+        get {
+            var upvoteCount = self._upvoteCount.value
+            
+            if self.voteValue.value == .up {
+                // Add 1 upvote count
+                upvoteCount += 1
+            }
+            
+            return upvoteCount
+        }
+    }
+    
+    var downvoteCount: Int {
+        get {
+            var downvoteCount = self._downvoteCount.value
+            
+            if self.voteValue.value == .down {
+                // Add 1 to downvote count
+                downvoteCount += 1
+            }
+            
+            return downvoteCount
+        }
+    }
+    
+    private(set) var _upvoteCount = Observable<Int>(0)
+    private(set) var _downvoteCount = Observable<Int>(0)
+    
     private(set) var username: String = ""
     private(set) var subverseName: String = ""
     
@@ -113,8 +137,8 @@ class SubmissionCellViewModel{
         self.thumbnailLink.value = subCellVmInitData.thumbnailLink
         self.commentCount = subCellVmInitData.commentCount
         self.voteCountTotal.value = subCellVmInitData.voteCountTotal
-        self.upvoteCount.value = subCellVmInitData.upvoteCount
-        self.downvoteCount.value = subCellVmInitData.downvoteCount
+        self._upvoteCount.value = subCellVmInitData.upvoteCount
+        self._downvoteCount.value = subCellVmInitData.downvoteCount
         self.username = subCellVmInitData.username
         self.subverseName = subCellVmInitData.subverseName
         self.date = subCellVmInitData.date
@@ -157,17 +181,23 @@ class SubmissionCellViewModel{
     
     private func setupInternalBindings() {
         // Bindings for upvotes and downvotes to update votecount separated string and total vote count
-        _ = self.upvoteCount.observeNext {[weak self] _ in
-            self?.voteCountTotal.value = (self?.upvoteCount.value)! - (self?.downvoteCount.value)!
+        _ = self._upvoteCount.observeNext {[weak self] _ in
+            self?.voteCountTotal.value = (self?.upvoteCount)! - (self?.downvoteCount)!
             
-            self?.voteSeparatedCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
+            self?.voteSeparatedCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount)!, downvoteCount: (self?.downvoteCount)!))!
         }
         
         
-        _ = self.downvoteCount.observeNext { [weak self] _ in
-            self?.voteCountTotal.value = (self?.upvoteCount.value)! - (self?.downvoteCount.value)!
+        _ = self._downvoteCount.observeNext { [weak self] _ in
+            self?.voteCountTotal.value = (self?.upvoteCount)! - (self?.downvoteCount)!
             
-            self?.voteSeparatedCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount.value)!, downvoteCount: (self?.downvoteCount.value)!))!
+            self?.voteSeparatedCountString.value = (self?.textFormatter.createVoteCountSeparatedString(upvoteCount: (self?.upvoteCount)!, downvoteCount: (self?.downvoteCount)!))!
+        }
+        
+        _ = self.voteValue.observeNext { [weak self] voteValue in
+            // Whenever vote value is set, recalculate upvote/downvote counts
+            self?._downvoteCount.value = (self?._downvoteCount.value)!
+            self?._upvoteCount.value = (self?._upvoteCount.value)!
         }
     }
     

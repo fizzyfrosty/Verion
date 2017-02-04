@@ -130,7 +130,6 @@ class SubmissionCell: UITableViewCell {
     
     private func setVotingButtonsBindings(forViewModel viewModel: SubmissionCellViewModel) {
         // Upvote
-        self.upvoteButton.isSelected = viewModel.isUpvoted.value
         self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
             
             // If previously selected
@@ -143,30 +142,11 @@ class SubmissionCell: UITableViewCell {
                 viewModel.didRequestUpvote.value = true
                 viewModel.didRequestDownvote.value = false
                 self?.upvoteButton.isSelected = true
+                self?.downvoteButton.isSelected = false
             }
         })
-        
-        
-        viewModel.viewBindings.append( viewModel.isUpvoted.observeNext { [weak self] isUpvoted in
-            self?.upvoteButton.isSelected = isUpvoted
-            
-            if isUpvoted {
-                viewModel.upvoteCount.value += 1
-                
-                // Unselect Downvote
-                if self?.downvoteButton.isSelected == true {
-                    self?.downvoteButton.isSelected = false
-                    viewModel.downvoteCount.value -= 1
-                }
-            } else if viewModel.didRequestUpvote.value == true {
-                viewModel.upvoteCount.value -= 1
-                viewModel.didRequestUpvote.value = false
-            }
-        })
-        
         
         // Downvote
-        self.downvoteButton.isSelected = viewModel.isDownvoted.value
         self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
             
             // If previously selected
@@ -179,25 +159,24 @@ class SubmissionCell: UITableViewCell {
                 viewModel.didRequestDownvote.value = true
                 viewModel.didRequestUpvote.value = false
                 self?.downvoteButton.isSelected = true
+                self?.upvoteButton.isSelected = false
             }
         })
         
-        viewModel.viewBindings.append( viewModel.isDownvoted.observeNext { [weak self] isDownvoted in
-            self?.downvoteButton.isSelected = isDownvoted
+        viewModel.viewBindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in
             
-            if isDownvoted {
-                viewModel.downvoteCount.value += 1
-                
-                // Unselect Upvote
-                if self?.upvoteButton.isSelected == true {
-                    self?.upvoteButton.isSelected = false
-                    viewModel.upvoteCount.value -= 1
-                }
-            } else if viewModel.didRequestDownvote.value == true {
-                viewModel.downvoteCount.value -= 1
-                viewModel.didRequestDownvote.value = false
+            // Reset UI
+            self?.downvoteButton.isSelected = false
+            self?.upvoteButton.isSelected = false
+            
+            switch voteValue {
+            case .down:
+                self?.downvoteButton.isSelected = true
+            case .up:
+                self?.upvoteButton.isSelected = true
+            case .none:
+                break
             }
-            
         })
     }
     

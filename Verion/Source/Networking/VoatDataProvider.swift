@@ -367,12 +367,12 @@ class VoatDataProvider: DataProviderType {
                             print("Response failed: Upvote")
                         #endif
                         subCellViewModel.didRequestUpvote.value = false
-                        subCellViewModel.isUpvoted.value = false
+                        subCellViewModel.voteValue.value = subCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    subCellViewModel.isUpvoted.value = true
+                    subCellViewModel.voteValue.value = .up
                     
                     #if DEBUG
                         print("Response received: Upvote")
@@ -394,12 +394,12 @@ class VoatDataProvider: DataProviderType {
                             print("Response failed: Downvote")
                         #endif
                         subCellViewModel.didRequestDownvote.value = false
-                        subCellViewModel.isDownvoted.value = false
+                        subCellViewModel.voteValue.value = subCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    subCellViewModel.isDownvoted.value = true
+                    subCellViewModel.voteValue.value = .down
                     
                     #if DEBUG
                         print("Response received: Downvote")
@@ -416,12 +416,13 @@ class VoatDataProvider: DataProviderType {
                         #if DEBUG
                             print("Response failed: NoVote")
                         #endif
+                        subCellViewModel.voteValue.value = subCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    subCellViewModel.isUpvoted.value = false
-                    subCellViewModel.isDownvoted.value = false
+                    subCellViewModel.voteValue.value = .none
+                    
                     #if DEBUG
                         print("Response received: NoVote")
                     #endif

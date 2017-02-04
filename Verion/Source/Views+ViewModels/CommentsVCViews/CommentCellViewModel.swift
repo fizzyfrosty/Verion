@@ -90,9 +90,6 @@ class CommentCellViewModel {
     private(set) var didRequestDownvote = Observable<Bool>(false)
     private(set) var didRequestNoVote = Observable<Bool>(false)
     
-    private(set) var isUpvoted = Observable<Bool>(false)
-    private(set) var isDownvoted = Observable<Bool>(false)
-    
     // Cell Height
     let CELL_VERTICAL_MARGINS: CGFloat = 55.0
     private let CELL_HORIZONTAL_MARGINS: CGFloat = 30.0

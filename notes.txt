@@ -31,20 +31,20 @@ View Users
 	* Set the vote to isUpvoted in dataModel
 	* On bind, set selected
 
-- Match Upvote action with Vote count, compensate for server delay
+* Match Upvote action with Vote count, compensate for server delay
 	* When getting upvote/downvote count, check the voteValue to add or subtract 1
-	- Complete for Submissions
+	* Complete for Submissions
 
 
 * Bug: Minimize/maximize triggers didUpvote observer for comment cell
 	* Remove increase upvote/downvote count from observer
 	* Replace didUpvote observers with voteValue increment
 
-- Reimplement voting bindings
+* Reimplement voting bindings
 	* Keeping didRequest bindings are fine
 	* On setting isUpvoted/isDownvoted, set the voteValue instead of incrementing
 	* Complete for comments
-	- Complete for submissions
+	* Complete for submissions
 	
 - VoatDataProvider, register no vote with a revoting of up/down
 	- For comments

@@ -79,6 +79,10 @@ class OAuth2Handler: RequestAdapter, RequestRetrier {
         if let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 {
             requestsToRetry.append(completion)
             
+            #if DEBUG
+            print("Refresh Token Response Status Code: \(response.statusCode)")
+            #endif
+            
             if !isRefreshing {
                 refreshTokens { [weak self] succeeded, accessToken, refreshToken in
                     guard let strongSelf = self else { return }
