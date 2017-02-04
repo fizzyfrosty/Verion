@@ -110,7 +110,7 @@ class VoatDataProvider: DataProviderType {
         submitCommentClosure()
     }
     
-    func requestCommentVote(commentId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (Error?) -> ()) {
+    func requestCommentVote(commentId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping (VoteValue, Error?) -> ()) {
         let requestCommentVoteClosure: ()->() = {
             
             let urlString = self.getCommentVoteUrlString(commentId: commentId, voteType: voteValue, apiVersion: self.apiVersion)
@@ -118,9 +118,14 @@ class VoatDataProvider: DataProviderType {
             self.sessionManager.request(urlString, method: .post).validate().responseJSON { (response) in
                 switch response.result {
                 case .success:
-                    completion(nil)
+                    
+                    // Get vote value based on json response
+                    let jsonData = JSON.init(data: response.data!)
+                    let voteValue = self.dataProviderHelper.getVoteValue(fromJson: jsonData, apiVersion: self.apiVersion)
+                    
+                    completion(voteValue, nil)
                 case .failure(let error):
-                    completion(error)
+                    completion(.none, error)
                 }
             }
         }
@@ -131,7 +136,7 @@ class VoatDataProvider: DataProviderType {
                 
                 guard error == nil else {
                     // Failed to log in
-                    completion(error)
+                    completion(.none, error)
                     return
                 }
                 
@@ -446,30 +451,31 @@ class VoatDataProvider: DataProviderType {
     }
     
     func bind(commentCellViewModel: CommentCellViewModel, viewController: UIViewController) {
-        commentCellViewModel.resetDataProviderBindings()
         
         // Bind upvote event to request
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
             if didRequestUpvote {
                 
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (voteValue, error) in
+                    
+                    // Reset to allow for re-voting
+                    commentCellViewModel.didRequestUpvote.value = false
                     
                     // Failed
                     guard error == nil else {
                         #if DEBUG
                             print("Response failed: Upvote")
                         #endif
-                        commentCellViewModel.didRequestUpvote.value = false
                         // Trigger callback to reset previous value
                         commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.voteValue.value = .up
+                    commentCellViewModel.voteValue.value = voteValue
                     
                     #if DEBUG
-                        print("Response received: Upvote")
+                        print("Response received: \(voteValue.rawValue)")
                     #endif
                 })
                 
@@ -480,47 +486,26 @@ class VoatDataProvider: DataProviderType {
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
             if didRequestDownvote {
                 
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (error) in
+                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (voteValue, error) in
+                    
+                    // Reset to allow for re-voting
+                    commentCellViewModel.didRequestUpvote.value = false
                     
                     // Failed
                     guard error == nil else {
                         #if DEBUG
                             print("Response failed: Downvote")
                         #endif
-                        commentCellViewModel.didRequestDownvote.value = false
                         // Trigger callback to reset previous value
                         commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.voteValue.value = .down
+                    commentCellViewModel.voteValue.value = voteValue
                     
                     #if DEBUG
-                        print("Response received: Downvote")
-                    #endif
-                })
-            }
-        })
-        
-        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestNoVote.observeNext { [weak self] didRequestNoVote in
-            if didRequestNoVote {
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.none.rawValue, rootViewController: viewController, completion: { (error) in
-                    // Failed
-                    guard error == nil else {
-                        #if DEBUG
-                            print("Response failed: NoVote")
-                        #endif
-                        
-                        // Trigger callback to reset previous value
-                        commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
-                        return
-                    }
-                    
-                    // Success
-                    commentCellViewModel.voteValue.value = .none
-                    #if DEBUG
-                        print("Response received: NoVote")
+                        print("Response received: \(voteValue.rawValue)")
                     #endif
                 })
             }
@@ -685,7 +670,7 @@ class VoatDataProvider: DataProviderType {
         case .legacy:
             urlString = "" // Unsupported
         case .v1:
-            urlString = self.VOAT_V1_DOMAIN + "/api/v1/vote/\(type)/\(commentId)/\(voteType)?revokeOnRevote=false"
+            urlString = self.VOAT_V1_DOMAIN + "/api/v1/vote/\(type)/\(commentId)/\(voteType)"
         }
         
         return urlString

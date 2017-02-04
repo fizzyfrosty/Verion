@@ -423,7 +423,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                         }
                     }
                     
-                    
                     // Check for duplicates
                     for j in 0..<self.submissionDataModels.count {
                         if submissionDataModels[i].id == self.submissionDataModels[j].id {

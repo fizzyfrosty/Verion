@@ -63,6 +63,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var commentsViewModels: [CommentCellViewModel] = []
     var areCommentsLoaded = false
     var loadMoreParentCommentsIndex = 0
+    fileprivate var submittedComments: [CommentCellViewModel] = []
     
     let BLOCKED_USER_TEXT = "(This user is blocked)"
     
@@ -259,7 +260,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 // Turn dataModels into cell view models
                 var topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
                 
-                // Load More cell
+                // Load More cell - create
                 if commentDataSegment != nil {
                     if commentDataSegment!.hasMore {
                         // Add to toplevel comments
@@ -268,11 +269,33 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                     }
                 }
                 
+                // Filter posts retrieved that were created by App submitting it in the first place
+                let filteredTopLevelCommentsNoSubmittedComments = self.filterComments(sourceComments: topLevelCommentVms, withCommentsToExclude: self.submittedComments)
+                
+                let filteredNoDuplicates = self.filterComments(sourceComments: filteredTopLevelCommentsNoSubmittedComments, withCommentsToExclude: self.commentsViewModels)
+                
                 DispatchQueue.main.async {
-                    completion(topLevelCommentVms)
+                    completion(filteredNoDuplicates)
                 }
             }
         }
+    }
+    
+    private func filterComments(sourceComments: [CommentCellViewModel], withCommentsToExclude excludedComments: [CommentCellViewModel]) -> [CommentCellViewModel] {
+        
+        let filteredComments = sourceComments.filter { (commentCellViewModel) -> Bool in
+            var areCommentsDifferent = true
+            for commentToExclude in excludedComments {
+                if commentCellViewModel.id == commentToExclude.id {
+                    areCommentsDifferent = false
+                    break
+                }
+            }
+            
+            return areCommentsDifferent
+        }
+        
+        return filteredComments
     }
     
     // Load Comments from Data Provider
@@ -284,7 +307,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 return
             }
-            
             
             DispatchQueue.global(qos: .background).async {
                 
@@ -727,7 +749,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
         
         // Minimize and Maximize comment cell
-        if indexPath.section >= self.numOfSectionsBeforeComments {
+        if self.isCommentsSection(indexPath.section) {
             let viewModelIndex = indexPath.section - self.numOfSectionsBeforeComments
             let commentCellVm = self.commentsViewModels[viewModelIndex]
             commentCellVm.toggleMinimized()
@@ -754,12 +776,16 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
     }
     
+    private func isCommentsSection(_ sectionIndex: Int) -> Bool{
+        return sectionIndex >= self.numOfSectionsBeforeComments
+    }
+    
     private func insertCommentsIntoLoadMore(loadMoreCellViewModel: CommentCellViewModel, atIndex viewModelIndex: Int, commentCellViewModels: [CommentCellViewModel]) {
         
-        // Guard against the parent not existing if the loadMoreCell is a top level comment
+        // Guard against the parent not existing if the loadMoreCell is not a top level comment (child comment)
         if loadMoreCellViewModel.childDepthIndex != 0 {
             
-            // Remove child from parent, add new cells to parent
+            // Remove load more child cell from parent, replace with new cells to parent
             if let parentCommentCellViewModel = loadMoreCellViewModel.parent {
                 if parentCommentCellViewModel.children.count > 0 {
                     parentCommentCellViewModel.removeLastChild()
@@ -785,7 +811,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.commentsViewModels.insert(contentsOf: commentCellViewModelsLinearArray, at: viewModelIndex)
         
         // reload table
-        // The viewModelIndex is always indexPath.section-1, so we have to add 1 to animate the location of section
         let startingIndex = viewModelIndex + self.numOfSectionsBeforeComments
         let endingIndexExclusive = startingIndex + commentCellViewModelsLinearArray.count
         self.reloadTableAnimated(startingIndexInclusive: startingIndex, endingIndexExclusive: endingIndexExclusive, animation: .fade)
@@ -1067,6 +1092,8 @@ extension CommentsViewController: ComposeCommentViewControllerDelegate {
         // Add view model to self.viewmodels
         self.commentsViewModels.insert(viewModel, at: 0)
         
+        self.submittedComments.append(viewModel)
+        
         // Reload table
         self.reloadTableCommentsAnimated()
     }
@@ -1083,6 +1110,8 @@ extension CommentsViewController: ComposeCommentViewControllerDelegate {
             let parentCommentViewModel = self.commentsViewModels[parentCommentViewModelIndex]
             parentCommentViewModel.addChild(viewModel: viewModel)
             self.commentsViewModels.insert(viewModel, at: parentCommentViewModelIndex+1)
+            
+            self.submittedComments.append(viewModel)
             
             // Reload table
             self.reloadTableCommentsAnimated()

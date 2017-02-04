@@ -134,7 +134,11 @@ class SubmissionCell: UITableViewCell {
             
             viewModel.didRequestUpvote.value = true
             self?.upvoteButton.isSelected = !((self?.upvoteButton.isSelected)!)
-
+            
+            // Unselect the other button
+            if self?.upvoteButton.isSelected == true {
+                self?.downvoteButton.isSelected = false
+            }
         })
         
         // Downvote
@@ -142,6 +146,11 @@ class SubmissionCell: UITableViewCell {
             
             viewModel.didRequestDownvote.value = true
             self?.downvoteButton.isSelected = !((self?.downvoteButton.isSelected)!)
+            
+            // Unselect the other button
+            if self?.downvoteButton.isSelected == true {
+                self?.upvoteButton.isSelected = false
+            }
         })
         
         viewModel.viewBindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in

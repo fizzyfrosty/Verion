@@ -88,7 +88,6 @@ class CommentCellViewModel {
     
     private(set) var didRequestUpvote = Observable<Bool>(false)
     private(set) var didRequestDownvote = Observable<Bool>(false)
-    private(set) var didRequestNoVote = Observable<Bool>(false)
     
     // Cell Height
     let CELL_VERTICAL_MARGINS: CGFloat = 55.0
@@ -159,7 +158,7 @@ class CommentCellViewModel {
     var hasMoreUnloadedChildren = false
     var isLoadMoreCell = false // for external setting
     var remainingChildrenCount = 0 // hidden children, unloaded
-    var latestChildIndex = 0
+    var latestChildIndex = 0 // This is used instead of children.count because "LoadMore" button needs to provide what index to start requesting child comments from. A LoadMore button will have an empty children count.
     
     
     func loadInitData(initData: CommentCellViewModelInitData) {

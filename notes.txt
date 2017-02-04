@@ -46,27 +46,31 @@ View Users
 	* Complete for comments
 	* Complete for submissions
 	
-- VoatDataProvider, register no vote with a revoting of up/down
-	- For comments
-	- For submissions
+* VoatDataProvider, register no vote with a revoting of up/down
+	* For comments
+	* For submissions
 
-- Voting on Subverse Controller does not translate vote to Comment Controller
+* Add cache for comment ID of posted comment on Top Level Comment
+	* If loading from "load-more" and has same ID, do not load it
+
+- Add Upvote button for submission on Comments Controller
 
 - Analytics for Comment Submission
 - Redesign UI
-- Rate button under Support Us category
 
 - Add Native Ads
 - Re-examine banner view ads (sizes)
-- Welcome Screen?
-- Price of Remove Ads, dynamic, increase?
 
-- Add Upvote button for submission on Comments Controller
-- Add cache for comment ID of posted comment on Top Level Comment
-	- If loading "load-more" and has same ID, do not load it
+- Price of Remove Ads, dynamic, increase?
+- Rate button under Support Us category
+
+- Welcome Screen?
+
+
+
 - Handle Vote not going through from not enough CCP
 - Handle comments/voting from being banned
-
+- Voting on Subverse Controller does not translate vote to Comment Controller
 
 
 

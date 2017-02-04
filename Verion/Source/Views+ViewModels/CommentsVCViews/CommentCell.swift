@@ -78,7 +78,6 @@ class CommentCell: UITableViewCell {
     }
 
     func bind(toViewModel viewModel: CommentCellViewModel, shouldFilterLanguage: Bool) {
-        
         self.viewModel = viewModel
         viewModel.resetViewBindings()
         self.resetUI()
@@ -105,6 +104,10 @@ class CommentCell: UITableViewCell {
         }
         
         // Minimize and Maximize
+        if viewModel.isMinimized.value == true {
+            self.hideUIElements()
+        }
+        
         self.setMinimizeMaximizeBindings(forViewModel: viewModel)
         
         // Upvote and downvote buttons
@@ -127,20 +130,14 @@ class CommentCell: UITableViewCell {
     
     private func setVotingButtonsBindings(forViewModel viewModel: CommentCellViewModel) {
         
-        // Bind to User-input events
         // Upvote
         self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
             
-            // If previously selected
+            viewModel.didRequestUpvote.value = true
+            self?.upvoteButton.isSelected = !((self?.upvoteButton.isSelected)!)
+            
+            // Unselect the other button
             if self?.upvoteButton.isSelected == true {
-                viewModel.didRequestNoVote.value = true
-                self?.upvoteButton.isSelected = false
-                
-            } else {
-                // If not previously selected, attempt to select
-                viewModel.didRequestUpvote.value = true
-                viewModel.didRequestDownvote.value = false
-                self?.upvoteButton.isSelected = true
                 self?.downvoteButton.isSelected = false
             }
         })
@@ -148,16 +145,11 @@ class CommentCell: UITableViewCell {
         // Downvote
         self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
             
-            // If previously selected
+            viewModel.didRequestDownvote.value = true
+            self?.downvoteButton.isSelected = !((self?.downvoteButton.isSelected)!)
+            
+            // Unselect the other button
             if self?.downvoteButton.isSelected == true {
-                // Request NoVote
-                viewModel.didRequestNoVote.value = true
-                self?.downvoteButton.isSelected = false
-            } else {
-                // If not previously selected, attempt to select
-                viewModel.didRequestDownvote.value = true
-                viewModel.didRequestUpvote.value = false
-                self?.downvoteButton.isSelected = true
                 self?.upvoteButton.isSelected = false
             }
         })
@@ -189,6 +181,7 @@ class CommentCell: UITableViewCell {
     }
     
     private func setMinimizeMaximizeBindings(forViewModel viewModel: CommentCellViewModel) {
+        
         viewModel.viewBindings.append( viewModel.isMinimized.observeNext() { [weak self] isMinimized in
             
             // Notify delegate - probably to allow for refresh of this cell
@@ -199,7 +192,11 @@ class CommentCell: UITableViewCell {
                 else {
                     // Adding a delay to make UI visibility-animation more fluid
                     Delayer.delay(seconds: (self?.MINIMIZE_MAXIMIZE_DELAY_TIME)!) {
-                        self?.showUIElements()
+                        
+                        // Only show if it's the same view model, because delay may execute on a different reuse cell
+                        if self?.viewModel?.id == viewModel.id {
+                            self?.showUIElements()
+                        }
                     }
                 }
             } else {
@@ -248,6 +245,7 @@ class CommentCell: UITableViewCell {
         self.upvoteButton.isHidden = true
         self.downvoteButton.isHidden = true
         self.commentButton.isHidden = true
+        self.childColorBar.isHidden = true
     }
     
     private func showUIElements() {
@@ -257,6 +255,7 @@ class CommentCell: UITableViewCell {
         self.upvoteButton.isHidden = false
         self.downvoteButton.isHidden = false
         self.commentButton.isHidden = false
+        self.childColorBar.isHidden = false
     }
     
     private func setBackgroundColors(withColor color: UIColor) {
