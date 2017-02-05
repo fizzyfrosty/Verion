@@ -63,7 +63,25 @@ View Users
 	* Submit top level comment
 	* Submit comment reply
 
+
+Native Ads
+- Create a NativeAdController
+- Add elements to backgroundView
+- Add constraints
+- Dependency injection for adManager
+- In Subverse View Controller
+	- When creating Ad Cell, create the NativeAd, then extract view
+	- Add view to cell view, set width constraints based on leading/trailing edges
+- Play with refreshing Ad or not when refreshing screen
+
+
 - Add Native Ads
+	- Create a NativeAd cell in subverse view controller
+	- Insert into section before all submission view models
+		- Create an index value for it
+		- Create a numOfSectionsBeforeSubmissionCells variable
+		- Ensure that all Submissions still load properly
+	- Insert into SubCellViewModels? Or just add in the top, provide 1 view
 
 - Redesign UI
 	Subverse Controller

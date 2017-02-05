@@ -27,6 +27,10 @@ class AdManager: NSObject {
     private var lastRefreshTime: Date?
     private let REFRESH_TIME_INTERVAL: TimeInterval = 16.0
     
+    private var apdLoader: APDNativeAdLoader?
+    fileprivate var apdNativeAd: APDNativeAd?
+    
+    
     static let sharedInstance: AdManager = {
         let instance = AdManager(adServiceType: .appodeal)
         return instance
@@ -47,8 +51,16 @@ class AdManager: NSObject {
         if self.adServiceType == .admob {
             //GADMobileAds.configure(withApplicationID: self.GOOGLE_ADS_KEY)
         } else if self.adServiceType == .appodeal {
-            Appodeal.initialize(withApiKey: self.APPODEAL_API_KEY, types: .banner)
+            self.initializeAppodealServices()
         }
+    }
+    
+    private func initializeAppodealServices() {
+        Appodeal.initialize(withApiKey: self.APPODEAL_API_KEY, types: .banner)
+        
+        self.apdLoader = APDNativeAdLoader.init()
+        self.apdLoader?.delegate = self
+        self.apdLoader?.loadAd(with: .noVideo)
     }
     
     func isRemoveAdsPurchased() -> Bool{
@@ -91,6 +103,24 @@ class AdManager: NSObject {
         }
         
         return bannerAd
+    }
+    
+    func getNativeAd() -> APDNativeAd? {
+        
+        var nativeAd: APDNativeAd?
+        
+        switch self.adServiceType {
+        case .admob:
+            // unsupported
+            break
+        case .appodeal:
+            nativeAd = self.apdNativeAd
+        default:
+            // unsupported
+            break
+        }
+        
+        return nativeAd
     }
     
     private func getAppodealBannerAd(rootViewController: UIViewController) -> UIView? {
@@ -178,6 +208,17 @@ class AdManager: NSObject {
         }
         
         return bannerHeight
+    }
+}
+
+// MARK: - Appodeal Native Ads
+extension AdManager: APDNativeAdLoaderDelegate {
+    func nativeAdLoader(_ loader: APDNativeAdLoader!, didLoad nativeAd: APDNativeAd!) {
+        self.apdNativeAd = nativeAd
+    }
+    
+    func nativeAdLoader(_ loader: APDNativeAdLoader!, didFailToLoadWithError error: Error!) {
+        
     }
 }
 
