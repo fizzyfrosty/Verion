@@ -63,6 +63,8 @@ View Users
 	* Submit top level comment
 	* Submit comment reply
 
+- Add Native Ads
+
 - Redesign UI
 	Subverse Controller
 	- Spacing on Submission Cell upvote buttons
@@ -72,8 +74,10 @@ View Users
 		- Comment, share, report
 	- Reposition icons into single row
 
+- Handle Vote not going through from not enough CCP
+- Handle comments/voting from being banned
 
-- Add Native Ads
+
 - Re-examine banner view ads (sizes)
 
 - Price of Remove Ads, dynamic, increase?
@@ -82,8 +86,8 @@ View Users
 - Welcome Screen?
 
 
-- Handle Vote not going through from not enough CCP
-- Handle comments/voting from being banned
+
+
 
 
 * Realign margins for vote buttons

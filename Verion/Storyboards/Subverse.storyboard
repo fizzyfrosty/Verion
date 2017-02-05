@@ -40,7 +40,7 @@
                                             <state key="selected" image="arrow_up_red"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aix-uF-6Wg">
-                                            <rect key="frame" x="77" y="156" width="24" height="31"/>
+                                            <rect key="frame" x="92" y="156" width="24" height="31"/>
                                             <state key="normal" image="arrow_down_grey"/>
                                             <state key="selected" image="arrow_down_blue"/>
                                         </button>
@@ -51,7 +51,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5339" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOY-UI-5m0">
-                                            <rect key="frame" x="36.5" y="155" width="36.5" height="17"/>
+                                            <rect key="frame" x="44" y="155" width="36.5" height="17"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                             <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -63,15 +63,15 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXW-Xx-BsA">
-                                            <rect key="frame" x="32" y="155" width="4.5" height="17"/>
+                                            <rect key="frame" x="32" y="155" width="12" height="17"/>
                                             <color key="backgroundColor" red="0.097104668452511422" green="0.088388562442447305" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1RF-0B-6aS">
-                                            <rect key="frame" x="73" y="155" width="4" height="17"/>
+                                            <rect key="frame" x="80.5" y="155" width="11.5" height="17"/>
                                             <color key="backgroundColor" red="0.097104668450000001" green="0.088388562439999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EZ4-M1-pdn">
-                                            <rect key="frame" x="135" y="172.5" width="52" height="17"/>
+                                            <rect key="frame" x="142.5" y="172.5" width="52" height="17"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comment_bubble" translatesAutoresizingMaskIntoConstraints="NO" id="cUZ-HS-qTi">
                                                     <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
@@ -85,7 +85,7 @@
                                             </subviews>
                                         </stackView>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H49-wr-PZO">
-                                            <rect key="frame" x="187" y="155" width="34" height="17"/>
+                                            <rect key="frame" x="194.5" y="155" width="26.5" height="17"/>
                                             <color key="backgroundColor" red="0.12604141720000001" green="0.2066435838" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4HS-9k-H0P">
@@ -98,7 +98,7 @@
                                             <color key="backgroundColor" red="0.0" green="0.21708443320000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZAc-3W-Aqw">
-                                            <rect key="frame" x="101" y="155" width="34" height="17"/>
+                                            <rect key="frame" x="116" y="155" width="26.5" height="17"/>
                                             <color key="backgroundColor" red="0.12604141716038275" green="0.20664358375459324" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4z4-2J-97t">
@@ -112,7 +112,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(+20|-1)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ven-pj-A0k">
-                                            <rect key="frame" x="31.5" y="175" width="46.5" height="14.5"/>
+                                            <rect key="frame" x="39" y="175" width="46.5" height="14.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.32457430545187621" green="0.32778791243654826" blue="0.32778791243654826" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -186,7 +186,7 @@
                                         <constraint firstItem="H49-wr-PZO" firstAttribute="leading" secondItem="EZ4-M1-pdn" secondAttribute="trailing" id="ssP-nc-1ND">
                                             <variation key="widthClass=regular" constant="0.0"/>
                                         </constraint>
-                                        <constraint firstItem="Aix-uF-6Wg" firstAttribute="leading" secondItem="pYi-Ci-SdD" secondAttribute="trailing" constant="45" id="t5z-L4-TnN"/>
+                                        <constraint firstItem="Aix-uF-6Wg" firstAttribute="leading" secondItem="pYi-Ci-SdD" secondAttribute="trailing" constant="60" id="t5z-L4-TnN"/>
                                         <constraint firstItem="4z4-2J-97t" firstAttribute="leading" secondItem="Aix-uF-6Wg" secondAttribute="trailing" id="uTf-Pr-qtd"/>
                                         <constraint firstItem="H49-wr-PZO" firstAttribute="bottom" secondItem="1RF-0B-6aS" secondAttribute="bottom" id="uho-Rp-f1U"/>
                                         <constraint firstItem="Ven-pj-A0k" firstAttribute="centerX" secondItem="dOY-UI-5m0" secondAttribute="centerX" id="vcS-ef-RH1"/>

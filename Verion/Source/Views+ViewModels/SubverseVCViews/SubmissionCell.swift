@@ -184,6 +184,9 @@ class SubmissionCell: UITableViewCell {
     private func resetUI() {
         self.downvoteButton.isSelected = false
         self.upvoteButton.isSelected = false
+        
+        self.upvoteButton.imageView?.contentMode = .center
+        self.downvoteButton.imageView?.contentMode = .center
     }
     
     private func resetBindings() {
