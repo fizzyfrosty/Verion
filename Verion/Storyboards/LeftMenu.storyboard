@@ -69,10 +69,16 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jGU-Fw-2SK">
+                                            <rect key="frame" x="8" y="9" width="359" height="30"/>
+                                            <nil key="textColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find Subverse" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LL8-4M-syW">
                                             <rect key="frame" x="48" y="14" width="109" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7x7-bn-oJ5" userLabel="light_gray_separator">
@@ -89,8 +95,8 @@
                                                 <constraint firstAttribute="height" constant="2" id="EQq-sX-UQX"/>
                                             </constraints>
                                         </view>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="search_icon" translatesAutoresizingMaskIntoConstraints="NO" id="yOd-Qc-v0I">
-                                            <rect key="frame" x="16" y="14" width="29" height="21"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search_icon" translatesAutoresizingMaskIntoConstraints="NO" id="yOd-Qc-v0I">
+                                            <rect key="frame" x="15" y="10.5" width="28" height="28"/>
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" red="0.12549019610000001" green="0.12549019610000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -99,10 +105,14 @@
                                         <constraint firstAttribute="bottom" secondItem="7x7-bn-oJ5" secondAttribute="bottom" constant="1" id="6tn-Ad-UFO"/>
                                         <constraint firstAttribute="trailing" secondItem="7x7-bn-oJ5" secondAttribute="trailing" id="89s-He-dAF"/>
                                         <constraint firstItem="4TA-gh-vDW" firstAttribute="leading" secondItem="ACW-W6-06D" secondAttribute="leading" id="EKO-gb-7wg"/>
+                                        <constraint firstItem="jGU-Fw-2SK" firstAttribute="centerX" secondItem="ACW-W6-06D" secondAttribute="centerX" id="IfG-rI-d0l"/>
                                         <constraint firstItem="yOd-Qc-v0I" firstAttribute="centerY" secondItem="ACW-W6-06D" secondAttribute="centerY" id="L7K-aC-z1K"/>
                                         <constraint firstItem="7x7-bn-oJ5" firstAttribute="leading" secondItem="ACW-W6-06D" secondAttribute="leading" id="VAk-0N-lAv"/>
                                         <constraint firstItem="yOd-Qc-v0I" firstAttribute="leading" secondItem="ACW-W6-06D" secondAttribute="leading" constant="15" id="VFM-g5-Hyp"/>
+                                        <constraint firstItem="jGU-Fw-2SK" firstAttribute="centerY" secondItem="ACW-W6-06D" secondAttribute="centerY" id="Vtc-d5-VTe"/>
                                         <constraint firstAttribute="trailing" secondItem="4TA-gh-vDW" secondAttribute="trailing" id="ZNW-21-0xv"/>
+                                        <constraint firstItem="jGU-Fw-2SK" firstAttribute="leading" secondItem="ACW-W6-06D" secondAttribute="leadingMargin" id="aab-yk-Vvu"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="jGU-Fw-2SK" secondAttribute="trailing" id="jgG-0M-7tw"/>
                                         <constraint firstItem="LL8-4M-syW" firstAttribute="leading" secondItem="yOd-Qc-v0I" secondAttribute="trailing" constant="5" id="rxL-hD-EUz"/>
                                         <constraint firstAttribute="bottom" secondItem="4TA-gh-vDW" secondAttribute="bottom" id="ues-D8-MfC"/>
                                     </constraints>

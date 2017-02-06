@@ -21,6 +21,9 @@ class NativeAdViewController: UIViewController {
     @IBOutlet var adChoiceView: UIView!
     @IBOutlet var backgroundView: UIView!
     
+    @IBOutlet var callToActionButtonWidth: NSLayoutConstraint!
+    
+    
     // Native ad is basically a viewmodel for our ad elements, needs to be set externally
     var nativeAd: APDNativeAd? {
         didSet {
@@ -29,10 +32,23 @@ class NativeAdViewController: UIViewController {
                 self.subtitleLabel.text = nativeAd!.subtitle
                 self.actionLabel.text = nativeAd!.callToActionText
                 
+                // Set button width
+                var buttonWidth: CGFloat = 0
+                if self.actionLabel.text != "" {
+                    buttonWidth = self.getCallToActionButtonWidth(fromString: self.actionLabel.text!)
+                    
+                } else {
+                    buttonWidth = 0
+                }
+                callToActionButtonWidth.constant = buttonWidth
+                
                 // Image
                 self.imageView.layer.borderWidth = 1.0
                 self.imageView.layer.borderColor = UIColor.black.cgColor
-                self.loadThumbnailIcon(url: nativeAd!.iconImage.url)
+                
+                if self.imageView.image == nil {
+                    self.loadThumbnailIcon(url: nativeAd!.iconImage.url)
+                }
                 
                 self.loadAdChoiceView(view: nativeAd!.adChoicesView)
                 
@@ -51,6 +67,25 @@ class NativeAdViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func attachNativeAd(toParentView parentView: UIView, inViewController rootViewController: UIViewController) {
+        self.nativeAd?.attach(to: self.backgroundView, viewController: rootViewController)
+        
+        let leading = NSLayoutConstraint.init(item: self.backgroundView, attribute: .leading, relatedBy: .equal, toItem: parentView, attribute: .leading, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint.init(item: self.backgroundView, attribute: .trailing, relatedBy: .equal, toItem: parentView, attribute: .trailing, multiplier: 1, constant: 0)
+        
+        parentView.addConstraints([leading, trailing])
+    }
+    
+    private func getCallToActionButtonWidth(fromString buttonTitle: String) -> CGFloat {
+        var width: CGFloat = 0
+        let margins: CGFloat = 10.0
+        
+        let size = CellHeightCalculator.sizeForText(text: buttonTitle, font: UIFont.boldSystemFont(ofSize: 14.0), maxSize: CGSize(width: 200.0, height: 50))
+        width = size.width + margins
+        
+        return width
     }
     
     private func loadThumbnailIcon(url: URL) {

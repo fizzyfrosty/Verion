@@ -205,7 +205,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //self.preloadAd()
+        self.preloadAd()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

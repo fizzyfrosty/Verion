@@ -78,6 +78,21 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     // Ads
     fileprivate var nativeAd: APDNativeAd?
+    private var _nativeAdController: NativeAdViewController?
+    fileprivate var nativeAdController: NativeAdViewController {
+        
+        get {
+            if self._nativeAdController == nil {
+                let subverseViewController = SwinjectStoryboard.create(name: "Subverse", bundle: nil)
+                let nativeAdViewController = subverseViewController.instantiateViewController(withIdentifier: "NativeAdViewController") as! NativeAdViewController
+                _ = nativeAdViewController.view // force viewdidload
+                
+                self._nativeAdController = nativeAdViewController
+            }
+            
+            return self._nativeAdController!
+        }
+    }
     
     // Compose Comment
     fileprivate var composeCommentVc: ComposeCommentViewController?
@@ -134,15 +149,14 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             
             // FIXME: possibly remove, preloaded in previous controller
             // Pre-emptively Load the ad
-            /*
+            
             if let nativeAd = self.adManager?.getNativeAd() {
                 // Success, do nothing
                 self.nativeAd = nativeAd
             } else {
                 // Native Ad failed, get banner ad
                 _ = self.adManager?.getBannerAd(rootViewController: self)
-            }*/
-            _ = self.adManager?.getBannerAd(rootViewController: self)
+            }
         }
     }
     
@@ -273,21 +287,21 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             DispatchQueue.global(qos: .background).async {
                 
                 // Turn dataModels into cell view models
-                var topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
+                let topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
+                
+                // Filter posts retrieved that were created by App submitting it in the first place
+                let filteredTopLevelCommentsNoSubmittedComments = self.filterComments(sourceComments: topLevelCommentVms, withCommentsToExclude: self.submittedComments)
+                
+                var filteredNoDuplicates = self.filterComments(sourceComments: filteredTopLevelCommentsNoSubmittedComments, withCommentsToExclude: self.commentsViewModels)
                 
                 // Load More cell - create
                 if commentDataSegment != nil {
                     if commentDataSegment!.hasMore {
                         // Add to toplevel comments
                         let loadMoreCommentsViewModel = self.getLoadMoreCellViewModel(numOfComments: commentDataSegment!.remainingCount, lastCommentIndex: commentDataSegment!.endingIndex)
-                        topLevelCommentVms.append(loadMoreCommentsViewModel)
+                        filteredNoDuplicates.append(loadMoreCommentsViewModel)
                     }
                 }
-                
-                // Filter posts retrieved that were created by App submitting it in the first place
-                let filteredTopLevelCommentsNoSubmittedComments = self.filterComments(sourceComments: topLevelCommentVms, withCommentsToExclude: self.submittedComments)
-                
-                let filteredNoDuplicates = self.filterComments(sourceComments: filteredTopLevelCommentsNoSubmittedComments, withCommentsToExclude: self.commentsViewModels)
                 
                 DispatchQueue.main.async {
                     completion(filteredNoDuplicates)
@@ -708,8 +722,14 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             
             // Set the ad cell's banner view
             if self.nativeAd != nil {
-                let nativeAdView = self.getNativeAdView(nativeAd: self.nativeAd!)
-                adCell.adView.addSubview(nativeAdView)
+                self.nativeAdController.nativeAd = self.nativeAd
+                let nativeAdView = self.nativeAdController.backgroundView
+                
+                adCell.adView.addSubview(nativeAdView!)
+                
+                // We must attach after it is added
+                self.nativeAdController.attachNativeAd(toParentView: adCell.contentView, inViewController: self)
+                
             } else {
                 // Use banners
                 adCell.adView.addSubview((self.adManager?.getBannerAd(rootViewController: self))!)
@@ -1038,18 +1058,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
         
         return index
-    }
-    
-    private func getNativeAdView(nativeAd: APDNativeAd) -> UIView {
-        // Get the Ad View from NativeAdViewController
-        let subverseViewController = SwinjectStoryboard.create(name: "Subverse", bundle: nil)
-        let nativeAdViewController = subverseViewController.instantiateViewController(withIdentifier: "NativeAdViewController") as! NativeAdViewController
-        _ = nativeAdViewController.view // force viewdidload
-        
-        nativeAdViewController.nativeAd = nativeAd
-        
-        // Get the background View
-        return nativeAdViewController.backgroundView
     }
     
     deinit {
