@@ -638,7 +638,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             return cellHeight
         }
             
-        if self.subCellViewModels.count > 0 {
+        if self.subCellViewModels.count > 0 && indexPath.section <= self.subCellViewModels.count-1{
             // Get corresponding viewModel
             let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
             cellHeight = viewModel.cellHeight

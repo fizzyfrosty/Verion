@@ -81,32 +81,32 @@ Replace Banner with Native Ad
 
 
 - Redesign UI
-	- Create icons
-		- Donate button
+	* Create icons
+		* Donate button
 		* Upvote/Downvote highlighted
-		- Share, report
-		- 
+		* Share, report 
 
 	Subverse Controller
 	* Spacing on Submission Cell upvote buttons
-	- Upvote/downvote button selected colors
+	* Upvote/downvote button selected colors
 	Comments Controller
-	- Create Icons for submission buttons
-		- Comment, share, report
-	- Reposition icons into single row
-	- Comments Icons also redo
-		- Comment, Block
+	* Create Icons for submission buttons
+		* Comment, share, report
+	* Reposition icons into single row
+	* Comments Icons also redo
+		* Comment, Block
 
 - Handle Vote not going through from not enough CCP
 - Handle comments/voting from being banned
+- Rate button under Support Us category
+- Welcome Screen?
 
 
 - Re-examine banner view ads (sizes)
-
 - Price of Remove Ads, dynamic, increase?
-- Rate button under Support Us category
 
-- Welcome Screen?
+
+
 
 
 
