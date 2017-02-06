@@ -81,8 +81,11 @@ Replace Banner with Native Ad
 
 
 - Redesign UI
+	- Create icons
+		- 
+
 	Subverse Controller
-	- Spacing on Submission Cell upvote buttons
+	* Spacing on Submission Cell upvote buttons
 	- Upvote/downvote button selected colors
 	Comments Controller
 	- Create Icons for submission buttons

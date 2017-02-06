@@ -190,12 +190,14 @@ class CommentCell: UITableViewCell {
                     self?.hideUIElements()
                 }
                 else {
+                    
+                    self?.showUIElements()
+                    
                     // Adding a delay to make UI visibility-animation more fluid
                     Delayer.delay(seconds: (self?.MINIMIZE_MAXIMIZE_DELAY_TIME)!) {
-                        
                         // Only show if it's the same view model, because delay may execute on a different reuse cell
                         if self?.viewModel?.id == viewModel.id {
-                            self?.showUIElements()
+                            self?.showButtons()
                         }
                     }
                 }
@@ -251,11 +253,15 @@ class CommentCell: UITableViewCell {
     private func showUIElements() {
         self.textView.isHidden = false
         self.minimizeMaximizeLabel.text = self.MAXIMIZED_LABEL_STRING
+        self.childColorBar.isHidden = false
+    }
+    
+    private func showButtons() {
         self.blockUserButton.isHidden = false
         self.upvoteButton.isHidden = false
         self.downvoteButton.isHidden = false
         self.commentButton.isHidden = false
-        self.childColorBar.isHidden = false
+        
     }
     
     private func setBackgroundColors(withColor color: UIColor) {

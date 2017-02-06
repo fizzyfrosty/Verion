@@ -452,6 +452,7 @@ class VoatDataProvider: DataProviderType {
     }
     
     func bind(commentCellViewModel: CommentCellViewModel, viewController: UIViewController) {
+        commentCellViewModel.resetDataProviderBindings()
         
         // Bind upvote event to request
         commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
