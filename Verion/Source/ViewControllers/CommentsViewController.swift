@@ -10,6 +10,7 @@ import UIKit
 import NVActivityIndicatorView
 import SafariServices
 import SwinjectStoryboard
+import Appodeal
 
 class CommentsViewController: UITableViewController, UITextViewDelegate, CommentsSortByCellDelegate {
     
@@ -75,6 +76,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     // Web View Controller 
     var linkString = ""
     
+    // Ads
+    fileprivate var nativeAd: APDNativeAd?
+    
     // Compose Comment
     fileprivate var composeCommentVc: ComposeCommentViewController?
     
@@ -128,7 +132,16 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             self.commentsSectionNumber = self.adSectionNumber + 1
             self.numOfSectionsBeforeComments = 2
             
-            // Pre-emptively Load the banner ad
+            // FIXME: possibly remove, preloaded in previous controller
+            // Pre-emptively Load the ad
+            /*
+            if let nativeAd = self.adManager?.getNativeAd() {
+                // Success, do nothing
+                self.nativeAd = nativeAd
+            } else {
+                // Native Ad failed, get banner ad
+                _ = self.adManager?.getBannerAd(rootViewController: self)
+            }*/
             _ = self.adManager?.getBannerAd(rootViewController: self)
         }
     }
@@ -592,8 +605,16 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             }
         } else if indexPath.section == self.adSectionNumber {
             
-            let advertisementTitleHeight: CGFloat = 20.0
-            let adCellHeight = advertisementTitleHeight + self.adManager!.getBannerAdHeight()
+            var adCellHeight: CGFloat = 0
+            
+            if self.nativeAd != nil {
+                let nativeAdHeight: CGFloat = 100.0
+                adCellHeight = nativeAdHeight
+            } else {
+                // Use Banners
+                let advertisementTitleHeight: CGFloat = 20.0
+                adCellHeight = advertisementTitleHeight + self.adManager!.getBannerAdHeight()
+            }
             
             return adCellHeight
             
@@ -686,7 +707,13 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             let adCell = tableView.dequeueReusableCell(withIdentifier: self.AD_CELL_REUSE_ID, for: indexPath) as! AdCell
             
             // Set the ad cell's banner view
-            adCell.adView.addSubview(self.adManager!.getBannerAd(rootViewController: self)!)
+            if self.nativeAd != nil {
+                let nativeAdView = self.getNativeAdView(nativeAd: self.nativeAd!)
+                adCell.adView.addSubview(nativeAdView)
+            } else {
+                // Use banners
+                adCell.adView.addSubview((self.adManager?.getBannerAd(rootViewController: self))!)
+            }
             
             return adCell
             
@@ -1011,6 +1038,18 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         }
         
         return index
+    }
+    
+    private func getNativeAdView(nativeAd: APDNativeAd) -> UIView {
+        // Get the Ad View from NativeAdViewController
+        let subverseViewController = SwinjectStoryboard.create(name: "Subverse", bundle: nil)
+        let nativeAdViewController = subverseViewController.instantiateViewController(withIdentifier: "NativeAdViewController") as! NativeAdViewController
+        _ = nativeAdViewController.view // force viewdidload
+        
+        nativeAdViewController.nativeAd = nativeAd
+        
+        // Get the background View
+        return nativeAdViewController.backgroundView
     }
     
     deinit {

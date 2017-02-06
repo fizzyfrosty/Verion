@@ -65,14 +65,33 @@ View Users
 
 
 Native Ads
-- Create a NativeAdController
-- Add elements to backgroundView
-- Add constraints
-- Dependency injection for adManager
+* Create a NativeAdController
+* Add elements to backgroundView
+* Add constraints
+x Dependency injection for adManager
 - In Subverse View Controller
 	- When creating Ad Cell, create the NativeAd, then extract view
 	- Add view to cell view, set width constraints based on leading/trailing edges
 - Play with refreshing Ad or not when refreshing screen
+
+
+Replace Banner with Native Ad
+* On Comments Controller load, retrieve a Native Ad
+* On CellForRow, set ad's view with nativeAd backgroundView
+
+
+
+- On loading submissions, retrieve a Native Ad for each load
+	- On completion, initialize a subCellViewModel and give it an ad property
+	- Add the Native Ad to an array to be used when users scroll down
+- Insert an Ad Cell into submission viewmodels after loading new
+- When creating cell, check for a viewmodel ad property
+- If it's an Ad, create an Ad cell
+	- Get the Ad by an Ad Index inside the viewModel
+	- Check if the Ad is loaded
+		- If the nativeAdController.nativeAd is not nil, proceed
+	- Get NativeAdController's backgroundView
+	- Add view to NativeAdCell's container view
 
 
 - Add Native Ads

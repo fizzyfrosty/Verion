@@ -204,6 +204,7 @@
 		43B0571F1E0E7943007083E8 /* SampleJsonSubmissions_v1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B057191E0E7943007083E8 /* SampleJsonSubmissions_v1.txt */; };
 		43B057201E0E7943007083E8 /* SampleSubverseList_legacy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B0571A1E0E7943007083E8 /* SampleSubverseList_legacy.txt */; };
 		43B057211E0E7943007083E8 /* SampleSubverseList_v1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43B0571B1E0E7943007083E8 /* SampleSubverseList_v1.txt */; };
+		43B0E6651E47E1A4001A0BEB /* NativeAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0E6641E47E1A4001A0BEB /* NativeAdViewController.swift */; };
 		43C8FE031E253D41007FB231 /* UseNsfwThumbnailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C8FE021E253D41007FB231 /* UseNsfwThumbnailsCell.swift */; };
 		43C8FE051E253D50007FB231 /* FilterLanguageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C8FE041E253D50007FB231 /* FilterLanguageCell.swift */; };
 		43C8FE071E253D67007FB231 /* UseNsfwThumbnailsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C8FE061E253D67007FB231 /* UseNsfwThumbnailsCellViewModel.swift */; };
@@ -454,6 +455,7 @@
 		43B057191E0E7943007083E8 /* SampleJsonSubmissions_v1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleJsonSubmissions_v1.txt; sourceTree = "<group>"; };
 		43B0571A1E0E7943007083E8 /* SampleSubverseList_legacy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleSubverseList_legacy.txt; sourceTree = "<group>"; };
 		43B0571B1E0E7943007083E8 /* SampleSubverseList_v1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SampleSubverseList_v1.txt; sourceTree = "<group>"; };
+		43B0E6641E47E1A4001A0BEB /* NativeAdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAdViewController.swift; sourceTree = "<group>"; };
 		43C8FE021E253D41007FB231 /* UseNsfwThumbnailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UseNsfwThumbnailsCell.swift; sourceTree = "<group>"; };
 		43C8FE041E253D50007FB231 /* FilterLanguageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterLanguageCell.swift; sourceTree = "<group>"; };
 		43C8FE061E253D67007FB231 /* UseNsfwThumbnailsCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UseNsfwThumbnailsCellViewModel.swift; sourceTree = "<group>"; };
@@ -955,6 +957,7 @@
 			isa = PBXGroup;
 			children = (
 				43F6751D1DF20078001F83BE /* SubverseViewController.swift */,
+				43B0E6641E47E1A4001A0BEB /* NativeAdViewController.swift */,
 				4375C0411DF7524700576CC6 /* CommentsViewController.swift */,
 				43433D8D1E057C160017FAB0 /* FindSubverseViewController.swift */,
 				43B056621E0D1CDA007083E8 /* SlideController.swift */,
@@ -1318,6 +1321,7 @@
 				43433D7F1E03C8290017FAB0 /* CellHeightCalculator.swift in Sources */,
 				43C8FE091E253D71007FB231 /* FilterLanguageCellViewModel.swift in Sources */,
 				43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */,
+				43B0E6651E47E1A4001A0BEB /* NativeAdViewController.swift in Sources */,
 				43B056D11E0E4691007083E8 /* SoundPlayer.swift in Sources */,
 				437644351E22511000EE64A7 /* CommentDataSegmentV1.swift in Sources */,
 				432B77771E12272A00457F2C /* ActivityIndicatorCellViewModel.swift in Sources */,

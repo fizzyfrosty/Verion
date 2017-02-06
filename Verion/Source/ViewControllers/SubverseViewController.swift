@@ -185,7 +185,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.navigationController?.navigationBar.barTintColor = self.NAVIGATION_BG_COLOR
         self.tableView.backgroundColor = self.BGCOLOR
         
-        self.preloadAd()
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
         self.loadSavedData()
@@ -206,7 +205,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        //self.preloadAd()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -378,6 +377,23 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
     }
     
+    // FIXME: DELETE native ad implementation here
+    private func loadNativeAd() {
+        let subverseStoryboard = UIStoryboard.init(name: "Subverse", bundle: nil)
+        let nativeAdController = subverseStoryboard.instantiateViewController(withIdentifier: "NativeAdViewController") as! NativeAdViewController
+        
+        _ = nativeAdController.view // force call viewDidLoad
+        
+        self.adManager?.getNativeAd { nativeAd, error in
+            if nativeAd != nil {
+                nativeAdController.nativeAd = nativeAd
+                self.navigationController?.present(nativeAdController, animated: true, completion: {
+                    
+                })
+            }
+        }
+    }
+    
     private func loadTableCellsAddedToCurrent(withParams params: SubmissionsRequestParams, completion: @escaping ()->()) {
         
         guard self.isLoadingRequest != true else {
@@ -467,7 +483,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     private func preloadAd() {
-        _ = self.adManager?.getBannerAd(rootViewController: self)
+        self.adManager?.preloadNativeAd()
     }
     
     private func loadMoreTableCells(completion: @escaping ()->()) {
@@ -621,7 +637,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             cellHeight = self.LOAD_MORE_CELL_HEIGHT
             return cellHeight
         }
-        
+            
         if self.subCellViewModels.count > 0 {
             // Get corresponding viewModel
             let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel

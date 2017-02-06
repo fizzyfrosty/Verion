@@ -27,8 +27,10 @@ class AdManager: NSObject {
     private var lastRefreshTime: Date?
     private let REFRESH_TIME_INTERVAL: TimeInterval = 16.0
     
-    private var apdLoader: APDNativeAdLoader?
+    fileprivate var apdLoader: APDNativeAdLoader?
     fileprivate var apdNativeAd: APDNativeAd?
+    fileprivate var nativeAdCompletion: (APDNativeAd?, Error?)->() = {_,_ in
+    }
     
     
     static let sharedInstance: AdManager = {
@@ -56,11 +58,7 @@ class AdManager: NSObject {
     }
     
     private func initializeAppodealServices() {
-        Appodeal.initialize(withApiKey: self.APPODEAL_API_KEY, types: .banner)
-        
-        self.apdLoader = APDNativeAdLoader.init()
-        self.apdLoader?.delegate = self
-        self.apdLoader?.loadAd(with: .noVideo)
+        Appodeal.initialize(withApiKey: self.APPODEAL_API_KEY, types:[.nativeAd, .banner])
     }
     
     func isRemoveAdsPurchased() -> Bool{
@@ -71,7 +69,7 @@ class AdManager: NSObject {
         didPurchase = verionDataModel.isRemoveAdsPurchased
         
         // FIXME: Comment out before publication
-        didPurchase = true
+        //didPurchase = true
         
         return didPurchase
     }
@@ -105,8 +103,11 @@ class AdManager: NSObject {
         return bannerAd
     }
     
+    func preloadNativeAd() {
+        self.loadNativeAd()
+    }
+    
     func getNativeAd() -> APDNativeAd? {
-        
         var nativeAd: APDNativeAd?
         
         switch self.adServiceType {
@@ -121,6 +122,22 @@ class AdManager: NSObject {
         }
         
         return nativeAd
+    }
+    
+    func getNativeAd(completion: @escaping (APDNativeAd?, Error?)->() ){
+        
+        switch self.adServiceType {
+        case .admob:
+            // unsupported
+            break
+        case .appodeal:
+            self.nativeAdCompletion = completion
+            self.loadNativeAd()
+        default:
+            // unsupported
+            break
+        }
+        
     }
     
     private func getAppodealBannerAd(rootViewController: UIViewController) -> UIView? {
@@ -213,12 +230,28 @@ class AdManager: NSObject {
 
 // MARK: - Appodeal Native Ads
 extension AdManager: APDNativeAdLoaderDelegate {
+    
+    fileprivate func loadNativeAd() {
+        self.apdLoader = APDNativeAdLoader.init()
+        self.apdLoader?.delegate = self
+        self.apdLoader?.loadAd(with: .noVideo)
+    }
+    
     func nativeAdLoader(_ loader: APDNativeAdLoader!, didLoad nativeAd: APDNativeAd!) {
+        #if DEBUG
+            print("Appodeal NativeAd successfully loaded.")
+        #endif
+        
         self.apdNativeAd = nativeAd
+        self.nativeAdCompletion(nativeAd, nil)
     }
     
     func nativeAdLoader(_ loader: APDNativeAdLoader!, didFailToLoadWithError error: Error!) {
+        #if DEBUG
+            print("Warning: Appodeal NativeAd failed to load: \(error.localizedDescription)")
+        #endif
         
+        self.nativeAdCompletion(nil, error)
     }
 }
 
