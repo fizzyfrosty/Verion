@@ -82,6 +82,9 @@ Replace Banner with Native Ad
 
 - Redesign UI
 	- Create icons
+		- Donate button
+		* Upvote/Downvote highlighted
+		- Share, report
 		- 
 
 	Subverse Controller
@@ -91,6 +94,8 @@ Replace Banner with Native Ad
 	- Create Icons for submission buttons
 		- Comment, share, report
 	- Reposition icons into single row
+	- Comments Icons also redo
+		- Comment, Block
 
 - Handle Vote not going through from not enough CCP
 - Handle comments/voting from being banned
