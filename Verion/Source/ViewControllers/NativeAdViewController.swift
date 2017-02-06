@@ -47,7 +47,9 @@ class NativeAdViewController: UIViewController {
                 self.imageView.layer.borderColor = UIColor.black.cgColor
                 
                 if self.imageView.image == nil {
-                    self.loadThumbnailIcon(url: nativeAd!.iconImage.url)
+                    if nativeAd?.iconImage.url != nil {
+                        self.loadThumbnailIcon(url: nativeAd!.iconImage.url)
+                    }
                 }
                 
                 self.loadAdChoiceView(view: nativeAd!.adChoicesView)

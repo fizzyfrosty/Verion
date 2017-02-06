@@ -280,7 +280,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.commentsSortByVm = CommentsSortByCellViewModel()
     }
     
-    private func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, completion: @escaping ([CommentCellViewModel])->()) {
+    private func requestChildComments(subverse: String, submissionId: Int64, parentId: Int64, startingIndex: Int, parentChildDepthIndex: Int, completion: @escaping ([CommentCellViewModel])->()) {
         
         self.dataProvider?.requestChildComments(subverse: subverse, submissionId: submissionId, parentId: parentId, startingIndex: startingIndex) { commentDataModels, commentDataSegment, error in
             
@@ -288,6 +288,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 // Turn dataModels into cell view models
                 let topLevelCommentVms = self.getTopLevelCommentViewModels(fromDataModels: commentDataModels)
+                
+                // Set child depth indexes of all view models
+                self.setChildDepthIndexes(forViewModels: topLevelCommentVms, startingChildDepthIndex: parentChildDepthIndex+1)
                 
                 // Filter posts retrieved that were created by App submitting it in the first place
                 let filteredTopLevelCommentsNoSubmittedComments = self.filterComments(sourceComments: topLevelCommentVms, withCommentsToExclude: self.submittedComments)
@@ -307,6 +310,14 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                     completion(filteredNoDuplicates)
                 }
             }
+        }
+    }
+    
+    private func setChildDepthIndexes(forViewModels viewModels: [CommentCellViewModel], startingChildDepthIndex: Int) {
+        for viewModel in viewModels {
+            viewModel.childDepthIndex = startingChildDepthIndex
+            
+            self.setChildDepthIndexes(forViewModels: viewModel.children, startingChildDepthIndex: startingChildDepthIndex + 1)
         }
     }
     
@@ -729,6 +740,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 // We must attach after it is added
                 self.nativeAdController.attachNativeAd(toParentView: adCell.contentView, inViewController: self)
+                self.adManager?.isNativeAdShown = true
                 
             } else {
                 // Use banners
@@ -813,7 +825,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 // If cell is a "load more"
                 if commentCellVm.isLoadMoreCell {
                     
-                    self.requestChildComments(subverse: self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, parentId: commentCellVm.parentId, startingIndex: commentCellVm.latestChildIndex+1) { commentCellViewModels in
+                    self.requestChildComments(subverse: self.submissionDataModel!.subverseName, submissionId: self.submissionDataModel!.id, parentId: commentCellVm.parentId, startingIndex: commentCellVm.latestChildIndex+1, parentChildDepthIndex: commentCellVm.childDepthIndex-1) { commentCellViewModels in
                         
                         self.insertCommentsIntoLoadMore(loadMoreCellViewModel:commentCellVm, atIndex: viewModelIndex, commentCellViewModels: commentCellViewModels)
                         

@@ -31,6 +31,8 @@ class AdManager: NSObject {
     fileprivate var apdNativeAd: APDNativeAd?
     fileprivate var nativeAdCompletion: (APDNativeAd?, Error?)->() = {_,_ in
     }
+    fileprivate var isNativeAdLoading = false
+    var isNativeAdShown = true
     
     
     static let sharedInstance: AdManager = {
@@ -104,7 +106,15 @@ class AdManager: NSObject {
     }
     
     func preloadNativeAd() {
-        self.loadNativeAd()
+        if self.isNativeAdLoading == false && self.isNativeAdShown == true {
+            self.isNativeAdLoading = true
+            self.loadNativeAd()
+        } else {
+            #if DEBUG
+                print("Not fetching NativeAd. Is currently loading: \(self.isNativeAdLoading), is shown: \(self.isNativeAdShown)")
+            #endif
+        }
+        
     }
     
     func getNativeAd() -> APDNativeAd? {
@@ -242,6 +252,8 @@ extension AdManager: APDNativeAdLoaderDelegate {
             print("Appodeal NativeAd successfully loaded.")
         #endif
         
+        self.isNativeAdShown = false
+        self.isNativeAdLoading = false
         self.apdNativeAd = nativeAd
         self.nativeAdCompletion(nativeAd, nil)
     }
@@ -250,7 +262,7 @@ extension AdManager: APDNativeAdLoaderDelegate {
         #if DEBUG
             print("Warning: Appodeal NativeAd failed to load: \(error.localizedDescription)")
         #endif
-        
+        self.isNativeAdLoading = false
         self.nativeAdCompletion(nil, error)
     }
 }
