@@ -13,6 +13,23 @@ View Users
 
 
 
+- Handle Vote not going through from not enough CCP
+	- Find out what the server returns
+	- Intercept it, be it on success or error
+	- Have caller of the request show UI notification when returned
+- Handle comments/voting from being banned
+	- Find out what server returns
+	- 
+- Rate button under Support Us category
+- Register Button under Login to help people make account
+	- Load in SFSafariViewController
+- Welcome Screen?
+
+
+- Re-examine banner view ads (sizes)
+- Price of Remove Ads, dynamic, increase?
+
+
 
 
 * BUG: Hide NSFW Content hides pizzagate posts
@@ -80,7 +97,7 @@ Replace Banner with Native Ad
 * Add Native Ads
 
 
-- Redesign UI
+* Redesign UI
 	* Create icons
 		* Donate button
 		* Upvote/Downvote highlighted
@@ -95,23 +112,6 @@ Replace Banner with Native Ad
 	* Reposition icons into single row
 	* Comments Icons also redo
 		* Comment, Block
-
-- Handle Vote not going through from not enough CCP
-- Handle comments/voting from being banned
-- Rate button under Support Us category
-- Welcome Screen?
-
-
-- Re-examine banner view ads (sizes)
-- Price of Remove Ads, dynamic, increase?
-
-
-
-
-
-
-
-
 
 * Realign margins for vote buttons
 * Confirm/test expired refresh tokens

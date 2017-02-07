@@ -435,7 +435,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                     
                     // Hide if NSFW filter is on
                     if self.verionDataModel?.shouldHideNsfw == true {
-                        if subCellViewModel.dataModel?.isAdult == true {
+                        if submissionDataModels[i].isAdult == true {
                             // Don't add, skip to next data model
                             continue
                         }
@@ -525,13 +525,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     private func disableLoadMoreCell() {
-        //self.tableView.beginUpdates()
         self.loadMoreCellIndexValue = 0
         self.reloadTableAnimated(lastCellIndex: self.submissionDataModels.count)
-        //let lastIndexPath = IndexPath.init(row: 0, section: self.submissionDataModels.count)
-        //self.tableView.reloadRows(at: [lastIndexPath], with: .fade)
-        //self.tableView.deleteRows(at: [lastIndexPath], with: .fade)
-        //self.tableView.endUpdates()
     }
 
     override func didReceiveMemoryWarning() {
