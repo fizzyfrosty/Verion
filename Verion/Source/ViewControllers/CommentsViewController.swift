@@ -457,7 +457,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     private func bindCommentCellViewModelsToDataProvider(viewModels: [CommentCellViewModel]) {
         for viewModel in viewModels {
-            self.dataProvider?.bind(commentCellViewModel: viewModel, viewController: self.navigationController!)
+            self.dataProvider?.bind(commentCellViewModel: viewModel, viewController: self)
         }
     }
     
@@ -1054,6 +1054,17 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         self.present(alertController, animated: true) {
             
         }
+    }
+    
+    func showNotEnoughCcpMessage() {
+        let title = ErrorMessageProvider.getTitle(.notEnoughCcp)
+        let message = ErrorMessageProvider.getMessage(.notEnoughCcp)
+        let ccpAlert = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction.init(title: "OK, Got It!", style: .default, handler: nil)
+        
+        ccpAlert.addAction(okAction)
+        
+        self.present(ccpAlert, animated: true, completion: nil)
     }
     
     fileprivate func getIndexOfCommentViewModel(byId id: Int64) -> Int? {

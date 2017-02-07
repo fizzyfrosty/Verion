@@ -302,6 +302,17 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.navigationBarCenterButton.animate()
     }
     
+    func showNotEnoughCcpMessage() {
+        let title = ErrorMessageProvider.getTitle(.notEnoughCcp)
+        let message = ErrorMessageProvider.getMessage(.notEnoughCcp)
+        let ccpAlert = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction.init(title: "OK, Got It!", style: .default, handler: nil)
+        
+        ccpAlert.addAction(okAction)
+        
+        self.present(ccpAlert, animated: true, completion: nil)
+    }
+    
     
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView.contentOffset.y <= -(self.scrollViewContentOffsetY + self.REFRESH_CONTROL_PULL_DISTANCE) {
@@ -374,23 +385,6 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             self.reloadTableAnimated(forTableView: self.tableView, startingIndexInclusive: 0, endingIndexExclusive: self.subCellViewModels.count+self.loadMoreCellIndexValue, animation: .fade)
             
             completion()
-        }
-    }
-    
-    // FIXME: DELETE native ad implementation here
-    private func loadNativeAd() {
-        let subverseStoryboard = UIStoryboard.init(name: "Subverse", bundle: nil)
-        let nativeAdController = subverseStoryboard.instantiateViewController(withIdentifier: "NativeAdViewController") as! NativeAdViewController
-        
-        _ = nativeAdController.view // force call viewDidLoad
-        
-        self.adManager?.getNativeAd { nativeAd, error in
-            if nativeAd != nil {
-                nativeAdController.nativeAd = nativeAd
-                self.navigationController?.present(nativeAdController, animated: true, completion: {
-                    
-                })
-            }
         }
     }
     
@@ -483,7 +477,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     private func preloadAd() {
-        self.adManager?.preloadNativeAd()
+        // FIXME: remove if not using
+        //self.adManager?.preloadNativeAd()
     }
     
     private func loadMoreTableCells(completion: @escaping ()->()) {
@@ -717,7 +712,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             let subCellViewModel = self.subCellViewModels[i]
             let dataModel = self.submissionDataModels[i]
             
-            self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: dataModel, viewController: self.navigationController!)
+            self.dataProvider.bind(subCellViewModel: subCellViewModel, dataModel: dataModel, viewController: self)
             #if DEBUG
                 //print("Binding cell to viewModel \(i)...")
             #endif

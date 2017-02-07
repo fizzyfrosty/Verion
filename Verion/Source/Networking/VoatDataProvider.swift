@@ -50,6 +50,11 @@ class VoatDataProvider: DataProviderType {
         }
     }
     
+    enum VoteError: Error {
+        case notEnoughCcp
+        case unknown
+    }
+    
     
     // Dependencies
     private var loginScreen: LoginScreenProtocol?
@@ -122,8 +127,24 @@ class VoatDataProvider: DataProviderType {
                     // Get vote value based on json response
                     let jsonData = JSON.init(data: response.data!)
                     let voteValue = self.dataProviderHelper.getVoteValue(fromJson: jsonData, apiVersion: self.apiVersion)
+                    let isVoteSuccessful = self.dataProviderHelper.getIsVoteSuccessful(fromJson: jsonData, apiVersion: self.apiVersion)
                     
-                    completion(voteValue, nil)
+                    if isVoteSuccessful == true {
+                        // Success
+                        completion(voteValue, nil)
+                        
+                    } else {
+                        let hasNotEnoughCcp = self.dataProviderHelper.getIsVoteNotEnoughCcp(fromJson: jsonData, apiVersion: self.apiVersion)
+                        
+                        if hasNotEnoughCcp == true {
+                            // Failed vote from not enough CCP
+                            completion(.none, VoteError.notEnoughCcp)
+                        } else {
+                            // Failed unknown
+                            completion(.none, VoteError.unknown)
+                        }
+                    }
+                    
                 case .failure(let error):
                     completion(.none, error)
                 }
@@ -132,7 +153,7 @@ class VoatDataProvider: DataProviderType {
         
         // Check for accesstoken and prompt for login
         if OAuth2Handler.sharedInstance.accessToken == "" {
-            self.loginScreen?.presentLogin(rootViewController: rootViewController, showConfirmation: true, completion: { (username, error) in
+            self.loginScreen?.presentLogin(rootViewController: rootViewController.navigationController!, showConfirmation: true, completion: { (username, error) in
                 
                 guard error == nil else {
                     // Failed to log in
@@ -162,8 +183,24 @@ class VoatDataProvider: DataProviderType {
                     // Get vote value based on json response
                     let jsonData = JSON.init(data: response.data!)
                     let voteValue = self.dataProviderHelper.getVoteValue(fromJson: jsonData, apiVersion: self.apiVersion)
+                    let isVoteSuccessful = self.dataProviderHelper.getIsVoteSuccessful(fromJson: jsonData, apiVersion: self.apiVersion)
                     
-                    completion(voteValue, nil)
+                    if isVoteSuccessful == true {
+                        // Success
+                        completion(voteValue, nil)
+                        
+                    } else {
+                        let hasNotEnoughCcp = self.dataProviderHelper.getIsVoteNotEnoughCcp(fromJson: jsonData, apiVersion: self.apiVersion)
+                        
+                        if hasNotEnoughCcp == true {
+                            // Failed vote from not enough CCP
+                            completion(.none, VoteError.notEnoughCcp)
+                        } else {
+                            // Failed unknown
+                            completion(.none, VoteError.unknown)
+                        }
+                    }
+                    
                 case .failure(let error):
                     completion(.none, error)
                 }
@@ -172,7 +209,7 @@ class VoatDataProvider: DataProviderType {
         
         // Check for accesstoken and prompt for login
         if OAuth2Handler.sharedInstance.accessToken == "" {
-            self.loginScreen?.presentLogin(rootViewController: rootViewController, showConfirmation: true, completion: { (username, error) in
+            self.loginScreen?.presentLogin(rootViewController: rootViewController.navigationController!, showConfirmation: true, completion: { (username, error) in
                 
                 guard error == nil else {
                     // Failed to log in
@@ -400,6 +437,18 @@ class VoatDataProvider: DataProviderType {
                         #if DEBUG
                             print("Response failed: Downvote")
                         #endif
+                        
+                        // Not Enough CCP
+                        if let voteError = error as? VoteError {
+                            if voteError == VoteError.notEnoughCcp {
+                                if let subverseController = viewController as? SubverseViewController {
+                                   subverseController.showNotEnoughCcpMessage()
+                                }
+                            }
+                        }
+                        
+                        // Other errors, no error message
+                        
                         subCellViewModel.voteValue.value = subCellViewModel.voteValue.value
                         return
                     }
@@ -498,6 +547,16 @@ class VoatDataProvider: DataProviderType {
                         #if DEBUG
                             print("Response failed: Downvote")
                         #endif
+                        
+                        // Not Enough CCP
+                        if let voteError = error as? VoteError {
+                            if voteError == VoteError.notEnoughCcp {
+                                if let commentsController = viewController as? CommentsViewController {
+                                    commentsController.showNotEnoughCcpMessage()
+                                }
+                            }
+                        }
+                        
                         // Trigger callback to reset previous value
                         commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
                         return

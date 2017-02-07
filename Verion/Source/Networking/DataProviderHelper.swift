@@ -17,6 +17,43 @@ class DataProviderHelper {
     let API_LEGACY_NOT_SUPPORTED_ERROR_MESSAGE = "Legacy API not supported."
     let API_V1_NOTSUPPORTED_ERROR_MESSAGE = "API.v1 not yet implemented"
     
+    func getIsVoteNotEnoughCcp(fromJson json: JSON, apiVersion: APIVersion) -> Bool {
+        var isNotEnoughCcp = false
+        
+        switch apiVersion {
+        case .legacy:
+            // unsupported
+            #if DEBUG
+                print(self.API_LEGACY_NOT_SUPPORTED_ERROR_MESSAGE)
+            #endif
+        case .v1:
+            let data = json["data"]
+            let message = data["message"].stringValue
+            if message.lowercased().contains("is below minimum") {
+                isNotEnoughCcp = true
+            }
+        }
+        
+        return isNotEnoughCcp
+    }
+    
+    func getIsVoteSuccessful(fromJson json: JSON, apiVersion: APIVersion) -> Bool {
+        var isSuccessful = false
+        
+        switch apiVersion {
+        case .legacy:
+            // unsupported
+            #if DEBUG
+                print(self.API_LEGACY_NOT_SUPPORTED_ERROR_MESSAGE)
+            #endif
+        case .v1:
+            let data = json["data"]
+            isSuccessful = data["success"].boolValue
+        }
+        
+        return isSuccessful
+    }
+    
     func getVoteValue(fromJson json: JSON, apiVersion: APIVersion) -> VoteValue {
         var voteValue: VoteValue = .none
         

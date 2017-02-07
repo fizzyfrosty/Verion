@@ -24,6 +24,7 @@ class AdManager: NSObject {
     var adServiceType: AdServiceType = .none
     
     private var currentBannerAd: UIView?
+    private var currentMediumRectAd: UIView?
     private var lastRefreshTime: Date?
     private let REFRESH_TIME_INTERVAL: TimeInterval = 16.0
     
@@ -74,6 +75,23 @@ class AdManager: NSObject {
         //didPurchase = true
         
         return didPurchase
+    }
+    
+    func getMediumRectAd(rootViewController: UIViewController) -> UIView? {
+        var bannerAd: UIView?
+        
+        switch self.adServiceType {
+        case .admob:
+            break
+        case .appodeal:
+            self.currentMediumRectAd = self.getAppodealMediumRectBannerAd(rootViewController: rootViewController)
+            bannerAd = self.currentMediumRectAd
+            
+        default:
+            break
+        }
+        
+        return bannerAd
     }
     
     func getBannerAd(rootViewController: UIViewController) -> UIView? {
@@ -150,6 +168,21 @@ class AdManager: NSObject {
         
     }
     
+    private func getAppodealMediumRectBannerAd(rootViewController: UIViewController) -> UIView? {
+        var bannerAd: AppodealBannerView?
+        
+        if self.currentBannerAd != nil {
+            bannerAd = self.currentMediumRectAd as? AppodealBannerView
+            bannerAd?.rootViewController = rootViewController
+        } else {
+            let size = self.getMediumRectangleBannerSize()
+            bannerAd = AppodealBannerView.init(size: size, rootViewController: rootViewController)
+            bannerAd?.loadAd()
+        }
+        
+        return bannerAd
+    }
+    
     private func getAppodealBannerAd(rootViewController: UIViewController) -> UIView? {
         var bannerAd: AppodealBannerView?
         
@@ -157,13 +190,19 @@ class AdManager: NSObject {
             bannerAd = self.currentBannerAd as? AppodealBannerView
             bannerAd?.rootViewController = rootViewController
         } else {
+            // Regular banners
             let width = UIScreen.main.bounds.size.width
             let size = CGSize(width: width, height: self.getBannerAdHeight())
+ 
             bannerAd = AppodealBannerView.init(size: size, rootViewController: rootViewController)
             bannerAd?.loadAd()
         }
         
         return bannerAd
+    }
+    
+    private func getMediumRectangleBannerSize() -> CGSize {
+        return CGSize(width: 300, height: 250)
     }
     
     /*
@@ -203,6 +242,24 @@ class AdManager: NSObject {
         }
         
         return shouldRefresh
+    }
+    
+    func getMediumRectAdHeight() -> CGFloat {
+        
+        var bannerHeight: CGFloat = 0.0
+        
+        switch self.adServiceType {
+        case .admob:
+            // Unsupported
+            break
+        case .appodeal:
+            bannerHeight = self.getMediumRectangleBannerSize().height
+        default:
+            bannerHeight = 250.0
+            break
+        }
+        
+        return bannerHeight
     }
     
     func getBannerAdHeight() -> CGFloat {

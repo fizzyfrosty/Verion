@@ -12,14 +12,51 @@ Write Messages
 View Users
 
 
-
 - Handle Vote not going through from not enough CCP
-	- Find out what the server returns
-	- Intercept it, be it on success or error
-	- Have caller of the request show UI notification when returned
-- Handle comments/voting from being banned
-	- Find out what server returns
-	- 
+	* Server returns: 
+		- "data": {
+    "recordedValue": null,
+    "response": null,
+    "message": "Denied - CCP of 0 is below minimum of 100 required for action DownVote (Downvote 2.2)",
+    "status": "Denied",
+    "success": false
+  },
+
+	- Decode json["data"]
+	- If success == false and status == "Denied", then return error, not enough ccp
+	- On the downvote callback, try to set viewcontroller as the CommentsViewController
+	- Call view controller's present not enough ccp notification
+
+
+- Handle comments from being banned
+	* Server returns:
+		- {
+  "success": false,
+  "error": {
+    "type": "Denied",
+    "message": "User is banned from v/fatpeoplehate"
+  },
+  "version": "1.1.6226.33894"
+}
+	- On failure, Decode json["error"]
+	- Get the message
+	- Return the message as a part of the completion callback
+		- Possibly subclass Error, add a .description property
+		- Or return as a separate parameter
+	- Caller, in CommentsViewController, prints message in AlertView already made.
+
+
+- Medium Rectangle Ad
+	- Add an AdCell in SubverseViewController
+	- After loading subverses, inject an "ad-submissionCellViewModel" into nth slot
+	- Make an exception for its cell height in heightForRow
+	- When getting cellForRow, check that it's an ad cell
+		- Retrieve an Ad Cell instead, load with adManager.getMediumRectAd()
+		- Add to adCell.adView()
+		- Center the cell(.origin) based on screenWidth
+	- Profit
+
+
 - Rate button under Support Us category
 - Register Button under Login to help people make account
 	- Load in SFSafariViewController
