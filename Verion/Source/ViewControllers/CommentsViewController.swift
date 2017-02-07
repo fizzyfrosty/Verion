@@ -744,7 +744,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
             } else {
                 // Use banners
-                adCell.adView.addSubview((self.adManager?.getBannerAd(rootViewController: self))!)
+                // FIXME: replace
+                let bannerAdView = (self.adManager?.getBannerAd(rootViewController: self))!
             }
             
             return adCell

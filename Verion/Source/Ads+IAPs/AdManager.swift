@@ -171,13 +171,13 @@ class AdManager: NSObject {
     private func getAppodealMediumRectBannerAd(rootViewController: UIViewController) -> UIView? {
         var bannerAd: AppodealBannerView?
         
-        if self.currentBannerAd != nil {
+        if self.currentMediumRectAd != nil {
             bannerAd = self.currentMediumRectAd as? AppodealBannerView
             bannerAd?.rootViewController = rootViewController
         } else {
             let size = self.getMediumRectangleBannerSize()
             bannerAd = AppodealBannerView.init(size: size, rootViewController: rootViewController)
-            bannerAd?.loadAd()
+            bannerAd?.loadAdWhithPrecache()
         }
         
         return bannerAd
@@ -195,7 +195,7 @@ class AdManager: NSObject {
             let size = CGSize(width: width, height: self.getBannerAdHeight())
  
             bannerAd = AppodealBannerView.init(size: size, rootViewController: rootViewController)
-            bannerAd?.loadAd()
+            bannerAd?.loadAdWhithPrecache()
         }
         
         return bannerAd

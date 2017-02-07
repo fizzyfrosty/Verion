@@ -478,7 +478,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     private func preloadAd() {
         // FIXME: remove if not using
-        //self.adManager?.preloadNativeAd()
+        self.adManager?.preloadNativeAd()
+        //_ = self.adManager?.getMediumRectAd(rootViewController: self)
     }
     
     private func loadMoreTableCells(completion: @escaping ()->()) {

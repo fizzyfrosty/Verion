@@ -216,11 +216,11 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NativeAdCell" rowHeight="115" id="I5K-6A-uF2" customClass="ActivityIndicatorCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="409" width="320" height="115"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NativeAdCell" rowHeight="107" id="I5K-6A-uF2" customClass="ActivityIndicatorCell" customModule="Verion" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="409" width="320" height="107"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I5K-6A-uF2" id="z8H-Lo-rLe">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="115"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="107"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="(subtitle)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="76Y-zM-Bej">
@@ -284,15 +284,15 @@
                                     <color key="backgroundColor" red="0.77868932872718366" green="1" blue="0.9424611670987032" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TemplateCell" rowHeight="50" id="dAb-sN-R9A" customClass="ActivityIndicatorCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="524" width="320" height="50"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AdCell" rowHeight="58" id="dAb-sN-R9A" customClass="ActivityIndicatorCell" customModule="Verion" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="516" width="320" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dAb-sN-R9A" id="HJ7-jN-rCo">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TemplateCell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fi9-ij-U3U">
-                                            <rect key="frame" x="104.5" y="15" width="111" height="21"/>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ad Cell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fi9-ij-U3U">
+                                            <rect key="frame" x="130.5" y="18.5" width="59.5" height="21"/>
                                             <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -302,6 +302,27 @@
                                     <constraints>
                                         <constraint firstItem="fi9-ij-U3U" firstAttribute="centerY" secondItem="HJ7-jN-rCo" secondAttribute="centerY" id="6Md-PR-TZJ"/>
                                         <constraint firstItem="fi9-ij-U3U" firstAttribute="centerX" secondItem="HJ7-jN-rCo" secondAttribute="centerX" id="sUf-dy-qJn"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TemplateCell" rowHeight="58" id="FID-L4-hFc" customClass="ActivityIndicatorCell" customModule="Verion" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="574" width="320" height="58"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FID-L4-hFc" id="7NJ-CS-7NV">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TemplateCell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p98-ML-lzA">
+                                            <rect key="frame" x="104.5" y="18.5" width="111" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.99369948990000001" green="1" blue="0.99263938360000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="p98-ML-lzA" firstAttribute="centerY" secondItem="7NJ-CS-7NV" secondAttribute="centerY" id="A98-VY-LdS"/>
+                                        <constraint firstItem="p98-ML-lzA" firstAttribute="centerX" secondItem="7NJ-CS-7NV" secondAttribute="centerX" id="vtZ-md-Aeq"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -379,7 +400,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1170.4000000000001" y="-1505.3973013493255"/>
+            <point key="canvasLocation" x="1170" y="-1506.25"/>
         </scene>
         <!--Subverse Refresh Control-->
         <scene sceneID="btk-SB-GNb">

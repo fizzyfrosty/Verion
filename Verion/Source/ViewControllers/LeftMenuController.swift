@@ -457,8 +457,15 @@ class LeftMenuController: UITableViewController {
             
             // Remove ads cell
             if indexPath.row == SupportUsRows.removeAds.rawValue {
+                // FIXME: put back remove ads, or have enable ads
                 let removeAdsCell = tableView.dequeueReusableCell(withIdentifier: self.REMOVE_ADS_CELL_REUSE_ID, for: indexPath)
                 return removeAdsCell
+                
+                // FIXME: Maybe implement at some point
+                /*
+                let enableAdsCell = tableView.dequeueReusableCell(withIdentifier: "EnableAdsCell", for: indexPath)
+                return enableAdsCell
+ */
                 
             } else if indexPath.row == SupportUsRows.restorePurchases.rawValue {
                 let restorePurchasesCell = tableView.dequeueReusableCell(withIdentifier: self.RESTORE_PURCHASES_REUSE_ID, for: indexPath)

@@ -12,7 +12,7 @@ Write Messages
 View Users
 
 
-- Handle Vote not going through from not enough CCP
+* Handle Vote not going through from not enough CCP
 	* Server returns: 
 		- "data": {
     "recordedValue": null,
@@ -22,13 +22,13 @@ View Users
     "success": false
   },
 
-	- Decode json["data"]
-	- If success == false and status == "Denied", then return error, not enough ccp
-	- On the downvote callback, try to set viewcontroller as the CommentsViewController
-	- Call view controller's present not enough ccp notification
+	* Decode json["data"]
+	* If success == false and status == "Denied", then return error, not enough ccp
+	* On the downvote callback, try to set viewcontroller as the CommentsViewController
+	* Call view controller's present not enough ccp notification
 
 
-- Handle comments from being banned
+x Handle comments from being banned
 	* Server returns:
 		- {
   "success": false,
