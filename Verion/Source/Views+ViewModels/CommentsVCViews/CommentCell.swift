@@ -46,6 +46,9 @@ class CommentCell: UITableViewCell {
     let MAXIMIZED_LABEL_STRING = "[-]"
     let MINIMIZE_MAXIMIZE_DELAY_TIME: Float = 0.25
     
+    // Bindings
+    private var bindings: [Disposable] = []
+
     weak var delegate: CommentCellDelegate?
     weak var viewModel: CommentCellViewModel?
     
@@ -130,7 +133,7 @@ class CommentCell: UITableViewCell {
     private func setVotingButtonsBindings(forViewModel viewModel: CommentCellViewModel) {
         
         // Upvote
-        viewModel.viewBindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
+        self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
             
             viewModel.didRequestUpvote.value = true
             self?.upvoteButton.isSelected = !((self?.upvoteButton.isSelected)!)
@@ -142,7 +145,7 @@ class CommentCell: UITableViewCell {
         })
         
         // Downvote
-        viewModel.viewBindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
+        self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
             
             viewModel.didRequestDownvote.value = true
             self?.downvoteButton.isSelected = !((self?.downvoteButton.isSelected)!)
@@ -153,7 +156,7 @@ class CommentCell: UITableViewCell {
             }
         })
         
-        viewModel.viewBindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in
+        self.bindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in
             
             // Reset UI
             self?.downvoteButton.isSelected = false
@@ -181,7 +184,7 @@ class CommentCell: UITableViewCell {
     
     private func setMinimizeMaximizeBindings(forViewModel viewModel: CommentCellViewModel) {
         
-        viewModel.viewBindings.append( viewModel.isMinimized.observeNext() { [weak self] isMinimized in
+        self.bindings.append( viewModel.isMinimized.observeNext() { [weak self] isMinimized in
             
             // Notify delegate - probably to allow for refresh of this cell
             if let _ = self?.delegate?.commentCellDidChange(commentCell: self!) {
@@ -228,13 +231,13 @@ class CommentCell: UITableViewCell {
         self.datePostedLabel.text = viewModel.dateString
         self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
         
-        viewModel.viewBindings.append( viewModel.voteCountTotal.observeNext() { [weak self] voteCount in
+        self.bindings.append( viewModel.voteCountTotal.observeNext() { [weak self] voteCount in
             self?.voteCountLabel.text = String(voteCount)
         })
         
         self.separatedVoteCountLabel.text = viewModel.separatedVoteCountString.value
         
-        viewModel.viewBindings.append( viewModel.separatedVoteCountString.observeNext() { [weak self] string in
+        self.bindings.append( viewModel.separatedVoteCountString.observeNext() { [weak self] string in
             self?.separatedVoteCountLabel.text = string
         })
     }
@@ -290,11 +293,20 @@ class CommentCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.resetProperties()
+        self.resetBindings()
     }
     
     private func resetUI() {
         self.upvoteButton.isSelected = false
         self.downvoteButton.isSelected = false
+    }
+    
+    private func resetBindings() {
+        for binding in self.bindings {
+            binding.dispose()
+        }
+        
+        self.bindings.removeAll()
     }
     
     private func resetProperties() {

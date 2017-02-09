@@ -829,6 +829,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     }
     
     private func cleanupModels() {
+        
         self.subCellViewModels.removeAll()
         self.submissionDataModels.removeAll()
     }

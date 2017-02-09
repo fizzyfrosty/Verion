@@ -178,6 +178,11 @@ class SubmissionCellViewModel{
         self.viewBindings.removeAll()
     }
     
+    func resetAllBindings() {
+        self.resetDataProviderBindings()
+        self.resetViewBindings()
+    }
+    
     private func setupInternalBindings() {
         // Bindings for upvotes and downvotes to update votecount separated string and total vote count
         _ = self._upvoteCount.observeNext {[weak self] _ in
@@ -266,7 +271,7 @@ class SubmissionCellViewModel{
     
     deinit {
         #if DEBUG
-        //print("deallocating SubverseViewModel")
+        print("deallocating SubverseViewModel")
         #endif
     }
     

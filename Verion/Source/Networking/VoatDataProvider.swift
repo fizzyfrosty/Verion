@@ -397,7 +397,7 @@ class VoatDataProvider: DataProviderType {
         subCellViewModel.resetDataProviderBindings()
         
         // Bind upvote event to request
-        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
+        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestUpvote.observeNext { [weak self, unowned subCellViewModel, unowned viewController, unowned dataModel] (didRequestUpvote) in
             if didRequestUpvote {
                 
                 self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (voteValue, error) in
@@ -430,7 +430,7 @@ class VoatDataProvider: DataProviderType {
         })
         
         // Bind downvote event to request
-        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
+        subCellViewModel.dataProviderBindings.append( subCellViewModel.didRequestDownvote.observeNext { [weak self, unowned subCellViewModel, unowned viewController, unowned dataModel] didRequestDownvote in
             if didRequestDownvote {
                 
                 self?.requestSubmissionVote(submissionId: (subCellViewModel.dataModel?.id)!, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (voteValue, error) in
