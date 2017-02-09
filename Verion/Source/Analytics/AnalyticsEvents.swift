@@ -14,15 +14,24 @@ class AnalyticsEvents {
     private static let SORT_TYPE_PARAM_KEY = "sort_type"
     private static let SUBMISSION_MEDIA_TYPE_PARAM_KEY = "media_type"
     private static let SWITCH_ENABLED_KEY = "switch_enabled"
+    private static let VOTE_VALUE_KEY = "vote_value"
+    private static let CHILD_DEPTH_INDEX_KEY = "child_depth_index"
     
     // MARK: - Subverse controller
+    
+    static let subverseControllerUpvote = "Subverse Controller - Submission Upvote"
+    static let subverseControllerDownvote = "Subverse Controller - Submission Downvote"
+    static func getSubverseControllerVoteParams(subverseName: String, voteValue: Int) -> Dictionary<AnyHashable, Any> {
+        // Record subverse name
+        return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName),
+                          (self.VOTE_VALUE_KEY, voteValue))
+    }
+    
     static let subverseControllerFindSubverse = "Subverse Controller - Find Subverse"
     
     static let subverseControllerLoaded = "Subverse Controller - Initially Loaded"
     static func getSubverseControllerLoadedParams(subverseName: String) -> Dictionary<AnyHashable, Any>{
-        
         // Record subverse name
-        
         return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName))
     }
     
@@ -54,6 +63,19 @@ class AnalyticsEvents {
     }
     
     // MARK: - Comments controller
+    
+    static let commentsControllerCommentUpvote = "Comments Controller - Comment Upvote"
+    static let commentsControllerCommentDownvote = "Comments Controller - Comment Downvote"
+    
+    static func getCommentsControllerCommentVoteParams(subverseName: String, mediaType: SubmissionMediaType, voteValue: Int, childDepthIndex: Int) -> Dictionary<AnyHashable, Any> {
+        
+        // Record submission media type, subverse name
+        return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName),
+                          (self.SUBMISSION_MEDIA_TYPE_PARAM_KEY, mediaType.rawValue),
+                          (self.VOTE_VALUE_KEY, voteValue),
+                          (self.CHILD_DEPTH_INDEX_KEY, childDepthIndex))
+    }
+    
     static let commentsControllerViewing = "Comments Controller - Viewing"
     static func getCommentsControllerViewingParams(subverseName: String, mediaType: SubmissionMediaType) -> Dictionary<AnyHashable, Any> {
         

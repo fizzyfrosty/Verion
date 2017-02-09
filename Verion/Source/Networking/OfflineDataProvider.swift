@@ -39,10 +39,12 @@ class OfflineDataProvider: DataProviderType {
     
     // Dependencies
     private var loginScreen: LoginScreenProtocol?
+    private var analyticsManager: AnalyticsManagerProtocol?
     
-    required init(apiVersion: APIVersion, loginScreen: LoginScreenProtocol) {
+    required init(apiVersion: APIVersion, loginScreen: LoginScreenProtocol, analyticsManager: AnalyticsManagerProtocol) {
         self.apiVersion = apiVersion
         self.loginScreen = loginScreen
+        self.analyticsManager = analyticsManager
     }
     
     

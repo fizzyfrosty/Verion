@@ -58,10 +58,12 @@ class VoatDataProvider: DataProviderType {
     
     // Dependencies
     private var loginScreen: LoginScreenProtocol?
+    private var analyticsManager: AnalyticsManagerProtocol?
     
-    required init(apiVersion: APIVersion, loginScreen: LoginScreenProtocol) {
+    required init(apiVersion: APIVersion, loginScreen: LoginScreenProtocol, analyticsManager: AnalyticsManagerProtocol) {
         self.apiVersion = apiVersion
         self.loginScreen = loginScreen
+        self.analyticsManager = analyticsManager
     }
     
     func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
@@ -415,6 +417,10 @@ class VoatDataProvider: DataProviderType {
                     // Success
                     subCellViewModel.voteValue.value = voteValue
                     
+                    // Analytics
+                    let upvoteParams = AnalyticsEvents.getSubverseControllerVoteParams(subverseName: dataModel.subverseName, voteValue: voteValue.rawValue)
+                    self?.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerUpvote, params: upvoteParams, timed: false)
+                    
                     #if DEBUG
                         print("Response received: \(voteValue.rawValue)")
                     #endif
@@ -447,14 +453,16 @@ class VoatDataProvider: DataProviderType {
                             }
                         }
                         
-                        // Other errors, no error message
-                        
                         subCellViewModel.voteValue.value = subCellViewModel.voteValue.value
                         return
                     }
                     
                     // Success
                     subCellViewModel.voteValue.value = voteValue
+                    
+                    // Analytics
+                    let downvoteParams = AnalyticsEvents.getSubverseControllerVoteParams(subverseName: dataModel.subverseName, voteValue: voteValue.rawValue)
+                    self?.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerDownvote, params: downvoteParams, timed: false)
                     
                     #if DEBUG
                         print("Response received: \(voteValue.rawValue)")
@@ -525,6 +533,11 @@ class VoatDataProvider: DataProviderType {
                     // Success
                     commentCellViewModel.voteValue.value = voteValue
                     
+                    // Analytics
+                    let commentsViewController = viewController as! CommentsViewController
+                    let upvoteParams = AnalyticsEvents.getCommentsControllerCommentVoteParams(subverseName: commentsViewController.submissionDataModel!.subverseName, mediaType: commentsViewController.submissionMediaType, voteValue: voteValue.rawValue, childDepthIndex: commentCellViewModel.childDepthIndex)
+                    self?.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerCommentUpvote, params: upvoteParams, timed: false)
+                    
                     #if DEBUG
                         print("Response received: \(voteValue.rawValue)")
                     #endif
@@ -564,6 +577,11 @@ class VoatDataProvider: DataProviderType {
                     
                     // Success
                     commentCellViewModel.voteValue.value = voteValue
+                    
+                    // Analytics
+                    let commentsViewController = viewController as! CommentsViewController
+                    let downvoteParams = AnalyticsEvents.getCommentsControllerCommentVoteParams(subverseName: commentsViewController.submissionDataModel!.subverseName, mediaType: commentsViewController.submissionMediaType, voteValue: voteValue.rawValue, childDepthIndex: commentCellViewModel.childDepthIndex)
+                    self?.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerCommentDownvote, params: downvoteParams, timed: false)
                     
                     #if DEBUG
                         print("Response received: \(voteValue.rawValue)")

@@ -21,7 +21,7 @@ import UIKit
 
 protocol DataProviderType: class {
     var apiVersion: APIVersion {get}
-    init(apiVersion: APIVersion, loginScreen: LoginScreenProtocol)
+    init(apiVersion: APIVersion, loginScreen: LoginScreenProtocol, analyticsManager: AnalyticsManagerProtocol)
     
     func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?)->())
     func requestSubmitCommentReply(subverseName: String, submissionId: Int64, commentId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?)->())

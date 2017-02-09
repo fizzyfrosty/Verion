@@ -1,16 +1,40 @@
 Random Notes
 
 
-Immediate tasks:
+Features left:
 
-Login
-Upvote/Downvote
-Reply to comments
 Make Posts
 Read messages
 Write Messages
 View Users
 
+
+- Welcome Screen?
+
+- Analytics
+	* Upvote Submission: params, subverse, 
+	* Downvote Submission: params, subverse
+
+	* Upvote Comment: params, subverse
+	* Downvote Comment: params, subverse
+
+
+
+	- Left Menu pressed Login
+	- Left Menu pressed Create Account
+	- Left Menu pressed Donate
+	- Left Menu pressed Rate
+	- Left Menu pressed Hide NSFW Content: value
+	- Left Menu pressed NSFW Thumbnails: value
+	- Left Menu pressed Filter Language: value
+
+	- Add params to 
+		- Subverse - pull to refresh
+		- Subverse - load more
+		- Subverse - Sort by
+
+	- Tokens Expired
+	- Tokens Refreshed
 
 * Rate button under Support Us category
 	* Tap opens message to go to app store to rate
@@ -21,19 +45,9 @@ View Users
 * New Message
 	* Donate Button
 
-- New Icon:
-	- Donate
-	- Rate
-	- 
-
-- Welcome Screen?
-
-- Analytics
-	- Upvote Comment: params, subverse
-	- Downvote Comment: params, subverse
-	- Upvote Submission: params, subverse, content type
-	- Downvote Submission: params, subverse, content type
-
+* New Icon:
+	* Donate
+	* Rate 
 
 * Handle Vote not going through from not enough CCP
 	* Server returns: 

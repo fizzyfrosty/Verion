@@ -101,9 +101,9 @@ extension SwinjectStoryboard {
         defaultContainer.register(DataProviderType.self){ resolver in
             switch mode {
             case .offline:
-                return OfflineDataProvider(apiVersion: .v1, loginScreen: resolver.resolve(LoginScreenProtocol.self)!)
+                return OfflineDataProvider(apiVersion: .v1, loginScreen: resolver.resolve(LoginScreenProtocol.self)!, analyticsManager: resolver.resolve(AnalyticsManagerProtocol.self)!)
             case .online:
-                return VoatDataProvider(apiVersion: .v1, loginScreen: resolver.resolve(LoginScreenProtocol.self)!)
+                return VoatDataProvider(apiVersion: .v1, loginScreen: resolver.resolve(LoginScreenProtocol.self)!, analyticsManager: resolver.resolve(AnalyticsManagerProtocol.self)!)
             }
         }
         
