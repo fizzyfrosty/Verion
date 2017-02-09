@@ -924,7 +924,7 @@ let DONATE_URL = URL.init(string: "https://voatify.com/donate")
 extension LeftMenuController {
     fileprivate func openDonate() {
         // Create alert view to ask if they want to open in safari
-        let donateAlert = UIAlertController.init(title: "Support Us!", message: "Donations help keep the hamster wheel running at Voatify! Open the Donation page in Safari?", preferredStyle: .alert)
+        let donateAlert = UIAlertController.init(title: "Support Us!", message: "Donations help keep the hamster wheel running at Voatify! Check out the Donation page in Safari?", preferredStyle: .alert)
         
         let okAction = UIAlertAction.init(title: self.SURE_BUTTON_TITLE, style: .default) { alertAction in
             // Open link in safari
