@@ -46,7 +46,6 @@ class CommentCell: UITableViewCell {
     let MAXIMIZED_LABEL_STRING = "[-]"
     let MINIMIZE_MAXIMIZE_DELAY_TIME: Float = 0.25
     
-    private var bindings: [Disposable] = []
     weak var delegate: CommentCellDelegate?
     weak var viewModel: CommentCellViewModel?
     
@@ -131,7 +130,7 @@ class CommentCell: UITableViewCell {
     private func setVotingButtonsBindings(forViewModel viewModel: CommentCellViewModel) {
         
         // Upvote
-        self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
+        viewModel.viewBindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
             
             viewModel.didRequestUpvote.value = true
             self?.upvoteButton.isSelected = !((self?.upvoteButton.isSelected)!)
@@ -143,7 +142,7 @@ class CommentCell: UITableViewCell {
         })
         
         // Downvote
-        self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
+        viewModel.viewBindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
             
             viewModel.didRequestDownvote.value = true
             self?.downvoteButton.isSelected = !((self?.downvoteButton.isSelected)!)
@@ -290,8 +289,6 @@ class CommentCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
-        self.resetBindings()
         self.resetProperties()
     }
     
@@ -302,14 +299,6 @@ class CommentCell: UITableViewCell {
     
     private func resetProperties() {
         self.viewModel = nil
-    }
-    
-    private func resetBindings() {
-        for binding in self.bindings {
-            binding.dispose()
-        }
-        
-        self.bindings.removeAll()
     }
     
     deinit{

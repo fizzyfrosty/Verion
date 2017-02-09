@@ -512,13 +512,13 @@ class VoatDataProvider: DataProviderType {
         commentCellViewModel.resetDataProviderBindings()
         
         // Bind upvote event to request
-        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestUpvote.observeNext { [weak self] (didRequestUpvote) in
+        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestUpvote.observeNext { [weak self, weak viewController, weak commentCellViewModel] (didRequestUpvote) in
             if didRequestUpvote {
                 
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.up.rawValue, rootViewController: viewController, completion: { (voteValue, error) in
+                self?.requestCommentVote(commentId: commentCellViewModel!.id, voteValue: VoteValue.up.rawValue, rootViewController: viewController!, completion: { (voteValue, error) in
                     
                     // Reset to allow for re-voting
-                    commentCellViewModel.didRequestUpvote.value = false
+                    commentCellViewModel!.didRequestUpvote.value = false
                     
                     // Failed
                     guard error == nil else {
@@ -526,16 +526,16 @@ class VoatDataProvider: DataProviderType {
                             print("Response failed: Upvote")
                         #endif
                         // Trigger callback to reset previous value
-                        commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
+                        commentCellViewModel!.voteValue.value = commentCellViewModel!.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.voteValue.value = voteValue
+                    commentCellViewModel!.voteValue.value = voteValue
                     
                     // Analytics
                     let commentsViewController = viewController as! CommentsViewController
-                    let upvoteParams = AnalyticsEvents.getCommentsControllerCommentVoteParams(subverseName: commentsViewController.submissionDataModel!.subverseName, mediaType: commentsViewController.submissionMediaType, voteValue: voteValue.rawValue, childDepthIndex: commentCellViewModel.childDepthIndex)
+                    let upvoteParams = AnalyticsEvents.getCommentsControllerCommentVoteParams(subverseName: commentsViewController.submissionDataModel!.subverseName, mediaType: commentsViewController.submissionMediaType, voteValue: voteValue.rawValue, childDepthIndex: commentCellViewModel!.childDepthIndex)
                     self?.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerCommentUpvote, params: upvoteParams, timed: false)
                     
                     #if DEBUG
@@ -547,13 +547,13 @@ class VoatDataProvider: DataProviderType {
         })
         
         // Bind downvote event to request
-        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestDownvote.observeNext { [weak self] didRequestDownvote in
+        commentCellViewModel.dataProviderBindings.append( commentCellViewModel.didRequestDownvote.observeNext { [weak self, weak viewController, weak commentCellViewModel] didRequestDownvote in
             if didRequestDownvote {
                 
-                self?.requestCommentVote(commentId: commentCellViewModel.id, voteValue: VoteValue.down.rawValue, rootViewController: viewController, completion: { (voteValue, error) in
+                self?.requestCommentVote(commentId: commentCellViewModel!.id, voteValue: VoteValue.down.rawValue, rootViewController: viewController!, completion: { (voteValue, error) in
                     
                     // Reset to allow for re-voting
-                    commentCellViewModel.didRequestUpvote.value = false
+                    commentCellViewModel!.didRequestUpvote.value = false
                     
                     // Failed
                     guard error == nil else {
@@ -571,16 +571,16 @@ class VoatDataProvider: DataProviderType {
                         }
                         
                         // Trigger callback to reset previous value
-                        commentCellViewModel.voteValue.value = commentCellViewModel.voteValue.value
+                        commentCellViewModel!.voteValue.value = commentCellViewModel!.voteValue.value
                         return
                     }
                     
                     // Success
-                    commentCellViewModel.voteValue.value = voteValue
+                    commentCellViewModel!.voteValue.value = voteValue
                     
                     // Analytics
                     let commentsViewController = viewController as! CommentsViewController
-                    let downvoteParams = AnalyticsEvents.getCommentsControllerCommentVoteParams(subverseName: commentsViewController.submissionDataModel!.subverseName, mediaType: commentsViewController.submissionMediaType, voteValue: voteValue.rawValue, childDepthIndex: commentCellViewModel.childDepthIndex)
+                    let downvoteParams = AnalyticsEvents.getCommentsControllerCommentVoteParams(subverseName: commentsViewController.submissionDataModel!.subverseName, mediaType: commentsViewController.submissionMediaType, voteValue: voteValue.rawValue, childDepthIndex: commentCellViewModel!.childDepthIndex)
                     self?.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerCommentDownvote, params: downvoteParams, timed: false)
                     
                     #if DEBUG

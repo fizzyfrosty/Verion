@@ -28,9 +28,6 @@ class SubmissionCell: UITableViewCell {
     @IBOutlet var submittedByUserLabel: UILabel!
     @IBOutlet var submittedToSubverseLabel: UILabel!
     
-    // Bindings
-    private var bindings: [Disposable] = []
-    
     weak var viewModel: SubmissionCellViewModel?
     
     let BORDER_WIDTH: CGFloat = 1.0
@@ -91,13 +88,13 @@ class SubmissionCell: UITableViewCell {
         
         // Vote Count Label
         self.voteCountLabel.text = String(viewModel.voteCountTotal.value)
-        self.bindings.append( viewModel.voteCountTotal.observeNext() { [weak self] count in
+        viewModel.viewBindings.append( viewModel.voteCountTotal.observeNext() { [weak self] count in
             self?.voteCountLabel.text = String(count)
         })
         
         // Separated Vote Count Label
         self.voteSeparatedCountLabel.text = viewModel.voteSeparatedCountString.value
-        self.bindings.append( viewModel.voteSeparatedCountString.observeNext() { [weak self] separatedCountString in
+        viewModel.viewBindings.append( viewModel.voteSeparatedCountString.observeNext() { [weak self] separatedCountString in
             self?.voteSeparatedCountLabel.text = separatedCountString
         })
         
@@ -130,7 +127,7 @@ class SubmissionCell: UITableViewCell {
     
     private func setVotingButtonsBindings(forViewModel viewModel: SubmissionCellViewModel) {
         // Upvote
-        self.bindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
+        viewModel.viewBindings.append( self.upvoteButton.bnd_tap.observeNext { [weak self] in
             
             viewModel.didRequestUpvote.value = true
             self?.upvoteButton.isSelected = !((self?.upvoteButton.isSelected)!)
@@ -142,7 +139,7 @@ class SubmissionCell: UITableViewCell {
         })
         
         // Downvote
-        self.bindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
+        viewModel.viewBindings.append( self.downvoteButton.bnd_tap.observeNext { [weak self] in
             
             viewModel.didRequestDownvote.value = true
             self?.downvoteButton.isSelected = !((self?.downvoteButton.isSelected)!)
@@ -153,7 +150,7 @@ class SubmissionCell: UITableViewCell {
             }
         })
         
-        self.bindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in
+        viewModel.viewBindings.append( viewModel.voteValue.observeNext { [weak self] voteValue in
             
             // Reset UI
             self?.downvoteButton.isSelected = false
@@ -173,7 +170,6 @@ class SubmissionCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.resetBindings()
         self.resetProperties()
     }
     
@@ -187,14 +183,6 @@ class SubmissionCell: UITableViewCell {
         
         self.upvoteButton.imageView?.contentMode = .center
         self.downvoteButton.imageView?.contentMode = .center
-    }
-    
-    private func resetBindings() {
-        for binding in self.bindings {
-            binding.dispose()
-        }
-        
-        self.bindings.removeAll()
     }
     
     deinit{

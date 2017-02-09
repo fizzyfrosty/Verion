@@ -128,9 +128,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        self.nativeAdController.detatchNativeAd()
-        self.cleanupCommentCellViewModelBindings()
     }
     
     private func cleanupCommentCellViewModelBindings() {
@@ -1097,6 +1094,9 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     deinit {
         self.tableView.dataSource = nil
         self.tableView.delegate = nil
+        
+        self.nativeAdController.detatchNativeAd()
+        self.cleanupCommentCellViewModelBindings()
         
         #if DEBUG
         print ("Deallocated Comments View Controller")
