@@ -791,8 +791,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Template Cell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsY-Q5-u9b">
-                                            <rect key="frame" x="136.5" y="1.5" width="104" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Template Cell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsY-Q5-u9b">
+                                            <rect key="frame" x="108" y="9.5" width="104" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -800,6 +800,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="tsY-Q5-u9b" firstAttribute="centerX" secondItem="dJT-3N-Zs0" secondAttribute="centerX" id="DES-hg-0hr"/>
+                                        <constraint firstItem="tsY-Q5-u9b" firstAttribute="centerY" secondItem="dJT-3N-Zs0" secondAttribute="centerY" id="q53-73-nyU"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -882,18 +883,8 @@
                                     <constraint firstItem="e6P-uz-beT" firstAttribute="top" secondItem="azS-dz-Bf6" secondAttribute="top" constant="5" id="vmv-7Q-6q1"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rK0-6v-W8A">
-                                <rect key="frame" x="40" y="117" width="240" height="128"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="rK0-6v-W8A" firstAttribute="leading" secondItem="0cH-IC-C9p" secondAttribute="leading" id="5wr-ik-2OE"/>
-                            <constraint firstItem="BLu-fV-ggg" firstAttribute="top" secondItem="rK0-6v-W8A" secondAttribute="bottom" constant="323" id="Mh1-l9-evr"/>
-                            <constraint firstAttribute="trailing" secondItem="rK0-6v-W8A" secondAttribute="trailing" id="eJi-ej-GjH"/>
-                            <constraint firstItem="rK0-6v-W8A" firstAttribute="top" secondItem="0k3-QE-UMp" secondAttribute="bottom" constant="97" id="yXW-Vk-Ly3"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="backgroundView" destination="azS-dz-Bf6" id="f4Y-g7-oYT"/>

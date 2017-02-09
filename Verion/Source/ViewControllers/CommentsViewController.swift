@@ -147,9 +147,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             self.commentsSectionNumber = self.adSectionNumber + 1
             self.numOfSectionsBeforeComments = 2
             
-            // FIXME: possibly remove, preloaded in previous controller
-            // Pre-emptively Load the ad
-            
             if let nativeAd = self.adManager?.getNativeAd() {
                 // Success, do nothing
                 self.nativeAd = nativeAd
@@ -744,8 +741,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
             } else {
                 // Use banners
-                // FIXME: replace
                 let bannerAdView = (self.adManager?.getBannerAd(rootViewController: self))!
+                adCell.adView.addSubview(bannerAdView)
             }
             
             return adCell
