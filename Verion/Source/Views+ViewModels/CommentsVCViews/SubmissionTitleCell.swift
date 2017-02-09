@@ -85,4 +85,9 @@ class SubmissionTitleCell: UITableViewCell {
     }
 
 
+    deinit{
+        #if DEBUG
+            print("Deallocated a Submission Title Cell")
+        #endif
+    }
 }

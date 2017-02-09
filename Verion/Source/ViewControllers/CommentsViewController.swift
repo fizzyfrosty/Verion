@@ -49,8 +49,8 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     let WEBVIEW_SEGUE_ID = "WebViewSegue"
     
-    var submissionDataModel: SubmissionDataModelProtocol?
-    var submissionCellViewModel: SubmissionCellViewModel?
+    weak var submissionDataModel: SubmissionDataModelProtocol?
+    weak var submissionCellViewModel: SubmissionCellViewModel?
     var verionDataModel: VerionDataModel?
     
     // View Models
@@ -77,7 +77,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     var linkString = ""
     
     // Ads
-    fileprivate var nativeAd: APDNativeAd?
+    weak var nativeAd: APDNativeAd?
     private var _nativeAdController: NativeAdViewController?
     fileprivate var nativeAdController: NativeAdViewController {
         
@@ -128,6 +128,16 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        self.nativeAdController.detatchNativeAd()
+        self.cleanupCommentCellViewModelBindings()
+    }
+    
+    private func cleanupCommentCellViewModelBindings() {
+        for viewModel in self.commentsViewModels {
+            viewModel.resetViewBindings()
+            viewModel.resetDataProviderBindings()
+        }
     }
     
     private func loadData() {
@@ -730,14 +740,19 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             
             // Set the ad cell's banner view
             if self.nativeAd != nil {
+                
+                
                 self.nativeAdController.nativeAd = self.nativeAd
                 let nativeAdView = self.nativeAdController.backgroundView
+                
+                // FIXME:
                 
                 adCell.adView.addSubview(nativeAdView!)
                 
                 // We must attach after it is added
                 self.nativeAdController.attachNativeAd(toParentView: adCell.contentView, inViewController: self)
                 self.adManager?.isNativeAdShown = true
+ 
                 
             } else {
                 // Use banners

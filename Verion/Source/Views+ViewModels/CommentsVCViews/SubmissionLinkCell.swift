@@ -44,4 +44,10 @@ class SubmissionLinkCell: UITableViewCell {
         self.thumbnailImageView.layer.borderWidth = 1.0
         self.thumbnailImageView.layer.borderColor = UIColor.black.cgColor
     }
+    
+    deinit{
+        #if DEBUG
+            print("Deallocated a Submission Link Cell")
+        #endif
+    }
 }

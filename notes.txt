@@ -9,6 +9,20 @@ Write Messages
 View Users
 
 
+What's New in this version (1.0.3)
+LOGIN FEATURES!
+- Vote on Submissions!
+- Vote on Comments!
+- Write a comment on any Submission!
+- Reply to any comment!
+
+Minor changes and fixes:
+- Ads are even less intrusive! Again!!
+- Fixed a bug where viewing certain text posts resulted in a crash.
+- Fixed a bug where enabling Hide NSFW submissions also hid all subsequent submissions.
+
+
+
 - Welcome Screen?
 
 - Analytics

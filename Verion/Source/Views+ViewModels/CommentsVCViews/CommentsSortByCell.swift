@@ -212,6 +212,12 @@ class CommentsSortByCell: UITableViewCell {
         self.downvoteButton.isSelected = false
         self.upvoteButton.isSelected = false
     }
+    
+    deinit{
+        #if DEBUG
+            print("Deallocated a Comment Sort By Cell")
+        #endif
+    }
 
 }
 

@@ -72,12 +72,17 @@ class NativeAdViewController: UIViewController {
     }
     
     func attachNativeAd(toParentView parentView: UIView, inViewController rootViewController: UIViewController) {
-        self.nativeAd?.attach(to: self.backgroundView, viewController: rootViewController)
-        
         let leading = NSLayoutConstraint.init(item: self.backgroundView, attribute: .leading, relatedBy: .equal, toItem: parentView, attribute: .leading, multiplier: 1, constant: 0)
         let trailing = NSLayoutConstraint.init(item: self.backgroundView, attribute: .trailing, relatedBy: .equal, toItem: parentView, attribute: .trailing, multiplier: 1, constant: 0)
         
         parentView.addConstraints([leading, trailing])
+ 
+    }
+    
+    func detatchNativeAd() {
+        self.nativeAd?.detachFromView()
+        self.nativeAd = nil
+        self.backgroundView.removeFromSuperview()
     }
     
     private func getCallToActionButtonWidth(fromString buttonTitle: String) -> CGFloat {
