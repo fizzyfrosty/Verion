@@ -12,6 +12,29 @@ Write Messages
 View Users
 
 
+* Rate button under Support Us category
+	* Tap opens message to go to app store to rate
+ 
+* Register Button under Login to help people make account
+	* Load in SFSafariViewController
+
+* New Message
+	* Donate Button
+
+- New Icon:
+	- Donate
+	- Rate
+	- 
+
+- Welcome Screen?
+
+- Analytics
+	- Upvote Comment: params, subverse
+	- Downvote Comment: params, subverse
+	- Upvote Submission: params, subverse, content type
+	- Downvote Submission: params, subverse, content type
+
+
 * Handle Vote not going through from not enough CCP
 	* Server returns: 
 		- "data": {
@@ -46,7 +69,7 @@ x Handle comments from being banned
 	- Caller, in CommentsViewController, prints message in AlertView already made.
 
 
-- Medium Rectangle Ad
+x Medium Rectangle Ad
 	- Add an AdCell in SubverseViewController
 	- After loading subverses, inject an "ad-submissionCellViewModel" into nth slot
 	- Make an exception for its cell height in heightForRow
@@ -57,13 +80,7 @@ x Handle comments from being banned
 	- Profit
 
 
-- Rate button under Support Us category
-- Register Button under Login to help people make account
-	- Load in SFSafariViewController
-- Welcome Screen?
-
-
-- Re-examine banner view ads (sizes)
+* Re-examine banner view ads (sizes)
 - Price of Remove Ads, dynamic, increase?
 
 

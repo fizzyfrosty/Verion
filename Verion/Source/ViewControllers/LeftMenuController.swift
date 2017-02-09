@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageUI
+import SafariServices
 
 protocol LeftMenuControllerDelegate: class {
     func leftMenuDidSelectSubverse(leftMenu: LeftMenuController, subverseName: String)
@@ -84,14 +85,19 @@ class LeftMenuController: UITableViewController {
     // Support us section
     enum SupportUsRows: Int {
         case donate = 0
-        case removeAds = 1
-        case restorePurchases = 2
+        case rate = 1
+        case removeAds = 2
+        case restorePurchases = 3
         
-        static let allValues = [removeAds, restorePurchases,donate]
+        static let allValues = [removeAds, restorePurchases, donate, rate]
     }
     private let REMOVE_ADS_CELL_REUSE_ID = "RemoveAdsCell"
     private let RESTORE_PURCHASES_REUSE_ID = "RestorePurchasesCell"
     private let DONATE_CELL_REUSE_ID = "DonateCell"
+    private let RATE_CELL_REUSE_ID = "RateCell"
+    fileprivate let APP_ID = "1188140122"
+    fileprivate let SURE_BUTTON_TITLE = "Sure!"
+    fileprivate let NAH_BUTTON_TITLE = "Nah"
     
     // Contact us section
     enum ContactUsRows: Int {
@@ -111,16 +117,19 @@ class LeftMenuController: UITableViewController {
     private let SETTINGS_SECTION_TITLE = "    Settings"
     enum SettingsRows: Int {
         case login = 0
-        
-        static let allValues = [login]
+        case createAccount = 1
+        static let allValues = [login, createAccount]
     }
     private let LOGIN_CELL_REUSE_ID = "LoginCell"
+    private let CREATE_ACCOUNT_CELL_REUSE_ID = "CreateAccountCell"
     fileprivate var loginCellViewModel: LoginCellViewModel?
     
     
     private let ERROR_TITLE = "Error"
     private let ERROR_MESSAGE = "There was a problem. Please try again later."
     private let SUCCESS_TITLE = "Success"
+    
+    fileprivate var savedStatusBarStyle: UIStatusBarStyle = .default
     
     // Delegate
     weak var delegate: LeftMenuControllerDelegate?
@@ -457,15 +466,8 @@ class LeftMenuController: UITableViewController {
             
             // Remove ads cell
             if indexPath.row == SupportUsRows.removeAds.rawValue {
-                // FIXME: put back remove ads, or have enable ads
                 let removeAdsCell = tableView.dequeueReusableCell(withIdentifier: self.REMOVE_ADS_CELL_REUSE_ID, for: indexPath)
                 return removeAdsCell
-                
-                // FIXME: Maybe implement at some point
-                /*
-                let enableAdsCell = tableView.dequeueReusableCell(withIdentifier: "EnableAdsCell", for: indexPath)
-                return enableAdsCell
- */
                 
             } else if indexPath.row == SupportUsRows.restorePurchases.rawValue {
                 let restorePurchasesCell = tableView.dequeueReusableCell(withIdentifier: self.RESTORE_PURCHASES_REUSE_ID, for: indexPath)
@@ -477,6 +479,10 @@ class LeftMenuController: UITableViewController {
                 let donateCell = tableView.dequeueReusableCell(withIdentifier: self.DONATE_CELL_REUSE_ID, for: indexPath)
                 return donateCell
                 
+            } else if indexPath.row == SupportUsRows.rate.rawValue {
+                // Rate Cell
+                let rateCell = tableView.dequeueReusableCell(withIdentifier: self.RATE_CELL_REUSE_ID, for: indexPath)
+                return rateCell
             }
             
         case LeftMenuSections.contactUs.rawValue:
@@ -493,8 +499,11 @@ class LeftMenuController: UITableViewController {
             if indexPath.row == SettingsRows.login.rawValue {
                 let loginCell = tableView.dequeueReusableCell(withIdentifier: self.LOGIN_CELL_REUSE_ID, for: indexPath) as! LoginCell
                 loginCell.bind(viewModel: self.loginCellViewModel!)
-                
                 return loginCell
+                
+            } else if indexPath.row == SettingsRows.createAccount.rawValue {
+                let createAccountCell = tableView.dequeueReusableCell(withIdentifier: self.CREATE_ACCOUNT_CELL_REUSE_ID, for: indexPath)
+                return createAccountCell
             }
             
         default:
@@ -542,6 +551,8 @@ class LeftMenuController: UITableViewController {
                 self.restorePurchases()
             }else if indexPath.row == SupportUsRows.donate.rawValue {
                 self.openDonate()
+            } else if indexPath.row == SupportUsRows.rate.rawValue {
+                self.rateApp()
             }
             
         case LeftMenuSections.contactUs.rawValue:
@@ -566,6 +577,8 @@ class LeftMenuController: UITableViewController {
                     // Display login
                     self.notifyDelegateDidPressLogin()
                 }
+            } else if indexPath.row == SettingsRows.createAccount.rawValue {
+                self.createAccount()
             }
         default:
             break
@@ -904,21 +917,20 @@ extension LeftMenuController: MFMailComposeViewControllerDelegate {
     }
 }
 
-// MARK: - Donate
+// MARK: - Support Us
 
 let DONATE_URL = URL.init(string: "https://voatify.com/donate")
 
 extension LeftMenuController {
     fileprivate func openDonate() {
         // Create alert view to ask if they want to open in safari
-        let donateAlert = UIAlertController.init(title: "", message: "Open Voatify Donation page in Safari?", preferredStyle: .alert)
+        let donateAlert = UIAlertController.init(title: "Support Us!", message: "Donations help keep the hamster wheel running at Voatify! Open the Donation page in Safari?", preferredStyle: .alert)
         
-        let okAction = UIAlertAction.init(title: "Ok", style: .default) { alertAction in
+        let okAction = UIAlertAction.init(title: self.SURE_BUTTON_TITLE, style: .default) { alertAction in
             // Open link in safari
-            UIApplication.shared.openURL(DONATE_URL!)
+            self.openUrlInSafari(DONATE_URL!)
         }
-        
-        let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel) { alertAction in
+        let cancelAction = UIAlertAction.init(title: self.NAH_BUTTON_TITLE, style: .cancel) { alertAction in
             // Close alert view
             donateAlert.removeFromParentViewController()
         }
@@ -928,12 +940,40 @@ extension LeftMenuController {
         
         self.present(donateAlert, animated: true, completion: nil)
     }
+    
+    fileprivate func rateApp() {
+        let message = "Giving us a stellar rating would help us a lot! Would you like to rate us on the App Store?"
+        let rateAppAlert = UIAlertController.init(title: "Rate Us!", message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction.init(title: self.SURE_BUTTON_TITLE, style: .default, handler: { [weak self] alertAction in
+            self?.rateApp(appId: (self?.APP_ID)!)
+        })
+        let cancelAction = UIAlertAction.init(title: self.NAH_BUTTON_TITLE, style: .cancel, handler: nil)
+        
+        rateAppAlert.addAction(okAction)
+        rateAppAlert.addAction(cancelAction)
+        
+        self.present(rateAppAlert, animated: true, completion: nil)
+    }
+    
+    private func rateApp(appId: String) {
+        guard let url = URL(string : "itms-apps://itunes.apple.com/app/id" + appId) else {
+            return
+        }
+        self.openUrlInSafari(url)
+    }
 }
 
 
 // MARK: - Settings
 
 extension LeftMenuController {
+    
+    fileprivate func createAccount() {
+        let registerUrl = URL.init(string: "https://voat.co/account/register")
+        self.openUrlInSafariViewController(registerUrl!)
+    }
+    
     fileprivate func logout(username: String) {
         let logoutAlert = UIAlertController.init(title: "", message: "Logout as user \(username)?", preferredStyle: .alert)
         
@@ -991,6 +1031,22 @@ extension LeftMenuController {
             #if DEBUG
                 print("Warning: Left Menu Controller's delegate may not be set.")
             #endif
+        }
+    }
+}
+
+// MARK: - Opening Safari
+extension LeftMenuController: SFSafariViewControllerDelegate {
+    fileprivate func openUrlInSafari(_ url: URL) {
+        guard #available(iOS 10, *) else {
+            return
+        }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+    
+    fileprivate func openUrlInSafariViewController(_ url: URL) {
+        let safariViewController = SFSafariViewController.init(url: url)
+        self.present(safariViewController, animated: true) {
         }
     }
 }
