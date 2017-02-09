@@ -745,8 +745,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 self.nativeAdController.nativeAd = self.nativeAd
                 let nativeAdView = self.nativeAdController.backgroundView
                 
-                // FIXME:
-                
                 adCell.adView.addSubview(nativeAdView!)
                 
                 // We must attach after it is added
