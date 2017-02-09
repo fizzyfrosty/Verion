@@ -18,8 +18,6 @@ View Users
 	* Upvote Comment: params, subverse
 	* Downvote Comment: params, subverse
 
-
-
 	- Left Menu pressed Login
 	- Left Menu pressed Create Account
 	- Left Menu pressed Donate
