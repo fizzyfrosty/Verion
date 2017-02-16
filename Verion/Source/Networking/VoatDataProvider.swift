@@ -302,7 +302,13 @@ class VoatDataProvider: DataProviderType {
                 completion(submissionDataModels, nil)
                 
             case .failure(let error):
-                print(error)
+                if response.response?.statusCode == 503 {
+                    // Status code
+                    print("Voat Service unavailable.")
+                }
+                #if DEBUG
+                print(response.error.debugDescription)
+                #endif
                 
                 completion(submissionDataModels, error)
             }

@@ -122,8 +122,8 @@ class AnalyticsEvents {
         var dictionary = [AnyHashable: Any]()
         
         // Record Subverses
-        for subverseName in subverseNames {
-            dictionary[self.SUBVERSE_PARAM_KEY+"-"+subverseName] = subverseName
+        for i in 0..<subverseNames.count {
+            dictionary[self.SUBVERSE_PARAM_KEY+"-\(i)"] = subverseNames[i]
         }
         
         return dictionary
