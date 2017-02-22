@@ -142,7 +142,10 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
         
         // Configure sections based on whether or not ads were removed
         self.submissionSectionNumber = 0 // Always 0
-        
+        self.setupAds()
+    }
+    
+    private func setupAds() {
         if self.adManager?.isRemoveAdsPurchased() == true {
             // Ads are removed
             self.adSectionNumber = self.DISABLED_SECTION_NUMBER
@@ -154,6 +157,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             self.commentsSectionNumber = self.adSectionNumber + 1
             self.numOfSectionsBeforeComments = 2
             
+            // FIXME: Set didShowAd to true, and call AdManager.preloadNativeAd()
             if let nativeAd = self.adManager?.getNativeAd() {
                 // Success, do nothing
                 self.nativeAd = nativeAd

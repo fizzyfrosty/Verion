@@ -3,34 +3,64 @@ Random Notes
 
 Features left:
 
+
+
+
 Make Posts
 Read messages
 Write Messages
 View Users
 
 
-What's New in this version (1.0.3)
-LOGIN FEATURES!
-- Vote on Submissions!
-- Vote on Comments!
-- Write a comment on any Submission!
-- Reply to any comment!
+Night Mode
+- Choose from side bar
+- Create Light/Dark Mode
+- Create SFXManager singleton, set dark/light mode
+- Inject into each view controller
+- Save to data when setting in Left Menu, and set singleton
+- Pass the SFXManager singleton into the binding of each cell
+	- Each cell, extract from sfxManager the light/dark mode
+	- Set background
 
-Minor changes and fixes:
-- Ads are even less intrusive! Again!!
-- Fixed a bug where viewing certain text posts resulted in a crash.
-- Fixed a bug where enabling Hide NSFW submissions also hid all subsequent submissions.
+
+Preload Ad Immediately after showing
+- On CommentsViewController, after retrieving preloaded native ad, immediately begin to preload the next ad
+
+
+
+Refresh Token: refresh on app coming back
+- In AppDelegate, when resuming app, attempt to refresh token.
+- It is OK to automatically bring up login prompt if not logged in.
+- Call the OAuth2Handler singleton to refresh token?
+- Create a public function to refresh, call the private refreshTokens() function
+
+
+
+Push Notifications
+- Look up Backendless
+- Integrate Backendless
+- Test with a push notification message
+- Enable push notification for app
+
+
+
+Notify Users of new Functions
+- Welcome Screen
+- Create new storyboard
+	- Show screenshot of night mode
+	- Bug Fixes page
+- Save when opened to not open again
+- Check in SubverseViewController, after everything loaded
+
+
+
+
 
 
 
 - Welcome Screen?
 
 - Analytics
-	* Upvote Submission: params, subverse, 
-	* Downvote Submission: params, subverse
-
-	* Upvote Comment: params, subverse
-	* Downvote Comment: params, subverse
 
 	- Left Menu pressed Login
 	- Left Menu pressed Create Account
@@ -47,6 +77,27 @@ Minor changes and fixes:
 
 	- Tokens Expired
 	- Tokens Refreshed
+
+
+What's New in this version (1.0.3)
+LOGIN FEATURES!
+- Vote on Submissions!
+- Vote on Comments!
+- Write a comment on any Submission!
+- Reply to any comment!
+
+Minor changes and fixes:
+- Ads are even less intrusive! Again!!
+- Fixed a bug where viewing certain text posts resulted in a crash.
+- Fixed a bug where enabling Hide NSFW submissions also hid all subsequent submissions.
+
+
+* Analytics
+	* Upvote Submission: params, subverse, 
+	* Downvote Submission: params, subverse
+
+	* Upvote Comment: params, subverse
+	* Downvote Comment: params, subverse
 
 * Rate button under Support Us category
 	* Tap opens message to go to app store to rate
