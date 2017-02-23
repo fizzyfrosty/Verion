@@ -17,6 +17,7 @@ class OAuth2Handler: RequestAdapter, RequestRetrier {
     static let TOKEN_ENDPOINT = "https://api.voat.co/oauth/token"
     static let CALLBACK_URL = "voatify://oauth-callback-url"
     static let BASE_URL_STRING = "https://api.voat.co"
+    static let REGISTER_URL_STRING = "https://voat.co/account/register"
     
     static let sharedInstance: OAuth2Handler = {
         

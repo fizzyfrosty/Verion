@@ -997,7 +997,7 @@ extension LeftMenuController: NightModeCellDelegate {
     }
     
     fileprivate func createAccount() {
-        let registerUrl = URL.init(string: "https://voat.co/account/register")
+        let registerUrl = URL.init(string: OAuth2Handler.REGISTER_URL_STRING)
         self.openUrlInSafariViewController(registerUrl!)
     }
     
