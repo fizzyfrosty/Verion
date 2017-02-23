@@ -9,5 +9,8 @@
 import UIKit
 
 protocol SFXManagerType{
+    
+    var isNightModeEnabled: Bool {get set}
+    
     func applyShadow(view: UIView)
 }

@@ -118,12 +118,14 @@ class LeftMenuController: UITableViewController {
     enum SettingsRows: Int {
         case login = 0
         case createAccount = 1
-        static let allValues = [login, createAccount]
+        case nightMode = 2
+        static let allValues = [login, createAccount, nightMode]
     }
     private let LOGIN_CELL_REUSE_ID = "LoginCell"
     private let CREATE_ACCOUNT_CELL_REUSE_ID = "CreateAccountCell"
+    private let NIGHT_MODE_CELL_REUSE_ID = "NightModeCell"
     fileprivate var loginCellViewModel: LoginCellViewModel?
-    
+    fileprivate var nightModeCellViewModel: NightModeCellViewModel?
     
     private let ERROR_TITLE = "Error"
     private let ERROR_MESSAGE = "There was a problem. Please try again later."
@@ -140,6 +142,7 @@ class LeftMenuController: UITableViewController {
     var analyticsManager: AnalyticsManagerProtocol?
     var inAppPurchaseManager: InAppPurchaseManager?
     var authHandler: OAuth2Handler?
+    var sfxManager: SFXManagerType?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -181,6 +184,16 @@ class LeftMenuController: UITableViewController {
         return loginCellViewModel
     }
     
+    private func getNightModeCellViewModel() -> NightModeCellViewModel {
+        let nightModeCellViewModel = NightModeCellViewModel()
+        
+        if let verionDataModel = self.dataManager?.getSavedData() {
+            nightModeCellViewModel.isNightModeEnabled.value = verionDataModel.isNightModeEnabled
+        }
+        
+        return nightModeCellViewModel
+    }
+    
     private func setContentInsets() {
         let bottomInset: CGFloat = 200.0
         let originalContentInset = self.tableView.contentInset
@@ -218,6 +231,7 @@ class LeftMenuController: UITableViewController {
             
             // Settings
             self.loginCellViewModel = self.getRefreshedLoginCellViewModel()
+            self.nightModeCellViewModel = self.getNightModeCellViewModel()
         }
     }
     
@@ -342,7 +356,8 @@ class LeftMenuController: UITableViewController {
             
             // Settings
             verionDataModel?.isLoggedIn = self.loginCellViewModel!.isLoggedIn.value
-            
+            verionDataModel?.isNightModeEnabled = self.nightModeCellViewModel!.isNightModeEnabled.value
+            self.sfxManager?.isNightModeEnabled = self.nightModeCellViewModel!.isNightModeEnabled.value
             
             // Save
             self.dataManager?.saveData(dataModel: verionDataModel!)
@@ -504,6 +519,11 @@ class LeftMenuController: UITableViewController {
             } else if indexPath.row == SettingsRows.createAccount.rawValue {
                 let createAccountCell = tableView.dequeueReusableCell(withIdentifier: self.CREATE_ACCOUNT_CELL_REUSE_ID, for: indexPath)
                 return createAccountCell
+            } else if indexPath.row == SettingsRows.nightMode.rawValue {
+                let nightModeCell = tableView.dequeueReusableCell(withIdentifier: self.NIGHT_MODE_CELL_REUSE_ID, for: indexPath) as! NightModeCell
+                nightModeCell.bind(viewModel: self.nightModeCellViewModel!)
+                
+                return nightModeCell
             }
             
         default:

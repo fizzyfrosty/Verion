@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4300A0C21DF0EF0A00497FE4 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4300A0C01DF0EF0A00497FE4 /* ReactiveKit.framework */; };
+		430180DD1E5E70EB00414711 /* NightModeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430180DC1E5E70EB00414711 /* NightModeCell.swift */; };
+		430180DF1E5E70FB00414711 /* NightModeCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430180DE1E5E70FB00414711 /* NightModeCellViewModel.swift */; };
 		430F2F791E358C13001C05EB /* OAuth2Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430F2F781E358C13001C05EB /* OAuth2Handler.swift */; };
 		4310CA401E33ED310060EC90 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4310CA3F1E33ED310060EC90 /* Bond.framework */; };
 		431310961E3455D200275B1F /* SwiftKeychainWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 431310951E3455D200275B1F /* SwiftKeychainWrapper.framework */; };
@@ -250,6 +252,8 @@
 
 /* Begin PBXFileReference section */
 		4300A0C01DF0EF0A00497FE4 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/iOS/ReactiveKit.framework; sourceTree = "<group>"; };
+		430180DC1E5E70EB00414711 /* NightModeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightModeCell.swift; sourceTree = "<group>"; };
+		430180DE1E5E70FB00414711 /* NightModeCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightModeCellViewModel.swift; sourceTree = "<group>"; };
 		430F2F781E358C13001C05EB /* OAuth2Handler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Handler.swift; sourceTree = "<group>"; };
 		4310CA3F1E33ED310060EC90 /* Bond.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bond.framework; path = Carthage/Build/iOS/Bond.framework; sourceTree = "<group>"; };
 		431310951E3455D200275B1F /* SwiftKeychainWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftKeychainWrapper.framework; path = Carthage/Build/iOS/SwiftKeychainWrapper.framework; sourceTree = "<group>"; };
@@ -771,6 +775,8 @@
 				43C8FE081E253D71007FB231 /* FilterLanguageCellViewModel.swift */,
 				43A92D461E3295C7007D6B4F /* LoginCell.swift */,
 				43A92D481E3295D5007D6B4F /* LoginCellViewModel.swift */,
+				430180DC1E5E70EB00414711 /* NightModeCell.swift */,
+				430180DE1E5E70FB00414711 /* NightModeCellViewModel.swift */,
 			);
 			path = LeftMenuVCViews;
 			sourceTree = "<group>";
@@ -1371,6 +1377,7 @@
 				43433D8E1E057C160017FAB0 /* FindSubverseViewController.swift in Sources */,
 				43B0567D1E0D5F88007083E8 /* VerionDataManager.swift in Sources */,
 				43B056D71E0E4691007083E8 /* SpringTextField.swift in Sources */,
+				430180DF1E5E70FB00414711 /* NightModeCellViewModel.swift in Sources */,
 				43B056C81E0E4691007083E8 /* DesignableTextField.swift in Sources */,
 				43433DA81E057E620017FAB0 /* SubmissionImageCellViewModel.swift in Sources */,
 				43B056C61E0E4691007083E8 /* DesignableLabel.swift in Sources */,
@@ -1387,6 +1394,7 @@
 				436D25F01E3322E100FE9ED2 /* LoginController.swift in Sources */,
 				43C8FE031E253D41007FB231 /* UseNsfwThumbnailsCell.swift in Sources */,
 				43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */,
+				430180DD1E5E70EB00414711 /* NightModeCell.swift in Sources */,
 				43B056C71E0E4691007083E8 /* DesignableTabBarController.swift in Sources */,
 				43456AB71E45CE680055165C /* XNGMarkdownParser.m in Sources */,
 				43ABEBAC1E14E68C00458E3D /* InAppPurchaseManager.swift in Sources */,

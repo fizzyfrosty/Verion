@@ -9,6 +9,7 @@
 import UIKit
 
 class SFXManagerDummy: SFXManagerType {
+    var isNightModeEnabled: Bool = false
     func applyShadow(view: UIView) {
         
     }

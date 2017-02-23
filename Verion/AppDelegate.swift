@@ -85,7 +85,7 @@ extension SwinjectStoryboard {
         let mode: OnlineMode = .online
         
         defaultContainer.register(SFXManagerType.self, factory: { _ in
-            SFXManager()
+            SFXManager.sharedInstance
         })
         
         defaultContainer.register(LoginScreenProtocol.self) { resolver in
@@ -145,7 +145,7 @@ extension SwinjectStoryboard {
         defaultContainer.storyboardInitCompleted(FindSubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
-            
+            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
         })
         
         defaultContainer.storyboardInitCompleted(LeftMenuController.self) { (ResolverType, C) in
@@ -153,6 +153,7 @@ extension SwinjectStoryboard {
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             C.inAppPurchaseManager = InAppPurchaseManager.sharedInstance
             C.authHandler = OAuth2Handler.sharedInstance
+            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
         }
         
         defaultContainer.storyboardInitCompleted(LoginController.self) { (ResolverType, C) in

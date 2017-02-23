@@ -15,6 +15,16 @@ class SFXManager: SFXManagerType {
     private let SHADOW_OPACITY: Float = 0.5
     private let SHADOW_RADIUS: CGFloat = 1.5
     
+    var isNightModeEnabled = false
+    
+    static let sharedInstance: SFXManager = {
+        let dataManager = VerionDataManager()
+        let instance = SFXManager()
+        instance.isNightModeEnabled = dataManager.getSavedData().isNightModeEnabled
+        
+        return instance
+    }()
+    
     func applyShadow(view: UIView) {
         // Drop shadow
         view.layer.shadowColor = UIColor.black.cgColor

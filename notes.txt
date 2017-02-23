@@ -13,10 +13,10 @@ View Users
 
 
 Night Mode
-- Choose from side bar
-- Create Light/Dark Mode
-- Create SFXManager singleton, set dark/light mode
-- Inject into each view controller
+* Choose from side bar
+* Create Light/Dark Mode
+* Create SFXManager singleton, set dark/light mode
+* Inject into each view controller
 - Save to data when setting in Left Menu, and set singleton
 - Pass the SFXManager singleton into the binding of each cell
 	- Each cell, extract from sfxManager the light/dark mode

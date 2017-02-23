@@ -20,6 +20,7 @@ class VerionDataModel: NSObject, NSCoding {
         static let versionNumber = "version_number"
         static let blockedUsers = "blocked_users"
         static let isLoggedIn = "is_logged_in"
+        static let isNightModeEnabled = "is_night_mode_on"
     }
     
     var subversesVisited: [String]?
@@ -31,6 +32,7 @@ class VerionDataModel: NSObject, NSCoding {
     var versionNumber: Float = 1.0
     var blockedUsers: Set<String>? = []
     var isLoggedIn: Bool = false
+    var isNightModeEnabled: Bool = false
     
     override init() {
         self.subversesVisited = []
@@ -77,6 +79,9 @@ class VerionDataModel: NSObject, NSCoding {
         
         // Version 1.02
         self.isLoggedIn = aDecoder.decodeBool(forKey: Keys.isLoggedIn)
+        
+        // Version 1.04
+        self.isNightModeEnabled = aDecoder.decodeBool(forKey: Keys.isNightModeEnabled)
     }
     
     func encode(with aCoder: NSCoder) {
@@ -92,6 +97,7 @@ class VerionDataModel: NSObject, NSCoding {
         aCoder.encode(self.blockedUsers, forKey: Keys.blockedUsers)
         
         aCoder.encode(self.isLoggedIn, forKey: Keys.isLoggedIn)
+        aCoder.encode(self.isNightModeEnabled, forKey: Keys.isNightModeEnabled)
     }
     
     
