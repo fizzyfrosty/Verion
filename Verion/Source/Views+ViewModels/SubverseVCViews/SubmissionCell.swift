@@ -32,16 +32,53 @@ class SubmissionCell: UITableViewCell {
     private var bindings: [Disposable] = []
 
     weak var viewModel: SubmissionCellViewModel?
+    weak var sfxManager: SFXManagerType?
     
     let BORDER_WIDTH: CGFloat = 1.0
-    let BORDER_COLOR: CGColor = UIColor(colorLiteralRed: 0.9, green: 0.9, blue: 0.9, alpha: 1.0).cgColor
+    let BORDER_COLOR_LIGHT_MODE: CGColor = UIColor(colorLiteralRed: 0.9, green: 0.9, blue: 0.9, alpha: 1.0).cgColor
+    let BORDER_COLOR_DARK_MODE: CGColor = UIColor(colorLiteralRed: 0.2, green: 0.2, blue: 0.2, alpha: 1.0).cgColor
+    var borderColor: CGColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return BORDER_COLOR_DARK_MODE
+            case false:
+                return BORDER_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    let TEXT_COLOR_LIGHT_MODE = UIColor.darkGray
+    let TEXT_COLOR_DARK_MODE = UIColor.init(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1.0)
+    var txtColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return TEXT_COLOR_DARK_MODE
+            case false:
+                return TEXT_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    let BG_COLOR_LIGHT_MODE = UIColor.white
+    let BG_COLOR_DARK_MODE = UIColor.init(red: 85.0/255.0, green: 85.0/255.0, blue: 85.0/255.0, alpha: 1.0)
+    var bgColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return BG_COLOR_DARK_MODE
+            case false:
+                return BG_COLOR_LIGHT_MODE
+            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
-        self.layer.borderWidth = self.BORDER_WIDTH
-        self.layer.borderColor = self.BORDER_COLOR
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -70,10 +107,13 @@ class SubmissionCell: UITableViewCell {
         }
     }
     
-    func bind(toViewModel viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool) {
+    func bind(toViewModel viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool, sfxManager: SFXManagerType) {
         self.viewModel = viewModel
+        self.sfxManager = sfxManager // for nightMode
+        
         viewModel.resetViewBindings() // TODO: This may not be needed, as all bindings are owned by the setter
         self.resetUI()
+        self.setUIColors()
         
         // Title
         if shouldFilterLanguage == true {
@@ -168,6 +208,14 @@ class SubmissionCell: UITableViewCell {
                 break
             }
         })
+    }
+    
+    private func setUIColors() {
+        self.layer.borderWidth = self.BORDER_WIDTH
+        self.layer.borderColor = self.borderColor
+        
+        self.titleLabel.textColor = self.txtColor
+        self.contentView.backgroundColor = self.bgColor
     }
     
     override func prepareForReuse() {

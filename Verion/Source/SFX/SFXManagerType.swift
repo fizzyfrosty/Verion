@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SFXManagerType{
+protocol SFXManagerType: class{
     
     var isNightModeEnabled: Bool {get set}
     

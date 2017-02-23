@@ -79,7 +79,19 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
     }
     
-    private let NAVIGATION_BG_COLOR: UIColor = UIColor(colorLiteralRed: 95.0/255.0, green: 173.0/255.0, blue: 220.0/255.0, alpha: 1.0)
+    private let NAVIGATION_BG_COLOR_LIGHT: UIColor = UIColor(colorLiteralRed: 95.0/255.0, green: 173.0/255.0, blue: 220.0/255.0, alpha: 1.0)
+    private let NAVIGATION_BG_COLOR_DARK: UIColor = UIColor(colorLiteralRed: 25.0/255.0, green: 25.0/255.0, blue: 25.0/255.0, alpha: 1.0)
+    private var navigationBgColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return NAVIGATION_BG_COLOR_DARK
+            case false:
+                return NAVIGATION_BG_COLOR_LIGHT
+            }
+        }
+    }
+    
     private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 221.0/255.0, green: 242.0/255.0, blue: 255.0/255.0, alpha: 1.0)
     @IBOutlet var navigationBarCenterButton: SpringButton!
     @IBOutlet var navigationBarView: UIView!
@@ -182,9 +194,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.barTintColor = self.NAVIGATION_BG_COLOR
-        self.tableView.backgroundColor = self.BGCOLOR
-        
+        self.setNavigationBarBgColor()
         self.loadPullToRefreshControl()
         self.loadActivityIndicator()
         self.loadSavedData()
@@ -198,6 +208,11 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    private func setNavigationBarBgColor() {
+        self.navigationController?.navigationBar.barTintColor = self.navigationBgColor
+        self.tableView.backgroundColor = self.BGCOLOR
     }
     
     override func viewDidLayoutSubviews() {
@@ -269,7 +284,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         let height: CGFloat = (self.scrollViewContentOffsetY)
         
         self.customRefreshControl?.height = height
-        self.customRefreshControl?.activityIndicatorColor = self.NAVIGATION_BG_COLOR
+        self.customRefreshControl?.activityIndicatorColor = self.navigationBgColor
         self.customRefreshControl?.prepareFrameForShowing()
     }
     
@@ -352,6 +367,13 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             if self.customRefreshControl?.label.text != self.PULL_TO_REFRESH_STRING{
                 self.customRefreshControl?.label.text = self.PULL_TO_REFRESH_STRING
             }
+        }
+    }
+    
+    // public func to reload everything
+    func reloadSubmissions() {
+        self.setNavigationBarBgColor()
+        self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true, animateNavBar: true) {
         }
     }
     
@@ -577,7 +599,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         
         // Create cell if viewModel exists
         let viewModel = self.subCellViewModels[indexPath.section] as SubmissionCellViewModel
-        cell.bind(toViewModel: viewModel, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
+        cell.bind(toViewModel: viewModel, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage, sfxManager: self.sfxManager!)
         
         
         // Create Thumbnail in ViewModel and Attach in Background Queue
@@ -744,7 +766,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
         
         self.activityIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.ACTIVITY_INDICATOR_CELL_REUSE_ID, for: indexPath) as? ActivityIndicatorCell
-        self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH, color: self.NAVIGATION_BG_COLOR)
+        self.activityIndicatorCell?.loadActivityIndicator(length: self.ACTIVITY_INDICATOR_LENGTH, color: self.navigationBgColor)
         
         if startAnimation {
             self.activityIndicatorCell?.showActivityIndicator()

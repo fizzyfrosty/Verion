@@ -10,12 +10,20 @@ import UIKit
 import Bond
 import ReactiveKit
 
+protocol NightModeCellDelegate: class {
+    func nightModeCellDidChangeMode(_ cell: NightModeCell, enabled: Bool)
+}
+
 class NightModeCell: UITableViewCell {
 
+    weak var delegate: NightModeCellDelegate?
+    weak var viewModel: NightModeCellViewModel?
     
     @IBOutlet var nightModeSwitch: UISwitch!
-    private var bindings: [Disposable] = []
-    
+    @IBAction func nightModeChanged(_ sender: UISwitch) {
+        self.viewModel?.isNightModeEnabled.value = sender.isOn
+        self.delegate?.nightModeCellDidChangeMode(self, enabled: self.viewModel!.isNightModeEnabled.value)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,23 +37,8 @@ class NightModeCell: UITableViewCell {
     }
     
     func bind(viewModel: NightModeCellViewModel) {
-        
+        self.viewModel = viewModel
         self.nightModeSwitch.isOn = viewModel.isNightModeEnabled.value
-        self.bindings.append( self.nightModeSwitch.bnd_isOn.observeNext(with: { (isEnabled) in
-            viewModel.isNightModeEnabled.value = isEnabled
-        }))
-    }
-    
-    override func prepareForReuse() {
-        self.resetBindings()
-    }
-    
-    private func resetBindings() {
-        for binding in self.bindings {
-            binding.dispose()
-        }
-        
-        self.bindings.removeAll()
     }
 
 }

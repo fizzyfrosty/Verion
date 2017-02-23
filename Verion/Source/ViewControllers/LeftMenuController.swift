@@ -18,6 +18,7 @@ protocol LeftMenuControllerDelegate: class {
     func leftMenuDidPressFindSubverse(leftMenu: LeftMenuController)
     func leftMenuDidPressLogin(leftMenu: LeftMenuController)
     func leftMenuDidLogOut(leftMenu: LeftMenuController)
+    func leftMenuDidSetNightMode(leftMenu: LeftMenuController)
 }
 
 class LeftMenuController: UITableViewController {
@@ -357,7 +358,6 @@ class LeftMenuController: UITableViewController {
             // Settings
             verionDataModel?.isLoggedIn = self.loginCellViewModel!.isLoggedIn.value
             verionDataModel?.isNightModeEnabled = self.nightModeCellViewModel!.isNightModeEnabled.value
-            self.sfxManager?.isNightModeEnabled = self.nightModeCellViewModel!.isNightModeEnabled.value
             
             // Save
             self.dataManager?.saveData(dataModel: verionDataModel!)
@@ -522,6 +522,7 @@ class LeftMenuController: UITableViewController {
             } else if indexPath.row == SettingsRows.nightMode.rawValue {
                 let nightModeCell = tableView.dequeueReusableCell(withIdentifier: self.NIGHT_MODE_CELL_REUSE_ID, for: indexPath) as! NightModeCell
                 nightModeCell.bind(viewModel: self.nightModeCellViewModel!)
+                nightModeCell.delegate = self
                 
                 return nightModeCell
             }
@@ -987,7 +988,12 @@ extension LeftMenuController {
 
 // MARK: - Settings
 
-extension LeftMenuController {
+extension LeftMenuController: NightModeCellDelegate {
+    
+    func nightModeCellDidChangeMode(_ cell: NightModeCell, enabled: Bool) {
+        self.sfxManager?.isNightModeEnabled = enabled
+        self.notifyDelegateDidSetNightMode()
+    }
     
     fileprivate func createAccount() {
         let registerUrl = URL.init(string: "https://voat.co/account/register")
@@ -1047,6 +1053,16 @@ extension LeftMenuController {
     fileprivate func notifyDelegateDidPressLogin() {
         if let _ = self.delegate?.leftMenuDidPressLogin(leftMenu: self) {
             // success, do nothing
+        } else {
+            #if DEBUG
+                print("Warning: Left Menu Controller's delegate may not be set.")
+            #endif
+        }
+    }
+    
+    fileprivate func notifyDelegateDidSetNightMode() {
+        if let _ = self.delegate?.leftMenuDidSetNightMode(leftMenu: self) {
+            // Success, do nothing
         } else {
             #if DEBUG
                 print("Warning: Left Menu Controller's delegate may not be set.")

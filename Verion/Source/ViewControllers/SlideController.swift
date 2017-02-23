@@ -137,4 +137,8 @@ extension SlideController: LeftMenuControllerDelegate {
             
         }
     }
+    
+    func leftMenuDidSetNightMode(leftMenu: LeftMenuController) {
+        self.subverseController?.reloadSubmissions()
+    }
 }
