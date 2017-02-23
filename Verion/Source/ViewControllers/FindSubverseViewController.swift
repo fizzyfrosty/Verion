@@ -24,13 +24,26 @@ class FindSubverseViewController: UITableViewController {
     var dataProvider: DataProviderType?
     var analyticsManager: AnalyticsManagerProtocol?
     var sfxManager: SFXManager?
+    
+    private let BGCOLOR_LIGHT_MODE: UIColor = UIColor(colorLiteralRed: 221.0/255.0, green: 242.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+    private let BGCOLOR_DARK_MODE: UIColor = UIColor(colorLiteralRed: 120.0/255.0, green: 120.0/255.0, blue: 120.0/255.0, alpha: 1.0)
+    private var bgColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return BGCOLOR_DARK_MODE
+            case false:
+                return BGCOLOR_LIGHT_MODE
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationController?.navigationBar.tintColor = UIColor.white
         self.searchController.searchBar.placeholder = self.PLACEHOLDER_TEXT
-        
+        self.tableView.backgroundColor = self.bgColor
 
         // Set up search bar
         self.setupSearchController()
@@ -150,7 +163,7 @@ class FindSubverseViewController: UITableViewController {
         
         let subverseSearchResultCellVm = self.filteredSubverseSearchResultViewModels[indexPath.row]
         
-        subverseSearchResultCell.bind(toViewModel: subverseSearchResultCellVm)
+        subverseSearchResultCell.bind(toViewModel: subverseSearchResultCellVm, sfxManager: self.sfxManager!)
         
         return subverseSearchResultCell
     }

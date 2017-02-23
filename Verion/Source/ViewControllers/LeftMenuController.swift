@@ -117,9 +117,10 @@ class LeftMenuController: UITableViewController {
     // Settings section
     private let SETTINGS_SECTION_TITLE = "    Settings"
     enum SettingsRows: Int {
-        case login = 0
-        case createAccount = 1
-        case nightMode = 2
+        case nightMode = 0
+        case login = 1
+        case createAccount = 2
+        
         static let allValues = [login, createAccount, nightMode]
     }
     private let LOGIN_CELL_REUSE_ID = "LoginCell"

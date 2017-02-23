@@ -237,6 +237,7 @@
 		43F9A04F1DEA3C26001EB1FC /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
 		43F9A0501DEA3C26001EB1FC /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */; };
 		43FB6D601E5E9E6100615C19 /* SubmissionLoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB6D5F1E5E9E6100615C19 /* SubmissionLoadMoreCell.swift */; };
+		43FB6D721E5EF15400615C19 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB6D711E5EF15400615C19 /* Reachability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -494,6 +495,8 @@
 		43F9A04D1DEA3C26001EB1FC /* Swinject.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Swinject.framework; path = Carthage/Build/iOS/Swinject.framework; sourceTree = "<group>"; };
 		43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwinjectStoryboard.framework; path = Carthage/Build/iOS/SwinjectStoryboard.framework; sourceTree = "<group>"; };
 		43FB6D5F1E5E9E6100615C19 /* SubmissionLoadMoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionLoadMoreCell.swift; sourceTree = "<group>"; };
+		43FB6D701E5EF15400615C19 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		43FB6D711E5EF15400615C19 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -793,6 +796,7 @@
 		43B056821E0E4691007083E8 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				43FB6D6F1E5EF15400615C19 /* Reachability */,
 				43456AAD1E45CE680055165C /* XNGMarkdown */,
 				43A33DB81E36B1780032D7A7 /* Appodeal */,
 				43829EF51E25B09500754AF3 /* GoshDarnIt */,
@@ -1086,6 +1090,15 @@
 			path = ../Storyboards;
 			sourceTree = "<group>";
 		};
+		43FB6D6F1E5EF15400615C19 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				43FB6D701E5EF15400615C19 /* Reachability.h */,
+				43FB6D711E5EF15400615C19 /* Reachability.swift */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1328,6 +1341,7 @@
 				43433D7F1E03C8290017FAB0 /* CellHeightCalculator.swift in Sources */,
 				43C8FE091E253D71007FB231 /* FilterLanguageCellViewModel.swift in Sources */,
 				43B057141E0E77A7007083E8 /* SubverseSearchResultDataModelV1.swift in Sources */,
+				43FB6D721E5EF15400615C19 /* Reachability.swift in Sources */,
 				43B0E6651E47E1A4001A0BEB /* NativeAdViewController.swift in Sources */,
 				43B056D11E0E4691007083E8 /* SoundPlayer.swift in Sources */,
 				437644351E22511000EE64A7 /* CommentDataSegmentV1.swift in Sources */,

@@ -28,7 +28,7 @@ class SFXManager {
         }
     }
     
-    private let TEXT_COLOR_LIGHT_MODE = UIColor.black
+    private let TEXT_COLOR_LIGHT_MODE = UIColor.init(red: 60.0/255.0, green: 60.0/255.0, blue: 60.0/255.0, alpha: 1.0)
     private let TEXT_COLOR_DARK_MODE = UIColor.init(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1.0)
     var textColor: UIColor {
         get {
@@ -50,6 +50,19 @@ class SFXManager {
                 return LINK_COLOR_DARK_MODE
             case false:
                 return LINK_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    private let VOTE_COLOR_LIGHT_MODE = UIColor.init(red: 238.0/255.0, green: 138.0/255.0, blue: 3.0/255.0, alpha: 1.0)
+    private let VOTE_COLOR_DARK_MODE = UIColor.init(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1.0)
+    var voteCountColor: UIColor {
+        get {
+            switch self.isNightModeEnabled {
+            case true:
+                return VOTE_COLOR_LIGHT_MODE//VOTE_COLOR_DARK_MODE
+            case false:
+                return VOTE_COLOR_LIGHT_MODE
             }
         }
     }

@@ -27,19 +27,22 @@ Night Mode
 	* Submission Cells
 	* Comment Cells
 	* Ads
-	- Submit Comment UI
+	* Submit Comment UI
+	Find Subverse View Controller
+	* Cells
+
+* Add Username and Vote count colors to Submission Cells
 
 
 Preload Ad Immediately after showing
-- On CommentsViewController, after retrieving preloaded native ad, immediately begin to preload the next ad
-
+* On CommentsViewController, after retrieving preloaded native ad, immediately begin to preload the next ad
 
 
 Refresh Token: refresh on app coming back
-- In AppDelegate, when resuming app, attempt to refresh token.
-- It is OK to automatically bring up login prompt if not logged in.
-- Call the OAuth2Handler singleton to refresh token?
-- Create a public function to refresh, call the private refreshTokens() function
+* In AppDelegate, when resuming app, attempt to refresh token.
+* It is OK to automatically bring up login prompt if not logged in.
+* Call the OAuth2Handler singleton to refresh token?
+* Create a public function to refresh, call the private refreshTokens() function
 
 
 

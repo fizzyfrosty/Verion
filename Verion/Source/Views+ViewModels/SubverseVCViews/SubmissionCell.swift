@@ -56,7 +56,26 @@ class SubmissionCell: UITableViewCell {
     
     var bgColor: UIColor {
         get {
-            return sfxManager!.bgColor1
+            return self.sfxManager!.bgColor1
+        }
+    }
+    
+    var voteCountColor: UIColor {
+        get {
+            return self.sfxManager!.voteCountColor
+        }
+    }
+    
+    private let USERNAME_COLOR_LIGHT_MODE = UIColor.init(red: 86.0/255.0, green: 82.0/255.0, blue: 130.0/255.0, alpha: 1.0)
+    var usernameColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return self.sfxManager!.linkColor
+            case false:
+                return USERNAME_COLOR_LIGHT_MODE
+            }
+            
         }
     }
     
@@ -204,10 +223,10 @@ class SubmissionCell: UITableViewCell {
         self.contentView.backgroundColor = self.bgColor
         
         self.commentLabel.textColor = self.txtColor
-        self.submittedByUserLabel.textColor = self.txtColor
+        self.submittedByUserLabel.textColor = self.usernameColor
         self.submittedToSubverseLabel.textColor = self.txtColor
         self.thumbnailLabel.textColor = self.txtColor
-        self.voteCountLabel.textColor = self.txtColor
+        self.voteCountLabel.textColor = self.voteCountColor
         self.voteSeparatedCountLabel.textColor = self.txtColor
     }
     

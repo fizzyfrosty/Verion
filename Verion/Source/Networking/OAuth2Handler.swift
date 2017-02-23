@@ -80,7 +80,7 @@ class OAuth2Handler: RequestAdapter, RequestRetrier {
             requestsToRetry.append(completion)
             
             #if DEBUG
-            print("Refresh Token Response Status Code: \(response.statusCode)")
+            print("AccessToken failed or expired. Response Status Code: \(response.statusCode)")
             #endif
             
             if !isRefreshing {
@@ -103,8 +103,15 @@ class OAuth2Handler: RequestAdapter, RequestRetrier {
         }
     }
     
-    // MARK: - Private - Refresh Tokens
+    func refreshTokensManually() {
+        #if DEBUG
+        print("Initiating manual token refresh.")
+        #endif
+        self.refreshTokens { (succeeded, accessToken, refreshToken) in
+        }
+    }
     
+    // MARK: - Private - Refresh Tokens
     private func refreshTokens(completion: @escaping RefreshCompletion) {
         guard !isRefreshing else { return }
         
@@ -121,7 +128,7 @@ class OAuth2Handler: RequestAdapter, RequestRetrier {
         ]
         
         #if DEBUG
-            print("Access Token expired. Refreshing token...")
+            print("Refreshing token...")
         #endif
         
         sessionManager.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.default)

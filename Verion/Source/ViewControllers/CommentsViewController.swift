@@ -157,10 +157,14 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             self.commentsSectionNumber = self.adSectionNumber + 1
             self.numOfSectionsBeforeComments = 2
             
-            // FIXME: Set didShowAd to true, and call AdManager.preloadNativeAd()
-            if let nativeAd = self.adManager?.getNativeAd() {
+            
+            if let nativeAd = self.adManager?.getNativeAdAndRemove() {
                 // Success, do nothing
                 self.nativeAd = nativeAd
+                
+                // Preload for next viewing
+                self.adManager?.isNativeAdShown = true
+                self.adManager?.preloadNativeAd()
             } else {
                 // Native Ad failed, get banner ad
                 _ = self.adManager?.getBannerAd(rootViewController: self)
@@ -751,8 +755,6 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 
                 // We must attach after it is added
                 self.nativeAdController.attachNativeAd(toParentView: adCell.contentView, inViewController: self)
-                self.adManager?.isNativeAdShown = true
- 
                 
             } else {
                 // Use banners

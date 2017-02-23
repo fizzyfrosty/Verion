@@ -62,6 +62,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        
+        // Check internet access
+        let reachability = Reachability()!
+        reachability.whenReachable = { reachability in
+            // this is called on a background thread, but UI updates must
+            // be on the main thread, like this:
+            
+            let refreshClosure = {
+                // Refresh Refresh Tokens if logged in.
+                if OAuth2Handler.sharedInstance.accessToken != "" {
+                    OAuth2Handler.sharedInstance.refreshTokensManually()
+                }
+            }
+            
+            DispatchQueue.main.async {
+                if reachability.isReachableViaWiFi {
+                    #if DEBUG
+                    print("Reachable via WiFi")
+                    #endif
+                    
+                    refreshClosure()
+                } else {
+                    #if DEBUG
+                    print("Reachable via Cellular")
+                    #endif
+                    
+                    refreshClosure()
+                }
+            }
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            #if DEBUG
+            print("Unable to start notifier")
+            #endif
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

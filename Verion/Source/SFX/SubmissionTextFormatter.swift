@@ -13,7 +13,7 @@ class SubmissionTextFormatter {
     // "by username" string
     func createSubmittedByUsernameString(username: String, fontSize: CGFloat) -> NSMutableAttributedString {
         let attrString = NSMutableAttributedString()
-        _ = attrString.normal(text: "by ").bold(text: username, fontSize: fontSize)
+        _ = attrString.normal(text: "").bold(text: username, fontSize: fontSize)
         return attrString
     }
     

@@ -57,16 +57,9 @@ class SubmissionTitleCell: UITableViewCell {
         }
     }
     
-    private let VOTE_COLOR_LIGHT_MODE = UIColor.init(red: 238.0/255.0, green: 138.0/255.0, blue: 3.0/255.0, alpha: 1.0)
-    private let VOTE_COLOR_DARK_MODE = UIColor.init(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1.0)
     private var voteCountColor: UIColor {
         get {
-            switch self.sfxManager!.isNightModeEnabled {
-            case true:
-                return VOTE_COLOR_LIGHT_MODE//VOTE_COLOR_DARK_MODE
-            case false:
-                return VOTE_COLOR_LIGHT_MODE
-            }
+            return self.sfxManager!.voteCountColor
         }
     }
     

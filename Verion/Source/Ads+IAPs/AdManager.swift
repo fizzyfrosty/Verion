@@ -135,7 +135,7 @@ class AdManager: NSObject {
         
     }
     
-    func getNativeAd() -> APDNativeAd? {
+    func getNativeAdAndRemove() -> APDNativeAd? {
         var nativeAd: APDNativeAd?
         
         switch self.adServiceType {
@@ -148,6 +148,9 @@ class AdManager: NSObject {
             // unsupported
             break
         }
+        
+        // Reset native ad
+        self.apdNativeAd = nil
         
         return nativeAd
     }
