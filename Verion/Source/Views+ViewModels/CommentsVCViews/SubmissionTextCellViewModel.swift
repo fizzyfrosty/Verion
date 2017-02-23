@@ -10,6 +10,7 @@ import UIKit
 
 class SubmissionTextCellViewModel {
     
+    
     var textString = "" {
         didSet {
             if textString == "" {
@@ -41,7 +42,7 @@ class SubmissionTextCellViewModel {
     }
 
     private func getCellHeight(text: NSAttributedString) -> CGFloat {
-        let margins: CGFloat = 26.0
+        let margins: CGFloat = 30.0
         let width = UIScreen.main.bounds.width - margins
         
         let titleSize = CellHeightCalculator.sizeForAttributedText(text: text, maxSize: CGSize(width: width, height: self.MAX_CELL_HEIGHT))

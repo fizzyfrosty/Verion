@@ -92,7 +92,18 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         }
     }
     
-    private let BGCOLOR: UIColor = UIColor(colorLiteralRed: 221.0/255.0, green: 242.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+    private let BGCOLOR_LIGHT_MODE: UIColor = UIColor(colorLiteralRed: 221.0/255.0, green: 242.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+    private let BGCOLOR_DARK_MODE: UIColor = UIColor(colorLiteralRed: 120.0/255.0, green: 120.0/255.0, blue: 120.0/255.0, alpha: 1.0)
+    private var bgColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return BGCOLOR_DARK_MODE
+            case false:
+                return BGCOLOR_LIGHT_MODE
+            }
+        }
+    }
     @IBOutlet var navigationBarCenterButton: SpringButton!
     @IBOutlet var navigationBarView: UIView!
     
@@ -109,7 +120,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     
     // Dependencies
-    var sfxManager: SFXManagerType?
+    var sfxManager: SFXManager?
     var dataProvider: DataProviderType!
     var dataManager: DataManagerProtocol?
     var analyticsManager: AnalyticsManagerProtocol?
@@ -212,7 +223,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
     
     private func setNavigationBarBgColor() {
         self.navigationController?.navigationBar.barTintColor = self.navigationBgColor
-        self.tableView.backgroundColor = self.BGCOLOR
+        self.tableView.backgroundColor = self.bgColor
+        self.customRefreshControl?.activityIndicatorColor = self.navigationBgColor
     }
     
     override func viewDidLayoutSubviews() {
@@ -583,9 +595,10 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             
             // If not loading, show load more cells
             if self.isLoadingRequest == false {
-                let loadMoreCell = tableView.dequeueReusableCell(withIdentifier: "LoadMoreCell")
+                let loadMoreCell = tableView.dequeueReusableCell(withIdentifier: "LoadMoreCell", for: indexPath) as! SubmissionLoadMoreCell
+                loadMoreCell.bind(sfxManager: self.sfxManager!)
                 
-                return loadMoreCell!
+                return loadMoreCell
             } else {
                 // If loading, show activity indicator
                 let activityIndicatorCell = self.getActivityIndicatorCell(forIndexPath: indexPath, startAnimation: true)
@@ -834,7 +847,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             if let commentsViewController = segue.destination as? CommentsViewController {
                 commentsViewController.submissionDataModel = self.subCellViewModels[self.selectedIndex].dataModel
                 commentsViewController.submissionCellViewModel = self.subCellViewModels[self.selectedIndex]
-                commentsViewController.backgroundColor = self.BGCOLOR
+                commentsViewController.backgroundColor = self.bgColor
             }
             
         } else if segue.identifier == self.FIND_SUBVERSE_SEGUE_IDENTIFIER {

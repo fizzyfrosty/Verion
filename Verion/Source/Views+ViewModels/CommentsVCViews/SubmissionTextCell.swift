@@ -10,6 +10,15 @@ import UIKit
 
 class SubmissionTextCell: UITableViewCell {
     @IBOutlet var textView: UITextView!
+    
+    private var bgColor: UIColor {
+        get {
+            return sfxManager!.bgColor1
+        }
+    }
+    
+    private weak var sfxManager: SFXManager?
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,7 +32,11 @@ class SubmissionTextCell: UITableViewCell {
         self.textView.isScrollEnabled = false
     }
     
-    func bind(toViewModel viewModel: SubmissionTextCellViewModel, shouldFilterLanguage: Bool) {
+    func bind(toViewModel viewModel: SubmissionTextCellViewModel, shouldFilterLanguage: Bool, sfxManager: SFXManager) {
+        self.sfxManager = sfxManager
+        self.setUIColors()
+        
+        
         if shouldFilterLanguage == true {
             self.textView.attributedText = viewModel.attributedTextString?.censored()
         } else {
@@ -31,4 +44,8 @@ class SubmissionTextCell: UITableViewCell {
         }
     }
 
+    private func setUIColors() {
+        self.contentView.backgroundColor = self.bgColor
+        self.textView.backgroundColor = self.bgColor
+    }
 }

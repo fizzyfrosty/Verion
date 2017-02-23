@@ -17,6 +17,8 @@ protocol CommentsSortByCellDelegate: class {
 }
 
 class CommentsSortByCell: UITableViewCell {
+    @IBOutlet var topDivider: UIView!
+    @IBOutlet var bottomDivider: UIView!
 
     @IBOutlet var sortByButton: UIButton!
     
@@ -42,6 +44,31 @@ class CommentsSortByCell: UITableViewCell {
         self.notifyDelegateDidPressComment(sender: sender)
     }
     
+    private let BG_COLOR_LIGHT_MODE = UIColor.white
+    private let BG_COLOR_DARK_MODE = UIColor.init(red: 55.0/255.0, green: 55.0/255.0, blue: 55.0/255.0, alpha: 1.0)
+    private var bgColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return BG_COLOR_DARK_MODE
+            case false:
+                return BG_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    private let DIVIDER_COLOR_LIGHT_MODE = UIColor.lightGray
+    private let DIVIDER_COLOR_DARK_MODE = UIColor.black
+    private var dividerBgColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return DIVIDER_COLOR_DARK_MODE
+            case false:
+                return DIVIDER_COLOR_LIGHT_MODE
+            }
+        }
+    }
     
     private var bindings: [Disposable] = []
     var viewModel: CommentsSortByCellViewModel?
@@ -51,6 +78,7 @@ class CommentsSortByCell: UITableViewCell {
     
     // Delegate for sorting by view controller
     weak var delegate: CommentsSortByCellDelegate?
+    private weak var sfxManager: SFXManager?
     
     @IBAction func sortByTouched(_ sender: UIButton) {
         
@@ -120,11 +148,13 @@ class CommentsSortByCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func bind(toViewModel viewModel: CommentsSortByCellViewModel, submissionCellViewModel: SubmissionCellViewModel) {
+    func bind(toViewModel viewModel: CommentsSortByCellViewModel, submissionCellViewModel: SubmissionCellViewModel, sfxManager: SFXManager) {
+        self.sfxManager = sfxManager
         self.viewModel = viewModel
         self.viewModel?.resetViewBindings()
         
         self.resetUI()
+        self.setUIColors()
         
         // Bind the viewModel to the button's title
         viewModel.viewBindings.append( viewModel.sortType.observeNext() { [weak self] sortTypeComment in
@@ -134,6 +164,12 @@ class CommentsSortByCell: UITableViewCell {
         
         // Bind to User-input events
         self.setVotingButtonsBindings(forViewModel: submissionCellViewModel)
+    }
+    
+    private func setUIColors() {
+        self.contentView.backgroundColor = self.bgColor
+        self.topDivider.backgroundColor = self.dividerBgColor
+        self.bottomDivider.backgroundColor = self.dividerBgColor
     }
     
     private func setVotingButtonsBindings(forViewModel viewModel: SubmissionCellViewModel) {

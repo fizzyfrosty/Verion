@@ -228,8 +228,6 @@
 		43F675251DF20078001F83BE /* DataProviderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F675161DF20078001F83BE /* DataProviderType.swift */; };
 		43F675261DF20078001F83BE /* OfflineDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F675171DF20078001F83BE /* OfflineDataProvider.swift */; };
 		43F675271DF20078001F83BE /* SFXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F675191DF20078001F83BE /* SFXManager.swift */; };
-		43F675281DF20078001F83BE /* SFXManagerDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6751A1DF20078001F83BE /* SFXManagerDummy.swift */; };
-		43F675291DF20078001F83BE /* SFXManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6751B1DF20078001F83BE /* SFXManagerType.swift */; };
 		43F6752A1DF20078001F83BE /* SubverseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6751D1DF20078001F83BE /* SubverseViewController.swift */; };
 		43F6752B1DF20078001F83BE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6751E1DF20078001F83BE /* TabBarController.swift */; };
 		43F675301DF2050B001F83BE /* SubCellViewModelDataModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6752F1DF2050B001F83BE /* SubCellViewModelDataModelTest.swift */; };
@@ -238,6 +236,7 @@
 		43F9A0421DEA3AE0001EB1FC /* VerionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F9A0411DEA3AE0001EB1FC /* VerionTests.swift */; };
 		43F9A04F1DEA3C26001EB1FC /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04D1DEA3C26001EB1FC /* Swinject.framework */; };
 		43F9A0501DEA3C26001EB1FC /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */; };
+		43FB6D601E5E9E6100615C19 /* SubmissionLoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB6D5F1E5E9E6100615C19 /* SubmissionLoadMoreCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -482,8 +481,6 @@
 		43F675161DF20078001F83BE /* DataProviderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProviderType.swift; sourceTree = "<group>"; };
 		43F675171DF20078001F83BE /* OfflineDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfflineDataProvider.swift; sourceTree = "<group>"; };
 		43F675191DF20078001F83BE /* SFXManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFXManager.swift; sourceTree = "<group>"; };
-		43F6751A1DF20078001F83BE /* SFXManagerDummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFXManagerDummy.swift; sourceTree = "<group>"; };
-		43F6751B1DF20078001F83BE /* SFXManagerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFXManagerType.swift; sourceTree = "<group>"; };
 		43F6751D1DF20078001F83BE /* SubverseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubverseViewController.swift; sourceTree = "<group>"; };
 		43F6751E1DF20078001F83BE /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		43F6752F1DF2050B001F83BE /* SubCellViewModelDataModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCellViewModelDataModelTest.swift; sourceTree = "<group>"; };
@@ -496,6 +493,7 @@
 		43F9A0431DEA3AE0001EB1FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43F9A04D1DEA3C26001EB1FC /* Swinject.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Swinject.framework; path = Carthage/Build/iOS/Swinject.framework; sourceTree = "<group>"; };
 		43F9A04E1DEA3C26001EB1FC /* SwinjectStoryboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwinjectStoryboard.framework; path = Carthage/Build/iOS/SwinjectStoryboard.framework; sourceTree = "<group>"; };
+		43FB6D5F1E5E9E6100615C19 /* SubmissionLoadMoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionLoadMoreCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -613,6 +611,7 @@
 			children = (
 				43433DA01E057E620017FAB0 /* SubmissionCell.swift */,
 				43433DA11E057E620017FAB0 /* SubmissionCellViewModel.swift */,
+				43FB6D5F1E5E9E6100615C19 /* SubmissionLoadMoreCell.swift */,
 			);
 			path = SubverseVCViews;
 			sourceTree = "<group>";
@@ -951,8 +950,6 @@
 			isa = PBXGroup;
 			children = (
 				43F675191DF20078001F83BE /* SFXManager.swift */,
-				43F6751A1DF20078001F83BE /* SFXManagerDummy.swift */,
-				43F6751B1DF20078001F83BE /* SFXManagerType.swift */,
 				4375BFC31DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift */,
 				43433D7C1E02B8750017FAB0 /* SubmissionTextFormatter.swift */,
 				43433D7E1E03C8290017FAB0 /* CellHeightCalculator.swift */,
@@ -1362,13 +1359,11 @@
 				431C63A11E3BCD7B00F5236C /* OAuthSwiftAuthenticator.swift in Sources */,
 				43433DC11E05A0040017FAB0 /* SubverseSearchResultDataModelLegacy.swift in Sources */,
 				43456AB81E45CE680055165C /* XNGMarkdownTokenizer.m in Sources */,
-				43F675281DF20078001F83BE /* SFXManagerDummy.swift in Sources */,
 				43B056BB1E0E4691007083E8 /* FLAnimatedImage.m in Sources */,
 				4375BFC81DF3EDC300576CC6 /* Delayer.swift in Sources */,
 				4375BFC41DF3614E00576CC6 /* NSMutableAttributedString+Bold.swift in Sources */,
 				43456AB91E45CE680055165C /* XNGMarkdownTokens.m in Sources */,
 				43F9A02D1DEA3AE0001EB1FC /* AppDelegate.swift in Sources */,
-				43F675291DF20078001F83BE /* SFXManagerType.swift in Sources */,
 				43433DA21E057E620017FAB0 /* ActivityIndicatorCell.swift in Sources */,
 				43433DAB1E057E620017FAB0 /* SubmissionTextCell.swift in Sources */,
 				43A92D491E3295D5007D6B4F /* LoginCellViewModel.swift in Sources */,
@@ -1386,6 +1381,7 @@
 				431C63A31E3BCE5D00F5236C /* LoginScreenProtocol.swift in Sources */,
 				43B056691E0D21F4007083E8 /* LeftMenuController.swift in Sources */,
 				43A359421E06681E006994F3 /* CommentDataModelLegacy.swift in Sources */,
+				43FB6D601E5E9E6100615C19 /* SubmissionLoadMoreCell.swift in Sources */,
 				4375BFC61DF3737F00576CC6 /* SubmissionType.swift in Sources */,
 				43B056D21E0E4691007083E8 /* Spring.swift in Sources */,
 				43B056701E0D3FA0007083E8 /* SubverseCellViewModel.swift in Sources */,

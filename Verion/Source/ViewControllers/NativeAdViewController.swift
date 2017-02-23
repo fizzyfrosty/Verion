@@ -14,6 +14,7 @@ class NativeAdViewController: UIViewController {
     
     @IBOutlet var imageView: UIImageView!
     
+    @IBOutlet var sponsoredLabel: UILabel!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var subtitleLabel: UILabel!
     @IBOutlet var actionLabel: UILabel!
@@ -23,6 +24,20 @@ class NativeAdViewController: UIViewController {
     
     @IBOutlet var callToActionButtonWidth: NSLayoutConstraint!
     
+    private var bgColor: UIColor {
+        get {
+            return self.sfxManager!.bgColor1
+        }
+    }
+    
+    private var titleColor: UIColor {
+        get {
+            return self.sfxManager!.titleColor
+        }
+    }
+    
+    // Dependencies
+    var sfxManager: SFXManager?
     
     // Native ad is basically a viewmodel for our ad elements, needs to be set externally
     var nativeAd: APDNativeAd? {
@@ -42,6 +57,12 @@ class NativeAdViewController: UIViewController {
                 }
                 callToActionButtonWidth.constant = buttonWidth
                 
+                // BG Color
+                self.titleLabel.textColor = self.titleColor
+                self.subtitleLabel.textColor = self.titleColor
+                self.adChoiceView.backgroundColor = self.bgColor
+                self.sponsoredLabel.textColor = self.titleColor
+                
                 // Image
                 self.imageView.layer.borderWidth = 1.0
                 self.imageView.layer.borderColor = UIColor.black.cgColor
@@ -54,7 +75,7 @@ class NativeAdViewController: UIViewController {
                 
                 self.loadAdChoiceView(view: nativeAd!.adChoicesView)
                 
-                self.backgroundView.backgroundColor = UIColor.white
+                self.backgroundView.backgroundColor = self.bgColor
                 nativeAd!.attach(to: self.backgroundView, viewController: self)
             }
         }

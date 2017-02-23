@@ -143,7 +143,7 @@ class LeftMenuController: UITableViewController {
     var analyticsManager: AnalyticsManagerProtocol?
     var inAppPurchaseManager: InAppPurchaseManager?
     var authHandler: OAuth2Handler?
-    var sfxManager: SFXManagerType?
+    var sfxManager: SFXManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()

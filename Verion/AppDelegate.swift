@@ -84,10 +84,6 @@ extension SwinjectStoryboard {
         // FIXME: Set Offline or Online mode here before running
         let mode: OnlineMode = .online
         
-        defaultContainer.register(SFXManagerType.self, factory: { _ in
-            SFXManager.sharedInstance
-        })
-        
         defaultContainer.register(LoginScreenProtocol.self) { resolver in
             
             switch mode {
@@ -126,7 +122,7 @@ extension SwinjectStoryboard {
         }
         
         defaultContainer.storyboardInitCompleted(SubverseViewController.self, initCompleted: { (ResolverType, C) in
-            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+            C.sfxManager = SFXManager.sharedInstance
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
@@ -134,7 +130,7 @@ extension SwinjectStoryboard {
         })
         
         defaultContainer.storyboardInitCompleted(CommentsViewController.self, initCompleted: { (ResolverType, C) in
-            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+            C.sfxManager = SFXManager.sharedInstance
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             C.dataManager = ResolverType.resolve(DataManagerProtocol.self)!
@@ -145,7 +141,7 @@ extension SwinjectStoryboard {
         defaultContainer.storyboardInitCompleted(FindSubverseViewController.self, initCompleted: { (ResolverType, C) in
             C.dataProvider = ResolverType.resolve(DataProviderType.self)!
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
-            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+            C.sfxManager = SFXManager.sharedInstance
         })
         
         defaultContainer.storyboardInitCompleted(LeftMenuController.self) { (ResolverType, C) in
@@ -153,7 +149,7 @@ extension SwinjectStoryboard {
             C.analyticsManager = ResolverType.resolve(AnalyticsManagerProtocol.self)!
             C.inAppPurchaseManager = InAppPurchaseManager.sharedInstance
             C.authHandler = OAuth2Handler.sharedInstance
-            C.sfxManager = ResolverType.resolve(SFXManagerType.self)!
+            C.sfxManager = SFXManager.sharedInstance
         }
         
         defaultContainer.storyboardInitCompleted(LoginController.self) { (ResolverType, C) in
@@ -162,6 +158,11 @@ extension SwinjectStoryboard {
         
         defaultContainer.storyboardInitCompleted(ComposeCommentViewController.self) { (Resolver, controller) in
             controller.dataProvider = Resolver.resolve(DataProviderType.self)!
+            controller.sfxManager = SFXManager.sharedInstance
+        }
+        
+        defaultContainer.storyboardInitCompleted(NativeAdViewController.self) { (Resolver, controller) in
+            controller.sfxManager = SFXManager.sharedInstance
         }
     }
 }

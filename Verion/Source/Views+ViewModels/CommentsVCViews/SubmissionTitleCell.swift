@@ -16,6 +16,75 @@ class SubmissionTitleCell: UITableViewCell {
     @IBOutlet var separatedVoteCountLabel: UILabel!
     @IBOutlet var userLabel: UILabel!
     @IBOutlet var timeAndSubverseLabel: UILabel!
+    @IBOutlet var bottomDivider: UIView!
+    
+    
+    private let BG_COLOR_LIGHT_MODE = UIColor.white
+    private let BG_COLOR_DARK_MODE = UIColor.init(red: 55.0/255.0, green: 55.0/255.0, blue: 55.0/255.0, alpha: 1.0)
+    private var bgColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return BG_COLOR_DARK_MODE
+            case false:
+                return BG_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    private let DIVIDER_COLOR_LIGHT_MODE = UIColor.lightGray
+    private let DIVIDER_COLOR_DARK_MODE = UIColor.black
+    private var dividerBgColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return DIVIDER_COLOR_DARK_MODE
+            case false:
+                return DIVIDER_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    private var txtColor: UIColor {
+        get {
+            return self.sfxManager!.titleColor
+        }
+    }
+    
+    private var titleColor: UIColor {
+        get {
+            return self.sfxManager!.textColor
+        }
+    }
+    
+    private let VOTE_COLOR_LIGHT_MODE = UIColor.init(red: 238.0/255.0, green: 138.0/255.0, blue: 3.0/255.0, alpha: 1.0)
+    private let VOTE_COLOR_DARK_MODE = UIColor.init(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1.0)
+    private var voteCountColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return VOTE_COLOR_LIGHT_MODE//VOTE_COLOR_DARK_MODE
+            case false:
+                return VOTE_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    private let USER_COLOR_LIGHT_MODE = UIColor.init(red: 0/255.0, green: 91.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+    private let USER_COLOR_DARK_MODE = UIColor.init(red: 98.0/255.0, green: 176.0/255.0, blue: 226.0/255.0, alpha: 1.0)
+    private var usernameColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return USER_COLOR_DARK_MODE
+            case false:
+                return USER_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    
+    private weak var sfxManager: SFXManager?
     
     // Bindings
     private var bindings: [Disposable] = []
@@ -31,7 +100,10 @@ class SubmissionTitleCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func bind(viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool) {
+    func bind(viewModel: SubmissionCellViewModel, shouldFilterLanguage: Bool, sfxManager: SFXManager) {
+        self.sfxManager = sfxManager
+        self.setUIColors()
+        
         // Title
         if shouldFilterLanguage == true {
             self.titleLabel.text = viewModel.titleString.censored()
@@ -68,6 +140,17 @@ class SubmissionTitleCell: UITableViewCell {
         
         // Time and Subverse
         self.timeAndSubverseLabel.attributedText = viewModel.submittedToSubverseString
+    }
+    
+    private func setUIColors() {
+        self.contentView.backgroundColor = self.bgColor
+        self.titleLabel.textColor = self.titleColor
+        self.voteCountLabel.textColor = self.voteCountColor
+        self.separatedVoteCountLabel.textColor = self.txtColor
+        self.userLabel.textColor = self.usernameColor
+        self.timeAndSubverseLabel.textColor = self.txtColor
+        
+        self.bottomDivider.backgroundColor = self.dividerBgColor
     }
     
     override func prepareForReuse() {

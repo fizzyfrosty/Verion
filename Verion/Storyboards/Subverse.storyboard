@@ -174,7 +174,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadMoreCell" rowHeight="50" id="Mtk-nN-ygu" customClass="SubmissionCell" customModule="Verion" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadMoreCell" rowHeight="50" id="Mtk-nN-ygu" customClass="SubmissionLoadMoreCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="309" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mtk-nN-ygu" id="TJc-3F-PF7">
@@ -194,6 +194,9 @@
                                         <constraint firstItem="KTQ-fG-U4L" firstAttribute="centerX" secondItem="TJc-3F-PF7" secondAttribute="centerX" id="PZR-wY-QC8"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="loadMoreLabel" destination="KTQ-fG-U4L" id="FSb-Qv-Gfs"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivityIndicatorCell" rowHeight="50" id="eFZ-y6-nfs" customClass="ActivityIndicatorCell" customModule="Verion" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="359" width="320" height="50"/>
@@ -538,6 +541,7 @@
                         <outlet property="backgroundView" destination="KpV-5l-4c7" id="odp-LZ-P7Z"/>
                         <outlet property="callToActionButtonWidth" destination="vAr-64-IEP" id="87M-Su-X3x"/>
                         <outlet property="imageView" destination="DT7-2z-QRa" id="AEQ-mC-NGf"/>
+                        <outlet property="sponsoredLabel" destination="cqi-lX-qgG" id="rGU-kZ-eRz"/>
                         <outlet property="subtitleLabel" destination="GGs-ZU-K0E" id="obB-It-mQA"/>
                         <outlet property="titleLabel" destination="Yxp-KZ-GiD" id="LdE-Go-Pon"/>
                     </connections>

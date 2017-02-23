@@ -46,6 +46,34 @@ class ComposeCommentViewController: UIViewController {
     let SCREEN_HEIGHT_PERCENT: CGFloat = 0.30
     var isKeyboardShown = false
     
+    
+    private let BG_COLOR_LIGHT_MODE = UIColor.init(red: 95.0/255.0, green: 173.0/255.0, blue: 220.0/255.0, alpha: 1.0)
+    private let BG_COLOR_DARK_MODE = UIColor.init(red: 25.0/255.0, green: 25.0/255.0, blue: 25.0/255.0, alpha: 1.0)
+    private var bgColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return BG_COLOR_DARK_MODE
+            case false:
+                return BG_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    private var TITLE_COLOR_LIGHT_MODE = UIColor.white
+    private var titleColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return self.sfxManager!.textColor
+            case false:
+                return TITLE_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    
+    @IBOutlet var commentingAsLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
     @IBOutlet var textView: UITextView!
     
@@ -74,6 +102,7 @@ class ComposeCommentViewController: UIViewController {
     
     // Dependencies
     var dataProvider: DataProviderType?
+    var sfxManager: SFXManager?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -255,10 +284,17 @@ class ComposeCommentViewController: UIViewController {
     
     private func setBackgroundSettings() {
         self.backgroundView.layer.borderWidth = 1.0
-        self.backgroundView.layer.borderColor = UIColor.white.cgColor
+        self.backgroundView.layer.borderColor = self.sfxManager?.bgColor1.cgColor
+        self.backgroundView.backgroundColor = self.bgColor
+        
+        self.commentingAsLabel.textColor = self.titleColor
+        self.usernameLabel.textColor = self.titleColor
         
         self.textView.clipsToBounds = true
         self.textView.layer.cornerRadius = 5.0
+        
+        self.textView.backgroundColor = self.sfxManager?.bgColor1
+        self.textView.textColor = self.sfxManager?.textColor
     }
     
     private func loadData(dataModel: ComposeCommentViewControllerDataModel) {

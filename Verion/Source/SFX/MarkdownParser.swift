@@ -15,6 +15,8 @@ class MarkdownParser {
         // XNG Markdown Parser
         let parser = XNGMarkdownParser()
         
+        parser.topAttributes = [NSForegroundColorAttributeName: SFXManager.sharedInstance.textColor]
+        
         formattedString = parser.attributedString(fromMarkdownString: markdownString)
         
         return formattedString

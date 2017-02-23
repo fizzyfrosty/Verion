@@ -16,6 +16,21 @@ class SubmissionLinkCell: UITableViewCell {
     
     @IBOutlet var thumbnailWidthConstraint: NSLayoutConstraint!
     
+    
+    private var bgColor: UIColor {
+        get {
+            return sfxManager!.bgColor1
+        }
+    }
+    
+    private var linkColor: UIColor {
+        get {
+            return self.sfxManager!.linkColor
+        }
+    }
+    
+    private weak var sfxManager: SFXManager?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -27,7 +42,10 @@ class SubmissionLinkCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func bind(toViewModel viewModel: SubmissionLinkCellViewModel) {
+    func bind(toViewModel viewModel: SubmissionLinkCellViewModel, sfxManager: SFXManager) {
+        self.sfxManager = sfxManager
+        self.setUIColors()
+        
         self.domainLabel.text = viewModel.domainString
         
         self.endpointLabel.text = viewModel.endpointString
@@ -43,6 +61,12 @@ class SubmissionLinkCell: UITableViewCell {
         
         self.thumbnailImageView.layer.borderWidth = 1.0
         self.thumbnailImageView.layer.borderColor = UIColor.black.cgColor
+    }
+    
+    private func setUIColors() {
+        self.contentView.backgroundColor = self.bgColor
+        self.domainLabel.textColor = self.linkColor
+        self.endpointLabel.textColor = self.linkColor
     }
     
     deinit{

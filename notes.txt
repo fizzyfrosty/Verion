@@ -19,13 +19,15 @@ Night Mode
 * Inject into each view controller
 * Save to data when setting in Left Menu, and set singleton
 - Pass the SFXManager singleton into the binding of each cell
-	- Each cell, extract from sfxManager the light/dark mode
-	- Set background
-	- Subverse View Controller	
-	- Submission Cells
-	- Comments View Controller
-	- Submission Cells
-	- Comment Cells
+	* Each cell, extract from sfxManager the light/dark mode
+	* Set background
+	* Subverse View Controller	
+	* Submission Cells
+	Comments View Controller
+	* Submission Cells
+	* Comment Cells
+	* Ads
+	- Submit Comment UI
 
 
 Preload Ad Immediately after showing

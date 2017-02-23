@@ -19,10 +19,6 @@ class CommentCell: UITableViewCell {
 
     @IBOutlet var usernameLabel: UILabel!
     
-    let USERNAME_COLOR_DEFAULT = UIColor.init(red: 86.0/255.0, green: 82.0/255.0, blue: 130.0/255.0, alpha: 1.0)
-    let USERNAME_COLOR_OP = UIColor.blue
-    let USERNAME_COLOR_LOAD_MORE_TITLE = UIColor.init(red: 86.0/255.0, green: 82.0/255.0, blue: 130.0/255.0, alpha: 1.0)
-    
     @IBOutlet var datePostedLabel: UILabel!
     @IBOutlet var voteCountLabel: UILabel!
     @IBOutlet var separatedVoteCountLabel: UILabel!
@@ -40,6 +36,52 @@ class CommentCell: UITableViewCell {
     let BACKGROUND_COLOR_EVEN_CHILD = UIColor.init(red: 135.0/255.0, green: 145.0/255.0, blue: 241.0/255.0, alpha: 1.0)
     let BACKGROUND_COLOR_ODD_CHILD = UIColor.init(red: 141.0/255.0, green: 204.0/255.0, blue: 255.0/255.0, alpha: 1.0)
     
+    
+    private var bgColor: UIColor {
+        get {
+            return self.sfxManager!.bgColor1
+        }
+    }
+    
+    private var titleColor: UIColor {
+        get {
+            return self.sfxManager!.titleColor
+        }
+    }
+    
+    private var usernameColorOP: UIColor {
+        get {
+            return self.sfxManager!.linkColor
+        }
+    }
+    
+    private let USERNAME_COLOR_DEFAULT_LIGHT_MODE = UIColor.init(red: 86.0/255.0, green: 82.0/255.0, blue: 130.0/255.0, alpha: 1.0)
+    private let USERNAME_COLOR_DEFAULT_DARK_MODE = UIColor.init(red: 255.0/255.0, green: 218.0/255.0, blue: 98.0/255.0, alpha: 1.0)
+    private var usernameColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return USERNAME_COLOR_DEFAULT_DARK_MODE
+            case false:
+                return USERNAME_COLOR_DEFAULT_LIGHT_MODE
+            }
+        }
+    }
+    
+    private let HEADER_BORDER_COLOR_LIGHT_MODE = UIColor.lightGray
+    private let HEADER_BORDER_COLOR_DARK_MODE = UIColor.black
+    private var headerBorderColor: UIColor {
+        get {
+            switch self.sfxManager!.isNightModeEnabled {
+            case true:
+                return HEADER_BORDER_COLOR_DARK_MODE
+            case false:
+                return HEADER_BORDER_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    
     @IBOutlet var headerView: UIView!
     
     let MINIMIZED_LABEL_STRING = "[+]"
@@ -51,6 +93,7 @@ class CommentCell: UITableViewCell {
 
     weak var delegate: CommentCellDelegate?
     weak var viewModel: CommentCellViewModel?
+    private weak var sfxManager: SFXManager?
     
     @IBOutlet var blockUserButton: UIButton!
     @IBAction func pressedBlockUser(_ sender: Any) {
@@ -68,9 +111,6 @@ class CommentCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        self.headerView.layer.borderWidth = 1.0
-        self.headerView.layer.borderColor = UIColor.lightGray.cgColor
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -79,10 +119,12 @@ class CommentCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func bind(toViewModel viewModel: CommentCellViewModel, shouldFilterLanguage: Bool) {
+    func bind(toViewModel viewModel: CommentCellViewModel, shouldFilterLanguage: Bool, sfxManager: SFXManager) {
+        self.sfxManager = sfxManager
         self.viewModel = viewModel
         viewModel.resetViewBindings()
         self.resetUI()
+        self.setUIColors()
         
         // Background offset and colors
         self.setBackgroundProperties(forViewModel: viewModel)
@@ -211,14 +253,15 @@ class CommentCell: UITableViewCell {
     
     private func setUsernameProperties(forViewModel viewModel: CommentCellViewModel) {
         if viewModel.isUserOP == true {
-            self.usernameLabel.textColor = self.USERNAME_COLOR_OP
+            self.usernameLabel.textColor = self.usernameColorOP
         } else if viewModel.isLoadMoreCell == true {
-            self.usernameLabel.textColor = self.USERNAME_COLOR_LOAD_MORE_TITLE
+            self.usernameLabel.textColor = self.usernameColor
         } else {
-            self.usernameLabel.textColor = self.USERNAME_COLOR_DEFAULT
+            self.usernameLabel.textColor = self.usernameColor
         }
         self.usernameLabel.text = viewModel.usernameString // If cell is a "LoadMoreCell", username should automatically be supplied by the viewModel
 
+        self.minimizeMaximizeLabel.textColor = self.usernameLabel.textColor
     }
     
     private func clearHeaderElements() {
@@ -288,6 +331,19 @@ class CommentCell: UITableViewCell {
                 print("Warning: CommentCell's delegate may not be set.")
             #endif
         }
+    }
+    
+    private func setUIColors() {
+        self.headerView.backgroundColor = self.bgColor
+        self.contentView.backgroundColor = self.bgColor
+        self.shiftingContentView.backgroundColor = self.bgColor
+        self.textView.backgroundColor = self.bgColor
+        
+        self.separatedVoteCountLabel.textColor = self.titleColor
+        self.datePostedLabel.textColor = self.titleColor
+        
+        self.headerView.layer.borderWidth = 1.0
+        self.headerView.layer.borderColor = self.headerBorderColor.cgColor
     }
     
     override func prepareForReuse() {

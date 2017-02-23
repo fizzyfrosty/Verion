@@ -23,7 +23,7 @@ class FindSubverseViewController: UITableViewController {
     // Dependencies
     var dataProvider: DataProviderType?
     var analyticsManager: AnalyticsManagerProtocol?
-    var sfxManager: SFXManagerType?
+    var sfxManager: SFXManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -98,7 +98,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
     fileprivate var composeCommentVc: ComposeCommentViewController?
     
     // Dependencies
-    var sfxManager: SFXManagerType?
+    var sfxManager: SFXManager?
     var dataProvider: DataProviderType?
     var analyticsManager: AnalyticsManagerProtocol?
     var adManager: AdManager?
@@ -682,7 +682,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             if indexPath.row == 0 {
                 
                 let titleCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TITLE_CELL_REUSE_ID, for: indexPath) as! SubmissionTitleCell
-                titleCell.bind(viewModel:self.submissionCellViewModel!, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
+                titleCell.bind(viewModel:self.submissionCellViewModel!, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage, sfxManager: self.sfxManager!)
                 
                 return titleCell
                 
@@ -692,7 +692,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 switch self.submissionMediaType {
                 case .text:
                     let textCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_TEXT_CELL_REUSE_ID, for: indexPath) as! SubmissionTextCell
-                    textCell.bind(toViewModel: self.submissionTextContentVm, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
+                    textCell.bind(toViewModel: self.submissionTextContentVm, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage, sfxManager: self.sfxManager!)
                     textCell.textView.delegate = self
                     return textCell
                     
@@ -704,7 +704,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                     
                 case .link:
                     let linkCell = tableView.dequeueReusableCell(withIdentifier: self.SUBMISSION_LINK_CELL_REUSE_ID, for: indexPath) as! SubmissionLinkCell
-                    linkCell.bind(toViewModel: self.submissionLinkContentVm)
+                    linkCell.bind(toViewModel: self.submissionLinkContentVm, sfxManager: self.sfxManager!)
                     
                     DispatchQueue.global(qos: .background).async {
                         self.submissionLinkContentVm.downloadThumbnail()
@@ -717,7 +717,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 case .undetermined:
                     // No submission type determined, is probably loading
                     let progressIndicatorCell = tableView.dequeueReusableCell(withIdentifier: self.PROGRESS_INDICATOR_CELL_REUSE_ID, for: indexPath) as! ProgressIndicatorCell
-                    progressIndicatorCell.bind(toViewModel: self.progressCellVm)
+                    progressIndicatorCell.bind(toViewModel: self.progressCellVm, sfxManager: self.sfxManager!)
                     
                     return progressIndicatorCell
                     
@@ -730,7 +730,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             } else {
                 // If third row, SortedBy Cell
                 let sortByCell = tableView.dequeueReusableCell(withIdentifier: self.SORTED_BY_CELL_REUSE_ID, for: indexPath) as! CommentsSortByCell
-                sortByCell.bind(toViewModel: self.commentsSortByVm!, submissionCellViewModel: self.submissionCellViewModel!)
+                sortByCell.bind(toViewModel: self.commentsSortByVm!, submissionCellViewModel: self.submissionCellViewModel!, sfxManager: self.sfxManager!)
                 sortByCell.navigationController = self.navigationController
                 sortByCell.delegate = self
                 
@@ -738,6 +738,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             }
         } else if indexPath.section == self.adSectionNumber {
             let adCell = tableView.dequeueReusableCell(withIdentifier: self.AD_CELL_REUSE_ID, for: indexPath) as! AdCell
+            adCell.bind(sfxManager: self.sfxManager!)
             
             // Set the ad cell's banner view
             if self.nativeAd != nil {
@@ -784,7 +785,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
                 let commentCellViewModelIndex = indexPath.section - self.numOfSectionsBeforeComments
                 let commentCellViewModel = self.commentsViewModels[commentCellViewModelIndex]
                 commentCell.delegate = self
-                commentCell.bind(toViewModel: commentCellViewModel, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage)
+                commentCell.bind(toViewModel: commentCellViewModel, shouldFilterLanguage: self.verionDataModel!.shouldFilterLanguage, sfxManager: self.sfxManager!)
                 commentCell.textView.delegate = self
                 
                 

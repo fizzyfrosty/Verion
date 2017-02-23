@@ -18,11 +18,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionTitleCell" rowHeight="63" id="Wc8-gh-16C" customClass="SubmissionTitleCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="320" height="63"/>
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionTitleCell" rowHeight="100" id="Wc8-gh-16C" customClass="SubmissionTitleCell" customModule="Verion" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="320" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wc8-gh-16C" id="nhx-sf-6xL">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sdfsdfsdfsd fringilla tincidunt. Suspendisse nec tortor urna. And then he said, let there be cake!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rNF-gk-nwL">
@@ -55,7 +55,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAL-xV-CLJ" userLabel="bottom_divider">
-                                            <rect key="frame" x="0.0" y="62" width="320" height="1"/>
+                                            <rect key="frame" x="0.0" y="99" width="320" height="1"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="5ox-T4-pzx"/>
@@ -82,6 +82,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="bottomDivider" destination="RAL-xV-CLJ" id="AhH-9i-js1"/>
                                     <outlet property="separatedVoteCountLabel" destination="5Sf-09-q01" id="C5W-t2-6LR"/>
                                     <outlet property="timeAndSubverseLabel" destination="LS2-4O-nOJ" id="JTs-jA-6HF"/>
                                     <outlet property="titleLabel" destination="rNF-gk-nwL" id="JSM-XZ-dgw"/>
@@ -90,7 +91,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionTextCell" rowHeight="103" id="EAa-UB-42V" customClass="SubmissionTextCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="91" width="320" height="103"/>
+                                <rect key="frame" x="0.0" y="128" width="320" height="103"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EAa-UB-42V" id="TXe-az-oeF">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="103"/>
@@ -117,7 +118,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionLinkCell" rowHeight="86" id="lPg-Ys-ZWr" customClass="SubmissionLinkCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="194" width="320" height="86"/>
+                                <rect key="frame" x="0.0" y="231" width="320" height="86"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lPg-Ys-ZWr" id="MI2-5w-LL1">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
@@ -162,7 +163,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubmissionImageCell" rowHeight="45" id="aA6-ga-0cr" customClass="SubmissionImageCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="280" width="320" height="45"/>
+                                <rect key="frame" x="0.0" y="317" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aA6-ga-0cr" id="UJ6-UU-KoL">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
@@ -172,6 +173,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                         </imageView>
                                     </subviews>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="N7t-Cu-5pJ" secondAttribute="trailing" id="1sl-UI-New"/>
                                         <constraint firstItem="N7t-Cu-5pJ" firstAttribute="leading" secondItem="UJ6-UU-KoL" secondAttribute="leading" id="Yfk-Xd-o3c"/>
@@ -184,7 +186,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SortByCell" rowHeight="60" id="ccz-4A-7er" customClass="CommentsSortByCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="325" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="362" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ccz-4A-7er" id="rET-Su-rtf">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
@@ -328,15 +330,17 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="bottomDivider" destination="y32-6f-Cdd" id="Y1w-Nn-rD7"/>
                                     <outlet property="downvoteButton" destination="sKj-Ti-WWD" id="lc6-Vl-fnn"/>
                                     <outlet property="reportButton" destination="lfe-uu-3kb" id="D5f-tK-25b"/>
                                     <outlet property="shareButton" destination="I4h-Dz-OH0" id="uaa-IA-lNi"/>
                                     <outlet property="sortByButton" destination="dKf-59-R6Y" id="ffL-cy-g5J"/>
+                                    <outlet property="topDivider" destination="zLZ-V7-LmP" id="Q3t-pB-IMq"/>
                                     <outlet property="upvoteButton" destination="a9n-9A-FiF" id="1tV-iT-tL9"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="229" id="oMF-Ty-rs7" customClass="CommentCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="385" width="320" height="229"/>
+                                <rect key="frame" x="0.0" y="422" width="320" height="229"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oMF-Ty-rs7" id="zyS-rF-xpP">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="229"/>
@@ -638,7 +642,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadMoreComments" rowHeight="48" id="iro-Ps-Hop">
-                                <rect key="frame" x="0.0" y="614" width="320" height="48"/>
+                                <rect key="frame" x="0.0" y="651" width="320" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iro-Ps-Hop" id="g9V-MJ-U1U">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
@@ -664,7 +668,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransparentCell" rowHeight="40" id="Qhf-qY-nlj">
-                                <rect key="frame" x="0.0" y="662" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="699" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qhf-qY-nlj" id="YsX-19-v7M">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -682,7 +686,7 @@
                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivityIndicatorCell" rowHeight="40" id="5Jy-UK-gKe" customClass="ActivityIndicatorCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="702" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="739" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Jy-UK-gKe" id="768-bQ-cAn">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -704,7 +708,7 @@
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProgressIndicatorCell" rowHeight="40" id="s0T-md-8vr" customClass="ProgressIndicatorCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="742" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="779" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s0T-md-8vr" id="97w-Jm-eaA">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -734,7 +738,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AdCell" rowHeight="40" id="Jca-0p-ZJ4" customClass="AdCell" customModule="Verion" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="782" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="819" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jca-0p-ZJ4" id="nm9-a1-Do5">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -782,10 +786,13 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="adView" destination="O5q-B6-WUd" id="bcR-1h-gA3"/>
+                                    <outlet property="bottomDivider" destination="gRh-Bg-d7v" id="dKO-ne-evX"/>
+                                    <outlet property="titleLabel" destination="DqT-LH-OTc" id="QSY-zi-Be0"/>
+                                    <outlet property="topDivider" destination="2ki-uR-lvE" id="sds-Oc-jMJ"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TemplateCell" rowHeight="40" id="J6d-vQ-u1U">
-                                <rect key="frame" x="0.0" y="822" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="859" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="J6d-vQ-u1U" id="dJT-3N-Zs0">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -890,6 +897,7 @@
                         <outlet property="backgroundView" destination="azS-dz-Bf6" id="f4Y-g7-oYT"/>
                         <outlet property="backgroundViewHeight" destination="3I4-3U-yja" id="ecY-Ei-k7K"/>
                         <outlet property="closeButton" destination="fSf-YM-N5l" id="3sP-9q-72k"/>
+                        <outlet property="commentingAsLabel" destination="kzj-iH-cRs" id="bWj-kV-Kkw"/>
                         <outlet property="sendButton" destination="e6P-uz-beT" id="0kw-Oy-IN1"/>
                         <outlet property="textView" destination="zzv-4L-5R9" id="oOD-0F-MYd"/>
                         <outlet property="usernameLabel" destination="NR7-bL-sJq" id="E8B-2K-Gbs"/>

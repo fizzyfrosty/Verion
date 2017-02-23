@@ -8,12 +8,65 @@
 
 import UIKit
 
-class SFXManager: SFXManagerType {
+class SFXManager {
     
     private let SHADOW_OFFSET_X = -1
     private let SHADOW_OFFSET_Y = 2
     private let SHADOW_OPACITY: Float = 0.5
     private let SHADOW_RADIUS: CGFloat = 1.5
+    
+    private let TITLE_COLOR_LIGHT_MODE = UIColor.init(red: 112.0/255.0, green: 113.0/255.0, blue: 113.0/255.0, alpha: 1.0)
+    private let TITLE_COLOR_DARK_MODE = UIColor.init(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1.0)
+    var titleColor: UIColor {
+        get {
+            switch self.isNightModeEnabled {
+            case true:
+                return TITLE_COLOR_DARK_MODE
+            case false:
+                return TITLE_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    private let TEXT_COLOR_LIGHT_MODE = UIColor.black
+    private let TEXT_COLOR_DARK_MODE = UIColor.init(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1.0)
+    var textColor: UIColor {
+        get {
+            switch self.isNightModeEnabled {
+            case true:
+                return TEXT_COLOR_DARK_MODE
+            case false:
+                return TEXT_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    private let LINK_COLOR_LIGHT_MODE = UIColor.init(red: 0/255.0, green: 91.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+    private let LINK_COLOR_DARK_MODE = UIColor.init(red: 98.0/255.0, green: 176.0/255.0, blue: 226.0/255.0, alpha: 1.0)
+    var linkColor: UIColor {
+        get {
+            switch self.isNightModeEnabled {
+            case true:
+                return LINK_COLOR_DARK_MODE
+            case false:
+                return LINK_COLOR_LIGHT_MODE
+            }
+        }
+    }
+    
+    
+    private let BG1_COLOR_LIGHT_MODE = UIColor.white
+    private let BG1_COLOR_DARK_MODE = UIColor.init(red: 85.0/255.0, green: 85.0/255.0, blue: 85.0/255.0, alpha: 1.0)
+    var bgColor1: UIColor {
+        get {
+            switch self.isNightModeEnabled {
+            case true:
+                return BG1_COLOR_DARK_MODE
+            case false:
+                return BG1_COLOR_LIGHT_MODE
+            }
+        }
+    }
     
     var isNightModeEnabled = false
     
