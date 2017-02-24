@@ -45,27 +45,34 @@ Refresh Token: refresh on app coming back
 * Create a public function to refresh, call the private refreshTokens() function
 
 
+Add Analytics for Night Mode
+- Subverse loaded
+- Comments loaded
 
-Push Notifications
+Notify Users of new Functions
+- Popup to notify of night mode
+- Save when opened to not open again
+- Check in SubverseViewController, after everything loaded
+- Add a didNotifyNightMode in VerionDataModel
+- If version is equal to 1.04 and didNotifyNightMode is false, show message
+- If accept, set nightmode for data, turn on night mode
+
+
+New Screenshots
+- iPhone
+- iPad
+
+
+Check if latest version
 - Look up Backendless
 - Integrate Backendless
 - Test with a push notification message
 - Enable push notification for app
 
 
-
-Notify Users of new Functions
-- Welcome Screen
-- Create new storyboard
-	- Show screenshot of night mode
-	- Bug Fixes page
-- Save when opened to not open again
-- Check in SubverseViewController, after everything loaded
-
-
-
-
-
+Sort by Top
+- Choose time interval
+- 
 
 
 - Welcome Screen?

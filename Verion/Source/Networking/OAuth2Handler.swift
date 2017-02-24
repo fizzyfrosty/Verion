@@ -184,5 +184,8 @@ class OAuth2Handler: RequestAdapter, RequestRetrier {
         dataManager.saveUsernameToKeychain(username: username)
         dataManager.saveAccessTokenToKeychain(accessToken: accessToken)
         dataManager.saveRefreshTokenToKeychain(refreshToken: refreshToken)
+        
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
     }
 }
