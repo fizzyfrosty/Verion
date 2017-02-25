@@ -21,6 +21,7 @@ class VerionDataModel: NSObject, NSCoding {
         static let blockedUsers = "blocked_users"
         static let isLoggedIn = "is_logged_in"
         static let isNightModeEnabled = "is_night_mode_on"
+        static let didAskToTurnOnNightMode = "did_ask_turn_on_night_mode"
     }
     
     var subversesVisited: [String]?
@@ -29,10 +30,11 @@ class VerionDataModel: NSObject, NSCoding {
     var shouldHideNsfw = true
     var shouldUseNsfwThumbnail = true
     var shouldFilterLanguage = true
-    var versionNumber: Float = 1.0
+    var versionNumber: Double = 1.0
     var blockedUsers: Set<String>? = []
     var isLoggedIn: Bool = false
     var isNightModeEnabled: Bool = false
+    var didAskToTurnOnNightMode: Bool = false
     
     override init() {
         self.subversesVisited = []
@@ -43,14 +45,13 @@ class VerionDataModel: NSObject, NSCoding {
     
     required init?(coder aDecoder: NSCoder) {
         
-        self.versionNumber = aDecoder.decodeFloat(forKey: Keys.versionNumber)
+        self.versionNumber = aDecoder.decodeDouble(forKey: Keys.versionNumber)
         
         // Version 1.0
         self.subversesVisited = aDecoder.decodeObject(forKey: Keys.subversesVisited) as? [String]
         if self.subversesVisited == nil {
             self.subversesVisited = []
         }
-        
         
         let sortTypeRawValue = aDecoder.decodeObject(forKey: Keys.sortType) as? String
         if sortTypeRawValue == nil {
@@ -75,13 +76,14 @@ class VerionDataModel: NSObject, NSCoding {
             self.blockedUsers = []
         }
         
-        // Version 1.01
+        // Version 1.0001
         
-        // Version 1.02
+        // Version 1.0002
         self.isLoggedIn = aDecoder.decodeBool(forKey: Keys.isLoggedIn)
         
-        // Version 1.04
+        // Version 1.0004
         self.isNightModeEnabled = aDecoder.decodeBool(forKey: Keys.isNightModeEnabled)
+        self.didAskToTurnOnNightMode = aDecoder.decodeBool(forKey: Keys.didAskToTurnOnNightMode)
     }
     
     func encode(with aCoder: NSCoder) {
@@ -96,8 +98,12 @@ class VerionDataModel: NSObject, NSCoding {
         
         aCoder.encode(self.blockedUsers, forKey: Keys.blockedUsers)
         
+        // Version 1.0002
         aCoder.encode(self.isLoggedIn, forKey: Keys.isLoggedIn)
+        
+        // Version 1.0004
         aCoder.encode(self.isNightModeEnabled, forKey: Keys.isNightModeEnabled)
+        aCoder.encode(self.didAskToTurnOnNightMode, forKey: Keys.didAskToTurnOnNightMode)
     }
     
     

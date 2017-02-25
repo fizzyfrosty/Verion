@@ -96,7 +96,6 @@ class LeftMenuController: UITableViewController {
     private let RESTORE_PURCHASES_REUSE_ID = "RestorePurchasesCell"
     private let DONATE_CELL_REUSE_ID = "DonateCell"
     private let RATE_CELL_REUSE_ID = "RateCell"
-    fileprivate let APP_ID = "1188140122"
     fileprivate let SURE_BUTTON_TITLE = "Sure!"
     fileprivate let NAH_BUTTON_TITLE = "Nah"
     
@@ -164,6 +163,7 @@ class LeftMenuController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         self.loginCellViewModel = self.getRefreshedLoginCellViewModel()
+        self.nightModeCellViewModel = self.getNightModeCellViewModel()
         self.tableView.reloadData()
     }
     
@@ -968,7 +968,8 @@ extension LeftMenuController {
         let rateAppAlert = UIAlertController.init(title: "Rate Us!", message: message, preferredStyle: .alert)
         
         let okAction = UIAlertAction.init(title: self.SURE_BUTTON_TITLE, style: .default, handler: { [weak self] alertAction in
-            self?.rateApp(appId: (self?.APP_ID)!)
+            let url = AppInfo.appUrl
+            self?.openUrlInSafari(url!)
         })
         let cancelAction = UIAlertAction.init(title: self.NAH_BUTTON_TITLE, style: .cancel, handler: nil)
         
@@ -976,13 +977,6 @@ extension LeftMenuController {
         rateAppAlert.addAction(cancelAction)
         
         self.present(rateAppAlert, animated: true, completion: nil)
-    }
-    
-    private func rateApp(appId: String) {
-        guard let url = URL(string : "itms-apps://itunes.apple.com/app/id" + appId) else {
-            return
-        }
-        self.openUrlInSafari(url)
     }
 }
 
@@ -1075,16 +1069,11 @@ extension LeftMenuController: NightModeCellDelegate {
 // MARK: - Opening Safari
 extension LeftMenuController: SFSafariViewControllerDelegate {
     fileprivate func openUrlInSafari(_ url: URL) {
-        guard #available(iOS 10, *) else {
-            return
-        }
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        SafariOpener.openUrlInSafari(url)
     }
     
     fileprivate func openUrlInSafariViewController(_ url: URL) {
-        let safariViewController = SFSafariViewController.init(url: url)
-        self.present(safariViewController, animated: true) {
-        }
+        SafariOpener.openUrlInSafariViewController(url, rootViewController: self)
     }
 }
 

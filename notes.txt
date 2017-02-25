@@ -18,7 +18,7 @@ Night Mode
 * Create SFXManager singleton, set dark/light mode
 * Inject into each view controller
 * Save to data when setting in Left Menu, and set singleton
-- Pass the SFXManager singleton into the binding of each cell
+* Pass the SFXManager singleton into the binding of each cell
 	* Each cell, extract from sfxManager the light/dark mode
 	* Set background
 	* Subverse View Controller	
@@ -45,55 +45,49 @@ Refresh Token: refresh on app coming back
 * Create a public function to refresh, call the private refreshTokens() function
 
 
-Add Analytics for Night Mode
-- Subverse loaded
-- Comments loaded
+Check if latest version
+* Look up Backendless
+x Integrate Backendless
+* Create Table Data for current version
+* Save current version in data
+* On Load, make REST GET request to retrieve version
+* If saved version is less than retrieved version, show update message
 
 Notify Users of new Functions
-- Popup to notify of night mode
-- Save when opened to not open again
-- Check in SubverseViewController, after everything loaded
-- Add a didNotifyNightMode in VerionDataModel
-- If version is equal to 1.04 and didNotifyNightMode is false, show message
-- If accept, set nightmode for data, turn on night mode
+* Popup to notify of night mode
+* Save when opened to not open again
+* Check in SubverseViewController, after everything loaded
+* Add a didNotifyNightMode in VerionDataModel
+* If version is equal to 1.0004 and didNotifyNightMode is false, show message
+* If accept, set nightmode for data, turn on night mode
 
+Add Analytics
+* Night Mode
+	* Subverse loaded
+	* Comments loaded
+	* Sort by
+	* pull to refresh
+	* load more
+
+- New Version Available
+	- Pressed Yes to Update
+	- Pressed No - Cancel
 
 New Screenshots
 - iPhone
 - iPad
 
 
-Check if latest version
-- Look up Backendless
-- Integrate Backendless
-- Test with a push notification message
-- Enable push notification for app
 
-
-Sort by Top
-- Choose time interval
-- 
-
-
-- Welcome Screen?
-
-- Analytics
-
+Analytics
+- Left Menu
 	- Left Menu pressed Login
 	- Left Menu pressed Create Account
 	- Left Menu pressed Donate
 	- Left Menu pressed Rate
-	- Left Menu pressed Hide NSFW Content: value
-	- Left Menu pressed NSFW Thumbnails: value
-	- Left Menu pressed Filter Language: value
 
-	- Add params to 
-		- Subverse - pull to refresh
-		- Subverse - load more
-		- Subverse - Sort by
 
-	- Tokens Expired
-	- Tokens Refreshed
+- Welcome Screen?
 
 
 What's New in this version (1.0.3)

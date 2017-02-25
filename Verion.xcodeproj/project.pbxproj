@@ -71,6 +71,8 @@
 		4375C08E1E01317F00576CC6 /* ActivityIndicatorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */; };
 		437644351E22511000EE64A7 /* CommentDataSegmentV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437644341E22511000EE64A7 /* CommentDataSegmentV1.swift */; };
 		437644371E22519800EE64A7 /* CommentDataSegmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437644361E22519800EE64A7 /* CommentDataSegmentProtocol.swift */; };
+		437F48AC1E61B1F7008F3073 /* SafariOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437F48AB1E61B1F7008F3073 /* SafariOpener.swift */; };
+		437F48AE1E61B350008F3073 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437F48AD1E61B350008F3073 /* AppInfo.swift */; };
 		43829EFA1E25B09500754AF3 /* ProfanityFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43829EF71E25B09500754AF3 /* ProfanityFilter.swift */; };
 		43829EFB1E25B09500754AF3 /* Profanity.json in Resources */ = {isa = PBXBuildFile; fileRef = 43829EF91E25B09500754AF3 /* Profanity.json */; };
 		43A33CFD1E36745D0032D7A7 /* VoteValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A33CFC1E36745D0032D7A7 /* VoteValue.swift */; };
@@ -317,6 +319,8 @@
 		4375C08D1E01317F00576CC6 /* ActivityIndicatorProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorProvider.swift; sourceTree = "<group>"; };
 		437644341E22511000EE64A7 /* CommentDataSegmentV1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataSegmentV1.swift; sourceTree = "<group>"; };
 		437644361E22519800EE64A7 /* CommentDataSegmentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDataSegmentProtocol.swift; sourceTree = "<group>"; };
+		437F48AB1E61B1F7008F3073 /* SafariOpener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafariOpener.swift; sourceTree = "<group>"; };
+		437F48AD1E61B350008F3073 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		43829EF71E25B09500754AF3 /* ProfanityFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfanityFilter.swift; sourceTree = "<group>"; };
 		43829EF91E25B09500754AF3 /* Profanity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Profanity.json; sourceTree = "<group>"; };
 		43A33CFC1E36745D0032D7A7 /* VoteValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteValue.swift; sourceTree = "<group>"; };
@@ -928,6 +932,7 @@
 				43B056741E0D4272007083E8 /* VerionDataModel.swift */,
 				432B777A1E12357700457F2C /* SubmissionsRequestParams.swift */,
 				43A33CFC1E36745D0032D7A7 /* VoteValue.swift */,
+				437F48AD1E61B350008F3073 /* AppInfo.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -946,6 +951,7 @@
 				431C63A21E3BCE5D00F5236C /* LoginScreenProtocol.swift */,
 				431C63A01E3BCD7B00F5236C /* OAuthSwiftAuthenticator.swift */,
 				431C63A41E3BD00600F5236C /* OfflineLoginScreen.swift */,
+				437F48AB1E61B1F7008F3073 /* SafariOpener.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1356,6 +1362,7 @@
 				43B056CD1E0E4691007083E8 /* KeyboardLayoutConstraint.swift in Sources */,
 				4375BFBD1DF30F5F00576CC6 /* APIVersion.swift in Sources */,
 				43B056D01E0E4691007083E8 /* Misc.swift in Sources */,
+				437F48AC1E61B1F7008F3073 /* SafariOpener.swift in Sources */,
 				4375C08E1E01317F00576CC6 /* ActivityIndicatorProvider.swift in Sources */,
 				43B056DA1E0E4691007083E8 /* TransitionManager.swift in Sources */,
 				43ABEC1C1E14FB8500458E3D /* VerionProductIds.swift in Sources */,
@@ -1403,6 +1410,7 @@
 				43B056D41E0E4691007083E8 /* SpringButton.swift in Sources */,
 				436D25F01E3322E100FE9ED2 /* LoginController.swift in Sources */,
 				43C8FE031E253D41007FB231 /* UseNsfwThumbnailsCell.swift in Sources */,
+				437F48AE1E61B350008F3073 /* AppInfo.swift in Sources */,
 				43DF44AC1E08B6B900478AD9 /* MarkdownParser.swift in Sources */,
 				430180DD1E5E70EB00414711 /* NightModeCell.swift in Sources */,
 				43B056C71E0E4691007083E8 /* DesignableTabBarController.swift in Sources */,

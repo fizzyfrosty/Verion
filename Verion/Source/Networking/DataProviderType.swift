@@ -33,7 +33,7 @@ protocol DataProviderType: class {
     func requestLoginAuthentication(username: String, password: String, completion: @escaping (_ accessToken: String, _ refreshToken: String, Error?)->()) -> ()
     func requestSubmissionVote(submissionId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping(VoteValue, Error?)->())
     func requestCommentVote(commentId: Int64, voteValue: Int, rootViewController: UIViewController, completion: @escaping(VoteValue, Error?)->())
-    
+    func requestCurrentVersion(completion: @escaping(_ currentVersion: Double, _ message: String?, _ error: Error?) -> ())
     
     func bind(subCellViewModel: SubmissionCellViewModel, dataModel: SubmissionDataModelProtocol, viewController: UIViewController) -> Void
     func bind(subTitleViewModel: SubmissionTitleCellViewModel, dataModel: SubmissionDataModelProtocol) -> Void

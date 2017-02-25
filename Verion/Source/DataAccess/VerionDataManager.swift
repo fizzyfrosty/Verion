@@ -16,6 +16,7 @@ class VerionDataManager: DataManagerProtocol {
     private let USERNAME_KEY = "verion_username"
     private let ACCESS_TOKEN_KEY = "verion_access_token"
     private let REFRESH_TOKEN_KEY = "verion_refresh_token"
+    private let CURRENT_VERSION: Double = 1.0004
     
     func getSavedData() -> VerionDataModel {
         let filename = self.getSaveFilepath()
@@ -23,6 +24,9 @@ class VerionDataManager: DataManagerProtocol {
         if dataModel == nil {
             dataModel = VerionDataModel()
         }
+        
+        self.checkAndMigrateDataIfNecessary(dataModel: dataModel!)
+        
         return dataModel!
     }
     
@@ -33,6 +37,45 @@ class VerionDataManager: DataManagerProtocol {
         #if DEBUG
         print("Saved data to: " + filename)
         #endif
+    }
+    
+    private func checkAndMigrateDataIfNecessary(dataModel: VerionDataModel) {
+        // Check if data is latest version
+        if self.isDataModelCurrentVersion(dataModel: dataModel) == false {
+            self.migrateData(dataModel: dataModel)
+            #if DEBUG
+                print("Finished Migrating Data, updated to version: \(dataModel.versionNumber)")
+            #endif
+            // Save data after migration
+            self.saveData(dataModel: dataModel)
+        }
+    }
+    
+    private func isDataModelCurrentVersion(dataModel: VerionDataModel) -> Bool {
+        if dataModel.versionNumber < self.CURRENT_VERSION {
+            
+            #if DEBUG
+            print("Version Number is Out of Date: \(dataModel.versionNumber)")
+            print("Current Version: \(self.CURRENT_VERSION)")
+            #endif
+            
+            return false
+        }
+        
+        return true
+    }
+    
+    private func migrateData(dataModel: VerionDataModel) {
+        
+        #if DEBUG
+        print("Beginning data migration...")
+        #endif
+        
+        if dataModel.versionNumber < 1.0004 {
+            // Migrate data here
+        }
+        
+        dataModel.versionNumber = CURRENT_VERSION
     }
     
     private func getSaveFilepath() -> String {

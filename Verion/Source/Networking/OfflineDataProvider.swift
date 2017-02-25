@@ -47,6 +47,9 @@ class OfflineDataProvider: DataProviderType {
         self.analyticsManager = analyticsManager
     }
     
+    func requestCurrentVersion(completion: @escaping (_ versionNumber: Double, _ message: String?, _ error: Error?) -> ()) {
+        completion( 1.0005, "There is a new version of Voatify. Would you like to update now?", nil)
+    }
     
     func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
         

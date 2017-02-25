@@ -209,7 +209,7 @@ class CommentsViewController: UITableViewController, UITextViewDelegate, Comment
             self.loadContent(submissionDataModel: self.submissionDataModel!, dataProvider: self.dataProvider) {
                 
                 // Analytics - place this here because media type isn't finished loading until content is retrieved
-                let params = AnalyticsEvents.getCommentsControllerViewingParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType)
+                let params = AnalyticsEvents.getCommentsControllerViewingParams(subverseName: self.submissionDataModel!.subverseName, mediaType: self.submissionMediaType, isNightMode: self.sfxManager!.isNightModeEnabled)
                 self.analyticsManager?.logEvent(name: AnalyticsEvents.commentsControllerViewing, params: params, timed: false)
                 
             }

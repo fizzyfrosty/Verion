@@ -16,8 +16,15 @@ class AnalyticsEvents {
     private static let SWITCH_ENABLED_KEY = "switch_enabled"
     private static let VOTE_VALUE_KEY = "vote_value"
     private static let CHILD_DEPTH_INDEX_KEY = "child_depth_index"
+    private static let NIGHT_MODE_KEY = "night_mode"
+    private static let SELECTED_APP_UPDATE_KEY = "chose_app_update"
     
     // MARK: - Subverse controller
+    
+    static let subverseControllerAppUpdate = "Subverse Controller - App Update"
+    static func getSubverseControllerUpdateAppParams(didSelectUpdate: Bool) -> Dictionary<AnyHashable, Any> {
+        return Dictionary(dictionaryLiteral: (self.SELECTED_APP_UPDATE_KEY, didSelectUpdate))
+    }
     
     static let subverseControllerUpvote = "Subverse Controller - Submission Upvote"
     static let subverseControllerDownvote = "Subverse Controller - Submission Downvote"
@@ -30,36 +37,40 @@ class AnalyticsEvents {
     static let subverseControllerFindSubverse = "Subverse Controller - Find Subverse"
     
     static let subverseControllerLoaded = "Subverse Controller - Initially Loaded"
-    static func getSubverseControllerLoadedParams(subverseName: String) -> Dictionary<AnyHashable, Any>{
+    static func getSubverseControllerLoadedParams(subverseName: String, isNightMode: Bool) -> Dictionary<AnyHashable, Any>{
         // Record subverse name
-        return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName))
+        return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName),
+                          (self.NIGHT_MODE_KEY, isNightMode))
     }
     
     static let subverseControllerMoreSubmissions = "Subverse Controller - Pressed More Submissions"
-    static func getSubverseControllerMoreSubmissionParams(subverseName: String, pageNumber: Int, sortType: SortTypeSubmissions) -> Dictionary<AnyHashable, Any> {
+    static func getSubverseControllerMoreSubmissionParams(subverseName: String, pageNumber: Int, sortType: SortTypeSubmissions, isNightMode: Bool) -> Dictionary<AnyHashable, Any> {
         
         // Record subverse name, page number, sort type
         
         return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName),
                           (self.PAGE_NUMBER_PARAM_KEY, pageNumber),
-                          (self.SORT_TYPE_PARAM_KEY, sortType.rawValue))
+                          (self.SORT_TYPE_PARAM_KEY, sortType.rawValue),
+                          (self.NIGHT_MODE_KEY, isNightMode))
     }
     
     static let subverseControllerPullToRefresh = "Subverse Controller - Pulled to Refresh"
-    static func getSubverseControllerPullToRefreshParams(subverseName: String, sortType: SortTypeSubmissions) -> Dictionary<AnyHashable, Any> {
+    static func getSubverseControllerPullToRefreshParams(subverseName: String, sortType: SortTypeSubmissions, isNightMode: Bool) -> Dictionary<AnyHashable, Any> {
         
         // Record subverse name, sort type
         
         return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName),
-                          (self.SORT_TYPE_PARAM_KEY, sortType.rawValue))
+                          (self.SORT_TYPE_PARAM_KEY, sortType.rawValue),
+                          (self.NIGHT_MODE_KEY, isNightMode))
     }
     
     static let subverseControllerSortedBy = "Subverse Controller - Pressed Sort By"
-    static func getSubverseControllerSortByParams(subverseName: String, sortType: SortTypeSubmissions) -> Dictionary<AnyHashable, Any>{
+    static func getSubverseControllerSortByParams(subverseName: String, sortType: SortTypeSubmissions, isNightMode: Bool) -> Dictionary<AnyHashable, Any>{
         
         // Record subverse name, sort type
         return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName),
-                          (self.SORT_TYPE_PARAM_KEY, sortType.rawValue))
+                          (self.SORT_TYPE_PARAM_KEY, sortType.rawValue),
+                          (self.NIGHT_MODE_KEY, isNightMode))
     }
     
     // MARK: - Comments controller
@@ -77,11 +88,12 @@ class AnalyticsEvents {
     }
     
     static let commentsControllerViewing = "Comments Controller - Viewing"
-    static func getCommentsControllerViewingParams(subverseName: String, mediaType: SubmissionMediaType) -> Dictionary<AnyHashable, Any> {
+    static func getCommentsControllerViewingParams(subverseName: String, mediaType: SubmissionMediaType, isNightMode: Bool) -> Dictionary<AnyHashable, Any> {
         
         // Record submission media type, subverse name
         return Dictionary(dictionaryLiteral: (self.SUBVERSE_PARAM_KEY, subverseName),
-                          (self.SUBMISSION_MEDIA_TYPE_PARAM_KEY, mediaType.rawValue))
+                          (self.SUBMISSION_MEDIA_TYPE_PARAM_KEY, mediaType.rawValue),
+                          (self.NIGHT_MODE_KEY, isNightMode))
     }
     
     

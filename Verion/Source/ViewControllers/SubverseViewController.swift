@@ -164,7 +164,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
                 self.saveSortType(sortType: sortByType){}
                 
                 // Analytics
-                let params = AnalyticsEvents.getSubverseControllerSortByParams(subverseName: self.subverseSubmissionParams.subverseName, sortType: self.subverseSubmissionParams.sortType)
+                let params = AnalyticsEvents.getSubverseControllerSortByParams(subverseName: self.subverseSubmissionParams.subverseName, sortType: self.subverseSubmissionParams.sortType, isNightMode: self.sfxManager!.isNightModeEnabled)
                 self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerSortedBy, params: params, timed: false)
                 
                 
@@ -210,6 +210,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.loadActivityIndicator()
         self.loadSavedData()
         
+        self.introduceNightMode()
+        self.checkForLatestVersion()
         self.loadTableCellsNew(forSubverse: self.subverseSubmissionParams.subverseName, clearScreen: true, animateNavBar: true) {
         }
 
@@ -254,7 +256,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         self.subverseSubmissionParams.sortType = verionDataModel!.sortType!
         
         // Analytics
-        let params = AnalyticsEvents.getSubverseControllerLoadedParams(subverseName: self.subverseSubmissionParams.subverseName)
+        let params = AnalyticsEvents.getSubverseControllerLoadedParams(subverseName: self.subverseSubmissionParams.subverseName, isNightMode: self.sfxManager!.isNightModeEnabled)
         self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerLoaded, params: params, timed: false)
     }
     
@@ -278,6 +280,79 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             
             DispatchQueue.main.async {
                 completion()
+            }
+        }
+    }
+    
+    private func introduceNightMode() {
+        // If current version is 1.0004 or below, ask to introduce night mode
+        let dataModel = self.dataManager?.getSavedData()
+        if dataModel!.versionNumber == 1.0004 {
+            if dataModel!.didAskToTurnOnNightMode == false {
+                
+                dataModel?.didAskToTurnOnNightMode = true
+                
+                // Ask to turn on night mode
+                let title = "Night Mode Available"
+                let message = "We've recently added Night Mode to make the app easier on the eyes! Would you like to try it now? You can turn it on/off in the settings."
+                
+                let nightModeAlert = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+                let okAction = UIAlertAction.init(title: "Sure!", style: .default, handler: { (action) in
+                    // Turn on night mode, then reload
+                    self.sfxManager?.isNightModeEnabled = true
+                    dataModel?.isNightModeEnabled = true
+                    self.dataManager?.saveData(dataModel: dataModel!)
+                    
+                    self.reloadSubmissions()
+                })
+                
+                let cancelAction = UIAlertAction.init(title: "Later", style: .cancel, handler: { (action) in
+                    self.dataManager?.saveData(dataModel: dataModel!)
+                })
+                
+                nightModeAlert.addAction(okAction)
+                nightModeAlert.addAction(cancelAction)
+                
+                self.present(nightModeAlert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    private func checkForLatestVersion() {
+        self.dataProvider.requestCurrentVersion { (versionNumber, updateMessage, error) in
+            guard error == nil else {
+                // Failed request, do nothing
+                return
+            }
+            
+            // Compare retrieved version with current device version
+            let dataModel = self.dataManager?.getSavedData()
+            if dataModel!.versionNumber < versionNumber {
+                // Ask User to update
+                let updateAlert = UIAlertController.init(title: "Update Available", message: updateMessage, preferredStyle: UIAlertControllerStyle.alert)
+                
+                let okAction = UIAlertAction.init(title: "Sure!", style: .default, handler: { (action) in
+                    
+                    // Analytics
+                    let params = AnalyticsEvents.getSubverseControllerUpdateAppParams(didSelectUpdate: true)
+                    let analyticName = AnalyticsEvents.subverseControllerAppUpdate
+                    self.analyticsManager?.logEvent(name: analyticName, params: params, timed: false)
+                    
+                    let url = AppInfo.appUrl
+                    SafariOpener.openUrlInSafari(url!)
+                })
+                
+                let cancelAction = UIAlertAction.init(title: "Later", style: .cancel, handler: { action in
+                    // Analytics
+                    let params = AnalyticsEvents.getSubverseControllerUpdateAppParams(didSelectUpdate: false)
+                    let analyticName = AnalyticsEvents.subverseControllerAppUpdate
+                    self.analyticsManager?.logEvent(name: analyticName, params: params, timed: false)
+                })
+                
+                updateAlert.addAction(okAction)
+                updateAlert.addAction(cancelAction)
+                
+                self.present(updateAlert, animated: true, completion: nil)
             }
         }
     }
@@ -351,7 +426,7 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
             //refresh logic
             
             // Analytics
-            let params = AnalyticsEvents.getSubverseControllerPullToRefreshParams(subverseName: self.subverseSubmissionParams.subverseName, sortType: self.subverseSubmissionParams.sortType)
+            let params = AnalyticsEvents.getSubverseControllerPullToRefreshParams(subverseName: self.subverseSubmissionParams.subverseName, sortType: self.subverseSubmissionParams.sortType, isNightMode: self.sfxManager!.isNightModeEnabled)
             self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerPullToRefresh, params: params, timed: false)
             
             // Pull to refresh
@@ -527,7 +602,8 @@ class SubverseViewController: UITableViewController, NVActivityIndicatorViewable
         // Analytics
         let params = AnalyticsEvents.getSubverseControllerMoreSubmissionParams(subverseName: self.subverseSubmissionParams.subverseName,
                                                                                pageNumber: self.subverseSubmissionParams.page,
-                                                                               sortType: self.subverseSubmissionParams.sortType)
+                                                                               sortType: self.subverseSubmissionParams.sortType,
+                                                                               isNightMode: self.sfxManager!.isNightModeEnabled)
         self.analyticsManager?.logEvent(name: AnalyticsEvents.subverseControllerMoreSubmissions, params: params, timed: false)
         
         // Perform loading

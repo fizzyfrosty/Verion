@@ -55,6 +55,10 @@ class VoatDataProvider: DataProviderType {
         case unknown
     }
     
+    enum BackendlessError: Error {
+        case error
+    }
+    
     
     // Dependencies
     private var loginScreen: LoginScreenProtocol?
@@ -64,6 +68,31 @@ class VoatDataProvider: DataProviderType {
         self.apiVersion = apiVersion
         self.loginScreen = loginScreen
         self.analyticsManager = analyticsManager
+    }
+    
+    func requestCurrentVersion(completion: @escaping (Double, String?, Error?) -> ()) {
+        // Contact Backendless server for data
+        let url = URL(string: "https://api.backendless.com/v1/data/AppStatus")
+        let headers = ["application-id": "DE156D63-7F93-D414-FF83-AB14D8F89D00",
+                       "secret-key": "DAB206CA-48AD-8F8A-FFA1-9A65905CF200"]
+        
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success:
+                // Get the version number and message
+                let json = JSON.init(data: response.data!)
+                let dataObject = json["data"]
+                let firstItem = dataObject[0]
+                
+                let versionNumber: Double = firstItem["currentVersion"].doubleValue
+                let message: String = firstItem["updateMessage"].stringValue
+                
+                completion(versionNumber, message, nil)
+                
+            case .failure:
+                completion(0, nil, BackendlessError.error)
+            }
+        })
     }
     
     func requestSubmitTopLevelComment(subverseName: String, submissionId: Int64, comment: String, completion: @escaping (CommentDataModelProtocol?, Error?) -> ()) {
