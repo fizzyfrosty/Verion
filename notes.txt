@@ -69,11 +69,24 @@ Add Analytics
 	* pull to refresh
 	* load more
 
-- New Version Available
-	- Pressed Yes to Update
-	- Pressed No - Cancel
+* New Version Available
+	* Pressed Yes to Update
+	* Pressed No - Cancel
+
+What's New in this version (1.0.4)
+- After lots of great feedback, one of the most requested features was Night Mode, and it is finally here! Now you can surf Voatify even longer with a color scheme that is easy on the eyes!
+
+Minor changes and fixes:
+- Fixed a bug where registered upvotes/downvotes did not show up after an extended period of inactivity. 
+- Other minor UI adjustments
+
+
 
 New Screenshots
+Night Mode + Day Mode
+	- Subverse Controller
+	- Comments Controller
+
 - iPhone
 - iPad
 
